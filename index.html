@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Material Acaciophone - Pedidos y Partes</title>
+  <link rel="manifest" id="pwa-manifest">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --card-hover: #334155;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-dark: #0284c7;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding-bottom: 90px;
+      line-height: 1.4;
+    }
+    /* Cabecera fija */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+    .app-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 0.3px;
+    }
+    .top-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .btn-small {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-small:active { transform: scale(0.97); }
+    .btn-small.accent { border-color: var(--warning); color: var(--warning); }
+
+    /* Buscador */
+    .search-box {
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 13px 40px 13px 14px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .search-box input:focus { border-color: var(--primary); }
+    .clear-search {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.2rem;
+      padding: 6px;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* Filtros por chips */
+    .chips-row {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .chips-row::-webkit-scrollbar { display: none; }
+    .chip {
+      white-space: nowrap;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--card);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .chip.active {
+      background: var(--primary-dark);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .meters-row { margin-top: 6px; }
+    .chip-meter {
+      padding: 4px 9px;
+      font-size: 0.74rem;
+      background: #172033;
+    }
+
+    /* Contenedor principal */
+    main { padding: 12px; max-width: 800px; margin: 0 auto; }
+    .results-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* Lista de resultados */
+    .materials-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .mat-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      gap: 10px;
+      transition: background 0.12s;
+    }
+    .mat-card:active { background: var(--card-hover); }
+    .mat-card.in-cart { border-left: 4px solid var(--success); }
+    .mat-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .mat-code {
+      background: #090d16;
+      color: var(--primary);
+      font-family: monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 6px 8px;
+      border-radius: 6px;
+      min-width: 54px;
+      text-align: center;
+      border: 1px solid #1e293b;
+    }
+    .mat-code.sc { color: var(--warning); }
+    .mat-info { flex: 1; min-width: 0; }
+    .mat-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      word-wrap: break-word;
+    }
+    .mat-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .fav-btn {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 4px;
+      color: #475569;
+    }
+    .fav-btn.active { color: #fbbf24; }
+
+    /* Sección de Pedido Inferior */
+    .order-section {
+      background: #131c31;
+      border: 2px solid var(--primary-dark);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 16px;
+    }
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .order-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .order-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card);
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      gap: 8px;
+    }
+    .order-item-text { flex: 1; min-width: 0; }
+    .order-item-code {
+      font-family: monospace;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--success);
+    }
+    .order-item-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .order-controls {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .qty-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .qty-del {
+      border-color: #7f1d1d;
+      color: var(--danger);
+    }
+
+    /* Vista previa de correo */
+    .preview-box {
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 0.86rem;
+      white-space: pre-wrap;
+      color: #e2e8f0;
+      margin-bottom: 12px;
+    }
+
+    /* Botones de exportación */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .btn-main {
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-copy { background: var(--success); color: #052e16; grid-column: span 2; font-size: 1rem; }
+    .btn-mail { background: var(--primary-dark); color: #fff; }
+    .btn-wa { background: #15803d; color: #fff; }
+    .btn-clear { background: #7f1d1d; color: #fecaca; grid-column: span 2; margin-top: 4px; padding: 9px; }
+
+    /* Barra flotante inferior de salto al pedido */
+    .floating-cart-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #0284c7;
+      color: #fff;
+      padding: 12px 16px;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      z-index: 40;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.4);
+      cursor: pointer;
+    }
+
+    /* Modales */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 420px;
+      padding: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .modal-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; color: var(--primary); }
+    .modal-subtitle { font-size: 0.85rem; color: var(--muted); margin-bottom: 14px; }
+    .qty-input-wrap {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .qty-input-wrap input {
+      flex: 1;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid var(--primary);
+      background: var(--bg);
+      color: var(--text);
+      width: 100%;
+    }
+    .quick-qty-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .q-btn {
+      padding: 10px 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .q-btn:active { background: var(--primary-dark); }
+    .cable-box {
+      background: #131c31;
+      border: 1px dashed var(--warning);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .cable-box p { font-size: 0.78rem; color: var(--warning); margin-bottom: 8px; font-weight: 600; }
+    .cable-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .modal-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .modal-actions button { flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; }
+    .btn-cancel { background: var(--border); color: var(--text); }
+    .btn-confirm { background: var(--primary); color: #082f49; }
+
+    .form-group { margin-bottom: 10px; }
+    .form-group label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--success);
+      color: #052e16;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      display: none;
+      z-index: 200;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="top-bar">
+    <div class="app-title">⚡ ACACIOPHONE MATERIAL</div>
+    <div class="top-actions">
+      <button class="btn-small" onclick="openKitsModal()">📦 Kits</button>
+      <button class="btn-small accent" onclick="openCustomModal()">+ Sin código</button>
+      <button class="btn-small" onclick="openHistoryModal()">🕒 Historial</button>
+    </div>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Buscar material, código, metros (ej: acom 80 int, 3205, utp)..." autocomplete="off">
+    <button class="clear-search" id="clearSearchBtn" onclick="clearSearch()">✕</button>
+  </div>
+
+  <!-- Filtros principales -->
+  <div class="chips-row" id="sheetChips">
+    <button class="chip active" data-filter="ALL" onclick="setSheetFilter('ALL', this)">Todo (312)</button>
+    <button class="chip" data-filter="FAV" onclick="setSheetFilter('FAV', this)">⭐ Favoritos</button>
+    <button class="chip" data-filter="0" onclick="setSheetFilter('0', this)">Instalación Clientes</button>
+    <button class="chip" data-filter="1" onclick="setSheetFilter('1', this)">Fibra Despliegue</button>
+    <button class="chip" data-filter="2" onclick="setSheetFilter('2', this)">Antenas</button>
+    <button class="chip" data-filter="3" onclick="setSheetFilter('3', this)">S/C Instant Byte</button>
+  </div>
+
+  <!-- Filtros rápidos de metraje -->
+  <div class="chips-row meters-row" id="meterChips">
+    <button class="chip chip-meter" onclick="toggleMeter('20', this)">20m</button>
+    <button class="chip chip-meter" onclick="toggleMeter('30', this)">30m</button>
+    <button class="chip chip-meter" onclick="toggleMeter('40', this)">40m</button>
+    <button class="chip chip-meter" onclick="toggleMeter('50', this)">50m</button>
+    <button class="chip chip-meter" onclick="toggleMeter('60', this)">60m</button>
+    <button class="chip chip-meter" onclick="toggleMeter('80', this)">80m</button>
+    <button class="chip chip-meter" onclick="toggleMeter('100', this)">100m</button>
+    <button class="chip chip-meter" onclick="toggleMeter('150', this)">150m</button>
+    <button class="chip chip-meter" onclick="toggleMeter('200', this)">200m</button>
+  </div>
+</header>
+
+<main>
+  <div class="results-info">
+    <span id="resultsCount">Mostrando materiales</span>
+    <span>Toca un artículo para elegir unidades</span>
+  </div>
+
+  <div class="materials-grid" id="materialsList"></div>
+
+  <!-- Lista de pedido -->
+  <section class="order-section" id="orderSection">
+    <div class="order-header">
+      <div class="order-title">📋 Lista de Material (<span id="cartCount">0</span>)</div>
+      <button class="btn-small" id="toggleNamesBtn" onclick="toggleShowNames()">👁️ Ocultar nombres en lista</button>
+    </div>
+
+    <div class="order-list" id="orderList"></div>
+
+    <div style="font-size:0.75rem; color:var(--muted); margin-bottom:4px;">Texto generado (formato oficial empresa):</div>
+    <div class="preview-box" id="emailPreview">Lista vacía. Busca y pulsa sobre un material arriba para añadirlo.</div>
+
+    <div class="action-grid">
+      <button class="btn-main btn-copy" onclick="copyOrder()">📋 COPIAR PARA CORREO / PARTE</button>
+      <button class="btn-main btn-mail" onclick="sendEmail()">✉️ Abrir Correo</button>
+      <button class="btn-main btn-wa" onclick="sendWhatsApp()">💬 WhatsApp</button>
+      <button class="btn-main btn-clear" onclick="clearCart()">🗑️ Vaciar lista</button>
+    </div>
+  </section>
+</main>
+
+<div class="floating-cart-bar" id="floatingBar" onclick="scrollToOrder()">
+  <span id="floatingText">📋 0 materiales en la lista</span>
+  <span>Ver / Copiar ↓</span>
+</div>
+
+<!-- Modal Cantidad -->
+<div class="modal-overlay" id="qtyModal">
+  <div class="modal">
+    <div class="modal-title" id="modalCodeTitle">Código 3235</div>
+    <div class="modal-subtitle" id="modalMatName">Nombre del artículo</div>
+
+    <div class="cable-box" id="cableBox">
+      <p>📏 Cable por metros: 1 metro = 1 unidad</p>
+      <div class="cable-btns">
+        <button class="btn-small" onclick="setExactQty(305, ' (Bobina entera 305m)')">Bobina 305m</button>
+        <button class="btn-small" onclick="setExactQty(100, '')">100 m</button>
+        <button class="btn-small" onclick="setExactQty(500, ' (Bobina 500m)')">Bobina 500m</button>
+        <button class="btn-small" onclick="setExactQty(1, ' (Bobina entera)')">1 Bobina entera</button>
+      </div>
+    </div>
+
+    <div class="qty-input-wrap">
+      <button class="q-btn" style="width:50px;font-size:1.3rem;" onclick="adjustModalQty(-1)">−</button>
+      <input type="number" id="modalQtyInput" value="1" min="1" inputmode="numeric">
+      <button class="q-btn" style="width:50px;font-size:1.3rem;" onclick="adjustModalQty(1)">+</button>
+    </div>
+
+    <div class="quick-qty-grid">
+      <button class="q-btn" onclick="addModalQty(1)">+1</button>
+      <button class="q-btn" onclick="addModalQty(2)">+2</button>
+      <button class="q-btn" onclick="addModalQty(5)">+5</button>
+      <button class="q-btn" onclick="addModalQty(10)">+10</button>
+      <button class="q-btn" onclick="addModalQty(20)">+20</button>
+      <button class="q-btn" onclick="addModalQty(50)">+50</button>
+      <button class="q-btn" onclick="addModalQty(100)">+100</button>
+      <button class="q-btn" style="color:var(--warning);" onclick="resetModalQty()">Reset (1)</button>
+    </div>
+
+    <div class="form-group">
+      <label>Nota opcional (ej: bobina entera, color...)</label>
+      <input type="text" id="modalNoteInput" placeholder="Dejar vacío para formato estándar">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModals()">Cancelar</button>
+      <button class="btn-confirm" onclick="confirmAddMaterial()">Añadir a la lista</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Material Sin Código -->
+<div class="modal-overlay" id="customModal">
+  <div class="modal">
+    <div class="modal-title">+ Material puntual / Sin código</div>
+    <div class="modal-subtitle">Se añadirá indicando descripción y proveedor como pide almacén.</div>
+
+    <div class="form-group">
+      <label>Nombre o descripción del material</label>
+      <input type="text" id="customName" placeholder="Ej: Bridas negras 300mm / Tubo corrugado...">
+    </div>
+    <div class="form-group">
+      <label>Unidades / Metros</label>
+      <input type="number" id="customQty" value="1" min="1" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label>Proveedor (con código oficial si aplica)</label>
+      <select id="customProv">
+        <option value="VERDEJO (Cód. Prov: 1846)">VERDEJO (1846)</option>
+        <option value="AMARANZERO (Cód. Prov: 2650)">AMARANZERO (2650)</option>
+        <option value="ANVIMUR (Cód. Prov: 1230)">ANVIMUR (1230)</option>
+        <option value="KEYFIBRE (Cód. Prov: 2262)">KEYFIBRE (2262)</option>
+        <option value="INSTANT BYTE (Cód. Prov: 1365)">INSTANT BYTE (1365)</option>
+        <option value="KONEKT">KONEKT</option>
+        <option value="SISTAC ILS SL">SISTAC ILS SL</option>
+        <option value="VARIOS / OTRO">VARIOS / OTRO</option>
+      </select>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModals()">Cancelar</button>
+      <button class="btn-confirm" onclick="confirmCustomMaterial()">Añadir</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Kits Rápidos -->
+<div class="modal-overlay" id="kitsModal">
+  <div class="modal">
+    <div class="modal-title">📦 Kits Rápidos de Instalación</div>
+    <div class="modal-subtitle">Añade varios materiales base de golpe y luego suma la acometida.</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+      <button class="btn-small" style="padding:12px;text-align:left;" onclick="loadKit('alta_huawei')">
+        <strong>🏠 Kit Alta FTTH Huawei WiFi 6</strong><br>
+        <span style="color:var(--muted);font-size:0.75rem;">3190 (Router WiFi 6) + 2432 (Roseta 2P) + 4203 (Adaptador SC/APC)</span>
+      </button>
+      <button class="btn-small" style="padding:12px;text-align:left;" onclick="loadKit('alta_zte')">
+        <strong>🏠 Kit Alta FTTH ZTE + Roseta Keyfibre</strong><br>
+        <span style="color:var(--muted);font-size:0.75rem;">3235 (Router ZTE) + 4189 (Roseta completa) + 4203 (Adaptador)</span>
+      </button>
+      <button class="btn-small" style="padding:12px;text-align:left;" onclick="loadKit('tendido_poste')">
+        <strong>🪜 Kit Herrajes Tendido Poste</strong><br>
+        <span style="color:var(--muted);font-size:0.75rem;">4094 (10 Preformados) + 4095 (10 Guardacabos) + 4096 (10 Pinzas PA614)</span>
+      </button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModals()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Historial -->
+<div class="modal-overlay" id="historyModal">
+  <div class="modal">
+    <div class="modal-title">🕒 Últimos pedidos copiados</div>
+    <div class="modal-subtitle">Pulsa en uno para volver a cargarlo en la lista actual.</div>
+    <div id="historyList" style="max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:12px;"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModals()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">¡Copiado al portapapeles!</div>
+
+<script>
+// Hojas: 0=Instalación Clientes, 1=Fibra Despliegue, 2=Antenas Despliegue, 3=Sin Código, 4=Inst. Clientes / Antenas, 5=Antenas / Fibra
+const SHEETS = [
+  "Instalación Clientes",
+  "Fibra Despliegue",
+  "Antenas Despliegue",
+  "Sin Código (Instant Byte)",
+  "Instalación Clientes / Antenas",
+  "Antenas / Fibra Despliegue"
+];
+
+// Base de datos íntegra extraída de MATERIAL ACACIOPHONE.xlsx [codigo, nombre, categoria, sheetIdx, proveedor]
+const RAW_DATA = [
+["3946","ROUTER ASUS ax3000 PARA DUAL O BALANCEO DE CARGA","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3912","HUAWEI X6 ONT ADAMO","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3905","ROUTER ONT Huawei WiFi 7","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3826","ROUTER TP-Link Archer C20 - Router Inalambrico AC750 de Banda Dual,","ROUTER DOMÉSTICO",0,"INSTANT BYTE"],
+["3824","ROUTER COMTREND GRG-4280 us NEBA/VULA","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3692","Router 4G TP-LINK 300MBPS N 4G LT","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3607","ROUTER TP- LINK ARCHER AX53 ROUTER WIFIA AX3000 4XLAN 1XWA","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3637","ROUTER SAGECOM GPON FAST 5670 NEBA/VULA","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3638","ROUTER REC. SERCOMM FG4224E NEBA/VULA","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3653","REPETIDOR EDGE ONT HUAWEI MESH WIFI","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3681","ROUTER 4G-GPS TELTONIKA","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3462","ROUTER ONT Huawei V5 ONIVIA","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3546","ROUTER ONT Huawei EG8145X6 ONIVIA","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3309","MIKROTIK RB/9412NDTC hAP Lite","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3190","ROUTER ONT Huawei WiFi 6 AX-EG8145X6 1POTS+4GE+2.4G/5G","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3235","ROUTER ZTE F680/F6640/LiveBox 6s","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3236","ROUTER SAGECOM 5657v2","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3237","ROUTER SAGECOM 5655v2 RECUPERADO","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3065","ROUTER Mikrotik - hAP ac2","ROUTER DOMÉSTICO",0,"VARIOS"],
+["2760","ROUTER Anfit ONT 1POTS+4GE+2.4G/5G WiFi AC+1USB","ROUTER DOMÉSTICO",0,"VARIOS"],
+["2824","ROUTER MARCA BLANCA ACACIOPHONE PROVEEDOR","ROUTER DOMÉSTICO",0,"VARIOS"],
+["2496","ROUTER TP-LINK TX-VG1530v3 ONT","ROUTER DOMÉSTICO",0,"VARIOS"],
+["2437","ROUTER ONT Huawei EG8145v5","ROUTER DOMÉSTICO",0,"VARIOS"],
+["2433","ROUTER ONT GPON 4GE+2POTS+WIFI","ROUTER DOMÉSTICO",0,"VARIOS"],
+["2383","ROUTER ONT TX-VG1530","ROUTER DOMÉSTICO",0,"VARIOS"],
+["2328","ROUTER SATELITE","ROUTER DOMÉSTICO",0,"VARIOS"],
+["2184","ROUTER NTN300 Wireless NRouter","ROUTER DOMÉSTICO",0,"VARIOS"],
+["2185","NuCom NC-WR624WTV Router+ATA","ROUTER DOMÉSTICO",0,"VARIOS"],
+["1726","REPETIDOR WIFI TP-LINK TL-WA854RE","ROUTER DOMÉSTICO",0,"VARIOS"],
+["1647","EQUIPO DSL","ROUTER DOMÉSTICO",0,"VARIOS"],
+["1648","EQUIPO DSL+ Kit ampliación TV","ROUTER DOMÉSTICO",0,"VARIOS"],
+["1597","ROUTER NEUTRO 1WAN+4LAN dB WIFI 300N // TLWR850N 300M WIRELESS TPLINK","ROUTER DOMÉSTICO",0,"VARIOS"],
+["3126","REPETIDOR WIFI TP-LINK RE200 AC750","ROUTER DOMÉSTICO",0,"VARIOS"],
+["4144","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 5 MM - 20 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4145","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 5 MM - 30 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4146","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 5 MM - 40 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4147","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 5 MM - 60 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4148","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 5 MM - 80 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4149","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 5 MM - 100 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4150","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 5 MM - 200 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4152","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - NEGRO - 20 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4153","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - NEGRO - 30 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4154","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - NEGRO - 40 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4155","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - NEGRO - 60 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4156","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - NEGRO - 80 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4157","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - NEGRO - 100 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4158","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - NEGRO - 200 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4159","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - BLANCO - 20 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4160","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - BLANCO - 30 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4161","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - BLANCO - 40 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4162","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - BLANCO - 60 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4163","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - BLANCO - 80 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4164","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - BLANCO - 100 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4165","PIGTAIL PRECONECTORIZADO SC/APC OPTICOM 3 MM - BLANCO - 200 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"VERDEJO"],
+["4166","ACOMETIDA SM9/125 30 metros BLANCO - EXTERIOR","CABLES ACOMETIDA FIBRA PROPIA",0,"ANVIMUR"],
+["4174","ACOMETIDA SM9/125 40 metros BLANCO - EXTERIOR","CABLES ACOMETIDA FIBRA PROPIA",0,"ANVIMUR"],
+["4179","ACOMETIDA SM9/125 150 metros NEGRO - EXTERIOR","CABLES ACOMETIDA FIBRA PROPIA",0,"ANVIMUR"],
+["4196","PIGTAIL PRECONECTORIZADO SERIE FORCE DOBLE ARMADO SC/APC 3 MM - NEGRO - 40 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"KEYFIBRE"],
+["4192","PIGTAIL PRECONECTORIZADO SERIE FORCE DOBLE ARMADO SC/APC 3 MM - NEGRO - 60 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"KEYFIBRE"],
+["4193","PIGTAIL PRECONECTORIZADO SERIE FORCE DOBLE ARMADO SC/APC 3 MM - NEGRO - 80 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"KEYFIBRE"],
+["4194","PIGTAIL PRECONECTORIZADO SERIE FORCE DOBLE ARMADO SC/APC 3 MM - NEGRO - 100 MT","CABLES ACOMETIDA FIBRA PROPIA",0,"KEYFIBRE"],
+["4187","LATIGUILLO ALARGADOR HUAWEI HEMBRA - SC/APC - 3MM - 2MT","CABLES ACOMETIDA FIBRA PROPIA",0,"KEYFIBRE"],
+["4186","LATIGUILLO ALARGADOR CORNING HEMBRA - SC/APC - 3MM - 2MT","CABLES ACOMETIDA FIBRA PROPIA",0,"KEYFIBRE"],
+["2434","ACOMETIDA DE FIBRA 60 METROS","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"VARIOS"],
+["3193","FTTH Acometida 20 metros de interior (3mm)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3194","FTTH Acometida 30 metros de interior (3mm)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3195","FTTH Acometida 40 metros de interior (3mm)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3196","FTTH Acometida 50 metros de interior (3mm)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3197","FTTH Acometida 60 metros de interior (3mm)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3198","FTTH Acometida 80 metros de interior (3mm)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3199","FTTH Acometida 100 metros de interior (3mm)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["4011","FTTH Acometida 150 metros de interior (3mm)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["4012","FTTH Acometida 200 metros de interior (3mm)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3200","ACOMETIDA INTERIOR 20M SC/APC 4,2MM","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3201","ACOMETIDA INTERIOR 40M SC/APC 4,2MM","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3202","ACOMETIDA INTERIOR 60M SC/APC 4,2MM","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3203","ACOMETIDA INTERIOR 80M SC/APC 4,2MM","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3204","ACOMETIDA INTERIOR 150M SC/APC 4,2MM","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3205","FTTH Exterior CORNING 20m Acometida de exterior (Optitap)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3206","FTTH Exterior CORNING 30m Acometida de exterior (Optitap)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3207","FTTH Exterior CORNING 40m Acometida de exterior (Optitap)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3208","FTTH Exterior CORNING 50m Acometida de exterior (Optitap)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3209","FTTH Exterior CORNING 60m Acometida de exterior (Optitap)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3210","FTTH Exterior CORNING 80m Acometida de exterior (Optitap)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3211","FTTH Exterior CORNING 100m Acometida de exterior (Optitap)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3212","FTTH Exterior CORNING 150m Acometida de exterior (Optitap)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3358","FTTH Exterior CORNING 200m Acometida de exterior (Optitap)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3213","FTTH Exterior HUAWEI 30m Acometida de exterior (FastConnect)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3214","FTTH Exterior HUAWEI 40m Acometida de exterior (FastConnect)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3215","FTTH Exterior HUAWEI 50m Acometida de exterior (FastConnect)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3606","FTTH Exterior HUAWEI 60m Acometida de exterior (FastConnect)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3216","FTTH Exterior HUAWEI 80m Acometida de exterior (FastConnect)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3217","FTTH Exterior HUAWEI 100m Acometida de exterior (FastConnect)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["4013","FTTH Exterior HUAWEI 150m Acometida de exterior (FastConnect)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3218","FTTH Exterior HUAWEI 200m Acometida de exterior (FastConnect)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3269","FTTH Exterior HUAWEI 220m Acometida de exterior (FastConnect)","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3219","Acometida exterior de 20 mts (G657A2) con conector reforzado adaptado SC/APC (solución propietaria) en un extremo","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["4010","Acometida exterior de 30 mts (G657A2) con conector reforzado adaptado SC/APC (solución propietaria) en un extremo","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["4009","Acometida exterior de 40 mts (G657A2) con conector reforzado adaptado SC/APC (solución propietaria) en un extremo","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3221","Acometida exterior de 60 mts (G657A2) con conector reforzado adaptado SC/APC (solución propietaria) en un extremo","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3222","Acometida exterior de 80 mts (G657A2) con conector reforzado adaptado SC/APC (solución propietaria) en un extremo","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["4008","Acometida exterior de 100 mts (G657A2) con conector reforzado adaptado SC/APC (solución propietaria) en un extremo","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3223","CIRCO ACOMETIDA EXTERIOR 40M-MMV","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3224","CIRCO ACOMETIDA EXTERIOR 60M-MMV","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3225","CIRCO ACOMETIDA EXTERIOR 80M-MMV","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3226","CIRCO ACOMETIDA EXTERIOR 100M-MMV","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3270","CIRCO ACOMETIDA EXTERIOR 160M-MMV","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3271","CIRCO ACOMETIDA EXTERIOR 200M-MMV","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"AMARANZERO"],
+["3273","ANCLAJE PARA RETENCION DE CABLES DE ACOMETIDA","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"VARIOS"],
+["3228","Retenedor para cable acometida . Sin palanca homologados","CABLES ACOMETIDA FIBRA MARCA BLANCA",0,"VARIOS"],
+["2432","ROSETA OPTICA 2 PUERTOS CON LATIGUILLO","MATERIAL FIBRA DOMÉSTICO",0,"VARIOS"],
+["4203","ADAPTADOR UNIVERSAL SC/APC","MATERIAL FIBRA DOMÉSTICO",0,"VERDEJO"],
+["4202","ADAPTADOR MINI-SC TIPO HUAWEI","MATERIAL FIBRA DOMÉSTICO",0,"VERDEJO"],
+["4191","ADAPTADOR CORNING - SC/APC","MATERIAL FIBRA DOMÉSTICO",0,"KEYFIBRE"],
+["4189","ROSETA OPTICA CON EMPALME, PIGATIL Y ENFRENTADOR SC/APC","MATERIAL FIBRA DOMÉSTICO",0,"KEYFIBRE"],
+["1645","TELEFONO + UNIDAD DE CARGA DP710","MATERIAL TELEFONOS FIJOS",0,"VARIOS"],
+["2275","TELEFONO GRANDSTREAM DP720","MATERIAL TELEFONOS FIJOS",0,"VARIOS"],
+["2276","ESTACION BASE GRANDSTREAM DP750","MATERIAL TELEFONOS FIJOS",0,"VARIOS"],
+["2019","TELEFONO IP CABLEADO GXP1610","MATERIAL TELEFONOS FIJOS",0,"VARIOS"],
+["1688","TELEFONO IP CABLEADO GXP1625","MATERIAL TELEFONOS FIJOS",0,"INSTANT BYTE"],
+["1632","ADAPTADOR TELEFONICO ATA","MATERIAL TELEFONOS FIJOS",0,"VARIOS"],
+["3901","DECO TANIX ANDROID","MATERIAL TV CLIENTE",0,"VARIOS"],
+["3603","DECO ANDROID + MEDIA","MATERIAL TV CLIENTE",0,"VARIOS"],
+["3428","ANDROID TV MECOOL MK2","MATERIAL TV CLIENTE",0,"VARIOS"],
+["2933","ADROID BOX 2+16G","MATERIAL TV CLIENTE",0,"VARIOS"],
+["2886","CAJA ANDROID 2+16GB DESCODIFICADOR TELEVISION","MATERIAL TV CLIENTE",0,"VARIOS"],
+["1717","LNB UNIVERSAL","MATERIAL TV CLIENTE",0,"VARIOS"],
+["1718","RECEPTOR SAT IRIS","MATERIAL TV CLIENTE",0,"VARIOS"],
+["1715","ANTENA 80 CM OFFSET","MATERIAL TV CLIENTE",0,"VARIOS"],
+["1704","Antena Parabolica 80cm con LNB con soporte receptor SATELITE","MATERIAL TV CLIENTE",0,"VARIOS"],
+["1700","Instalación Antena completa de TDT, con mastiles, garras, cableado...","MATERIAL TV CLIENTE",0,"VARIOS"],
+["1689","ANTENA PARABOLICA 60cm","MATERIAL TV CLIENTE",0,"VARIOS"],
+["1687","Recepcion satelite compuesto por LNB, parabola de 80 con soporte y receptor humax, para vision de liga de futbol española y europea.","MATERIAL TV CLIENTE",0,"VARIOS"],
+["3289","ANTENA DISC LITE 5 AC RBDiscG-5acD with 21dBi 5GHz","ANTENA DOMÉSTICA",0,"VARIOS"],
+["2980","ANTENA CAMBIUM NETWORK´S","ANTENA DOMÉSTICA",0,"VARIOS"],
+["2951","ANTENA LHG-XL-HP5","ANTENA DOMÉSTICA",4,"VARIOS"],
+["2950","ANTENA DE 9dBi INTEGRADA MIKROTIK LDF 5 ac","ANTENA DOMÉSTICA",0,"VARIOS"],
+["2924","Mikrotik RBSXT sqG-5acD RBSXTsqG-5acD with 16dBi 5 Ghz","ANTENA DOMÉSTICA",0,"VARIOS"],
+["2917","Mikrotik LDF 5 ac RBLDFG-5acD with 9dBi integrated 5GHz antenna","ANTENA DOMÉSTICA",0,"VARIOS"],
+["2914","ANTENA DUAL MIKROTIK","ANTENA DOMÉSTICA",4,"VARIOS"],
+["2754","PUNTO DE ACCESO INTERIOR 360º","ANTENA DOMÉSTICA",0,"VARIOS"],
+["2755","PUNTO DE ACCESO EXTERIOR 360º","ANTENA DOMÉSTICA",0,"VARIOS"],
+["2362","Antena Mikrotik QRT5 para clientes lejanos y repetidores","ANTENA DOMÉSTICA",4,"VARIOS"],
+["2329","ANTENA SATELITE PARABOLICA","ANTENA DOMÉSTICA",0,"VARIOS"],
+["2027","ANTENA ROUTERBOARD SXT LITE 5 LEVEL 3","ANTENA DOMÉSTICA",4,"VARIOS"],
+["1896","WIFI UNIFI","ANTENA DOMÉSTICA",0,"VARIOS"],
+["1659","ANTENA 22dB 5GHz 300mm DOBLE POLARIDAD (NANO BEAM)","ANTENA DOMÉSTICA",4,"VARIOS"],
+["1618","PUNTO DE ACCESO. Incluye Emisor y Receptor","ANTENA DOMÉSTICA",0,"VARIOS"],
+["1598","ANTENA 5GHz DE 13dBI MIMO AIRMAX POE INCLUIDO NANO LOCO M5","ANTENA DOMÉSTICA",0,"VARIOS"],
+["2976","66000018: ePMP 3000 Access Point","ANTENA",2,"VARIOS"],
+["2979","ANTENA MODULO DE SUSCRIPTOR INALÁMBRICO","ANTENA",2,"VARIOS"],
+["1465","Antena Omni-direccional 5.45 - 5.85 GHz 10dbi","ANTENA",2,"VARIOS"],
+["1599","ANTENA PARABOLICA 5GHz 30dBi","ENLACES",2,"VARIOS"],
+["4034","DIFERENCIAL","MATERIAL ELECTRICO",2,"VARIOS"],
+["4035","SOBRETENSIONES","MATERIAL ELECTRICO",2,"VARIOS"],
+["4036","MAGNETOTÉRMICO","MATERIAL ELECTRICO",2,"VARIOS"],
+["3181","GRAPA NEGRA ABIERTA 6mm (BOLSA 100 uds)","MATERIAL FIJACION",2,"VARIOS"],
+["2278","MASTIL 1500*35*1.5MM GALVANIZADO","MATERIAL FIJACION",2,"VARIOS"],
+["1835","GARRA PARA TIRAFONDOS DE 20CM","MATERIAL FIJACION",2,"VARIOS"],
+["1836","MASTIL 3000X40X1.5 mm GALVANIZADO","MATERIAL FIJACION",2,"VARIOS"],
+["1837","GARRA PARA 4 TIRAFONDOS DE 40 CM","MATERIAL FIJACION",2,"VARIOS"],
+["1690","SOPORTE PARA PARED DE ANTENA EN L 32cm","MATERIAL FIJACION",2,"VARIOS"],
+["1646","MASTIL 2500*40*1.5MM GALVANIZADO","MATERIAL FIJACION",2,"VARIOS"],
+["3725","Antena Mikrotik L22UGS-5HaxD2HaxD-15S - mANTBox ax 15 s CPU dual","MOCHILAS",2,"VARIOS"],
+["2952","MOCHILA NetBox 5 ac","MOCHILAS",2,"VARIOS"],
+["1466","5GHz Hi Power 2x2 MIMO AirMax TDMA BaseStation.","MOCHILAS",2,"VARIOS"],
+["4037","Mochila Netmetal5","MOCHILAS",2,"VARIOS"],
+["4038","Cable FTP Cat5e","CABLES",2,"VARIOS"],
+["4039","Cable FTP Cat6","CABLES",2,"VARIOS"],
+["4040","Cable UTP Cat5e","CABLES",2,"VARIOS"],
+["918","Batería 12V (Alarmas Evo)","BATERÍAS",2,"VARIOS"],
+["4041","INYECTOR POE 1 PUERTO 1000","INYECTOR POE",2,"VARIOS"],
+["4042","INYECTOR POE 1 PUERTO 100","INYECTOR POE",2,"VARIOS"],
+["4043","INYECTOR POE 8 PUERTO 1000","INYECTOR POE",2,"VARIOS"],
+["1601","POE","INYECTOR POE",2,"VARIOS"],
+["2722","SAI PEQUEÑO (1 BATERÍA) SALICRU ONE 700 VA - 360 W ROJO LINE","SAI",5,"SISTAC ILS SL"],
+["2471","SAI PEQUEÑO (1 BATERÍA) SALICRU ONE 900 VA - 480 W ROJO LINE","SAI",5,"SISTAC ILS SL"],
+["2723","SAI PEQUEÑO (1 BATERÍA) SALICRU ONE 1100 VA - 600 W ROJO LINE","SAI",5,"SISTAC ILS SL"],
+["2724","SAI MEDIANO (2 BATERÍA) SALICRU ONE 1500 VA - 900 W ROJO LINE","SAI",5,"SISTAC ILS SL"],
+["2725","SAI MEDIANO (2 BATERÍA) SALICRU ONE 2000 VA - 1200 W ROJO LINE","SAI",5,"SISTAC ILS SL"],
+["4200","SAI GRANDE( >2 BATERÍA) DELTA N-2K 2000 VA - 1800 W","SAI",5,"ENERSAI SYSTEM SL"],
+["2756","SWITCH POE 5 PORT","OTRO",2,"VARIOS"],
+["2516","Conversor de medios gigabit sm 2scu 1310 nm","OTRO",2,"VARIOS"],
+["4046","TARJETA TIPO MA5600 - SIN MODULOS TRANSCEIVER","OLT",1,"ANVIMUR"],
+["4047","TARJETA TIPO MA5800 - SIN MODULOS TRANSCEIVER","OLT",1,"ANVIMUR"],
+["4206","TARJETA TIPO MA5600 - CON MODULOS TRANSCEIVER","OLT",1,"ANVIMUR"],
+["4207","TARJETA TIPO MA5800 - CON MODULOS TRANSCEIVER","OLT",1,"ANVIMUR"],
+["4048","OLT HUAWEI MA5800TX15","OLT",1,"ANVIMUR"],
+["4049","OLT HUAWEI MA5800TX7","OLT",1,"ANVIMUR"],
+["4050","OLT HUAWEI MA5800TX2","OLT",1,"ANVIMUR"],
+["4051","OLT HUAWEI MA5683T","OLT",1,"ANVIMUR"],
+["4052","OLT HUAWEI MA5680T","OLT",1,"ANVIMUR"],
+["4053","OLT HUAWEI MA5608T","OLT",1,"ANVIMUR"],
+["4054","OLT BDCOM P3310","OLT",1,"ANVIMUR"],
+["2426","CABECERA DE FIBRA OPTICA","OLT",1,"ANVIMUR"],
+["4044","TRANSCEIVER SFP 1490/1310NM - 20 KM","MODULO TRANSCEIVER",1,"ANVIMUR"],
+["4045","TRANSCEIVER SFP+ 1310NM - 10 KM","MODULO TRANSCEIVER",1,"ANVIMUR"],
+["4175","TRANSCEIVER SFP 1310NM - 10 KM","MODULO TRANSCEIVER",1,"ANVIMUR"],
+["4185","TRANSCEIVER SFP+ 1550NM - 40 KM","MODULO TRANSCEIVER",1,"ANVIMUR"],
+["4063","MIKROTIK CCR 1072-1G-8S+","ROUTER CCR",1,"INSTANT BYTE"],
+["4064","MIKROTIK CCR 1036-12G-4S","ROUTER CCR",1,"INSTANT BYTE"],
+["4065","MIKROTIK CCR 1036-8G-2S+","ROUTER CCR",1,"INSTANT BYTE"],
+["4066","MIKROTIK CCR 2004-1G-12S+2XS","ROUTER CCR",1,"INSTANT BYTE"],
+["4067","MIKROTIK CCR 1016-12G","ROUTER CCR",1,"INSTANT BYTE"],
+["4068","MIKROTIK CCR 2116-12G-4S+","ROUTER CCR",1,"INSTANT BYTE"],
+["4069","MIKROTIK CCR 1009-7G-1C-PC","ROUTER CCR",1,"INSTANT BYTE"],
+["4079","MIKROTIK CRS 305-1G-4S+IN","SWITCH",1,"INSTANT BYTE"],
+["4080","MIKROTIK CRS 309-1G-8S+IN","SWITCH",1,"INSTANT BYTE"],
+["4081","SWITCH EDGE 16 PUERTOS","SWITCH",1,"INSTANT BYTE"],
+["4082","SWITCH EDGE 24 PUERTOS","SWITCH",1,"INSTANT BYTE"],
+["4083","SWITCH HP 24 PUERTOS","SWITCH",1,"INSTANT BYTE"],
+["4055","ODF 24 PUERTOS","ODF",1,"VERDEJO"],
+["4056","ODF 48 PUERTOS","ODF",1,"VERDEJO"],
+["4057","ODF 64 PUERTOS","ODF",1,"VARIOS"],
+["4058","ODF 72 PUERTOS","ODF",1,"VERDEJO"],
+["4059","ODF 96 PUERTOS","ODF",1,"VERDEJO"],
+["4060","ODF 144 PUERTOS","ODF",1,"VERDEJO"],
+["4061","ODF 256 PUERTOS","ODF",1,"VARIOS"],
+["4062","ODF 588 PUERTOS","ODF",1,"VARIOS"],
+["4176","ODF 48 PUERTOS Y 96 FUSIONES (DUPLEX)","ODF",1,"ANVIMUR"],
+["4177","ODF 24 PUERTOS Y 48 FUSIONES (DUPLEX)","ODF",1,"ANVIMUR"],
+["4111","PATCH PANEL 16 PUERTOS","PATCH PANEL ETHERNET",1,"VARIOS"],
+["4112","PATCH PANEL 24 PUERTOS","PATCH PANEL ETHERNET",1,"VARIOS"],
+["4113","PATCH PANEL 48 PUERTOS","PATCH PANEL ETHERNET",1,"VARIOS"],
+["2430","CAJA TORPEDO 48 FUSIONES","EMPALME/NODO",1,"VERDEJO"],
+["4070","CAJA TORPEDO 144 FUSIONES","EMPALME/NODO",1,"VERDEJO"],
+["4071","CAJA TORPEDO 288 FUSIONES","EMPALME/NODO",1,"VERDEJO"],
+["4072","CAJA TORPEDO 672 FUSIONES","EMPALME/NODO",1,"VERDEJO"],
+["4073","MINI CAU 128 FUSIONES","EMPALME/NODO",1,"ANVIMUR"],
+["4142","FTTH-TOF-8-SC CAJA FFTH ESTANCA 24 - 48 FUSIONES","EMPALME/NODO",1,"VERDEJO"],
+["4184","CAJA TORPEDO 96 FUSIONES","EMPALME/NODO",1,"ANVIMUR"],
+["2429","CAJA DE DISTRIBUCION 16 SALIDAS CON SPLITER 1:16","CTO",1,"VARIOS"],
+["4076","CTO INTERIOR 16 PUERTOS SC/APC (INTERIOR)","CTO",1,"KEYFIBRE"],
+["4075","CTO INTERIOR 8 PUERTOS SC/APC (INTERIOR)","CTO",1,"KEYFIBRE"],
+["4077","CTO TESLA 16 PUERTOS SC/APC (ARQUETA/FACHADA)","CTO",1,"KEYFIBRE"],
+["4197","CTO PREMIUM PLUS, COMPACT, 16 PUERTOS SC/APC (BC400A)","CTO",1,"KEYFIBRE"],
+["4198","CTO PREMIUM PLUS, COMPACT, 16 PUERTOS SC/APC (BC100)","CTO",1,"KEYFIBRE"],
+["4141","FTTH-8-PRO Caja FTTH Tipo HUAWEI (FACHADA/POSTE)","CTO",1,"VERDEJO"],
+["4074","FTTH-16-PRO Caja FTTH Tipo HUAWEI (FACHADA/POSTE)","CTO",1,"VERDEJO"],
+["4078","FTTH-16-PRO-UNI Caja FTTH Tipo HUAWEI (ARQUETA)","CTO",1,"VERDEJO"],
+["4204","CTO MULTI 48","CTO",1,"VERDEJO"],
+["4084","CABLE FIBRA ÓPTICA 4 FO ARMADURA METALICA","CABLE FIBRA ÓPTICA",1,"VERDEJO"],
+["4085","CABLE FIBRA ÓPTICA 12 FO","CABLE FIBRA ÓPTICA",1,"VERDEJO"],
+["4086","CABLE FIBRA ÓPTICA 24 FO","CABLE FIBRA ÓPTICA",1,"VERDEJO"],
+["4087","CABLE FIBRA ÓPTICA 48 FO","CABLE FIBRA ÓPTICA",1,"VERDEJO"],
+["4088","CABLE FIBRA ÓPTICA 64 FO","CABLE FIBRA ÓPTICA",1,"VERDEJO"],
+["4089","CABLE FIBRA ÓPTICA 72 FO","CABLE FIBRA ÓPTICA",1,"VERDEJO"],
+["4090","CABLE FIBRA ÓPTICA 96 FO","CABLE FIBRA ÓPTICA",1,"VERDEJO"],
+["4091","CABLE FIBRA ÓPTICA 144 FO","CABLE FIBRA ÓPTICA",1,"VERDEJO"],
+["4092","CABLE FIBRA ÓPTICA 288 FO","CABLE FIBRA ÓPTICA",1,"VERDEJO"],
+["4093","CABLE FIBRA ÓPTICA 512 FO","CABLE FIBRA ÓPTICA",1,"VERDEJO"],
+["4143","CABLE FIBRA ÓPTICA 4 FO ANTI-ROEDORES","CABLE FIBRA ÓPTICA",1,"VERDEJO"],
+["4180","CABLE FIBRA ÓPTICA 2 FO","CABLE FIBRA ÓPTICA",1,"ANVIMUR"],
+["4102","LATIGUILLOS SC/APC - SC/APC - 3 MM - 2 MT","PATCH CORD",1,"VERDEJO"],
+["4103","LATIGUILLOS SC/APC - SC/UPC - 3 MM - 2 MT","PATCH CORD",1,"VERDEJO"],
+["4134","LATIGUILLOS SC/APC - LC/APC - 3 MM - 2 MT","PATCH CORD",1,"VERDEJO"],
+["4135","LATIGUILLOS SC/APC - LC/UPC - 3 MM - 2 MT","PATCH CORD",1,"VERDEJO"],
+["4104","LATIGUILLOS SC/UPC - SC/UPC - 3 MM - 2 MT","PATCH CORD",1,"VERDEJO"],
+["4137","LATIGUILLOS SC/UPC - LC/APC - 3 MM - 2 MT","PATCH CORD",1,"VERDEJO"],
+["4132","LATIGUILLOS LC/APC - LC/UPC - 3 MM - 2 MT","PATCH CORD",1,"VERDEJO"],
+["4131","LATIGUILLOS LC/APC - LC/APC - 3 MM - 2 MT","PATCH CORD",1,"VERDEJO"],
+["4136","LATIGUILLOS LC/UPC - SC/UPC - 3 MM - 2 MT","PATCH CORD",1,"VERDEJO"],
+["4133","LATIGUILLOS LC/UPC - LC/UPC - 3 MM - 2 MT","PATCH CORD",1,"VERDEJO"],
+["4138","LATIGUILLOS SC/APC - SC/APC - 3 MM - 3 MT","PATCH CORD",1,"VERDEJO"],
+["4170","LATIGUILLOS SC/APC - SC/APC - 2 MM - 3 MT","PATCH CORD",1,"ANVIMUR"],
+["4181","LATIGUILLOS SC/APC - SC/APC - 2 MM - 5 MT","PATCH CORD",1,"ANVIMUR"],
+["4171","LATIGUILLOS SC/APC - SC/APC - 2 MM - 10 MT","PATCH CORD",1,"ANVIMUR"],
+["4178","LATIGUILLOS SC/APC - SC/UPC - 3 MM - 10 MT","PATCH CORD",1,"ANVIMUR"],
+["4182","LATIGUILLOS LC/UPC - SC/APC DUPLEX - 2 MM - 3 MT","PATCH CORD",1,"ANVIMUR"],
+["4183","LATIGUILLOS LC/UPC - LC/UPC DUPLEX - 2 MM - 1 MT","PATCH CORD",1,"ANVIMUR"],
+["4099","PIGTAIL SC/APC 0,9 MM - 1.5 MT (VERDEJO)","PIGTAILS",1,"VERDEJO"],
+["4172","PIGTAIL SC/APC 0,9 MM - 1.5 MT COLORES (PACK 12)","PIGTAILS",1,"ANVIMUR"],
+["4205","PIGTAIL SC/APC 0,9 MM - 1.5 MT (ANVIMUR)","PIGTAILS",1,"ANVIMUR"],
+["4100","ADAPTADOR OPTICO SC/APC","ENFRENTADORES",1,"VERDEJO"],
+["4101","MANGUITOS DE FUSIÓN","ENFRENTADORES",1,"VARIOS"],
+["4173","ADAPTADOR OPTICO SC/APC DUPLEX","ENFRENTADORES",1,"ANVIMUR"],
+["4105","SPLITTER 1:8","SPLITTER",1,"VERDEJO"],
+["4106","SPLITTER 1:8 PRECONECTORIZADO SC/APC","SPLITTER",1,"VERDEJO"],
+["4107","SPLITTER 1:16","SPLITTER",1,"VERDEJO"],
+["4108","SPLITTER 1:16 PERCONECTORIZADO SC/APC","SPLITTER",1,"VERDEJO"],
+["4109","SPLITTER 1:4","SPLITTER",1,"VERDEJO"],
+["4110","SPLITTER 1:4 PRECONECTORIZADO SC/APC","SPLITTER",1,"VERDEJO"],
+["4190","SPLITTER 1:8 PRECONECTORIZADO SC/APC","SPLITTER",1,"VERDEJO"],
+["4094","PREFORMADOS TENSIÓN CABLE","TENDIDO POSTE",1,"VERDEJO"],
+["4095","GUARDACABOS TIPO U","TENDIDO POSTE",1,"VERDEJO"],
+["4096","PINZA  AMARRE CABLE FIBRA ÓPTICA  4-16 mm (PA614)","TENDIDO POSTE",1,"VERDEJO"],
+["4139","KIT MONTAJE POSTE PARA FTTH-16-PRO CAJA FTTH TIPO HUAWEI","TENDIDO POSTE",1,"VERDEJO"],
+["4140","PINZA  AMARRE CABLE FIBRA ÓPTICA  4.5-9 mm (PA500)","TENDIDO POSTE",1,"VERDEJO"],
+["4208","GRAPA PARED TIPO 00","MATERIAL FIJACIÓN",1,"KONEKT"],
+["4209","GRAPA PARED TIPO 0","MATERIAL FIJACIÓN",1,"KONEKT"],
+["4210","RETENEDOR COBRE","MATERIAL FIJACIÓN",1,"KONEKT"],
+["4098","RETENEDORES DE ACOMETIDA","MATERIAL FIJACIÓN",1,"VARIOS"],
+["4211","GANCHO ACERO - RETENDOR F.O.","MATERIAL FIJACIÓN",1,"KONEKT"],
+["4212","ANILLA TIPO E","MATERIAL FIJACIÓN",1,"KONEKT"],
+["4213","TACO EXPANSION 10X25","MATERIAL FIJACIÓN",1,"KONEKT"],
+["4214","TIRAFONO HEXAGONAL RANURADO M6*30","MATERIAL FIJACIÓN",1,"KONEKT"],
+["4215","ANCLAJE RETENEDOR","MATERIAL FIJACIÓN",1,"KONEKT"],
+["4097","BRIDA METÁLICA CON TORNILLO - ABC","MATERIAL FIJACIÓN",1,"KONEKT"],
+["S/C","MIKROTIK CRS318-16P-2S+OUT","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","MIKROTIK RBLHGG-5ACD-XL","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","MIKROTIK 24HPOW","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","MIKROTIK RBLHGG-5AC-XL","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","MIKROTIK 18HPOW","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","MIKROTIK RBGPOE","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","ALFA NETWORK APOE08G","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","MIKROTIK RBLHG-5HPND-XL","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","TP LINK ARCHER C20","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","TELEFONO GRANDSTREAM WP816","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","MIKROTIK CAPGI-5HAXD2HAX","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","MIKEOTIK CSS106-1G-4P-1S","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","MIKROTIK SXSQ-5AXD","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"],
+["S/C","MIKROTIK RBSXTSQ","SIN CÓDIGO (HOJA PROVEEDORES)",3,"INSTANT BYTE"]
+];
+
+// Códigos de cables que se piden por metros (1m = 1 ud)
+const CABLE_METER_CODES = new Set([
+  "4038","4039","4040",
+  "4084","4085","4086","4087","4088","4089","4090","4091","4092","4093","4143","4180"
+]);
+
+function normalizeStr(str) {
+  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+const MATERIALS = RAW_DATA.map((item, idx) => {
+  const [code, name, cat, sheetIdx, prov] = item;
+  const sheetName = SHEETS[sheetIdx];
+  return {
+    id: idx,
+    code,
+    name,
+    cat,
+    sheetIdx,
+    sheetName,
+    prov,
+    searchStr: normalizeStr(`${code} ${name} ${cat} ${prov}`)
+  };
+});
+
+// Estado persistente
+let cart = JSON.parse(localStorage.getItem("acacio_cart") || "[]");
+let favs = new Set(JSON.parse(localStorage.getItem("acacio_favs") || '["3190","3235","2432","4189","4203","4040","3205"]'));
+let history = JSON.parse(localStorage.getItem("acacio_history") || "[]");
+let showNamesInList = true;
+let activeSheet = "ALL";
+let activeMeter = "";
+let selectedMaterial = null;
+
+// Inicialización
+const searchInput = document.getElementById("searchInput");
+const clearSearchBtn = document.getElementById("clearSearchBtn");
+
+searchInput.addEventListener("input", () => {
+  clearSearchBtn.style.display = searchInput.value ? "block" : "none";
+  renderMaterials();
+});
+
+function clearSearch() {
+  searchInput.value = "";
+  clearSearchBtn.style.display = "none";
+  renderMaterials();
+  searchInput.focus();
+}
+
+function setSheetFilter(filter, btn) {
+  activeSheet = filter;
+  document.querySelectorAll("#sheetChips .chip").forEach(c => c.classList.remove("active"));
+  btn.classList.add("active");
+  renderMaterials();
+}
+
+function toggleMeter(meter, btn) {
+  if (activeMeter === meter) {
+    activeMeter = "";
+    btn.classList.remove("active");
+  } else {
+    activeMeter = meter;
+    document.querySelectorAll("#meterChips .chip").forEach(c => c.classList.remove("active"));
+    btn.classList.add("active");
+  }
+  renderMaterials();
+}
+
+function toggleFav(e, idKey) {
+  e.stopPropagation();
+  if (favs.has(idKey)) favs.delete(idKey);
+  else favs.add(idKey);
+  localStorage.setItem("acacio_favs", JSON.stringify([...favs]));
+  renderMaterials();
+}
+
+function renderMaterials() {
+  const query = normalizeStr(searchInput.value.trim());
+  const tokens = query ? query.split(/\s+/) : [];
+  const container = document.getElementById("materialsList");
+
+  const filtered = MATERIALS.filter(m => {
+    const favKey = m.code !== "S/C" ? m.code : m.name;
+    if (activeSheet === "FAV" && !favs.has(favKey)) return false;
+    if (activeSheet === "0" && m.sheetIdx !== 0 && m.sheetIdx !== 4) return false;
+    if (activeSheet === "1" && m.sheetIdx !== 1 && m.sheetIdx !== 5) return false;
+    if (activeSheet === "2" && m.sheetIdx !== 2 && m.sheetIdx !== 4 && m.sheetIdx !== 5) return false;
+    if (activeSheet === "3" && m.sheetIdx !== 3) return false;
+
+    if (activeMeter) {
+      const regex = new RegExp(`\\b${activeMeter}\\s*(m|mt|mts|metros)\\b`, "i");
+      if (!regex.test(m.name)) return false;
+    }
+
+    for (const t of tokens) {
+      if (!m.searchStr.includes(t)) return false;
+    }
+    return true;
+  });
+
+  // Ordenar: coincidencia exacta de código primero, luego favoritos
+  filtered.sort((a, b) => {
+    if (query && a.code.toLowerCase() === query) return -1;
+    if (query && b.code.toLowerCase() === query) return 1;
+    const aFav = favs.has(a.code !== "S/C" ? a.code : a.name) ? 1 : 0;
+    const bFav = favs.has(b.code !== "S/C" ? b.code : b.name) ? 1 : 0;
+    return bFav - aFav;
+  });
+
+  document.getElementById("resultsCount").textContent = `${filtered.length} materiales encontrados`;
+
+  const cartKeys = new Set(cart.map(c => c.key));
+  const limit = tokens.length === 0 && activeSheet === "ALL" && !activeMeter ? 80 : filtered.length;
+  const slice = filtered.slice(0, limit);
+
+  container.innerHTML = slice.map(m => {
+    const key = m.code !== "S/C" ? m.code : `SC_${m.name}`;
+    const isFav = favs.has(m.code !== "S/C" ? m.code : m.name);
+    const inCart = cartKeys.has(key);
+    return `
+      <div class="mat-card ${inCart ? 'in-cart' : ''}" onclick="openQtyModal(${m.id})">
+        <div class="mat-left">
+          <div class="mat-code ${m.code === 'S/C' ? 'sc' : ''}">${m.code}</div>
+          <div class="mat-info">
+            <div class="mat-name">${m.name}</div>
+            <div class="mat-meta">${m.cat} · Prov: ${m.prov}</div>
+          </div>
+        </div>
+        <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav(event, '${(m.code !== 'S/C' ? m.code : m.name).replace(/'/g, "\\'")}')">★</button>
+      </div>
+    `;
+  }).join("");
+}
+
+// Modal de Unidades
+function openQtyModal(matId) {
+  selectedMaterial = MATERIALS[matId];
+  const key = selectedMaterial.code !== "S/C" ? selectedMaterial.code : `SC_${selectedMaterial.name}`;
+  const existing = cart.find(c => c.key === key);
+
+  document.getElementById("modalCodeTitle").textContent =
+    selectedMaterial.code !== "S/C" ? `Código ${selectedMaterial.code}` : `Material Sin Código (${selectedMaterial.prov})`;
+  document.getElementById("modalMatName").textContent = selectedMaterial.name;
+  document.getElementById("modalQtyInput").value = existing ? existing.qty : 1;
+  document.getElementById("modalNoteInput").value = existing ? (existing.note || "") : "";
+
+  const isCable = CABLE_METER_CODES.has(selectedMaterial.code);
+  document.getElementById("cableBox").style.display = isCable ? "block" : "none";
+
+  document.getElementById("qtyModal").classList.add("open");
+}
+
+function adjustModalQty(delta) {
+  const input = document.getElementById("modalQtyInput");
+  let val = parseInt(input.value || "1", 10) + delta;
+  if (val < 1) val = 1;
+  input.value = val;
+}
+
+function addModalQty(amount) {
+  const input = document.getElementById("modalQtyInput");
+  let val = parseInt(input.value || "0", 10) + amount;
+  input.value = val;
+}
+
+function resetModalQty() {
+  document.getElementById("modalQtyInput").value = 1;
+  document.getElementById("modalNoteInput").value = "";
+}
+
+function setExactQty(qty, noteText) {
+  document.getElementById("modalQtyInput").value = qty;
+  document.getElementById("modalNoteInput").value = noteText.trim();
+}
+
+function confirmAddMaterial() {
+  if (!selectedMaterial) return;
+  const qty = Math.max(1, parseInt(document.getElementById("modalQtyInput").value || "1", 10));
+  const note = document.getElementById("modalNoteInput").value.trim();
+  const key = selectedMaterial.code !== "S/C" ? selectedMaterial.code : `SC_${selectedMaterial.name}`;
+
+  const existingIdx = cart.findIndex(c => c.key === key);
+  const itemObj = {
+    key,
+    code: selectedMaterial.code,
+    name: selectedMaterial.name,
+    prov: selectedMaterial.prov,
+    qty,
+    note
+  };
+
+  if (existingIdx >= 0) {
+    cart[existingIdx] = itemObj;
+  } else {
+    cart.push(itemObj);
+  }
+
+  saveAndRenderCart();
+  closeModals();
+  showToast(`Añadido: ${selectedMaterial.code} (${qty} uds)`);
+}
+
+// Modal Material Sin Código puntual
+function openCustomModal() {
+  document.getElementById("customName").value = "";
+  document.getElementById("customQty").value = 1;
+  document.getElementById("customModal").classList.add("open");
+}
+
+function confirmCustomMaterial() {
+  const name = document.getElementById("customName").value.trim();
+  const qty = Math.max(1, parseInt(document.getElementById("customQty").value || "1", 10));
+  const prov = document.getElementById("customProv").value;
+  if (!name) return alert("Escribe el nombre o descripción del material.");
+
+  cart.push({
+    key: `CUSTOM_${Date.now()}`,
+    code: "S/C",
+    name,
+    prov,
+    qty,
+    note: ""
+  });
+
+  saveAndRenderCart();
+  closeModals();
+  showToast("Material sin código añadido");
+}
+
+// Kits Rápidos
+function openKitsModal() {
+  document.getElementById("kitsModal").classList.add("open");
+}
+
+function loadKit(kitName) {
+  const kits = {
+    alta_huawei: [
+      { code: "3190", qty: 1 },
+      { code: "2432", qty: 1 },
+      { code: "4203", qty: 1 }
+    ],
+    alta_zte: [
+      { code: "3235", qty: 1 },
+      { code: "4189", qty: 1 },
+      { code: "4203", qty: 1 }
+    ],
+    tendido_poste: [
+      { code: "4094", qty: 10 },
+      { code: "4095", qty: 10 },
+      { code: "4096", qty: 10 }
+    ]
+  };
+
+  const items = kits[kitName] || [];
+  items.forEach(k => {
+    const mat = MATERIALS.find(m => m.code === k.code);
+    if (!mat) return;
+    const existing = cart.find(c => c.key === mat.code);
+    if (existing) existing.qty += k.qty;
+    else cart.push({ key: mat.code, code: mat.code, name: mat.name, prov: mat.prov, qty: k.qty, note: "" });
+  });
+
+  saveAndRenderCart();
+  closeModals();
+  showToast("Kit añadido a la lista");
+}
+
+// Gestión del Carrito / Lista
+function updateCartQty(idx, delta) {
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  saveAndRenderCart();
+}
+
+function removeCartItem(idx) {
+  cart.splice(idx, 1);
+  saveAndRenderCart();
+}
+
+function clearCart() {
+  if (!cart.length) return;
+  if (confirm("¿Vaciar toda la lista de material actual?")) {
+    cart = [];
+    saveAndRenderCart();
+  }
+}
+
+function toggleShowNames() {
+  showNamesInList = !showNamesInList;
+  document.getElementById("toggleNamesBtn").textContent =
+    showNamesInList ? "👁️ Ocultar nombres en lista" : "👁️ Mostrar nombres en lista";
+  renderCart();
+}
+
+function buildOfficialText() {
+  if (!cart.length) return "";
+  const coded = cart.filter(c => c.code !== "S/C");
+  const uncoded = cart.filter(c => c.code === "S/C");
+
+  let lines = coded.map(c => `${c.code} – ${c.qty} unidades${c.note ? ' (' + c.note + ')' : ''}`);
+
+  if (uncoded.length > 0) {
+    if (lines.length > 0) lines.push("");
+    lines.push("Material sin código asignado:");
+    uncoded.forEach(u => {
+      lines.push(`- ${u.name} – ${u.qty} unidades (Proveedor: ${u.prov})${u.note ? ' [' + u.note + ']' : ''}`);
+    });
+  }
+  return lines.join("\n");
+}
+
+function saveAndRenderCart() {
+  localStorage.setItem("acacio_cart", JSON.stringify(cart));
+  renderCart();
+  renderMaterials();
+}
+
+function renderCart() {
+  const listEl = document.getElementById("orderList");
+  const countEl = document.getElementById("cartCount");
+  const previewEl = document.getElementById("emailPreview");
+  const floatBar = document.getElementById("floatingBar");
+
+  countEl.textContent = cart.length;
+
+  if (!cart.length) {
+    listEl.innerHTML = "";
+    previewEl.textContent = "Lista vacía. Busca y pulsa sobre un material arriba para añadirlo.";
+    floatBar.style.display = "none";
+    return;
+  }
+
+  floatBar.style.display = "flex";
+  document.getElementById("floatingText").textContent = `📋 ${cart.length} materiales en la lista`;
+
+  listEl.innerHTML = cart.map((item, idx) => `
+    <div class="order-item">
+      <div class="order-item-text">
+        <div class="order-item-code">${item.code !== 'S/C' ? item.code : 'SIN CÓDIGO'} – ${item.qty} unidades ${item.note ? '('+item.note+')' : ''}</div>
+        ${showNamesInList ? `<div class="order-item-desc">${item.name} (${item.prov})</div>` : ''}
+      </div>
+      <div class="order-controls">
+        <button class="qty-btn" onclick="updateCartQty(${idx}, -1)">−</button>
+        <button class="qty-btn" onclick="updateCartQty(${idx}, 1)">+</button>
+        <button class="qty-btn qty-del" onclick="removeCartItem(${idx})">✕</button>
+      </div>
+    </div>
+  `).join("");
+
+  previewEl.textContent = buildOfficialText();
+}
+
+// Exportación e Historial
+function saveToHistory(text) {
+  if (!text) return;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("es-ES") + " " + now.toLocaleTimeString("es-ES", {hour: '2-digit', minute:'2-digit'});
+  history.unshift({ date: dateStr, text, items: JSON.parse(JSON.stringify(cart)) });
+  history = history.slice(0, 10);
+  localStorage.setItem("acacio_history", JSON.stringify(history));
+}
+
+function copyOrder() {
+  const text = buildOfficialText();
+  if (!text) return alert("La lista está vacía.");
+  navigator.clipboard.writeText(text).then(() => {
+    saveToHistory(text);
+    showToast("✅ Copiado con formato oficial");
+  });
+}
+
+function sendEmail() {
+  const text = buildOfficialText();
+  if (!text) return alert("La lista está vacía.");
+  saveToHistory(text);
+  const dateStr = new Date().toLocaleDateString("es-ES");
+  const subject = encodeURIComponent(`Pedido de material - ${dateStr}`);
+  const body = encodeURIComponent(text);
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+
+function sendWhatsApp() {
+  const text = buildOfficialText();
+  if (!text) return alert("La lista está vacía.");
+  saveToHistory(text);
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+}
+
+function openHistoryModal() {
+  const container = document.getElementById("historyList");
+  if (!history.length) {
+    container.innerHTML = `<div style="color:var(--muted);font-size:0.85rem;">Aún no hay pedidos guardados en el historial.</div>`;
+  } else {
+    container.innerHTML = history.map((h, i) => `
+      <div class="btn-small" style="text-align:left;padding:10px;" onclick="restoreHistory(${i})">
+        <div style="color:var(--primary);font-weight:700;margin-bottom:4px;">📅 ${h.date}</div>
+        <pre style="font-family:monospace;font-size:0.78rem;white-space:pre-wrap;color:var(--text);">${h.text}</pre>
+      </div>
+    `).join("");
+  }
+  document.getElementById("historyModal").classList.add("open");
+}
+
+function restoreHistory(idx) {
+  if (!history[idx]) return;
+  cart = JSON.parse(JSON.stringify(history[idx].items));
+  saveAndRenderCart();
+  closeModals();
+  showToast("Pedido cargado del historial");
+}
+
+function closeModals() {
+  document.querySelectorAll(".modal-overlay").forEach(m => m.classList.remove("open"));
+}
+
+function scrollToOrder() {
+  document.getElementById("orderSection").scrollIntoView({ behavior: "smooth" });
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(() => { t.style.display = "none"; }, 2200);
+}
+
+// Configuración PWA embebida (Manifest + Service Worker Offline)
+const manifestData = {
+  name: "Material Acaciophone",
+  short_name: "Acaciophone",
+  start_url: ".",
+  display: "standalone",
+  background_color: "#0f172a",
+  theme_color: "#0f172a",
+  icons: [{
+    src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230284c7'/><text x='50%' y='58%' dominant-baseline='middle' text-anchor='middle' font-size='55'>⚡</text></svg>",
+    sizes: "192x192",
+    type: "image/svg+xml"
+  }]
+};
+document.getElementById("pwa-manifest").setAttribute(
+  "href",
+  "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifestData))
+);
+
+renderMaterials();
+renderCart();
+</script>
+</body>
+</html>
