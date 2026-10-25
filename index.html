@@ -8,6 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Material Acaciophone</title>
   <link rel="manifest" id="pwa-manifest">
+  <link rel="icon" type="image/png" id="appFavicon">
   <style>
     :root {
       --bg: #080c14;
@@ -93,8 +94,14 @@
       gap: 10px;
       margin-bottom: 10px;
     }
+    .brand-logo {
+      height: 24px;
+      width: auto;
+      object-fit: contain;
+    }
     .segmented-control {
       flex: 1;
+      max-width: 280px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       background: var(--panel);
@@ -383,6 +390,12 @@
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+    .albaran-logo-header {
+      height: 18px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
     }
     .albaran-badge-count {
       background: rgba(255, 255, 255, 0.2);
@@ -930,9 +943,10 @@
 <header>
   <div class="header-inner">
     <div class="top-bar">
+      <img src="data:image/png;base64,{{LOGO_B64}}" alt="Acaciophone" class="brand-logo">
       <div class="segmented-control">
         <button class="seg-btn active" id="tabOrderBtn" onclick="switchMode('order')">Pedido</button>
-        <button class="seg-btn" id="tabTransBtn" onclick="switchMode('translator')">Traductor</button>
+        <button class="seg-btn" id="tabTransBtn" onclick="switchMode('translator')">Lector de códigos</button>
       </div>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
     </div>
@@ -947,7 +961,7 @@
       </div>
       <div class="filter-bar">
         <button class="filter-pill cat-selector" id="catTriggerBtn" onclick="openCategoriesModal()">
-          <span class="truncate" id="selectedCatLabel">Todas las tablas</span>
+          <span class="truncate" id="selectedCatLabel">Todas las categorías</span>
           <span>▾</span>
         </button>
         <button class="filter-pill kits-pill" id="kitsBtn" onclick="openKitsModal()">Kits (0)</button>
@@ -961,7 +975,7 @@
   <div id="orderView">
     <div class="scope-banner" id="activeScopeBar">
       <span id="activeScopeName"></span>
-      <button onclick="reopenConflictModal()">Cambiar tabla</button>
+      <button onclick="reopenConflictModal()">Cambiar categoría</button>
     </div>
 
     <div class="catalog-panel" id="materialsList"></div>
@@ -974,6 +988,7 @@
     <section class="albaran-doc" id="orderSection">
       <div class="albaran-header">
         <div class="albaran-header-left">
+          <img src="data:image/png;base64,{{LOGO_B64}}" alt="Acaciophone" class="albaran-logo-header">
           <span class="albaran-doc-title">Albarán de Pedido</span>
           <span class="albaran-badge-count" id="cartCount">0</span>
         </div>
@@ -1001,7 +1016,7 @@
     </section>
   </div>
 
-  <!-- VISTA 2: TRADUCTOR ALMACÉN -->
+  <!-- VISTA 2: LECTOR DE CÓDIGOS -->
   <div id="translatorView">
     <div class="trans-box">
       <div class="trans-toolbar">
@@ -1023,10 +1038,10 @@
   <span>↓</span>
 </div>
 
-<!-- VENTANA FLOTANTE: CONFLICTO ENTRE TABLAS -->
+<!-- VENTANA FLOTANTE: SELECCIÓN DE CATEGORÍA -->
 <div class="modal-backdrop center-modal" id="conflictModal">
   <div class="modal-dialog">
-    <div class="m-meta">SELECCIÓN DE TABLA</div>
+    <div class="m-meta">SELECCIÓN DE CATEGORÍA</div>
     <div class="m-title">¿Para qué fin buscas este material?</div>
     <div class="conflict-list" id="conflictModalOptions"></div>
   </div>
@@ -1093,11 +1108,10 @@
   </div>
 </div>
 
-<!-- MODAL: TABLAS DEL EXCEL -->
+<!-- MODAL: CATEGORÍAS -->
 <div class="modal-backdrop" id="categoriesModal" onclick="if(event.target===this)closeModals()">
   <div class="modal-sheet">
     <div class="sheet-handle"></div>
-    <div class="m-title" style="margin-top:0;">Tablas de Material</div>
     <div id="categoriesContainer"></div>
   </div>
 </div>
@@ -1114,6 +1128,9 @@
 <div class="toast" id="toast">Listo</div>
 
 <script>
+const LOGO_BASE64 = "${logo_b64}";
+const ICON_BASE64 = "${icon_b64}";
+
 const TABLES = [
   ["Instalación Clientes","ROUTER DOMÉSTICO"],
   ["Instalación Clientes","CABLES ACOMETIDA FIBRA PROPIA"],
@@ -1580,6 +1597,9 @@ let modalMode = "CATALOG";
 let currentItem = null;
 let editingKitIndex = null;
 
+// Configurar favicon corporativo e icono PWA
+document.getElementById("appFavicon").setAttribute("href", "data:image/png;base64," + ICON_BASE64);
+
 if (localStorage.getItem("acacio_theme") === "light") {
   document.body.classList.add("light-mode");
   document.getElementById("themeBtn").textContent = "🌙";
@@ -1613,7 +1633,7 @@ searchInput.addEventListener("input", () => {
   if (!val) {
     activeConflictFamilyId = null;
     resolvedConflictTable = null;
-    document.getElementById("conflictModal").classList.remove("open");
+    if (isModalOpen("conflictModal")) closeModalsWithHistory();
   }
   renderMaterials();
 });
@@ -1623,7 +1643,7 @@ function clearSearch() {
   clearSearchBtn.style.display = "none";
   activeConflictFamilyId = null;
   resolvedConflictTable = null;
-  document.getElementById("conflictModal").classList.remove("open");
+  if (isModalOpen("conflictModal")) closeModalsWithHistory();
   renderMaterials();
 }
 
@@ -1649,7 +1669,7 @@ function detectConflictFamily(tokens) {
 
 function chooseConflictTableFromModal(tIdx) {
   resolvedConflictTable = tIdx;
-  document.getElementById("conflictModal").classList.remove("open");
+  closeModalsWithHistory();
   window.scrollTo({ top: 0, behavior: "instant" });
 
   const currVal = searchInput.value;
@@ -1708,7 +1728,7 @@ function renderMaterials() {
               <span class="conflict-badge">${mt.count}</span>
             </button>
           `).join("");
-          document.getElementById("conflictModal").classList.add("open");
+          openModalWithHistory("conflictModal");
           return;
         } else {
           scopeBar.style.display = "flex";
@@ -1780,7 +1800,7 @@ function openCategoriesModal() {
 
   let html = `
     <button class="cat-item ${selectedTable === 'ALL' ? 'active' : ''}" onclick="selectTableFilter('ALL')">
-      <span>Todas las tablas</span>
+      <span>Todas las categorías</span>
       <span class="cat-count">${MATERIALS.length}</span>
     </button>
   `;
@@ -1798,7 +1818,7 @@ function openCategoriesModal() {
   });
 
   container.innerHTML = html;
-  document.getElementById("categoriesModal").classList.add("open");
+  openModalWithHistory("categoriesModal");
 }
 
 function selectTableFilter(val) {
@@ -1807,13 +1827,13 @@ function selectTableFilter(val) {
   const labelEl = document.getElementById("selectedCatLabel");
   const triggerBtn = document.getElementById("catTriggerBtn");
   if (val === "ALL") {
-    labelEl.textContent = "Todas las tablas";
+    labelEl.textContent = "Todas las categorías";
     triggerBtn.classList.remove("active");
   } else {
     labelEl.textContent = `(${TABLES[val][1]})`;
     triggerBtn.classList.add("active");
   }
-  closeModals();
+  closeModalsWithHistory();
   renderMaterials();
   window.scrollTo({ top: 0, behavior: "instant" });
 }
@@ -1832,7 +1852,7 @@ function openCatalogModal(id) {
 
   document.getElementById("mQtyInput").value = existing ? existing.qty : 1;
   document.getElementById("mNoteInput").value = existing ? (existing.note || "") : "";
-  document.getElementById("itemModal").classList.add("open");
+  openModalWithHistory("itemModal");
 }
 
 function openPuntualModal() {
@@ -1852,7 +1872,7 @@ function openPuntualModal() {
   document.getElementById("pCustomProvInput").value = "";
   document.getElementById("mQtyInput").value = 1;
   document.getElementById("mNoteInput").value = "";
-  document.getElementById("itemModal").classList.add("open");
+  openModalWithHistory("itemModal");
 }
 
 function toggleCustomProvInput() {
@@ -1913,7 +1933,7 @@ function confirmModalItem() {
     else cart.push(obj);
   }
 
-  closeModals();
+  closeModalsWithHistory();
   saveCart();
   showToast("Añadido al albarán");
 }
@@ -2078,7 +2098,7 @@ function promptSaveCurrentAsKit() {
 
 function openKitsModal() {
   renderKitsList();
-  document.getElementById("kitsModal").classList.add("open");
+  openModalWithHistory("kitsModal");
 }
 
 function renderKitsList() {
@@ -2114,7 +2134,7 @@ function loadUserKit(idx) {
     else cart.push(JSON.parse(JSON.stringify(kItem)));
   });
   saveCart();
-  closeModals();
+  closeModalsWithHistory();
   showToast(`Kit "${kit.name}" cargado`);
 }
 
@@ -2126,7 +2146,7 @@ function startEditUserKit(idx) {
   document.getElementById("editingKitName").textContent = kit.name;
   document.getElementById("editKitBanner").style.display = "flex";
   saveCart();
-  closeModals();
+  closeModalsWithHistory();
   scrollToOrder();
 }
 
@@ -2246,10 +2266,37 @@ function runTranslator() {
   }).join("");
 }
 
+// ---------------------------------------------------------------------------
+// GESTIÓN DE HISTORIAL Y BOTÓN "ATRÁS" DEL MÓVIL
+// ---------------------------------------------------------------------------
+let activeModalId = null;
+
+function openModalWithHistory(modalId) {
+  activeModalId = modalId;
+  document.getElementById(modalId).classList.add("open");
+  history.pushState({ modal: modalId }, "");
+}
+
+function closeModalsWithHistory() {
+  if (activeModalId) {
+    document.getElementById(activeModalId).classList.remove("open");
+    activeModalId = null;
+  } else {
+    document.querySelectorAll(".modal-backdrop").forEach(m => m.classList.remove("open"));
+  }
+}
+
+window.addEventListener("popstate", (e) => {
+  if (activeModalId) {
+    document.getElementById(activeModalId).classList.remove("open");
+    activeModalId = null;
+  }
+});
+
 function closeModals() {
-  document.querySelectorAll(".modal-backdrop").forEach(m => {
-    if (m.id !== "conflictModal") m.classList.remove("open");
-  });
+  if (activeModalId) {
+    history.back();
+  }
 }
 
 function scrollToOrder() {
@@ -2263,6 +2310,11 @@ function showToast(msg) {
   setTimeout(() => { t.style.display = "none"; }, 1800);
 }
 
+// Inicializar logotipos e iconos incrustados
+document.querySelectorAll(".brand-logo, .albaran-logo-header").forEach(el => {
+  el.setAttribute("src", "data:image/png;base64," + LOGO_BASE64);
+});
+
 const manifest = {
   name: "Material Acaciophone",
   short_name: "Acaciophone",
@@ -2271,9 +2323,9 @@ const manifest = {
   background_color: "#080c14",
   theme_color: "#080c14",
   icons: [{
-    src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230284c7'/><text x='50%' y='58%' dominant-baseline='middle' text-anchor='middle' font-size='54'>⚡</text></svg>",
+    src: "data:image/png;base64," + ICON_BASE64,
     sizes: "192x192",
-    type: "image/svg+xml"
+    type: "image/png"
   }]
 };
 document.getElementById("pwa-manifest").setAttribute(
