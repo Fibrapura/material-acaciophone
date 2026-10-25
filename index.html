@@ -3,508 +3,700 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#090d16" id="metaThemeColor">
+  <meta name="theme-color" content="#080c14" id="metaThemeColor">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Material Acaciophone</title>
   <link rel="manifest" id="pwa-manifest">
   <style>
     :root {
-      --bg: #090d16;
-      --surface: #111827;
-      --surface-2: #1f2937;
-      --line: rgba(255, 255, 255, 0.07);
-      --text: #f3f4f6;
-      --muted: #6b7280;
+      /* Nivel 0, 1 y 2 de profundidad (Modo Oscuro Técnico) */
+      --bg: #080c14;
+      --panel: #101726;
+      --panel-elevated: #162033;
+      --panel-hover: #1c2840;
+      --border: rgba(148, 163, 184, 0.12);
+      --border-strong: rgba(148, 163, 184, 0.22);
+      --text: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --muted: #64748b;
       --accent: #38bdf8;
       --accent-soft: rgba(56, 189, 248, 0.12);
       --success: #10b981;
-      --success-soft: rgba(16, 185, 129, 0.12);
+      --success-dark: #059669;
+      --success-soft: rgba(16, 185, 129, 0.14);
       --warning: #f59e0b;
       --danger: #ef4444;
+      --albaran-bg: #0d1522;
+      --albaran-head: #064e3b;
+      --albaran-border: rgba(16, 185, 129, 0.45);
+      /* Colores de barra lateral por hoja del Excel */
+      --sheet-clientes: #38bdf8;
+      --sheet-fibra: #10b981;
+      --sheet-antenas: #f59e0b;
+      --sheet-sc: #a855f7;
     }
+
     body.light-mode {
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --surface-2: #f1f5f9;
-      --line: rgba(15, 23, 42, 0.08);
+      --bg: #eef2f6;
+      --panel: #ffffff;
+      --panel-elevated: #f1f5f9;
+      --panel-hover: #e2e8f0;
+      --border: rgba(15, 23, 42, 0.08);
+      --border-strong: rgba(15, 23, 42, 0.16);
       --text: #0f172a;
+      --text-secondary: #334155;
       --muted: #64748b;
       --accent: #0284c7;
       --accent-soft: rgba(2, 132, 199, 0.1);
       --success: #059669;
-      --success-soft: rgba(5, 150, 105, 0.1);
+      --success-dark: #047857;
+      --success-soft: rgba(5, 150, 105, 0.12);
       --warning: #d97706;
       --danger: #dc2626;
+      --albaran-bg: #ffffff;
+      --albaran-head: #047857;
+      --albaran-border: rgba(5, 150, 105, 0.45);
+      --sheet-clientes: #0284c7;
+      --sheet-fibra: #059669;
+      --sheet-antenas: #d97706;
+      --sheet-sc: #9333ea;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
-      padding-bottom: 90px;
-      line-height: 1.4;
+      padding-bottom: 92px;
+      line-height: 1.38;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Cabecera fluida y limpia */
+    /* =====================================================
+       CABECERA CORPORATIVA Y CONTROL SEGMENTADO (MEJORA B)
+       ===================================================== */
     header {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(9, 13, 22, 0.88);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--line);
-      padding: 8px 16px 12px;
+      background: rgba(8, 12, 20, 0.86);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px 12px;
     }
     body.light-mode header {
-      background: rgba(248, 250, 252, 0.88);
+      background: rgba(238, 242, 246, 0.88);
     }
-    .header-inner { max-width: 640px; margin: 0 auto; }
+    .header-inner { max-width: 660px; margin: 0 auto; }
 
-    /* Navegación minimalista sin cajas */
-    .nav-bar {
+    .top-bar {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 10px;
       margin-bottom: 10px;
     }
-    .tabs {
-      display: flex;
-      gap: 20px;
+    .segmented-control {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--panel);
+      padding: 3px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
     }
-    .tab-link {
-      background: none;
+    body.light-mode .segmented-control {
+      background: var(--panel-elevated);
+    }
+    .seg-btn {
       border: none;
+      background: transparent;
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 0.82rem;
       font-weight: 700;
-      padding: 6px 0;
+      padding: 7px 10px;
+      border-radius: 8px;
       cursor: pointer;
-      position: relative;
-      transition: color 0.15s;
+      transition: all 0.15s ease;
     }
-    .tab-link.active {
+    .seg-btn.active {
+      background: var(--panel-elevated);
       color: var(--text);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
     }
-    .tab-link.active::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 2.5px;
-      background: var(--accent);
-      border-radius: 2px;
+    body.light-mode .seg-btn.active {
+      background: #ffffff;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.1);
     }
-    .theme-toggle {
-      background: none;
-      border: none;
-      font-size: 1.1rem;
+    .theme-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      font-size: 1rem;
       cursor: pointer;
-      padding: 4px;
-      opacity: 0.8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    /* Buscador limpio tipo píldora */
+    /* Buscador Técnico */
     .search-wrap {
       position: relative;
-      margin-bottom: 10px;
+      margin-bottom: 9px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 0.9rem;
+      pointer-events: none;
     }
     .search-wrap input {
       width: 100%;
-      padding: 11px 38px 11px 16px;
-      border-radius: 24px;
-      border: 1px solid transparent;
-      background: var(--surface);
+      padding: 11px 38px 11px 36px;
+      border-radius: 11px;
+      border: 1px solid var(--border-strong);
+      background: var(--panel);
       color: var(--text);
-      font-size: 0.95rem;
+      font-size: 0.94rem;
+      font-weight: 500;
       outline: none;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    body.light-mode .search-wrap input {
-      background: var(--surface-2);
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
     .search-wrap input:focus {
       border-color: var(--accent);
-      background: var(--surface);
+      box-shadow: 0 0 0 3px var(--accent-soft);
     }
-    .search-wrap input::placeholder { color: var(--muted); }
+    .search-wrap input::placeholder { color: var(--muted); font-weight: 400; }
     .clear-btn {
       position: absolute;
-      right: 10px;
+      right: 8px;
       top: 50%;
       transform: translateY(-50%);
-      background: none;
+      background: var(--panel-elevated);
       border: none;
       color: var(--muted);
-      font-size: 1rem;
-      padding: 6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 0.78rem;
       cursor: pointer;
       display: none;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* Píldoras de filtro suaves */
-    .pills-bar {
+    /* Barra de filtros (Tablas y Kits) */
+    .filter-bar {
       display: flex;
       gap: 8px;
       align-items: center;
     }
-    .pill {
-      border: none;
-      background: var(--surface);
-      color: var(--muted);
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-size: 0.8rem;
+    .filter-pill {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text-secondary);
+      padding: 7px 12px;
+      border-radius: 9px;
+      font-size: 0.79rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: space-between;
       gap: 6px;
-      max-width: 100%;
-      overflow: hidden;
+      transition: border-color 0.15s;
     }
-    body.light-mode .pill { background: var(--surface-2); }
-    .pill span.truncate {
+    .filter-pill.cat-selector {
+      flex: 1;
+      min-width: 0;
+    }
+    .filter-pill span.truncate {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .pill.active {
+    .filter-pill.active {
+      border-color: var(--accent);
       background: var(--accent-soft);
       color: var(--accent);
+      font-weight: 700;
+    }
+    .kits-pill {
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
     }
 
-    /* Contenedor Principal */
-    main { max-width: 640px; margin: 0 auto; padding: 4px 16px; }
+    /* =====================================================
+       CONTENEDOR PRINCIPAL Y CATÁLOGO CORPORATIVO (OPCIÓN B)
+       ===================================================== */
+    main { max-width: 660px; margin: 0 auto; padding: 12px 14px; }
 
-    /* Chip de tabla activa tras conflicto */
-    .scope-chip {
+    /* Indicador de tabla activa tras resolver un conflicto */
+    .scope-banner {
       display: none;
       align-items: center;
       justify-content: space-between;
       background: var(--accent-soft);
+      border: 1px solid rgba(56, 189, 248, 0.3);
       color: var(--accent);
-      padding: 7px 14px;
-      border-radius: 20px;
-      margin: 8px 0 4px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
       font-size: 0.78rem;
-      font-weight: 600;
+      font-weight: 700;
     }
-    .scope-chip button {
-      background: none;
-      border: none;
+    .scope-banner button {
+      background: var(--panel);
+      border: 1px solid rgba(56, 189, 248, 0.35);
       color: var(--accent);
-      font-weight: 800;
-      font-size: 0.76rem;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-
-    /* Lista de catálogo minimalista sin recuadros */
-    .materials-list {
-      display: flex;
-      flex-direction: column;
-    }
-    .mat-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding: 13px 4px;
-      border-bottom: 1px solid var(--line);
-      cursor: pointer;
-      gap: 12px;
-      transition: opacity 0.1s;
-    }
-    .mat-row:active { opacity: 0.6; }
-    .mat-code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 0.9rem;
-      font-weight: 800;
-      color: var(--accent);
-      min-width: 48px;
-      flex-shrink: 0;
-    }
-    .mat-code.sc {
-      color: var(--warning);
-      font-size: 0.72rem;
-    }
-    .mat-body {
-      flex: 1;
-      min-width: 0;
-    }
-    .mat-name {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text);
-    }
-    .mat-table-tag {
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--muted);
-      margin-left: 4px;
-    }
-    .mat-qty-badge {
-      background: var(--success-soft);
-      color: var(--success);
-      font-size: 0.75rem;
-      font-weight: 800;
-      padding: 2px 9px;
-      border-radius: 12px;
-      flex-shrink: 0;
-      align-self: center;
-    }
-
-    /* Enlace discreto para material puntual */
-    .puntual-link-wrap {
-      text-align: center;
-      padding: 22px 0 28px;
-    }
-    .puntual-link {
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 0.8rem;
-      font-weight: 500;
-      cursor: pointer;
-      padding: 6px 12px;
-    }
-    .puntual-link:active { color: var(--accent); }
-
-    /* =======================================================
-       ALBARÁN DE PEDIDO (Elegante, limpio y diferenciado)
-       ======================================================= */
-    .albaran-card {
-      background: var(--surface);
-      border-left: 3.5px solid var(--success);
-      border-radius: 14px;
-      padding: 16px;
-      margin-top: 8px;
-      display: none;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    }
-    body.light-mode .albaran-card {
-      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
-    }
-    .albaran-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--line);
-    }
-    .albaran-title {
-      font-size: 0.82rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: var(--success);
-    }
-    .text-btn {
-      background: none;
-      border: none;
-      color: var(--accent);
-      font-size: 0.8rem;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 0.73rem;
       font-weight: 700;
       cursor: pointer;
     }
+
+    /* Panel agrupado de Catálogo (Nivel 1 de profundidad) */
+    .catalog-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+    }
+    body.light-mode .catalog-panel {
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .mat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 12px 11px 13px;
+      border-bottom: 1px solid var(--border);
+      border-left: 3.5px solid transparent;
+      cursor: pointer;
+      gap: 11px;
+      transition: background 0.1s;
+    }
+    .mat-row:last-child { border-bottom: none; }
+    .mat-row:active { background: var(--panel-hover); }
+
+    /* Indicador lateral fino por familia del Excel */
+    .mat-row.sheet-0 { border-left-color: var(--sheet-clientes); }
+    .mat-row.sheet-1 { border-left-color: var(--sheet-fibra); }
+    .mat-row.sheet-2 { border-left-color: var(--sheet-antenas); }
+    .mat-row.sheet-3 { border-left-color: var(--sheet-sc); }
+
+    .mat-row.in-cart {
+      background: var(--success-soft);
+    }
+
+    /* Pastilla técnica para el código */
+    .code-badge {
+      font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--accent);
+      background: var(--bg);
+      border: 1px solid var(--border-strong);
+      padding: 5px 7px;
+      border-radius: 7px;
+      min-width: 52px;
+      text-align: center;
+      flex-shrink: 0;
+      letter-spacing: -0.2px;
+    }
+    .code-badge.sc {
+      color: var(--warning);
+      font-size: 0.72rem;
+    }
+
+    /* Jerarquía en 2 niveles (Mejora A) */
+    .mat-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .mat-line1 {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      word-wrap: break-word;
+    }
+    .mat-line2 {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 3px;
+      letter-spacing: 0.1px;
+    }
+
+    .cart-pill {
+      background: var(--success);
+      color: #ffffff;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Botón sutil inferior para Material Puntual */
+    .puntual-wrap {
+      text-align: center;
+      padding: 16px 0 20px;
+    }
+    .puntual-btn {
+      background: var(--panel);
+      border: 1px dashed var(--border-strong);
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .puntual-btn:active {
+      border-color: var(--warning);
+      color: var(--warning);
+    }
+
+    /* =====================================================
+       HOJA DE TRABAJO / ALBARÁN DE SALIDA (MEJORA C)
+       ===================================================== */
+    .albaran-doc {
+      background: var(--albaran-bg);
+      border: 1.5px solid var(--albaran-border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: none;
+      margin-top: 6px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+    body.light-mode .albaran-doc {
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .albaran-header {
+      background: var(--albaran-head);
+      color: #ffffff;
+      padding: 11px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .albaran-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .albaran-badge-count {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    .albaran-doc-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+    .albaran-kit-btn {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      padding: 5px 11px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
     .edit-kit-bar {
       display: none;
       justify-content: space-between;
       align-items: center;
       background: var(--accent-soft);
-      padding: 8px 12px;
-      border-radius: 8px;
-      margin-top: 10px;
-      font-size: 0.8rem;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 14px;
+      font-size: 0.78rem;
     }
 
-    /* Filas numeradas del Albarán sin marcos */
-    .albaran-list {
+    /* Filas de 3 columnas limpias del Albarán */
+    .albaran-body {
       display: flex;
       flex-direction: column;
-      margin-bottom: 16px;
     }
     .alb-row {
       display: flex;
       align-items: center;
-      padding: 11px 0;
-      border-bottom: 1px solid var(--line);
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
       gap: 10px;
     }
-    .alb-num {
-      font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.75rem;
-      color: var(--muted);
-      width: 22px;
-      flex-shrink: 0;
-    }
-    .alb-qty {
-      font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.86rem;
-      font-weight: 800;
-      color: var(--success);
-      min-width: 44px;
-      flex-shrink: 0;
-    }
-    .alb-info {
+    .alb-row:last-child { border-bottom: none; }
+
+    .alb-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
       flex: 1;
       min-width: 0;
       cursor: pointer;
     }
-    .alb-code {
+    .alb-index {
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .alb-text-wrap {
+      flex: 1;
+      min-width: 0;
+    }
+    .alb-code-line {
       font-family: ui-monospace, SFMono-Regular, monospace;
       font-size: 0.84rem;
-      font-weight: 700;
-      color: var(--text);
+      font-weight: 800;
+      color: var(--accent);
     }
-    .alb-desc {
+    .alb-name-line {
       font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 1px;
+    }
+    .alb-table-line {
+      font-size: 0.7rem;
       color: var(--muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-top: 1px;
     }
-    .alb-row.expanded .alb-desc {
+    /* Despliegue completo al tocar la fila en el Albarán */
+    .alb-row.expanded .alb-name-line {
       white-space: normal;
       overflow: visible;
       color: var(--text);
-      margin-top: 2px;
+      font-weight: 600;
+      margin-top: 3px;
     }
-    .alb-prov {
-      display: none;
-      font-size: 0.72rem;
+    .alb-row.expanded .alb-table-line {
+      white-space: normal;
+      overflow: visible;
       color: var(--accent);
       margin-top: 2px;
     }
-    .alb-row.expanded .alb-prov { display: block; }
+    .alb-prov-line {
+      display: none;
+      font-size: 0.71rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .alb-row.expanded .alb-prov-line { display: block; }
 
-    .alb-ctrls {
+    /* Cápsula unificada de cantidad [ − | 4 u. | + ] + Borrar */
+    .alb-right {
       display: flex;
       align-items: center;
       gap: 6px;
       flex-shrink: 0;
     }
-    .circle-btn {
+    .qty-capsule {
+      display: inline-flex;
+      align-items: center;
+      background: var(--panel-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .cap-btn {
       width: 28px;
       height: 28px;
-      border-radius: 50%;
       border: none;
-      background: var(--surface-2);
+      background: transparent;
       color: var(--text);
+      font-size: 0.95rem;
       font-weight: 700;
-      font-size: 0.92rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .circle-btn.del {
-      color: var(--danger);
-      background: rgba(239, 68, 68, 0.1);
+    .cap-btn:active { background: var(--panel-hover); }
+    .cap-val {
+      font-family: ui-monospace, SFMono-Regular, monospace;
       font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--success);
+      padding: 0 6px;
+      min-width: 38px;
+      text-align: center;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    .del-icon-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      background: rgba(239, 68, 68, 0.08);
+      color: var(--danger);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* Acciones del Albarán */
-    .albaran-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    /* Pie del documento de Albarán */
+    .albaran-footer {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      padding: 12px;
     }
-    .btn-primary-copy {
+    .btn-copy-primary {
       width: 100%;
       padding: 13px;
-      border-radius: 12px;
+      border-radius: 10px;
       border: none;
       background: var(--success);
-      color: #fff;
-      font-weight: 700;
+      color: #ffffff;
       font-size: 0.92rem;
+      font-weight: 800;
       cursor: pointer;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
     }
-    .secondary-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 2px 4px 0;
+    .btn-copy-primary:active { background: var(--success-dark); }
+    .albaran-subactions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
     }
-    .sec-link {
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 0.8rem;
-      font-weight: 600;
+    .sub-action-btn {
+      padding: 9px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel-elevated);
+      color: var(--text-secondary);
+      font-size: 0.76rem;
+      font-weight: 700;
       cursor: pointer;
-      padding: 6px;
+      text-align: center;
     }
-    .sec-link.danger { color: var(--danger); }
+    .sub-action-btn.danger {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.25);
+    }
 
     /* Píldora Flotante Inferior */
     .floating-pill {
       position: fixed;
-      bottom: 18px;
+      bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--success);
-      color: #fff;
-      padding: 11px 22px;
+      background: var(--albaran-head);
+      border: 1px solid var(--success);
+      color: #ffffff;
+      padding: 10px 20px;
       border-radius: 30px;
       display: none;
       align-items: center;
       gap: 10px;
-      font-weight: 700;
-      font-size: 0.86rem;
+      font-weight: 800;
+      font-size: 0.82rem;
       z-index: 40;
-      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
       cursor: pointer;
       white-space: nowrap;
     }
 
-    /* Vista Traductor Almacén */
-    #translatorView { display: none; padding-top: 8px; }
-    .trans-header {
+    /* =====================================================
+       VISTA TRADUCTOR ALMACÉN (ESTILO TÉCNICO UNIFICADO)
+       ===================================================== */
+    #translatorView { display: none; }
+    .trans-box {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .trans-toolbar {
       display: flex;
-      justify-content: flex-end;
-      gap: 14px;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 8px;
+    }
+    .trans-title {
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
     }
     .trans-textarea {
       width: 100%;
       min-height: 110px;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 14px;
+      background: var(--bg);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
       color: var(--text);
-      padding: 12px 14px;
+      padding: 11px 12px;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       outline: none;
       resize: vertical;
-      margin-bottom: 14px;
     }
     .trans-textarea:focus { border-color: var(--accent); }
     .trans-row {
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 13px 4px;
-      border-bottom: 1px solid var(--line);
+      align-items: center;
+      gap: 11px;
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--border);
       cursor: pointer;
     }
-    .trans-row.checked { opacity: 0.35; }
+    .trans-row:last-child { border-bottom: none; }
+    .trans-row.checked { opacity: 0.38; }
     .trans-check {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid var(--muted);
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1.5px solid var(--border-strong);
+      background: var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      margin-top: 2px;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
+      font-weight: 900;
       color: transparent;
     }
     .trans-row.checked .trans-check {
@@ -513,13 +705,15 @@
       color: #fff;
     }
 
-    /* Modales Limpios */
+    /* =====================================================
+       VENTANAS EMERGENTES / MODALES
+       ===================================================== */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      background: rgba(4, 7, 13, 0.72);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
       display: none;
       align-items: flex-end;
       justify-content: center;
@@ -531,44 +725,46 @@
       padding: 18px;
     }
     .modal-sheet {
-      background: var(--surface);
-      border-radius: 22px 22px 0 0;
+      background: var(--panel);
+      border-top: 1px solid var(--border-strong);
+      border-radius: 20px 20px 0 0;
       width: 100%;
-      max-width: 640px;
-      padding: 14px 20px 28px;
-      max-height: 85vh;
+      max-width: 660px;
+      padding: 14px 18px 26px;
+      max-height: 86vh;
       overflow-y: auto;
       animation: slideUp 0.16s ease-out;
     }
     .modal-dialog {
-      background: var(--surface);
-      border-radius: 18px;
+      background: var(--panel);
+      border: 1.5px solid var(--accent);
+      border-radius: 16px;
       width: 100%;
-      max-width: 400px;
-      padding: 20px;
+      max-width: 410px;
+      padding: 18px;
       max-height: 85vh;
       overflow-y: auto;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.6);
     }
     @keyframes slideUp {
       from { transform: translateY(100%); }
       to { transform: translateY(0); }
     }
     .sheet-handle {
-      width: 36px;
+      width: 38px;
       height: 4px;
-      background: var(--line);
+      background: var(--border-strong);
       border-radius: 4px;
       margin: 0 auto 14px;
     }
-    .m-meta { font-size: 0.75rem; font-weight: 700; color: var(--accent); }
-    .m-title { font-size: 1rem; font-weight: 700; color: var(--text); margin: 4px 0 16px; }
+    .m-meta { font-size: 0.74rem; font-weight: 800; color: var(--accent); text-transform: uppercase; }
+    .m-title { font-size: 0.98rem; font-weight: 700; color: var(--text); margin: 4px 0 14px; }
 
     /* Opciones del modal de conflicto */
     .conflict-list {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
     }
     .conflict-item {
       display: flex;
@@ -576,31 +772,37 @@
       align-items: center;
       width: 100%;
       padding: 13px 14px;
-      border-radius: 12px;
-      border: none;
-      background: var(--surface-2);
+      border-radius: 10px;
+      border: 1px solid var(--border-strong);
+      background: var(--panel-elevated);
       color: var(--text);
-      font-size: 0.86rem;
-      font-weight: 600;
+      font-size: 0.84rem;
+      font-weight: 700;
       text-align: left;
       cursor: pointer;
     }
-    .conflict-item:active { background: var(--accent-soft); color: var(--accent); }
+    .conflict-item:active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
     .conflict-badge {
-      font-size: 0.75rem;
-      font-weight: 700;
+      background: var(--accent-soft);
       color: var(--accent);
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 12px;
       margin-left: 8px;
       flex-shrink: 0;
     }
 
-    /* Controles dentro del modal de unidades */
-    .field { margin-bottom: 12px; }
+    .field { margin-bottom: 11px; }
     .field input, .field select {
       width: 100%;
-      padding: 11px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border-strong);
       background: var(--bg);
       color: var(--text);
       font-size: 0.92rem;
@@ -610,16 +812,17 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 11px;
     }
     .qty-stepper input {
       flex: 1;
       text-align: center;
+      font-family: ui-monospace, SFMono-Regular, monospace;
       font-size: 1.5rem;
       font-weight: 800;
       padding: 8px;
-      border-radius: 12px;
-      border: none;
+      border-radius: 10px;
+      border: 1.5px solid var(--accent);
       background: var(--bg);
       color: var(--text);
       width: 100%;
@@ -627,30 +830,28 @@
     .step-btn {
       width: 48px;
       height: 48px;
-      border-radius: 12px;
-      border: none;
-      background: var(--surface-2);
+      border-radius: 10px;
+      border: 1px solid var(--border-strong);
+      background: var(--panel-elevated);
       color: var(--text);
       font-size: 1.3rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
     }
     .quick-pills {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
       gap: 6px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .q-pill {
-      flex: 1;
-      min-width: 54px;
-      padding: 8px 6px;
-      border-radius: 10px;
-      border: none;
-      background: var(--surface-2);
+      padding: 9px 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel-elevated);
       color: var(--text);
-      font-weight: 600;
-      font-size: 0.82rem;
+      font-weight: 700;
+      font-size: 0.8rem;
       cursor: pointer;
       text-align: center;
     }
@@ -662,75 +863,87 @@
     }
     .cable-pill {
       padding: 6px 11px;
-      border-radius: 16px;
-      border: none;
-      background: rgba(245, 158, 11, 0.14);
+      border-radius: 8px;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      background: rgba(245, 158, 11, 0.12);
       color: var(--warning);
       font-size: 0.76rem;
       font-weight: 700;
       cursor: pointer;
     }
-    .m-footer { display: flex; gap: 10px; margin-top: 16px; }
+    .m-footer { display: flex; gap: 10px; margin-top: 14px; }
     .m-footer button {
       flex: 1;
       padding: 13px;
-      border-radius: 12px;
+      border-radius: 10px;
       border: none;
       font-weight: 700;
       font-size: 0.9rem;
       cursor: pointer;
     }
-    .btn-cancel { background: var(--surface-2); color: var(--muted); }
-    .btn-ok { background: var(--accent); color: #090d16; }
-    body.light-mode .btn-ok { color: #fff; }
+    .btn-cancel { background: var(--panel-elevated); color: var(--text-secondary); }
+    .btn-ok { background: var(--accent); color: #080c14; font-weight: 800; }
+    body.light-mode .btn-ok { color: #ffffff; }
 
-    /* Lista limpia de Tablas en el modal */
+    /* Selector de Tablas */
     .cat-group-title {
-      font-size: 0.72rem;
+      font-size: 0.71rem;
       font-weight: 800;
-      color: var(--muted);
+      color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin: 16px 0 6px;
+      margin: 14px 0 6px;
     }
     .cat-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      padding: 11px 8px;
+      padding: 10px 10px;
       border: none;
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid var(--border);
       background: none;
       color: var(--text);
-      font-size: 0.86rem;
+      font-size: 0.84rem;
+      font-weight: 500;
       text-align: left;
       cursor: pointer;
     }
     .cat-item.active {
       color: var(--accent);
-      font-weight: 700;
+      font-weight: 800;
+      background: var(--accent-soft);
+      border-radius: 8px;
     }
     .cat-count {
-      font-size: 0.76rem;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.75rem;
       color: var(--muted);
     }
 
-    /* Lista de Kits */
+    /* Mis Kits */
     .kit-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--line);
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
       gap: 10px;
     }
-    .kit-title { font-weight: 700; font-size: 0.9rem; color: var(--text); }
-    .kit-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .kit-title { font-weight: 700; font-size: 0.88rem; color: var(--text); }
+    .kit-sub { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
+    .text-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
     .toast {
       position: fixed;
-      bottom: 70px;
+      bottom: 68px;
       left: 50%;
       transform: translateX(-50%);
       background: var(--text);
@@ -741,6 +954,7 @@
       font-size: 0.82rem;
       display: none;
       z-index: 200;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
     }
   </style>
 </head>
@@ -748,27 +962,28 @@
 
 <header>
   <div class="header-inner">
-    <div class="nav-bar">
-      <div class="tabs">
-        <button class="tab-link active" id="tabOrderBtn" onclick="switchMode('order')">Pedido</button>
-        <button class="tab-link" id="tabTransBtn" onclick="switchMode('translator')">Traductor</button>
+    <div class="top-bar">
+      <div class="segmented-control">
+        <button class="seg-btn active" id="tabOrderBtn" onclick="switchMode('order')">Pedido</button>
+        <button class="seg-btn" id="tabTransBtn" onclick="switchMode('translator')">Traductor</button>
       </div>
-      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">☀️</button>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
     </div>
 
     <div id="orderHeaderTools">
       <div class="search-wrap">
+        <span class="search-icon">🔍</span>
         <form onsubmit="handleSearchSubmit(event)" style="margin:0;">
           <input type="search" id="searchInput" enterkeyhint="search" placeholder="Buscar material o código..." autocomplete="off">
         </form>
         <button type="button" class="clear-btn" id="clearSearchBtn" onclick="clearSearch()">✕</button>
       </div>
-      <div class="pills-bar">
-        <button class="pill" id="catTriggerBtn" onclick="openCategoriesModal()">
+      <div class="filter-bar">
+        <button class="filter-pill cat-selector" id="catTriggerBtn" onclick="openCategoriesModal()">
           <span class="truncate" id="selectedCatLabel">Todas las tablas</span>
           <span>▾</span>
         </button>
-        <button class="pill" id="kitsBtn" onclick="openKitsModal()">Kits (0)</button>
+        <button class="filter-pill kits-pill" id="kitsBtn" onclick="openKitsModal()">Kits (0)</button>
       </div>
     </div>
   </div>
@@ -777,53 +992,62 @@
 <main>
   <!-- VISTA 1: PEDIDO -->
   <div id="orderView">
-    <div class="scope-chip" id="activeScopeBar">
+    <div class="scope-banner" id="activeScopeBar">
       <span id="activeScopeName"></span>
-      <button onclick="reopenConflictModal()">Cambiar</button>
+      <button onclick="reopenConflictModal()">Cambiar tabla</button>
     </div>
 
-    <div class="materials-list" id="materialsList"></div>
+    <!-- Contenedor Agrupado del Catálogo (Opción B) -->
+    <div class="catalog-panel" id="materialsList"></div>
 
-    <div class="puntual-link-wrap">
-      <button class="puntual-link" onclick="openPuntualModal()">+ Material puntual sin código</button>
+    <div class="puntual-wrap">
+      <button class="puntual-btn" onclick="openPuntualModal()">+ Añadir material puntual sin código</button>
     </div>
 
-    <!-- ALBARÁN DE PEDIDO -->
-    <section class="albaran-card" id="orderSection">
-      <div class="albaran-head">
-        <span class="albaran-title">Albarán (<span id="cartCount">0</span>)</span>
-        <button class="text-btn" onclick="promptSaveCurrentAsKit()">Guardar Kit</button>
+    <!-- HOJA DE TRABAJO: ALBARÁN DE SALIDA (Mejora C) -->
+    <section class="albaran-doc" id="orderSection">
+      <div class="albaran-header">
+        <div class="albaran-header-left">
+          <span class="albaran-doc-title">Albarán de Pedido</span>
+          <span class="albaran-badge-count" id="cartCount">0</span>
+        </div>
+        <button class="albaran-kit-btn" onclick="promptSaveCurrentAsKit()">Guardar Kit</button>
       </div>
 
       <div class="edit-kit-bar" id="editKitBanner">
-        <span>Editando: <strong id="editingKitName"></strong></span>
+        <span>Editando Kit: <strong id="editingKitName"></strong></span>
         <div style="display:flex;gap:12px;">
           <button class="text-btn" onclick="saveEditedKit()">Guardar</button>
           <button class="text-btn" style="color:var(--muted);" onclick="cancelEditKit()">Salir</button>
         </div>
       </div>
 
-      <div class="albaran-list" id="cartTableBody"></div>
+      <div class="albaran-body" id="cartTableBody"></div>
 
-      <div class="albaran-actions">
-        <button class="btn-primary-copy" onclick="copyOrder()">Copiar pedido</button>
-        <div class="secondary-actions">
-          <button class="sec-link" onclick="sendEmail()">Enviar correo</button>
-          <button class="sec-link" onclick="sendWhatsApp()">WhatsApp</button>
-          <button class="sec-link danger" onclick="clearCart()">Vaciar</button>
+      <div class="albaran-footer">
+        <button class="btn-copy-primary" onclick="copyOrder()">Copiar Pedido</button>
+        <div class="albaran-subactions">
+          <button class="sub-action-btn" onclick="sendEmail()">✉️ Correo</button>
+          <button class="sub-action-btn" onclick="sendWhatsApp()">💬 WhatsApp</button>
+          <button class="sub-action-btn danger" onclick="clearCart()">🗑️ Vaciar</button>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- VISTA 2: TRADUCTOR -->
+  <!-- VISTA 2: TRADUCTOR ALMACÉN -->
   <div id="translatorView">
-    <div class="trans-header">
-      <button class="text-btn" onclick="pasteFromClipboard()">Pegar</button>
-      <button class="text-btn" style="color:var(--muted);" onclick="clearTranslator()">Limpiar</button>
+    <div class="trans-box">
+      <div class="trans-toolbar">
+        <span class="trans-title">Códigos de entrada</span>
+        <div style="display:flex;gap:14px;">
+          <button class="text-btn" onclick="pasteFromClipboard()">Pegar</button>
+          <button class="text-btn" style="color:var(--muted);" onclick="clearTranslator()">Limpiar</button>
+        </div>
+      </div>
+      <textarea class="trans-textarea" id="transInput" placeholder="Pegar códigos..." oninput="runTranslator()"></textarea>
     </div>
-    <textarea class="trans-textarea" id="transInput" placeholder="Pegar códigos..." oninput="runTranslator()"></textarea>
-    <div id="transOutput"></div>
+    <div class="catalog-panel" id="transOutput" style="display:none;"></div>
   </div>
 </main>
 
@@ -836,7 +1060,8 @@
 <!-- VENTANA FLOTANTE: CONFLICTO ENTRE TABLAS -->
 <div class="modal-backdrop center-modal" id="conflictModal">
   <div class="modal-dialog">
-    <div class="m-title" style="margin-top:0;">¿Para qué fin buscas este material?</div>
+    <div class="m-meta">SELECCIÓN DE TABLA</div>
+    <div class="m-title">¿Para qué fin buscas este material?</div>
     <div class="conflict-list" id="conflictModalOptions"></div>
   </div>
 </div>
@@ -906,7 +1131,7 @@
 <div class="modal-backdrop" id="categoriesModal" onclick="if(event.target===this)closeModals()">
   <div class="modal-sheet">
     <div class="sheet-handle"></div>
-    <div class="m-title" style="margin-top:0;">Tablas</div>
+    <div class="m-title" style="margin-top:0;">Tablas de Material</div>
     <div id="categoriesContainer"></div>
   </div>
 </div>
@@ -1324,6 +1549,13 @@ function getSynonymsForItem(code, name, tableIdx) {
   return extra.join(" ");
 }
 
+function getSheetColorIndex(tIdx) {
+  if (tIdx <= 6) return 0;   // Instalación Clientes
+  if (tIdx <= 16) return 2;  // Antenas Despliegue
+  if (tIdx <= 31) return 1;  // Fibra Despliegue
+  return 3;                  // Sin Código
+}
+
 const MATERIALS = RAW_DATA.map((r, i) => {
   const code = r[0];
   const name = r[1];
@@ -1337,6 +1569,7 @@ const MATERIALS = RAW_DATA.map((r, i) => {
     code,
     name,
     tIdx,
+    sheetColorIdx: getSheetColorIndex(tIdx),
     sheetName,
     tableName,
     prov,
@@ -1352,7 +1585,7 @@ const CODE_MAP = {};
 MATERIALS.forEach(m => {
   if (m.code !== "SIN CÓDIGO") {
     if (!CODE_MAP[m.code]) {
-      CODE_MAP[m.code] = { code: m.code, name: m.name, tables: [m.tableName], prov: m.prov };
+      CODE_MAP[m.code] = { code: m.code, name: m.name, tables: [m.tableName], prov: m.prov, sheetColorIdx: m.sheetColorIdx };
     } else if (!CODE_MAP[m.code].tables.includes(m.tableName)) {
       CODE_MAP[m.code].tables.push(m.tableName);
     }
@@ -1384,14 +1617,14 @@ let editingKitIndex = null;
 if (localStorage.getItem("acacio_theme") === "light") {
   document.body.classList.add("light-mode");
   document.getElementById("themeBtn").textContent = "🌙";
-  document.getElementById("metaThemeColor").setAttribute("content", "#f8fafc");
+  document.getElementById("metaThemeColor").setAttribute("content", "#eef2f6");
 }
 
 function toggleTheme() {
   const isLight = document.body.classList.toggle("light-mode");
   localStorage.setItem("acacio_theme", isLight ? "light" : "dark");
   document.getElementById("themeBtn").textContent = isLight ? "🌙" : "☀️";
-  document.getElementById("metaThemeColor").setAttribute("content", isLight ? "#f8fafc" : "#090d16");
+  document.getElementById("metaThemeColor").setAttribute("content", isLight ? "#eef2f6" : "#080c14");
 }
 
 const searchInput = document.getElementById("searchInput");
@@ -1410,7 +1643,7 @@ window.addEventListener("touchmove", (e) => {
 
 searchInput.addEventListener("input", () => {
   const val = searchInput.value.trim();
-  clearSearchBtn.style.display = val ? "block" : "none";
+  clearSearchBtn.style.display = val ? "flex" : "none";
   if (!val) {
     activeConflictFamilyId = null;
     resolvedConflictTable = null;
@@ -1502,10 +1735,10 @@ function renderMaterials() {
         if (resolvedConflictTable === null) {
           searchInput.blur();
           scopeBar.style.display = "none";
-          listEl.innerHTML = "";
+          listEl.style.display = "none";
           document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
             <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
-              <span>${mt.tableName}</span>
+              <span>(${mt.tableName})</span>
               <span class="conflict-badge">${mt.count}</span>
             </button>
           `).join("");
@@ -1513,7 +1746,7 @@ function renderMaterials() {
           return;
         } else {
           scopeBar.style.display = "flex";
-          document.getElementById("activeScopeName").textContent = TABLES[resolvedConflictTable][1];
+          document.getElementById("activeScopeName").textContent = `(${TABLES[resolvedConflictTable][1]})`;
         }
       } else {
         scopeBar.style.display = "none";
@@ -1545,18 +1778,24 @@ function renderMaterials() {
 
   const limit = (!q && selectedTable === "ALL" && resolvedConflictTable === null) ? 80 : finalItems.length;
 
+  if (finalItems.length === 0) {
+    listEl.style.display = "none";
+    return;
+  }
+
+  listEl.style.display = "block";
   listEl.innerHTML = finalItems.slice(0, limit).map(m => {
     const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
     const qtyInCart = cartMap[key];
     const isSC = m.code === "SIN CÓDIGO";
     return `
-      <div class="mat-row" onclick="openCatalogModal(${m.id})">
-        <span class="mat-code ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : m.code}</span>
-        <div class="mat-body">
-          <span class="mat-name">${m.name}</span>
-          <span class="mat-table-tag">(${m.tableName})</span>
+      <div class="mat-row sheet-${m.sheetColorIdx} ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
+        <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : m.code}</span>
+        <div class="mat-content">
+          <div class="mat-line1">${m.name}</div>
+          <div class="mat-line2">(${m.tableName})</div>
         </div>
-        ${qtyInCart ? `<span class="mat-qty-badge">${qtyInCart}</span>` : ''}
+        ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : ''}
       </div>
     `;
   }).join("");
@@ -1585,7 +1824,7 @@ function openCategoriesModal() {
     groups[sheetName].forEach(tb => {
       html += `
         <button class="cat-item ${selectedTable === tb.idx ? 'active' : ''}" onclick="selectTableFilter(${tb.idx})">
-          <span>${tb.title}</span>
+          <span>(${tb.title})</span>
           <span class="cat-count">${tb.count}</span>
         </button>
       `;
@@ -1605,7 +1844,7 @@ function selectTableFilter(val) {
     labelEl.textContent = "Todas las tablas";
     triggerBtn.classList.remove("active");
   } else {
-    labelEl.textContent = TABLES[val][1];
+    labelEl.textContent = `(${TABLES[val][1]})`;
     triggerBtn.classList.add("active");
   }
   closeModals();
@@ -1636,8 +1875,8 @@ function openPuntualModal() {
   currentItem = null;
   const typed = searchInput.value.trim();
 
-  document.getElementById("mCode").textContent = "SIN CÓDIGO";
-  document.getElementById("mTitle").textContent = "Material puntual";
+  document.getElementById("mCode").textContent = "FUERA DE CATÁLOGO";
+  document.getElementById("mTitle").textContent = "Material puntual sin código";
   document.getElementById("puntualFields").style.display = "block";
   document.getElementById("cableHelper").style.display = "none";
 
@@ -1711,7 +1950,7 @@ function confirmModalItem() {
   closeModals();
   clearSearch();
   saveCart();
-  showToast("Añadido");
+  showToast("Añadido al albarán");
 }
 
 function toggleExpandCartItem(key) {
@@ -1762,6 +2001,7 @@ function renderCart() {
   tbodyEl.innerHTML = cart.map((item, i) => {
     const isExp = expandedCartKeys.has(item.key);
     const safeKey = item.key.replace(/'/g, "\\'");
+    const numStr = String(i + 1).padStart(2, "0");
     const codeDisplay = item.code === "SIN CÓDIGO"
       ? "SIN CÓDIGO"
       : item.code === "PUNTUAL"
@@ -1770,17 +2010,22 @@ function renderCart() {
 
     return `
       <div class="alb-row ${isExp ? 'expanded' : ''}">
-        <span class="alb-num">${i + 1}.</span>
-        <span class="alb-qty">${item.qty} u.</span>
-        <div class="alb-info" onclick="toggleExpandCartItem('${safeKey}')">
-          <div class="alb-code">${codeDisplay} ${item.note ? '(' + item.note + ')' : ''}</div>
-          <div class="alb-desc">${item.name} (${item.tableName})</div>
-          <div class="alb-prov">Proveedor: ${item.prov}</div>
+        <div class="alb-left" onclick="toggleExpandCartItem('${safeKey}')">
+          <span class="alb-index">${numStr}</span>
+          <div class="alb-text-wrap">
+            <div class="alb-code-line">${codeDisplay} ${item.note ? '· (' + item.note + ')' : ''}</div>
+            <div class="alb-name-line">${item.name}</div>
+            <div class="alb-table-line">(${item.tableName})</div>
+            <div class="alb-prov-line">Proveedor: ${item.prov}</div>
+          </div>
         </div>
-        <div class="alb-ctrls">
-          <button class="circle-btn" onclick="changeCartQty(${i}, -1)">−</button>
-          <button class="circle-btn" onclick="changeCartQty(${i}, 1)">+</button>
-          <button class="circle-btn del" onclick="removeCartIdx(${i})">✕</button>
+        <div class="alb-right">
+          <div class="qty-capsule">
+            <button class="cap-btn" onclick="changeCartQty(${i}, -1)">−</button>
+            <span class="cap-val">${item.qty} u.</span>
+            <button class="cap-btn" onclick="changeCartQty(${i}, 1)">+</button>
+          </div>
+          <button class="del-icon-btn" onclick="removeCartIdx(${i})">✕</button>
         </div>
       </div>
     `;
@@ -1874,7 +2119,7 @@ function openKitsModal() {
 function renderKitsList() {
   const box = document.getElementById("kitsContainer");
   if (!userKits.length) {
-    box.innerHTML = `<div style="padding:20px 0;color:var(--muted);font-size:0.85rem;text-align:center;">Sin kits guardados</div>`;
+    box.innerHTML = `<div style="padding:20px 0;color:var(--muted);font-size:0.84rem;text-align:center;">Sin kits guardados</div>`;
     return;
   }
   box.innerHTML = userKits.map((k, idx) => {
@@ -1885,7 +2130,7 @@ function renderKitsList() {
           <div class="kit-title">${k.name}</div>
           <div class="kit-sub">${summary}</div>
         </div>
-        <div style="display:flex;gap:10px;align-items:center;">
+        <div style="display:flex;gap:12px;align-items:center;">
           <button class="text-btn" style="color:var(--success);" onclick="loadUserKit(${idx})">Cargar</button>
           <button class="text-btn" onclick="startEditUserKit(${idx})">Editar</button>
           <button class="text-btn" style="color:var(--danger);" onclick="deleteUserKit(${idx})">✕</button>
@@ -1964,6 +2209,7 @@ function runTranslator() {
   const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 
   if (!lines.length) {
+    out.style.display = "none";
     out.innerHTML = "";
     return;
   }
@@ -1989,42 +2235,45 @@ function runTranslator() {
     }
   });
 
+  if (!parsed.length) {
+    out.style.display = "none";
+    return;
+  }
+
+  out.style.display = "block";
   out.innerHTML = parsed.map(p => {
     if (p.type === "FOUND") {
-      const tableTags = p.mat.tables.map(t => `(${t})`).join(" ");
+      const tableTags = p.mat.tables.map(t => `(${t})`).join(" · ");
       return `
         <div class="trans-row" onclick="this.classList.toggle('checked')">
           <div class="trans-check">✓</div>
-          <div style="flex:1;">
-            <div style="display:flex;justify-content:space-between;align-items:baseline;">
-              <span class="mat-code">${p.code}</span>
-              <span class="alb-qty">${p.qty} u.</span>
-            </div>
-            <div class="mat-name" style="margin-top:2px;">
-              ${p.mat.name} <span class="mat-table-tag">${tableTags}</span>
-            </div>
-            <div style="font-size:0.74rem;color:var(--muted);margin-top:2px;">
-              ${p.mat.prov} ${p.extra ? ' · ' + p.extra : ''}
-            </div>
+          <span class="code-badge">${p.code}</span>
+          <div class="mat-content">
+            <div class="mat-line1">${p.mat.name}</div>
+            <div class="mat-line2">${tableTags} · ${p.mat.prov} ${p.extra ? '· ' + p.extra : ''}</div>
           </div>
+          <span class="cart-pill">${p.qty} u.</span>
         </div>
       `;
     } else if (p.type === "UNKNOWN") {
       return `
         <div class="trans-row" onclick="this.classList.toggle('checked')">
           <div class="trans-check">✓</div>
-          <div style="flex:1;">
-            <span class="mat-code sc">${p.code}</span>
-            <div style="color:var(--danger);font-size:0.86rem;margin-top:2px;">Código no encontrado (${p.qty} u.)</div>
+          <span class="code-badge sc">${p.code}</span>
+          <div class="mat-content">
+            <div class="mat-line1" style="color:var(--danger);">Código no registrado</div>
+            <div class="mat-line2">${p.rawLine}</div>
           </div>
+          <span class="cart-pill" style="background:var(--danger);">${p.qty} u.</span>
         </div>
       `;
     } else {
       return `
         <div class="trans-row" onclick="this.classList.toggle('checked')">
           <div class="trans-check">✓</div>
-          <div style="flex:1;">
-            <div style="font-size:0.86rem;">${p.rawLine}</div>
+          <div class="mat-content">
+            <div class="mat-line1">${p.rawLine}</div>
+            <div class="mat-line2">(MATERIAL PUNTUAL / NOTA)</div>
           </div>
         </div>
       `;
@@ -2054,8 +2303,8 @@ const manifest = {
   short_name: "Acaciophone",
   start_url: ".",
   display: "standalone",
-  background_color: "#090d16",
-  theme_color: "#090d16",
+  background_color: "#080c14",
+  theme_color: "#080c14",
   icons: [{
     src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230284c7'/><text x='50%' y='58%' dominant-baseline='middle' text-anchor='middle' font-size='54'>⚡</text></svg>",
     sizes: "192x192",
