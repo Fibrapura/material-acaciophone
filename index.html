@@ -3,581 +3,523 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#0b0f19" id="metaThemeColor">
+  <meta name="theme-color" content="#090d16" id="metaThemeColor">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Material Acaciophone</title>
   <link rel="manifest" id="pwa-manifest">
   <style>
     :root {
-      --bg: #0b0f19;
-      --surface: #131b2e;
-      --surface-2: #1c2742;
-      --border: #263554;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --table-tag: #38bdf8;
-      --primary: #38bdf8;
-      --primary-dark: #0284c7;
+      --bg: #090d16;
+      --surface: #111827;
+      --surface-2: #1f2937;
+      --line: rgba(255, 255, 255, 0.07);
+      --text: #f3f4f6;
+      --muted: #6b7280;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.12);
       --success: #10b981;
-      --success-bg: #064e3b;
+      --success-soft: rgba(16, 185, 129, 0.12);
       --warning: #f59e0b;
       --danger: #ef4444;
-      --albaran-bg: #0f1722;
-      --albaran-border: #10b981;
-      --radius: 14px;
     }
     body.light-mode {
-      --bg: #f1f5f9;
+      --bg: #f8fafc;
       --surface: #ffffff;
-      --surface-2: #e2e8f0;
-      --border: #cbd5e1;
+      --surface-2: #f1f5f9;
+      --line: rgba(15, 23, 42, 0.08);
       --text: #0f172a;
-      --muted: #475569;
-      --table-tag: #0369a1;
-      --primary: #0284c7;
-      --primary-dark: #0369a1;
+      --muted: #64748b;
+      --accent: #0284c7;
+      --accent-soft: rgba(2, 132, 199, 0.1);
       --success: #059669;
-      --success-bg: #d1fae5;
+      --success-soft: rgba(5, 150, 105, 0.1);
       --warning: #d97706;
       --danger: #dc2626;
-      --albaran-bg: #f8fafc;
-      --albaran-border: #059669;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
       padding-bottom: 90px;
       line-height: 1.4;
-      transition: background 0.15s, color 0.15s;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Cabecera fija */
+    /* Cabecera fluida y limpia */
     header {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      padding: 10px 12px;
+      background: rgba(9, 13, 22, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 8px 16px 12px;
     }
-    .header-inner { max-width: 680px; margin: 0 auto; }
-    .top-bar {
+    body.light-mode header {
+      background: rgba(248, 250, 252, 0.88);
+    }
+    .header-inner { max-width: 640px; margin: 0 auto; }
+
+    /* Navegación minimalista sin cajas */
+    .nav-bar {
       display: flex;
-      gap: 8px;
+      justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
     }
-    .mode-switch {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: var(--surface);
-      padding: 3px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-    }
-    .mode-btn {
-      background: transparent;
-      color: var(--muted);
-      border: none;
-      padding: 8px 4px;
-      border-radius: 7px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .mode-btn.active {
-      background: var(--primary-dark);
-      color: #fff;
-    }
-    .theme-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font-size: 1.05rem;
-      cursor: pointer;
+    .tabs {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      gap: 20px;
+    }
+    .tab-link {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 700;
+      padding: 6px 0;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s;
+    }
+    .tab-link.active {
+      color: var(--text);
+    }
+    .tab-link.active::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2.5px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    .theme-toggle {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px;
+      opacity: 0.8;
     }
 
-    /* Buscador */
+    /* Buscador limpio tipo píldora */
     .search-wrap {
       position: relative;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .search-wrap input {
       width: 100%;
-      padding: 12px 40px 12px 14px;
-      border-radius: 11px;
-      border: 1.5px solid var(--border);
+      padding: 11px 38px 11px 16px;
+      border-radius: 24px;
+      border: 1px solid transparent;
       background: var(--surface);
       color: var(--text);
-      font-size: 0.96rem;
+      font-size: 0.95rem;
       outline: none;
+      transition: border-color 0.15s, background 0.15s;
     }
-    .search-wrap input:focus { border-color: var(--primary); }
+    body.light-mode .search-wrap input {
+      background: var(--surface-2);
+    }
+    .search-wrap input:focus {
+      border-color: var(--accent);
+      background: var(--surface);
+    }
     .search-wrap input::placeholder { color: var(--muted); }
     .clear-btn {
       position: absolute;
-      right: 8px;
+      right: 10px;
       top: 50%;
       transform: translateY(-50%);
       background: none;
       border: none;
       color: var(--muted);
-      font-size: 1.15rem;
-      padding: 6px 8px;
+      font-size: 1rem;
+      padding: 6px;
       cursor: pointer;
       display: none;
     }
 
-    /* Barra de Categorías y Kits */
-    .toolbar {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-    }
-    .tool-btn {
-      padding: 9px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
+    /* Píldoras de filtro suaves */
+    .pills-bar {
       display: flex;
+      gap: 8px;
       align-items: center;
-      justify-content: space-between;
+    }
+    .pill {
+      border: none;
+      background: var(--surface);
+      color: var(--muted);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
       gap: 6px;
-      text-align: left;
+      max-width: 100%;
       overflow: hidden;
     }
-    .tool-btn span.truncate {
+    body.light-mode .pill { background: var(--surface-2); }
+    .pill span.truncate {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .tool-btn.active-cat {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-    .kits-btn { color: var(--primary); white-space: nowrap; }
-
-    /* Etiqueta discreta de tabla elegida tras conflicto */
-    .active-scope-bar {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid var(--primary);
-      border-radius: 9px;
-      padding: 7px 11px;
-      margin-bottom: 10px;
-      font-size: 0.77rem;
-      color: var(--text);
-    }
-    .scope-change-btn {
-      background: var(--primary-dark);
-      color: #fff;
-      border: none;
-      padding: 4px 9px;
-      border-radius: 6px;
-      font-size: 0.73rem;
-      font-weight: 700;
-      cursor: pointer;
-      flex-shrink: 0;
+    .pill.active {
+      background: var(--accent-soft);
+      color: var(--accent);
     }
 
     /* Contenedor Principal */
-    main { max-width: 680px; margin: 0 auto; padding: 12px; }
+    main { max-width: 640px; margin: 0 auto; padding: 4px 16px; }
 
-    /* Lista de Materiales (Catálogo de Búsqueda) */
-    .status-bar {
-      display: flex;
+    /* Chip de tabla activa tras conflicto */
+    .scope-chip {
+      display: none;
+      align-items: center;
       justify-content: space-between;
-      font-size: 0.74rem;
-      color: var(--muted);
-      margin-bottom: 8px;
-      padding: 0 2px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 7px 14px;
+      border-radius: 20px;
+      margin: 8px 0 4px;
+      font-size: 0.78rem;
+      font-weight: 600;
     }
+    .scope-chip button {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 0.76rem;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* Lista de catálogo minimalista sin recuadros */
     .materials-list {
       display: flex;
       flex-direction: column;
-      gap: 7px;
-      margin-bottom: 12px;
     }
     .mat-row {
       display: flex;
-      align-items: center;
+      align-items: baseline;
       justify-content: space-between;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 11px 12px;
+      padding: 13px 4px;
+      border-bottom: 1px solid var(--line);
       cursor: pointer;
-      gap: 10px;
+      gap: 12px;
+      transition: opacity 0.1s;
     }
-    .mat-row:active { background: var(--surface-2); }
-    .mat-row.selected {
-      border-color: var(--success);
-      background: rgba(16, 185, 129, 0.08);
-    }
+    .mat-row:active { opacity: 0.6; }
     .mat-code {
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       font-weight: 800;
-      color: var(--primary);
-      background: var(--bg);
-      padding: 6px 8px;
-      border-radius: 7px;
-      min-width: 54px;
-      text-align: center;
-      border: 1px solid var(--border);
+      color: var(--accent);
+      min-width: 48px;
       flex-shrink: 0;
     }
     .mat-code.sc {
       color: var(--warning);
-      font-size: 0.7rem;
-      line-height: 1.1;
-      padding: 5px 6px;
+      font-size: 0.72rem;
     }
-    .mat-body { flex: 1; min-width: 0; }
+    .mat-body {
+      flex: 1;
+      min-width: 0;
+    }
     .mat-name {
-      font-size: 0.88rem;
-      font-weight: 600;
+      font-size: 0.9rem;
+      font-weight: 500;
       color: var(--text);
-      word-wrap: break-word;
     }
     .mat-table-tag {
-      display: inline;
       font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--table-tag);
-    }
-    .mat-qty-pill {
-      background: var(--success);
-      color: #fff;
-      font-size: 0.74rem;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 20px;
-      flex-shrink: 0;
-    }
-
-    /* Botón sutil abajo del todo: Material Puntual */
-    .subtle-puntual-wrap {
-      text-align: center;
-      margin: 12px 0 22px;
-    }
-    .subtle-puntual-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: transparent;
-      border: 1px dashed var(--border);
+      font-weight: 500;
       color: var(--muted);
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 0.77rem;
-      font-weight: 600;
-      cursor: pointer;
+      margin-left: 4px;
     }
-    .subtle-puntual-btn:active {
-      border-color: var(--warning);
-      color: var(--warning);
+    .mat-qty-badge {
+      background: var(--success-soft);
+      color: var(--success);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 2px 9px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      align-self: center;
     }
 
-    /* =====================================================
-       NUEVO DISEÑO: TABLA DE ALBARÁN NUMERADA (PEDIDO)
-       Totalmente diferenciada de la lista de búsqueda
-       ===================================================== */
-    .albaran-sheet {
-      background: var(--albaran-bg);
-      border: 2px solid var(--albaran-border);
-      border-radius: 14px;
-      overflow: hidden;
-      display: none;
-      margin-top: 8px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    /* Enlace discreto para material puntual */
+    .puntual-link-wrap {
+      text-align: center;
+      padding: 22px 0 28px;
     }
-    .albaran-header {
-      background: var(--albaran-border);
-      color: #ffffff;
-      padding: 10px 14px;
+    .puntual-link {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 6px 12px;
+    }
+    .puntual-link:active { color: var(--accent); }
+
+    /* =======================================================
+       ALBARÁN DE PEDIDO (Elegante, limpio y diferenciado)
+       ======================================================= */
+    .albaran-card {
+      background: var(--surface);
+      border-left: 3.5px solid var(--success);
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 8px;
+      display: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+    body.light-mode .albaran-card {
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+    }
+    .albaran-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
     }
     .albaran-title {
-      font-size: 0.88rem;
-      font-weight: 900;
-      letter-spacing: 0.5px;
+      font-size: 0.82rem;
+      font-weight: 800;
       text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      letter-spacing: 0.6px;
+      color: var(--success);
     }
-    .albaran-save-kit {
-      background: rgba(0, 0, 0, 0.28);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      padding: 5px 10px;
-      border-radius: 7px;
-      font-size: 0.74rem;
+    .text-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
     }
-    .albaran-subheader {
-      background: var(--surface-2);
-      padding: 6px 12px;
-      font-size: 0.71rem;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-    }
-    .edit-kit-banner {
+    .edit-kit-bar {
       display: none;
       justify-content: space-between;
       align-items: center;
-      background: rgba(56, 189, 248, 0.18);
-      border-bottom: 1px solid var(--primary);
+      background: var(--accent-soft);
       padding: 8px 12px;
-      font-size: 0.78rem;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 0.8rem;
     }
 
-    /* Tabla de Albarán */
-    .albaran-table {
-      width: 100%;
-      border-collapse: collapse;
+    /* Filas numeradas del Albarán sin marcos */
+    .albaran-list {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 16px;
     }
-    .albaran-table thead th {
-      background: var(--surface);
-      color: var(--muted);
-      font-size: 0.68rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      padding: 7px 8px;
-      text-align: left;
-      border-bottom: 1.5px solid var(--border);
+    .alb-row {
+      display: flex;
+      align-items: center;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--line);
+      gap: 10px;
     }
-    .albaran-table tbody tr {
-      border-bottom: 1px dashed var(--border);
-      transition: background 0.12s;
-    }
-    .albaran-table tbody tr:nth-child(even) {
-      background: rgba(255, 255, 255, 0.015);
-    }
-    .albaran-table td {
-      padding: 9px 7px;
-      vertical-align: middle;
-    }
-    .col-num {
-      width: 30px;
-      text-align: center;
+    .alb-num {
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.74rem;
-      font-weight: 800;
+      font-size: 0.75rem;
       color: var(--muted);
+      width: 22px;
+      flex-shrink: 0;
     }
-    .col-qty {
-      width: 62px;
-      text-align: center;
-    }
-    .albaran-qty-box {
-      display: inline-block;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid var(--success);
+    .alb-qty {
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.86rem;
+      font-weight: 800;
       color: var(--success);
-      font-family: ui-monospace, SFMono-Regular, monospace;
-      font-weight: 900;
-      font-size: 0.84rem;
-      padding: 3px 7px;
-      border-radius: 6px;
-      min-width: 48px;
+      min-width: 44px;
+      flex-shrink: 0;
     }
-    .col-desc {
+    .alb-info {
+      flex: 1;
+      min-width: 0;
       cursor: pointer;
-      max-width: 0;
-      width: 100%;
     }
-    .alb-code-line {
+    .alb-code {
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.82rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
-    .alb-name-line {
-      font-size: 0.8rem;
+      font-size: 0.84rem;
+      font-weight: 700;
       color: var(--text);
+    }
+    .alb-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-top: 1px;
     }
-    .albaran-row.expanded .alb-name-line {
+    .alb-row.expanded .alb-desc {
       white-space: normal;
       overflow: visible;
-      font-weight: 600;
-      margin-top: 3px;
+      color: var(--text);
+      margin-top: 2px;
     }
-    .alb-extra-line {
+    .alb-prov {
       display: none;
       font-size: 0.72rem;
-      color: var(--table-tag);
-      margin-top: 3px;
-      font-weight: 600;
+      color: var(--accent);
+      margin-top: 2px;
     }
-    .albaran-row.expanded .alb-extra-line { display: block; }
+    .alb-row.expanded .alb-prov { display: block; }
 
-    .col-actions {
-      width: 96px;
-      text-align: right;
-      white-space: nowrap;
+    .alb-ctrls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
     }
-    .alb-btn {
-      width: 27px;
-      height: 27px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font-weight: 800;
-      font-size: 0.9rem;
-      cursor: pointer;
-      margin-left: 2px;
-    }
-    .alb-btn.del { color: var(--danger); border-color: rgba(239, 68, 68, 0.35); }
-
-    .albaran-footer {
-      padding: 12px;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-    }
-    .export-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-    .btn-action {
-      padding: 12px;
-      border-radius: 10px;
+    .circle-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
       border: none;
+      background: var(--surface-2);
+      color: var(--text);
       font-weight: 700;
-      font-size: 0.88rem;
+      font-size: 0.92rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
     }
-    .btn-copy-main {
-      grid-column: span 2;
-      background: var(--success);
-      color: #fff;
-      font-size: 0.95rem;
-    }
-    .btn-mail { background: var(--primary-dark); color: #fff; }
-    .btn-wa { background: #15803d; color: #fff; }
-    .btn-empty {
-      grid-column: span 2;
-      background: transparent;
-      border: 1px solid rgba(239, 68, 68, 0.4);
+    .circle-btn.del {
       color: var(--danger);
-      padding: 8px;
-      font-size: 0.8rem;
+      background: rgba(239, 68, 68, 0.1);
+      font-size: 0.78rem;
     }
 
-    /* Barra Flotante Inferior */
-    .bottom-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--albaran-border);
+    /* Acciones del Albarán */
+    .albaran-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-primary-copy {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      border: none;
+      background: var(--success);
       color: #fff;
-      padding: 12px 16px;
-      display: none;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+    .secondary-actions {
+      display: flex;
       justify-content: space-between;
       align-items: center;
-      font-weight: 800;
-      font-size: 0.88rem;
-      z-index: 40;
-      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);
+      padding: 2px 4px 0;
+    }
+    .sec-link {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 600;
       cursor: pointer;
+      padding: 6px;
+    }
+    .sec-link.danger { color: var(--danger); }
+
+    /* Píldora Flotante Inferior */
+    .floating-pill {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--success);
+      color: #fff;
+      padding: 11px 22px;
+      border-radius: 30px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.86rem;
+      z-index: 40;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+      cursor: pointer;
+      white-space: nowrap;
     }
 
     /* Vista Traductor Almacén */
-    #translatorView { display: none; }
-    .trans-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 14px;
+    #translatorView { display: none; padding-top: 8px; }
+    .trans-header {
+      display: flex;
+      justify-content: flex-end;
+      gap: 14px;
+      margin-bottom: 8px;
     }
     .trans-textarea {
       width: 100%;
-      min-height: 120px;
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
+      min-height: 110px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
       color: var(--text);
-      padding: 10px 12px;
+      padding: 12px 14px;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       outline: none;
       resize: vertical;
-      margin: 8px 0;
+      margin-bottom: 14px;
     }
-    .trans-item {
+    .trans-textarea:focus { border-color: var(--accent); }
+    .trans-row {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 11px 12px;
-      margin-bottom: 7px;
+      gap: 12px;
+      padding: 13px 4px;
+      border-bottom: 1px solid var(--line);
       cursor: pointer;
     }
-    .trans-item.checked { opacity: 0.45; border-color: var(--success); }
+    .trans-row.checked { opacity: 0.35; }
     .trans-check {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
-      border: 2px solid var(--primary);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--muted);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       margin-top: 2px;
-      font-size: 0.8rem;
-      font-weight: 900;
+      font-size: 0.7rem;
       color: transparent;
     }
-    .trans-item.checked .trans-check {
+    .trans-row.checked .trans-check {
       background: var(--success);
       border-color: var(--success);
       color: #fff;
     }
 
-    /* Modales y Ventana Flotante de Conflicto */
+    /* Modales Limpios */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.76);
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       display: none;
       align-items: flex-end;
       justify-content: center;
@@ -586,216 +528,219 @@
     .modal-backdrop.open { display: flex; }
     .modal-backdrop.center-modal {
       align-items: center;
-      padding: 16px;
+      padding: 18px;
     }
     .modal-sheet {
       background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-radius: 20px 20px 0 0;
+      border-radius: 22px 22px 0 0;
       width: 100%;
-      max-width: 680px;
-      padding: 16px 16px 24px;
-      max-height: 88vh;
+      max-width: 640px;
+      padding: 14px 20px 28px;
+      max-height: 85vh;
       overflow-y: auto;
       animation: slideUp 0.16s ease-out;
     }
-    .modal-card-center {
+    .modal-dialog {
       background: var(--surface);
-      border: 2px solid var(--primary);
-      border-radius: 16px;
+      border-radius: 18px;
       width: 100%;
-      max-width: 440px;
-      padding: 18px;
-      max-height: 86vh;
+      max-width: 400px;
+      padding: 20px;
+      max-height: 85vh;
       overflow-y: auto;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     }
     @keyframes slideUp {
       from { transform: translateY(100%); }
       to { transform: translateY(0); }
     }
     .sheet-handle {
-      width: 40px;
+      width: 36px;
       height: 4px;
-      background: var(--border);
+      background: var(--line);
       border-radius: 4px;
-      margin: 0 auto 12px;
+      margin: 0 auto 14px;
     }
-    .m-code { font-size: 0.76rem; font-weight: 800; color: var(--primary); text-transform: uppercase; }
-    .m-title { font-size: 0.98rem; font-weight: 800; color: var(--text); margin: 3px 0 10px; }
+    .m-meta { font-size: 0.75rem; font-weight: 700; color: var(--accent); }
+    .m-title { font-size: 1rem; font-weight: 700; color: var(--text); margin: 4px 0 16px; }
 
-    /* Opciones dentro del modal de conflicto */
-    .conflict-options {
+    /* Opciones del modal de conflicto */
+    .conflict-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-top: 10px;
+      gap: 6px;
     }
-    .conflict-choice-btn {
+    .conflict-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
       padding: 13px 14px;
-      border-radius: 10px;
-      border: 1.5px solid var(--border);
-      background: var(--bg);
+      border-radius: 12px;
+      border: none;
+      background: var(--surface-2);
       color: var(--text);
       font-size: 0.86rem;
-      font-weight: 700;
+      font-weight: 600;
       text-align: left;
       cursor: pointer;
     }
-    .conflict-choice-btn:active {
-      background: var(--surface-2);
-      border-color: var(--primary);
-    }
-    .conflict-count {
-      background: var(--primary-dark);
-      color: #fff;
-      padding: 4px 9px;
-      border-radius: 20px;
+    .conflict-item:active { background: var(--accent-soft); color: var(--accent); }
+    .conflict-badge {
       font-size: 0.75rem;
-      font-weight: 800;
+      font-weight: 700;
+      color: var(--accent);
+      margin-left: 8px;
       flex-shrink: 0;
     }
 
-    .field { margin-bottom: 11px; }
-    .field label { display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+    /* Controles dentro del modal de unidades */
+    .field { margin-bottom: 12px; }
     .field input, .field select {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
       background: var(--bg);
       color: var(--text);
       font-size: 0.92rem;
       outline: none;
     }
-    .qty-stepper { display: flex; gap: 8px; margin-bottom: 10px; }
+    .qty-stepper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
     .qty-stepper input {
       flex: 1;
       text-align: center;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 800;
       padding: 8px;
-      border-radius: 9px;
-      border: 1.5px solid var(--primary);
+      border-radius: 12px;
+      border: none;
       background: var(--bg);
       color: var(--text);
       width: 100%;
     }
     .step-btn {
       width: 48px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-      background: var(--bg);
+      height: 48px;
+      border-radius: 12px;
+      border: none;
+      background: var(--surface-2);
       color: var(--text);
       font-size: 1.3rem;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
     }
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+    .quick-pills {
+      display: flex;
       gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .q-pill {
+      flex: 1;
+      min-width: 54px;
+      padding: 8px 6px;
+      border-radius: 10px;
+      border: none;
+      background: var(--surface-2);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      text-align: center;
+    }
+    .cable-pills {
+      display: none;
+      gap: 6px;
+      flex-wrap: wrap;
       margin-bottom: 12px;
     }
-    .q-chip {
-      padding: 9px 4px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
+    .cable-pill {
+      padding: 6px 11px;
+      border-radius: 16px;
+      border: none;
+      background: rgba(245, 158, 11, 0.14);
+      color: var(--warning);
+      font-size: 0.76rem;
       font-weight: 700;
-      font-size: 0.84rem;
       cursor: pointer;
     }
-    .cable-helper {
-      display: none;
-      background: rgba(245, 158, 11, 0.1);
-      border: 1px dashed var(--warning);
-      border-radius: 9px;
-      padding: 9px;
-      margin-bottom: 12px;
-    }
-    .cable-helper p { font-size: 0.75rem; color: var(--warning); margin-bottom: 6px; font-weight: 700; }
-    .m-footer { display: flex; gap: 8px; margin-top: 12px; }
+    .m-footer { display: flex; gap: 10px; margin-top: 16px; }
     .m-footer button {
       flex: 1;
-      padding: 12px;
-      border-radius: 10px;
+      padding: 13px;
+      border-radius: 12px;
       border: none;
       font-weight: 700;
       font-size: 0.9rem;
       cursor: pointer;
     }
-    .btn-cancel { background: var(--surface-2); color: var(--text); }
-    .btn-ok { background: var(--primary-dark); color: #fff; }
+    .btn-cancel { background: var(--surface-2); color: var(--muted); }
+    .btn-ok { background: var(--accent); color: #090d16; }
+    body.light-mode .btn-ok { color: #fff; }
 
+    /* Lista limpia de Tablas en el modal */
     .cat-group-title {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 800;
-      color: var(--primary);
+      color: var(--muted);
       text-transform: uppercase;
-      margin: 12px 0 6px;
+      letter-spacing: 0.5px;
+      margin: 16px 0 6px;
     }
-    .cat-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
-    .cat-option-btn {
+    .cat-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 12px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-      background: var(--bg);
+      width: 100%;
+      padding: 11px 8px;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      background: none;
       color: var(--text);
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
+      font-size: 0.86rem;
       text-align: left;
+      cursor: pointer;
     }
-    .cat-option-btn.active {
-      border-color: var(--primary);
-      background: rgba(56, 189, 248, 0.12);
-      color: var(--primary);
-      font-weight: 800;
+    .cat-item.active {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .cat-count {
+      font-size: 0.76rem;
+      color: var(--muted);
     }
 
-    .kit-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 10px 12px;
-      margin-bottom: 8px;
+    /* Lista de Kits */
+    .kit-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      gap: 10px;
     }
-    .kit-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-    .kit-name { font-weight: 700; font-size: 0.9rem; color: var(--primary); }
-    .k-btn {
-      padding: 5px 9px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font-size: 0.74rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
+    .kit-title { font-weight: 700; font-size: 0.9rem; color: var(--text); }
+    .kit-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
 
     .toast {
       position: fixed;
-      bottom: 68px;
+      bottom: 70px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--success);
-      color: #fff;
-      padding: 9px 16px;
-      border-radius: 20px;
+      background: var(--text);
+      color: var(--bg);
+      padding: 9px 18px;
+      border-radius: 24px;
       font-weight: 700;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       display: none;
       z-index: 200;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
     }
   </style>
 </head>
@@ -803,157 +748,117 @@
 
 <header>
   <div class="header-inner">
-    <div class="top-bar">
-      <div class="mode-switch">
-        <button class="mode-btn active" id="tabOrderBtn" onclick="switchMode('order')">🔧 Hacer Pedido</button>
-        <button class="mode-btn" id="tabTransBtn" onclick="switchMode('translator')">📦 Traductor Almacén</button>
+    <div class="nav-bar">
+      <div class="tabs">
+        <button class="tab-link active" id="tabOrderBtn" onclick="switchMode('order')">Pedido</button>
+        <button class="tab-link" id="tabTransBtn" onclick="switchMode('translator')">Traductor</button>
       </div>
-      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar modo Sol / Oscuro">☀️</button>
+      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">☀️</button>
     </div>
 
     <div id="orderHeaderTools">
       <div class="search-wrap">
         <form onsubmit="handleSearchSubmit(event)" style="margin:0;">
-          <input type="search" id="searchInput" enterkeyhint="search" placeholder="Buscar material, código o metros (ej: acometidas, divisores, 3235)..." autocomplete="off">
+          <input type="search" id="searchInput" enterkeyhint="search" placeholder="Buscar material o código..." autocomplete="off">
         </form>
         <button type="button" class="clear-btn" id="clearSearchBtn" onclick="clearSearch()">✕</button>
       </div>
-      <div class="toolbar">
-        <button class="tool-btn" id="catTriggerBtn" onclick="openCategoriesModal()">
-          <span class="truncate" id="selectedCatLabel">📂 Todas las tablas (321)</span>
+      <div class="pills-bar">
+        <button class="pill" id="catTriggerBtn" onclick="openCategoriesModal()">
+          <span class="truncate" id="selectedCatLabel">Todas las tablas</span>
           <span>▾</span>
         </button>
-        <button class="tool-btn kits-btn" id="kitsBtn" onclick="openKitsModal()">⭐ Mis Kits (0)</button>
+        <button class="pill" id="kitsBtn" onclick="openKitsModal()">Kits (0)</button>
       </div>
     </div>
   </div>
 </header>
 
 <main>
-  <!-- VISTA 1: HACER PEDIDO -->
+  <!-- VISTA 1: PEDIDO -->
   <div id="orderView">
-    <!-- Etiqueta informativa cuando se ha elegido una tabla en la ventana flotante -->
-    <div class="active-scope-bar" id="activeScopeBar">
-      <span>🎯 Tabla: <strong id="activeScopeName" style="color:var(--table-tag);"></strong></span>
-      <button class="scope-change-btn" onclick="reopenConflictModal()">Cambiar tabla</button>
-    </div>
-
-    <div class="status-bar" id="statusBar">
-      <span id="resultsCount">321 materiales en catálogo</span>
-      <span>Toca un artículo para añadir</span>
+    <div class="scope-chip" id="activeScopeBar">
+      <span id="activeScopeName"></span>
+      <button onclick="reopenConflictModal()">Cambiar</button>
     </div>
 
     <div class="materials-list" id="materialsList"></div>
 
-    <!-- Botón sutil abajo del todo: Material Puntual -->
-    <div class="subtle-puntual-wrap">
-      <button class="subtle-puntual-btn" onclick="openPuntualModal()">
-        <span>＋ Añadir material puntual (fuera de catálogo)</span>
-      </button>
+    <div class="puntual-link-wrap">
+      <button class="puntual-link" onclick="openPuntualModal()">+ Material puntual sin código</button>
     </div>
 
-    <!-- ==========================================
-         NUEVA HOJA DE ALBARÁN NUMERADA (PEDIDO)
-         ========================================== -->
-    <section class="albaran-sheet" id="orderSection">
-      <div class="albaran-header">
-        <div class="albaran-title">
-          <span>🧾 ALBARÁN DE PEDIDO (<span id="cartCount">0</span> LÍNEAS)</span>
-        </div>
-        <button class="albaran-save-kit" onclick="promptSaveCurrentAsKit()">💾 Guardar Kit</button>
+    <!-- ALBARÁN DE PEDIDO -->
+    <section class="albaran-card" id="orderSection">
+      <div class="albaran-head">
+        <span class="albaran-title">Albarán (<span id="cartCount">0</span>)</span>
+        <button class="text-btn" onclick="promptSaveCurrentAsKit()">Guardar Kit</button>
       </div>
 
-      <div class="edit-kit-banner" id="editKitBanner">
-        <span>✏️ Editando Kit: <strong id="editingKitName"></strong></span>
-        <div style="display:flex;gap:6px;">
-          <button class="k-btn" style="background:var(--primary-dark);color:#fff;border:none;" onclick="saveEditedKit()">Guardar</button>
-          <button class="k-btn" onclick="cancelEditKit()">Salir</button>
+      <div class="edit-kit-bar" id="editKitBanner">
+        <span>Editando: <strong id="editingKitName"></strong></span>
+        <div style="display:flex;gap:12px;">
+          <button class="text-btn" onclick="saveEditedKit()">Guardar</button>
+          <button class="text-btn" style="color:var(--muted);" onclick="cancelEditKit()">Salir</button>
         </div>
       </div>
 
-      <div class="albaran-subheader">
-        <span>Toca el nombre de cualquier línea para desplegar toda la información</span>
-        <span>1m = 1 ud</span>
-      </div>
+      <div class="albaran-list" id="cartTableBody"></div>
 
-      <table class="albaran-table">
-        <thead>
-          <tr>
-            <th class="col-num">#</th>
-            <th class="col-qty">Cant.</th>
-            <th>Código / Material (Tabla)</th>
-            <th class="col-actions">Ajustar</th>
-          </tr>
-        </thead>
-        <tbody id="cartTableBody"></tbody>
-      </table>
-
-      <div class="albaran-footer">
-        <div class="export-grid">
-          <button class="btn-action btn-copy-main" onclick="copyOrder()">📋 Copiar para Correo / Parte</button>
-          <button class="btn-action btn-mail" onclick="sendEmail()">✉️ Abrir Correo</button>
-          <button class="btn-action btn-wa" onclick="sendWhatsApp()">💬 WhatsApp</button>
-          <button class="btn-action btn-empty" onclick="clearCart()">🗑️ Vaciar albarán</button>
+      <div class="albaran-actions">
+        <button class="btn-primary-copy" onclick="copyOrder()">Copiar pedido</button>
+        <div class="secondary-actions">
+          <button class="sec-link" onclick="sendEmail()">Enviar correo</button>
+          <button class="sec-link" onclick="sendWhatsApp()">WhatsApp</button>
+          <button class="sec-link danger" onclick="clearCart()">Vaciar</button>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- VISTA 2: TRADUCTOR ALMACÉN -->
+  <!-- VISTA 2: TRADUCTOR -->
   <div id="translatorView">
-    <div class="trans-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <strong style="font-size:0.92rem;">Pegar códigos del correo</strong>
-        <div style="display:flex;gap:6px;">
-          <button class="k-btn" onclick="pasteFromClipboard()">📋 Pegar</button>
-          <button class="k-btn" onclick="clearTranslator()">🧹 Limpiar</button>
-        </div>
-      </div>
-      <textarea class="trans-textarea" id="transInput" placeholder="Pega aquí la lista recibida por correo:&#10;3235 – 4 unidades&#10;4164 – 8 unidades&#10;3205 – 10 unidades&#10;4040 – 30 unidades" oninput="runTranslator()"></textarea>
-      <div style="font-size:0.74rem;color:var(--muted);">Traduce los códigos mostrando el artículo y entre paréntesis su tabla oficial. Toca cada fila para marcarla como preparada.</div>
+    <div class="trans-header">
+      <button class="text-btn" onclick="pasteFromClipboard()">Pegar</button>
+      <button class="text-btn" style="color:var(--muted);" onclick="clearTranslator()">Limpiar</button>
     </div>
+    <textarea class="trans-textarea" id="transInput" placeholder="Pegar códigos..." oninput="runTranslator()"></textarea>
     <div id="transOutput"></div>
   </div>
 </main>
 
-<!-- Barra flotante inferior -->
-<div class="bottom-bar" id="bottomBar" onclick="scrollToOrder()">
-  <span id="bottomBarText">🧾 0 líneas en el albarán</span>
-  <span>Ver albarán ↓</span>
+<!-- Píldora flotante inferior -->
+<div class="floating-pill" id="bottomBar" onclick="scrollToOrder()">
+  <span id="bottomBarText">0 en albarán</span>
+  <span>↓</span>
 </div>
 
-<!-- VENTANA FLOTANTE CENTRADA: "¿PARA QUÉ FIN BUSCAS ESTE MATERIAL?" -->
+<!-- VENTANA FLOTANTE: CONFLICTO ENTRE TABLAS -->
 <div class="modal-backdrop center-modal" id="conflictModal">
-  <div class="modal-card-center">
-    <div class="m-code">SELECCIÓN DE TABLA OBLIGATORIA</div>
-    <div class="m-title">⚠️ ¿Para qué fin buscas este material?</div>
-    <div style="font-size:0.8rem;color:var(--muted);">
-      Selecciona la categoría exacta para no mezclar referencias de distintas tablas. Al elegir se abrirá el teclado para que sigas escribiendo:
-    </div>
-    <div class="conflict-options" id="conflictModalOptions"></div>
+  <div class="modal-dialog">
+    <div class="m-title" style="margin-top:0;">¿Para qué fin buscas este material?</div>
+    <div class="conflict-list" id="conflictModalOptions"></div>
   </div>
 </div>
 
-<!-- MODAL BOTTOM-SHEET: UNIDADES / MATERIAL PUNTUAL -->
+<!-- MODAL BOTTOM-SHEET: UNIDADES / PUNTUAL -->
 <div class="modal-backdrop" id="itemModal" onclick="if(event.target===this)closeModals()">
   <div class="modal-sheet">
     <div class="sheet-handle"></div>
-    <div class="m-code" id="mCode">CÓDIGO</div>
-    <div class="m-title" id="mTitle">Nombre del material</div>
+    <div class="m-meta" id="mCode"></div>
+    <div class="m-title" id="mTitle"></div>
 
     <div id="puntualFields" style="display:none;">
       <div class="field">
-        <label>¿Qué material es? (Descripción detallada)</label>
-        <input type="text" id="pNameInput" placeholder="Ej: Tubo corrugado 25mm / Bridas negras...">
+        <input type="text" id="pNameInput" placeholder="Descripción del material">
       </div>
       <div class="field">
-        <label>Proveedor</label>
         <select id="pProvSelect" onchange="toggleCustomProvInput()">
-          <option value="VERDEJO (1846)">VERDEJO (Cód. 1846)</option>
-          <option value="AMARANZERO (2650)">AMARANZERO (Cód. 2650)</option>
-          <option value="ANVIMUR (1230)">ANVIMUR (Cód. 1230)</option>
-          <option value="KEYFIBRE (2262)">KEYFIBRE (Cód. 2262)</option>
-          <option value="INSTANT BYTE (1365)">INSTANT BYTE (Cód. 1365)</option>
+          <option value="VERDEJO (1846)">VERDEJO (1846)</option>
+          <option value="AMARANZERO (2650)">AMARANZERO (2650)</option>
+          <option value="ANVIMUR (1230)">ANVIMUR (1230)</option>
+          <option value="KEYFIBRE (2262)">KEYFIBRE (2262)</option>
+          <option value="INSTANT BYTE (1365)">INSTANT BYTE (1365)</option>
           <option value="KONEKT">KONEKT</option>
           <option value="SISTAC ILS SL">SISTAC ILS SL</option>
           <option value="OTRO">Escribir otro proveedor...</option>
@@ -961,86 +866,63 @@
         </select>
       </div>
       <div class="field" id="pCustomProvWrap" style="display:none;">
-        <label>Nombre del proveedor</label>
-        <input type="text" id="pCustomProvInput" placeholder="Indica el proveedor...">
+        <input type="text" id="pCustomProvInput" placeholder="Nombre del proveedor">
       </div>
     </div>
 
-    <div class="cable-helper" id="cableHelper">
-      <p>📏 Cable por metros (1 metro = 1 unidad)</p>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;">
-        <button class="k-btn" onclick="setQuickCable(305, 'Bobina entera 305m')">Bobina 305m</button>
-        <button class="k-btn" onclick="setQuickCable(100, '')">100 metros</button>
-        <button class="k-btn" onclick="setQuickCable(500, 'Bobina 500m')">Bobina 500m</button>
-        <button class="k-btn" onclick="setQuickCable(1, 'Bobina entera')">1 Bobina entera</button>
-      </div>
+    <div class="cable-pills" id="cableHelper">
+      <button class="cable-pill" onclick="setQuickCable(305, 'Bobina 305m')">Bobina 305m</button>
+      <button class="cable-pill" onclick="setQuickCable(500, 'Bobina 500m')">Bobina 500m</button>
+      <button class="cable-pill" onclick="setQuickCable(1, 'Bobina entera')">Bobina entera</button>
+    </div>
+
+    <div class="qty-stepper">
+      <button class="step-btn" onclick="stepQty(-1)">−</button>
+      <input type="number" id="mQtyInput" value="1" min="1" inputmode="numeric">
+      <button class="step-btn" onclick="stepQty(1)">+</button>
+    </div>
+
+    <div class="quick-pills">
+      <button class="q-pill" onclick="addQty(1)">+1</button>
+      <button class="q-pill" onclick="addQty(5)">+5</button>
+      <button class="q-pill" onclick="addQty(10)">+10</button>
+      <button class="q-pill" onclick="addQty(50)">+50</button>
+      <button class="q-pill" onclick="addQty(100)">+100</button>
+      <button class="q-pill" style="color:var(--warning);" onclick="resetQty()">1</button>
     </div>
 
     <div class="field">
-      <label>Unidades (o metros)</label>
-      <div class="qty-stepper">
-        <button class="step-btn" onclick="stepQty(-1)">−</button>
-        <input type="number" id="mQtyInput" value="1" min="1" inputmode="numeric">
-        <button class="step-btn" onclick="stepQty(1)">+</button>
-      </div>
-    </div>
-
-    <div class="quick-grid">
-      <button class="q-chip" onclick="addQty(1)">+1</button>
-      <button class="q-chip" onclick="addQty(2)">+2</button>
-      <button class="q-chip" onclick="addQty(5)">+5</button>
-      <button class="q-chip" onclick="addQty(10)">+10</button>
-      <button class="q-chip" onclick="addQty(20)">+20</button>
-      <button class="q-chip" onclick="addQty(50)">+50</button>
-      <button class="q-chip" onclick="addQty(100)">+100</button>
-      <button class="q-chip" style="color:var(--warning);" onclick="resetQty()">Reset (1)</button>
-    </div>
-
-    <div class="field">
-      <label>Nota opcional (ej: bobina entera)</label>
-      <input type="text" id="mNoteInput" placeholder="Opcional">
+      <input type="text" id="mNoteInput" placeholder="Nota opcional">
     </div>
 
     <div class="m-footer">
       <button class="btn-cancel" onclick="closeModals()">Cancelar</button>
-      <button class="btn-ok" onclick="confirmModalItem()">Añadir al albarán</button>
+      <button class="btn-ok" onclick="confirmModalItem()">Añadir</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL BOTTOM-SHEET: SELECTOR DE TABLAS DEL EXCEL -->
+<!-- MODAL: TABLAS DEL EXCEL -->
 <div class="modal-backdrop" id="categoriesModal" onclick="if(event.target===this)closeModals()">
   <div class="modal-sheet">
     <div class="sheet-handle"></div>
-    <div class="m-code">ESTRUCTURA OFICIAL DEL EXCEL</div>
-    <div class="m-title">📂 Filtrar por Tabla de Material</div>
+    <div class="m-title" style="margin-top:0;">Tablas</div>
     <div id="categoriesContainer"></div>
-    <div class="m-footer">
-      <button class="btn-cancel" onclick="closeModals()">Cerrar</button>
-    </div>
   </div>
 </div>
 
-<!-- MODAL BOTTOM-SHEET: MIS KITS -->
+<!-- MODAL: KITS -->
 <div class="modal-backdrop" id="kitsModal" onclick="if(event.target===this)closeModals()">
   <div class="modal-sheet">
     <div class="sheet-handle"></div>
-    <div class="m-code">PLANTILLAS PERSONALES</div>
-    <div class="m-title">⭐ Mis Kits Guardados</div>
-    <div id="kitsContainer" style="margin-bottom:12px;"></div>
-    <div style="font-size:0.75rem;color:var(--muted);margin-bottom:12px;">
-      Para crear un kit nuevo: añade los materiales al albarán inferior y pulsa <strong>"💾 Guardar Kit"</strong>.
-    </div>
-    <div class="m-footer">
-      <button class="btn-cancel" onclick="closeModals()">Cerrar</button>
-    </div>
+    <div class="m-title" style="margin-top:0;">Mis Kits</div>
+    <div id="kitsContainer"></div>
   </div>
 </div>
 
 <div class="toast" id="toast">Listo</div>
 
 <script>
-// Las 33 Tablas oficiales de MATERIAL ACACIOPHONE.xlsx
 const TABLES = [
   ["Instalación Clientes","ROUTER DOMÉSTICO"],
   ["Instalación Clientes","CABLES ACOMETIDA FIBRA PROPIA"],
@@ -1077,7 +959,6 @@ const TABLES = [
   ["Sin Código (Proveedores)","EQUIPOS SIN CÓDIGO"]
 ];
 
-// Catálogo íntegro de 321 registros [codigo, nombre, tableIdx, proveedor]
 const RAW_DATA = [
 ["3946","ROUTER ASUS ax3000 PARA DUAL O BALANCEO DE CARGA",0,"VARIOS"],
 ["3912","HUAWEI X6 ONT ADAMO",0,"VARIOS"],
@@ -1410,62 +1291,29 @@ function norm(s) {
   return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-// Motor gramatical Singular / Plural en español para que cualquier término en plural encuentre el singular y viceversa
 function getSingularVariants(word) {
   const variants = [word];
-  if (word.length > 4 && word.endsWith("ces")) {
-    variants.push(word.slice(0, -3) + "z");
-  }
-  if (word.length > 4 && word.endsWith("es")) {
-    variants.push(word.slice(0, -2));
-  }
-  if (word.length > 3 && word.endsWith("s")) {
-    variants.push(word.slice(0, -1));
-  }
+  if (word.length > 4 && word.endsWith("ces")) variants.push(word.slice(0, -3) + "z");
+  if (word.length > 4 && word.endsWith("es")) variants.push(word.slice(0, -2));
+  if (word.length > 3 && word.endsWith("s")) variants.push(word.slice(0, -1));
   return variants;
 }
 
-// Diccionario de sinónimos en singular y plural + corrección de erratas del Excel
 function getSynonymsForItem(code, name, tableIdx) {
   const extra = [];
-  if (code === "4101") {
-    extra.push("canula canulas tubito tubitos smouv smouvs canutillo canutillos protector protectores fusion fusiones empalme empalmes manguito manguitos");
-  }
-  if (tableIdx === 9) {
-    extra.push("termico termicos pia pias automatico automaticos magneto magnetos magnetotermico magnetotermicos cuadro cuadros diferencial diferenciales sobretension sobretensiones");
-  }
-  if (tableIdx === 29 || code === "2429") {
-    extra.push("divisor divisores repartidor repartidores splitter splitters");
-  }
-  if (tableIdx === 0) {
-    extra.push("ont onts router routers wifi domestico domesticos cliente clientes repetidor repetidores");
-  }
-  if (tableIdx === 23) {
-    extra.push("torpedo torpedos botella botellas sangrado sangrados empalme empalmes nodo nodos");
-  }
-  if (tableIdx === 18) {
-    extra.push("sfp sfps gbic gbics optico opticos transceiver transceivers modulo modulos");
-  }
-  if (tableIdx === 12 || tableIdx === 22) {
-    extra.push("utp ftp rj45 ethernet red cat5 cat5e cat6 lan cable cables bobina bobinas");
-  }
-  if (tableIdx === 30 || tableIdx === 31 || tableIdx === 10) {
-    extra.push("tensor tensores cuna cunas amarre amarres herraje herrajes poste postes fachada fachadas fijacion fijaciones pinza pinzas grapa grapas retenedor retenedores mastil mastiles garra garras tirafondo tirafondos");
-  }
-  if (tableIdx === 14 || name.includes("HPOW") || name.includes("POE")) {
-    extra.push("alimentador alimentadores transformador transformadores fuente fuentes inyector inyectores poe");
-  }
-  if (tableIdx === 21) {
-    extra.push("bandeja bandejas repartidor repartidores odf odfs");
-  }
-  if (tableIdx === 3) {
-    extra.push("roseta rosetas adaptador adaptadores enfrentador enfrentadores");
-  }
-  if (tableIdx === 28) {
-    extra.push("enfrentador enfrentadores adaptador adaptadores acoplador acopladores");
-  }
+  if (code === "4101") extra.push("canula canulas tubito tubitos smouv smouvs canutillo canutillos protector protectores fusion fusiones empalme empalmes manguito manguitos");
+  if (tableIdx === 9) extra.push("termico termicos pia pias automatico automaticos magneto magnetos magnetotermico magnetotermicos cuadro cuadros diferencial diferenciales sobretension sobretensiones");
+  if (tableIdx === 29 || code === "2429") extra.push("divisor divisores repartidor repartidores splitter splitters");
+  if (tableIdx === 0) extra.push("ont onts router routers wifi domestico domesticos cliente clientes repetidor repetidores");
+  if (tableIdx === 23) extra.push("torpedo torpedos botella botellas sangrado sangrados empalme empalmes nodo nodos");
+  if (tableIdx === 18) extra.push("sfp sfps gbic gbics optico opticos transceiver transceivers modulo modulos");
+  if (tableIdx === 12 || tableIdx === 22) extra.push("utp ftp rj45 ethernet red cat5 cat5e cat6 lan cable cables bobina bobinas");
+  if (tableIdx === 30 || tableIdx === 31 || tableIdx === 10) extra.push("tensor tensores cuna cunas amarre amarres herraje herrajes poste postes fachada fachadas fijacion fijaciones pinza pinzas grapa grapas retenedor retenedores mastil mastiles garra garras tirafondo tirafondos");
+  if (tableIdx === 14 || name.includes("HPOW") || name.includes("POE")) extra.push("alimentador alimentadores transformador transformadores fuente fuentes inyector inyectores poe");
+  if (tableIdx === 21) extra.push("bandeja bandejas repartidor repartidores odf odfs");
+  if (tableIdx === 3) extra.push("roseta rosetas adaptador adaptadores enfrentador enfrentadores");
+  if (tableIdx === 28) extra.push("enfrentador enfrentadores adaptador adaptadores acoplador acopladores");
 
-  // Erratas del Excel
   if (name.includes("PIGATIL")) extra.push("pigtail pigtails");
   if (name.includes("PERCONECTORIZADO")) extra.push("preconectorizado preconectorizados");
   if (name.includes("TIRAFONO")) extra.push("tirafondo tirafondos");
@@ -1496,10 +1344,8 @@ const MATERIALS = RAW_DATA.map((r, i) => {
   };
 });
 
-// Comprobación de coincidencia con soporte Singular / Plural
 function itemMatchesToken(matSearchStr, token) {
-  const variants = getSingularVariants(token);
-  return variants.some(v => matSearchStr.includes(v));
+  return getSingularVariants(token).some(v => matSearchStr.includes(v));
 }
 
 const CODE_MAP = {};
@@ -1513,7 +1359,6 @@ MATERIALS.forEach(m => {
   }
 });
 
-// Familias de conflicto: SOLO PALABRAS COMPLETAS en singular o plural (sin "acom")
 const CONFLICT_FAMILIES = [
   { id: "acometida", words: ["acometida", "acometidas"], tables: [1, 2] },
   { id: "pigtail", words: ["pigtail", "pigtails"], tables: [27, 1, 3] },
@@ -1526,7 +1371,6 @@ const CONFLICT_FAMILIES = [
   { id: "latiguillo", words: ["latiguillo", "latiguillos", "patchcord", "patchcords"], tables: [26, 1, 3] }
 ];
 
-// Estado
 let cart = JSON.parse(localStorage.getItem("acacio_v4_cart") || "[]");
 let userKits = JSON.parse(localStorage.getItem("acacio_v4_kits") || "[]");
 let selectedTable = "ALL";
@@ -1537,21 +1381,19 @@ let modalMode = "CATALOG";
 let currentItem = null;
 let editingKitIndex = null;
 
-// Tema Claro / Oscuro
 if (localStorage.getItem("acacio_theme") === "light") {
   document.body.classList.add("light-mode");
   document.getElementById("themeBtn").textContent = "🌙";
-  document.getElementById("metaThemeColor").setAttribute("content", "#f1f5f9");
+  document.getElementById("metaThemeColor").setAttribute("content", "#f8fafc");
 }
 
 function toggleTheme() {
   const isLight = document.body.classList.toggle("light-mode");
   localStorage.setItem("acacio_theme", isLight ? "light" : "dark");
   document.getElementById("themeBtn").textContent = isLight ? "🌙" : "☀️";
-  document.getElementById("metaThemeColor").setAttribute("content", isLight ? "#f1f5f9" : "#0b0f19");
+  document.getElementById("metaThemeColor").setAttribute("content", isLight ? "#f8fafc" : "#090d16");
 }
 
-// Buscador y control de teclado
 const searchInput = document.getElementById("searchInput");
 const clearSearchBtn = document.getElementById("clearSearchBtn");
 
@@ -1593,28 +1435,24 @@ function switchMode(mode) {
   document.getElementById("orderHeaderTools").style.display = isOrder ? "block" : "none";
   document.getElementById("orderView").style.display = isOrder ? "block" : "none";
   document.getElementById("translatorView").style.display = isOrder ? "none" : "block";
+  window.scrollTo({ top: 0, behavior: "instant" });
   updateBottomBar();
 }
 
-// Detectar palabra completa de conflicto
 function detectConflictFamily(tokens) {
   if (!tokens.length) return null;
-  // Si ya escribió acometida/acometidas, priorizar sobre "cable"
-  if (tokens.includes("acometida") || tokens.includes("acometidas")) {
-    return CONFLICT_FAMILIES[0];
-  }
+  if (tokens.includes("acometida") || tokens.includes("acometidas")) return CONFLICT_FAMILIES[0];
   for (const fam of CONFLICT_FAMILIES) {
     if (tokens.some(t => fam.words.includes(t))) return fam;
   }
   return null;
 }
 
-// Al tocar una tabla en la ventana flotante: cierra modal y reabre teclado inmediatamente
 function chooseConflictTableFromModal(tIdx) {
   resolvedConflictTable = tIdx;
   document.getElementById("conflictModal").classList.remove("open");
+  window.scrollTo({ top: 0, behavior: "instant" });
 
-  // Añadir espacio al final si no lo tiene y abrir el teclado para seguir escribiendo
   const currVal = searchInput.value;
   if (currVal && !currVal.endsWith(" ")) {
     searchInput.value = currVal + " ";
@@ -1644,7 +1482,6 @@ function renderMaterials() {
     return true;
   });
 
-  // Comprobar si hay conflicto de palabra completa cuando se busca en "Todas las tablas"
   if (selectedTable === "ALL" && tokens.length > 0) {
     const fam = detectConflictFamily(tokens);
     if (fam) {
@@ -1657,32 +1494,26 @@ function renderMaterials() {
       fam.tables.forEach(tIdx => {
         const count = textMatches.filter(m => m.tIdx === tIdx).length;
         if (count > 0) {
-          matchingTables.push({ tIdx, tableName: TABLES[tIdx][1], sheetName: TABLES[tIdx][0], count });
+          matchingTables.push({ tIdx, tableName: TABLES[tIdx][1], count });
         }
       });
 
       if (matchingTables.length > 1) {
         if (resolvedConflictTable === null) {
-          // Ocultar teclado y abrir ventana flotante obligatoria
           searchInput.blur();
           scopeBar.style.display = "none";
           listEl.innerHTML = "";
-          document.getElementById("resultsCount").textContent = "Elige la tabla en la ventana emergente...";
           document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
-            <button type="button" class="conflict-choice-btn" onclick="chooseConflictTableFromModal(${mt.tIdx})">
-              <div>
-                <div style="color:var(--table-tag);">(${mt.tableName})</div>
-                <div style="font-size:0.73rem;color:var(--muted);font-weight:500;margin-top:2px;">Hoja: ${mt.sheetName}</div>
-              </div>
-              <span class="conflict-count">${mt.count} art. →</span>
+            <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
+              <span>${mt.tableName}</span>
+              <span class="conflict-badge">${mt.count}</span>
             </button>
           `).join("");
           document.getElementById("conflictModal").classList.add("open");
           return;
         } else {
-          // Ya eligió la tabla: mostrar solo el indicador discreto de tabla activa
           scopeBar.style.display = "flex";
-          document.getElementById("activeScopeName").textContent = `(${TABLES[resolvedConflictTable][1]})`;
+          document.getElementById("activeScopeName").textContent = TABLES[resolvedConflictTable][1];
         }
       } else {
         scopeBar.style.display = "none";
@@ -1709,8 +1540,6 @@ function renderMaterials() {
     return 0;
   });
 
-  document.getElementById("resultsCount").textContent = `${finalItems.length} materiales encontrados`;
-
   const cartMap = {};
   cart.forEach(c => { cartMap[c.key] = c.qty; });
 
@@ -1721,19 +1550,18 @@ function renderMaterials() {
     const qtyInCart = cartMap[key];
     const isSC = m.code === "SIN CÓDIGO";
     return `
-      <div class="mat-row ${qtyInCart ? 'selected' : ''}" onclick="openCatalogModal(${m.id})">
-        <span class="mat-code ${isSC ? 'sc' : ''}">${isSC ? 'SIN<br>CÓDIGO' : m.code}</span>
+      <div class="mat-row" onclick="openCatalogModal(${m.id})">
+        <span class="mat-code ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : m.code}</span>
         <div class="mat-body">
           <span class="mat-name">${m.name}</span>
           <span class="mat-table-tag">(${m.tableName})</span>
         </div>
-        ${qtyInCart ? `<span class="mat-qty-pill">${qtyInCart} uds</span>` : ''}
+        ${qtyInCart ? `<span class="mat-qty-badge">${qtyInCart}</span>` : ''}
       </div>
     `;
   }).join("");
 }
 
-// Modal de Categorías / Tablas del Excel
 function openCategoriesModal() {
   const container = document.getElementById("categoriesContainer");
   const counts = {};
@@ -1746,23 +1574,22 @@ function openCategoriesModal() {
   });
 
   let html = `
-    <button class="cat-option-btn ${selectedTable === 'ALL' ? 'active' : ''}" style="width:100%;margin-bottom:8px;" onclick="selectTableFilter('ALL')">
-      <span>📂 Todas las tablas del Excel</span>
-      <span>${MATERIALS.length}</span>
+    <button class="cat-item ${selectedTable === 'ALL' ? 'active' : ''}" onclick="selectTableFilter('ALL')">
+      <span>Todas las tablas</span>
+      <span class="cat-count">${MATERIALS.length}</span>
     </button>
   `;
 
   Object.keys(groups).forEach(sheetName => {
-    html += `<div class="cat-group-title">${sheetName}</div><div class="cat-grid">`;
+    html += `<div class="cat-group-title">${sheetName}</div>`;
     groups[sheetName].forEach(tb => {
       html += `
-        <button class="cat-option-btn ${selectedTable === tb.idx ? 'active' : ''}" onclick="selectTableFilter(${tb.idx})">
-          <span>(${tb.title})</span>
-          <span>${tb.count}</span>
+        <button class="cat-item ${selectedTable === tb.idx ? 'active' : ''}" onclick="selectTableFilter(${tb.idx})">
+          <span>${tb.title}</span>
+          <span class="cat-count">${tb.count}</span>
         </button>
       `;
     });
-    html += `</div>`;
   });
 
   container.innerHTML = html;
@@ -1775,17 +1602,17 @@ function selectTableFilter(val) {
   const labelEl = document.getElementById("selectedCatLabel");
   const triggerBtn = document.getElementById("catTriggerBtn");
   if (val === "ALL") {
-    labelEl.textContent = `📂 Todas las tablas (${MATERIALS.length})`;
-    triggerBtn.classList.remove("active-cat");
+    labelEl.textContent = "Todas las tablas";
+    triggerBtn.classList.remove("active");
   } else {
-    labelEl.textContent = `📂 (${TABLES[val][1]})`;
-    triggerBtn.classList.add("active-cat");
+    labelEl.textContent = TABLES[val][1];
+    triggerBtn.classList.add("active");
   }
   closeModals();
   renderMaterials();
+  window.scrollTo({ top: 0, behavior: "instant" });
 }
 
-// Modal Unidades: Material del Catálogo
 function openCatalogModal(id) {
   searchInput.blur();
   modalMode = "CATALOG";
@@ -1793,26 +1620,24 @@ function openCatalogModal(id) {
   const key = currentItem.code !== "SIN CÓDIGO" ? `${currentItem.code}_${currentItem.tIdx}` : `SC_${currentItem.name}_${currentItem.tIdx}`;
   const existing = cart.find(c => c.key === key);
 
-  document.getElementById("mCode").textContent =
-    `${currentItem.code} · (${currentItem.tableName}) · Prov: ${currentItem.prov}`;
+  document.getElementById("mCode").textContent = `${currentItem.code} · (${currentItem.tableName})`;
   document.getElementById("mTitle").textContent = currentItem.name;
   document.getElementById("puntualFields").style.display = "none";
-  document.getElementById("cableHelper").style.display = CABLE_CODES.has(currentItem.code) ? "block" : "none";
+  document.getElementById("cableHelper").style.display = CABLE_CODES.has(currentItem.code) ? "flex" : "none";
 
   document.getElementById("mQtyInput").value = existing ? existing.qty : 1;
   document.getElementById("mNoteInput").value = existing ? (existing.note || "") : "";
   document.getElementById("itemModal").classList.add("open");
 }
 
-// Modal: Material Puntual
 function openPuntualModal() {
   searchInput.blur();
   modalMode = "PUNTUAL";
   currentItem = null;
   const typed = searchInput.value.trim();
 
-  document.getElementById("mCode").textContent = "MATERIAL PUNTUAL FUERA DE CATÁLOGO";
-  document.getElementById("mTitle").textContent = "Añadir material puntual";
+  document.getElementById("mCode").textContent = "SIN CÓDIGO";
+  document.getElementById("mTitle").textContent = "Material puntual";
   document.getElementById("puntualFields").style.display = "block";
   document.getElementById("cableHelper").style.display = "none";
 
@@ -1853,7 +1678,7 @@ function confirmModalItem() {
 
   if (modalMode === "PUNTUAL") {
     const name = document.getElementById("pNameInput").value.trim();
-    if (!name) return alert("Escribe qué material necesitas.");
+    if (!name) return;
     let prov = document.getElementById("pProvSelect").value;
     if (prov === "OTRO") {
       prov = document.getElementById("pCustomProvInput").value.trim() || "Se desconoce proveedor";
@@ -1886,10 +1711,9 @@ function confirmModalItem() {
   closeModals();
   clearSearch();
   saveCart();
-  showToast("✅ Añadido al albarán");
+  showToast("Añadido");
 }
 
-// Gestión de la Tabla de Albarán Numerada
 function toggleExpandCartItem(key) {
   if (expandedCartKeys.has(key)) expandedCartKeys.delete(key);
   else expandedCartKeys.add(key);
@@ -1909,7 +1733,7 @@ function removeCartIdx(idx) {
 
 function clearCart() {
   if (!cart.length) return;
-  if (confirm("¿Vaciar todo el albarán de pedido?")) {
+  if (confirm("¿Vaciar albarán?")) {
     cart = [];
     cancelEditKit();
     saveCart();
@@ -1942,25 +1766,23 @@ function renderCart() {
       ? "SIN CÓDIGO"
       : item.code === "PUNTUAL"
         ? "PUNTUAL"
-        : `Cód. ${item.code}`;
+        : item.code;
 
     return `
-      <tr class="albaran-row ${isExp ? 'expanded' : ''}">
-        <td class="col-num">#${i + 1}</td>
-        <td class="col-qty">
-          <span class="albaran-qty-box">${item.qty} u.</span>
-        </td>
-        <td class="col-desc" onclick="toggleExpandCartItem('${safeKey}')">
-          <div class="alb-code-line">${codeDisplay} ${item.note ? '· (' + item.note + ')' : ''}</div>
-          <div class="alb-name-line">${item.name} (${item.tableName})</div>
-          <div class="alb-extra-line">📂 Tabla: (${item.tableName}) · Prov: ${item.prov}</div>
-        </td>
-        <td class="col-actions">
-          <button class="alb-btn" onclick="changeCartQty(${i}, -1)">−</button>
-          <button class="alb-btn" onclick="changeCartQty(${i}, 1)">+</button>
-          <button class="alb-btn del" onclick="removeCartIdx(${i})">✕</button>
-        </td>
-      </tr>
+      <div class="alb-row ${isExp ? 'expanded' : ''}">
+        <span class="alb-num">${i + 1}.</span>
+        <span class="alb-qty">${item.qty} u.</span>
+        <div class="alb-info" onclick="toggleExpandCartItem('${safeKey}')">
+          <div class="alb-code">${codeDisplay} ${item.note ? '(' + item.note + ')' : ''}</div>
+          <div class="alb-desc">${item.name} (${item.tableName})</div>
+          <div class="alb-prov">Proveedor: ${item.prov}</div>
+        </div>
+        <div class="alb-ctrls">
+          <button class="circle-btn" onclick="changeCartQty(${i}, -1)">−</button>
+          <button class="circle-btn" onclick="changeCartQty(${i}, 1)">+</button>
+          <button class="circle-btn del" onclick="removeCartIdx(${i})">✕</button>
+        </div>
+      </div>
     `;
   }).join("");
 }
@@ -1970,13 +1792,12 @@ function updateBottomBar() {
   const isOrderView = document.getElementById("orderView").style.display !== "none";
   if (cart.length > 0 && isOrderView) {
     bar.style.display = "flex";
-    document.getElementById("bottomBarText").textContent = `🧾 ${cart.length} líneas en el albarán de pedido`;
+    document.getElementById("bottomBarText").textContent = `${cart.length} en albarán`;
   } else {
     bar.style.display = "none";
   }
 }
 
-// Construcción del texto oficial para Correo / Parte
 function buildOfficialText() {
   if (!cart.length) return "";
   const coded = cart.filter(c => c.code !== "SIN CÓDIGO" && c.code !== "PUNTUAL");
@@ -2005,42 +1826,41 @@ function buildOfficialText() {
 
 function copyOrder() {
   const txt = buildOfficialText();
-  if (!txt) return alert("Añade algún material primero.");
-  navigator.clipboard.writeText(txt).then(() => showToast("✅ Copiado para el correo / parte"));
+  if (!txt) return;
+  navigator.clipboard.writeText(txt).then(() => showToast("Pedido copiado"));
 }
 
 function sendEmail() {
   const txt = buildOfficialText();
-  if (!txt) return alert("Añade algún material primero.");
+  if (!txt) return;
   const dateStr = new Date().toLocaleDateString("es-ES");
   window.location.href = `mailto:?subject=${encodeURIComponent('Pedido de material - ' + dateStr)}&body=${encodeURIComponent(txt)}`;
 }
 
 function sendWhatsApp() {
   const txt = buildOfficialText();
-  if (!txt) return alert("Añade algún material primero.");
+  if (!txt) return;
   window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
 }
 
-// Mis Kits Personalizados
 function updateKitsBadge() {
-  document.getElementById("kitsBtn").textContent = `⭐ Mis Kits (${userKits.length})`;
+  document.getElementById("kitsBtn").textContent = `Kits (${userKits.length})`;
 }
 
 function promptSaveCurrentAsKit() {
-  if (!cart.length) return alert("Añade materiales al albarán primero.");
+  if (!cart.length) return;
   const def = editingKitIndex !== null && userKits[editingKitIndex] ? userKits[editingKitIndex].name : "";
-  const name = prompt("Nombre para guardar este Kit:", def);
+  const name = prompt("Nombre del Kit:", def);
   if (!name || !name.trim()) return;
 
   const kitObj = { name: name.trim(), items: JSON.parse(JSON.stringify(cart)) };
   if (editingKitIndex !== null && userKits[editingKitIndex]) {
     userKits[editingKitIndex] = kitObj;
     cancelEditKit();
-    showToast("✅ Kit actualizado");
+    showToast("Kit actualizado");
   } else {
     userKits.push(kitObj);
-    showToast("⭐ Kit guardado");
+    showToast("Kit guardado");
   }
   localStorage.setItem("acacio_v4_kits", JSON.stringify(userKits));
   updateKitsBadge();
@@ -2054,22 +1874,22 @@ function openKitsModal() {
 function renderKitsList() {
   const box = document.getElementById("kitsContainer");
   if (!userKits.length) {
-    box.innerHTML = `<div style="padding:14px;background:var(--bg);border-radius:9px;color:var(--muted);font-size:0.82rem;text-align:center;">No tienes kits guardados todavía.</div>`;
+    box.innerHTML = `<div style="padding:20px 0;color:var(--muted);font-size:0.85rem;text-align:center;">Sin kits guardados</div>`;
     return;
   }
   box.innerHTML = userKits.map((k, idx) => {
     const summary = k.items.map(it => `${it.code !== 'SIN CÓDIGO' && it.code !== 'PUNTUAL' ? it.code : it.name} (${it.qty})`).join(", ");
     return `
-      <div class="kit-card">
-        <div class="kit-head">
-          <span class="kit-name">📦 ${k.name} (${k.items.length})</span>
-          <div style="display:flex;gap:6px;">
-            <button class="k-btn" style="color:var(--success);border-color:var(--success);" onclick="loadUserKit(${idx})">+ Cargar</button>
-            <button class="k-btn" onclick="startEditUserKit(${idx})">✏️ Editar</button>
-            <button class="k-btn" style="color:var(--danger);" onclick="deleteUserKit(${idx})">🗑️</button>
-          </div>
+      <div class="kit-row">
+        <div style="flex:1;min-width:0;">
+          <div class="kit-title">${k.name}</div>
+          <div class="kit-sub">${summary}</div>
         </div>
-        <div style="font-size:0.74rem;color:var(--muted);">${summary}</div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="text-btn" style="color:var(--success);" onclick="loadUserKit(${idx})">Cargar</button>
+          <button class="text-btn" onclick="startEditUserKit(${idx})">Editar</button>
+          <button class="text-btn" style="color:var(--danger);" onclick="deleteUserKit(${idx})">✕</button>
+        </div>
       </div>
     `;
   }).join("");
@@ -2109,7 +1929,7 @@ function saveEditedKit() {
   updateKitsBadge();
   cancelEditKit();
   renderCart();
-  showToast("✅ Kit actualizado");
+  showToast("Kit actualizado");
 }
 
 function cancelEditKit() {
@@ -2119,19 +1939,18 @@ function cancelEditKit() {
 }
 
 function deleteUserKit(idx) {
-  if (!confirm(`¿Eliminar el kit "${userKits[idx].name}"?`)) return;
+  if (!confirm(`¿Eliminar "${userKits[idx].name}"?`)) return;
   userKits.splice(idx, 1);
   localStorage.setItem("acacio_v4_kits", JSON.stringify(userKits));
   updateKitsBadge();
   renderKitsList();
 }
 
-// Traductor de Códigos para Almacén
 function pasteFromClipboard() {
   navigator.clipboard.readText().then(t => {
     document.getElementById("transInput").value = t;
     runTranslator();
-  }).catch(() => alert("Mantén pulsado en el recuadro y selecciona Pegar."));
+  }).catch(() => {});
 }
 
 function clearTranslator() {
@@ -2170,55 +1989,47 @@ function runTranslator() {
     }
   });
 
-  out.innerHTML = `
-    <div class="status-bar">
-      <span>${parsed.length} líneas detectadas</span>
-      <span>Toca cada línea al prepararla</span>
-    </div>
-    ${parsed.map(p => {
-      if (p.type === "FOUND") {
-        const tableTags = p.mat.tables.map(t => `(${t})`).join(" / ");
-        return `
-          <div class="trans-item" onclick="this.classList.toggle('checked')">
-            <div class="trans-check">✓</div>
-            <div style="flex:1;">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-                <span class="mat-code">${p.code}</span>
-                <span class="mat-qty-pill">${p.qty} uds</span>
-              </div>
-              <div style="font-weight:700;font-size:0.9rem;margin-top:6px;">
-                ${p.mat.name} <span class="mat-table-tag">${tableTags}</span>
-              </div>
-              <div style="font-size:0.74rem;color:var(--muted);margin-top:2px;">
-                Proveedor: ${p.mat.prov} ${p.extra ? ' · Nota: ' + p.extra : ''}
-              </div>
+  out.innerHTML = parsed.map(p => {
+    if (p.type === "FOUND") {
+      const tableTags = p.mat.tables.map(t => `(${t})`).join(" ");
+      return `
+        <div class="trans-row" onclick="this.classList.toggle('checked')">
+          <div class="trans-check">✓</div>
+          <div style="flex:1;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;">
+              <span class="mat-code">${p.code}</span>
+              <span class="alb-qty">${p.qty} u.</span>
+            </div>
+            <div class="mat-name" style="margin-top:2px;">
+              ${p.mat.name} <span class="mat-table-tag">${tableTags}</span>
+            </div>
+            <div style="font-size:0.74rem;color:var(--muted);margin-top:2px;">
+              ${p.mat.prov} ${p.extra ? ' · ' + p.extra : ''}
             </div>
           </div>
-        `;
-      } else if (p.type === "UNKNOWN") {
-        return `
-          <div class="trans-item" style="border-color:var(--danger);" onclick="this.classList.toggle('checked')">
-            <div class="trans-check">✓</div>
-            <div style="flex:1;">
-              <span class="mat-code sc">${p.code}</span>
-              <div style="font-weight:700;color:var(--danger);margin-top:4px;">Código no registrado en el Excel (${p.qty} uds)</div>
-              <div style="font-size:0.75rem;color:var(--muted);">${p.rawLine}</div>
-            </div>
+        </div>
+      `;
+    } else if (p.type === "UNKNOWN") {
+      return `
+        <div class="trans-row" onclick="this.classList.toggle('checked')">
+          <div class="trans-check">✓</div>
+          <div style="flex:1;">
+            <span class="mat-code sc">${p.code}</span>
+            <div style="color:var(--danger);font-size:0.86rem;margin-top:2px;">Código no encontrado (${p.qty} u.)</div>
           </div>
-        `;
-      } else {
-        return `
-          <div class="trans-item" style="border-color:var(--warning);" onclick="this.classList.toggle('checked')">
-            <div class="trans-check">✓</div>
-            <div style="flex:1;">
-              <span style="font-size:0.72rem;font-weight:800;color:var(--warning);">SIN CÓDIGO / PUNTUAL</span>
-              <div style="font-weight:600;margin-top:4px;font-size:0.86rem;">${p.rawLine}</div>
-            </div>
+        </div>
+      `;
+    } else {
+      return `
+        <div class="trans-row" onclick="this.classList.toggle('checked')">
+          <div class="trans-check">✓</div>
+          <div style="flex:1;">
+            <div style="font-size:0.86rem;">${p.rawLine}</div>
           </div>
-        `;
-      }
-    }).join("")}
-  `;
+        </div>
+      `;
+    }
+  }).join("");
 }
 
 function closeModals() {
@@ -2235,17 +2046,16 @@ function showToast(msg) {
   const t = document.getElementById("toast");
   t.textContent = msg;
   t.style.display = "block";
-  setTimeout(() => { t.style.display = "none"; }, 2000);
+  setTimeout(() => { t.style.display = "none"; }, 1800);
 }
 
-// PWA Manifest
 const manifest = {
   name: "Material Acaciophone",
   short_name: "Acaciophone",
   start_url: ".",
   display: "standalone",
-  background_color: "#0b0f19",
-  theme_color: "#0b0f19",
+  background_color: "#090d16",
+  theme_color: "#090d16",
   icons: [{
     src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230284c7'/><text x='50%' y='58%' dominant-baseline='middle' text-anchor='middle' font-size='54'>⚡</text></svg>",
     sizes: "192x192",
