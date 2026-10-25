@@ -20,8 +20,11 @@
       --primary: #38bdf8;
       --primary-dark: #0284c7;
       --success: #10b981;
+      --success-bg: #064e3b;
       --warning: #f59e0b;
       --danger: #ef4444;
+      --albaran-bg: #0f1722;
+      --albaran-border: #10b981;
       --radius: 14px;
     }
     body.light-mode {
@@ -35,8 +38,11 @@
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --success: #059669;
+      --success-bg: #d1fae5;
       --warning: #d97706;
       --danger: #dc2626;
+      --albaran-bg: #f8fafc;
+      --albaran-border: #059669;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
@@ -48,7 +54,7 @@
       transition: background 0.15s, color 0.15s;
     }
 
-    /* Cabecera fija optimizada para móvil */
+    /* Cabecera fija */
     header {
       position: sticky;
       top: 0;
@@ -118,7 +124,7 @@
       outline: none;
     }
     .search-wrap input:focus { border-color: var(--primary); }
-    . search-wrap input::placeholder { color: var(--muted); }
+    .search-wrap input::placeholder { color: var(--muted); }
     .clear-btn {
       position: absolute;
       right: 8px;
@@ -166,88 +172,35 @@
     }
     .kits-btn { color: var(--primary); white-space: nowrap; }
 
-    /* Contenedor Principal */
-    main { max-width: 680px; margin: 0 auto; padding: 12px; }
-
-    /* Panel de Bloqueo Preventivo de Conflicto entre Tablas */
-    .conflict-gate {
-      background: var(--surface);
-      border: 2px solid var(--primary);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 16px;
+    /* Etiqueta discreta de tabla elegida tras conflicto */
+    .active-scope-bar {
       display: none;
-    }
-    .conflict-gate-title {
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: var(--primary);
-      margin-bottom: 4px;
-    }
-    .conflict-gate-sub {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-    .conflict-options {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .conflict-choice-btn {
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-      width: 100%;
-      padding: 13px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--bg);
+      justify-content: space-between;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--primary);
+      border-radius: 9px;
+      padding: 7px 11px;
+      margin-bottom: 10px;
+      font-size: 0.77rem;
       color: var(--text);
-      font-size: 0.86rem;
-      font-weight: 700;
-      text-align: left;
-      cursor: pointer;
     }
-    .conflict-choice-btn:active { background: var(--surface-2); border-color: var(--primary); }
-    .conflict-count {
+    .scope-change-btn {
       background: var(--primary-dark);
       color: #fff;
-      padding: 3px 9px;
-      border-radius: 20px;
-      font-size: 0.76rem;
-      font-weight: 800;
+      border: none;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      cursor: pointer;
       flex-shrink: 0;
     }
 
-    /* Barra rápida para alternar entre tablas hermanas tras elegir */
-    .conflict-switcher {
-      display: none;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 8px;
-      scrollbar-width: none;
-    }
-    .conflict-switcher::-webkit-scrollbar { display: none; }
-    .switch-chip {
-      white-space: nowrap;
-      padding: 7px 11px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--muted);
-      font-size: 0.76rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .switch-chip.active {
-      background: var(--primary-dark);
-      color: #fff;
-      border-color: var(--primary);
-    }
+    /* Contenedor Principal */
+    main { max-width: 680px; margin: 0 auto; padding: 12px; }
 
-    /* Lista de Materiales */
+    /* Lista de Materiales (Catálogo de Búsqueda) */
     .status-bar {
       display: flex;
       justify-content: space-between;
@@ -260,7 +213,7 @@
       display: flex;
       flex-direction: column;
       gap: 7px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .mat-row {
       display: flex;
@@ -276,7 +229,7 @@
     .mat-row:active { background: var(--surface-2); }
     .mat-row.selected {
       border-color: var(--success);
-      background: rgba(16, 185, 129, 0.07);
+      background: rgba(16, 185, 129, 0.08);
     }
     .mat-code {
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -306,14 +259,14 @@
     }
     .mat-table-tag {
       display: inline;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       font-weight: 700;
       color: var(--table-tag);
     }
     .mat-qty-pill {
       background: var(--success);
       color: #fff;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 800;
       padding: 3px 8px;
       border-radius: 20px;
@@ -323,7 +276,7 @@
     /* Botón sutil abajo del todo: Material Puntual */
     .subtle-puntual-wrap {
       text-align: center;
-      margin: 14px 0 24px;
+      margin: 12px 0 22px;
     }
     .subtle-puntual-btn {
       display: inline-flex;
@@ -334,7 +287,7 @@
       color: var(--muted);
       padding: 8px 14px;
       border-radius: 20px;
-      font-size: 0.78rem;
+      font-size: 0.77rem;
       font-weight: 600;
       cursor: pointer;
     }
@@ -343,108 +296,175 @@
       color: var(--warning);
     }
 
-    /* Sección Inferior: Lista de Material (Auto-ocultable si está vacía) */
-    .order-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px;
+    /* =====================================================
+       NUEVO DISEÑO: TABLA DE ALBARÁN NUMERADA (PEDIDO)
+       Totalmente diferenciada de la lista de búsqueda
+       ===================================================== */
+    .albaran-sheet {
+      background: var(--albaran-bg);
+      border: 2px solid var(--albaran-border);
+      border-radius: 14px;
+      overflow: hidden;
       display: none;
+      margin-top: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
-    .order-top {
+    .albaran-header {
+      background: var(--albaran-border);
+      color: #ffffff;
+      padding: 10px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 4px;
       gap: 8px;
     }
-    .order-title { font-size: 0.96rem; font-weight: 800; }
-    .save-kit-btn {
-      background: rgba(56, 189, 248, 0.12);
-      color: var(--primary);
-      border: 1px solid rgba(56, 189, 248, 0.35);
+    .albaran-title {
+      font-size: 0.88rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .albaran-save-kit {
+      background: rgba(0, 0, 0, 0.28);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
       padding: 5px 10px;
-      border-radius: 8px;
-      font-size: 0.75rem;
+      border-radius: 7px;
+      font-size: 0.74rem;
       font-weight: 700;
       cursor: pointer;
     }
-    .order-hint {
-      font-size: 0.72rem;
+    .albaran-subheader {
+      background: var(--surface-2);
+      padding: 6px 12px;
+      font-size: 0.71rem;
       color: var(--muted);
-      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
     }
     .edit-kit-banner {
       display: none;
       justify-content: space-between;
       align-items: center;
-      background: rgba(56, 189, 248, 0.14);
-      border: 1px solid var(--primary);
-      border-radius: 9px;
-      padding: 8px 10px;
-      margin-bottom: 10px;
+      background: rgba(56, 189, 248, 0.18);
+      border-bottom: 1px solid var(--primary);
+      padding: 8px 12px;
       font-size: 0.78rem;
     }
-    .order-items {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 14px;
+
+    /* Tabla de Albarán */
+    .albaran-table {
+      width: 100%;
+      border-collapse: collapse;
     }
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 9px 10px;
-      gap: 8px;
-    }
-    .cart-info { flex: 1; min-width: 0; cursor: pointer; }
-    .cart-line1 {
-      font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.86rem;
-      font-weight: 800;
-      color: var(--success);
-    }
-    .cart-line2 {
-      font-size: 0.8rem;
+    .albaran-table thead th {
+      background: var(--surface);
       color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      padding: 7px 8px;
+      text-align: left;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .albaran-table tbody tr {
+      border-bottom: 1px dashed var(--border);
+      transition: background 0.12s;
+    }
+    .albaran-table tbody tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.015);
+    }
+    .albaran-table td {
+      padding: 9px 7px;
+      vertical-align: middle;
+    }
+    .col-num {
+      width: 30px;
+      text-align: center;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--muted);
+    }
+    .col-qty {
+      width: 62px;
+      text-align: center;
+    }
+    .albaran-qty-box {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--success);
+      color: var(--success);
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-weight: 900;
+      font-size: 0.84rem;
+      padding: 3px 7px;
+      border-radius: 6px;
+      min-width: 48px;
+    }
+    .col-desc {
+      cursor: pointer;
+      max-width: 0;
+      width: 100%;
+    }
+    .alb-code-line {
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .alb-name-line {
+      font-size: 0.8rem;
+      color: var(--text);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-top: 2px;
+      margin-top: 1px;
     }
-    .cart-item.expanded .cart-line2 {
+    .albaran-row.expanded .alb-name-line {
       white-space: normal;
       overflow: visible;
-      color: var(--text);
       font-weight: 600;
-      margin-top: 4px;
+      margin-top: 3px;
     }
-    .cart-extra {
+    .alb-extra-line {
       display: none;
       font-size: 0.72rem;
       color: var(--table-tag);
       margin-top: 3px;
       font-weight: 600;
     }
-    .cart-item.expanded .cart-extra { display: block; }
-    .cart-ctrls { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-    .c-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 7px;
+    .albaran-row.expanded .alb-extra-line { display: block; }
+
+    .col-actions {
+      width: 96px;
+      text-align: right;
+      white-space: nowrap;
+    }
+    .alb-btn {
+      width: 27px;
+      height: 27px;
+      border-radius: 6px;
       border: 1px solid var(--border);
       background: var(--surface);
       color: var(--text);
-      font-weight: 700;
-      font-size: 0.95rem;
+      font-weight: 800;
+      font-size: 0.9rem;
       cursor: pointer;
+      margin-left: 2px;
     }
-    .c-btn.del { color: var(--danger); }
+    .alb-btn.del { color: var(--danger); border-color: rgba(239, 68, 68, 0.35); }
 
+    .albaran-footer {
+      padding: 12px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
     .export-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -485,16 +505,16 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: var(--primary-dark);
+      background: var(--albaran-border);
       color: #fff;
       padding: 12px 16px;
       display: none;
       justify-content: space-between;
       align-items: center;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 0.88rem;
       z-index: 40;
-      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);
       cursor: pointer;
     }
 
@@ -553,17 +573,21 @@
       color: #fff;
     }
 
-    /* Modales estilo Bottom Sheet para Smartphone */
+    /* Modales y Ventana Flotante de Conflicto */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.72);
+      background: rgba(0, 0, 0, 0.76);
       display: none;
       align-items: flex-end;
       justify-content: center;
       z-index: 100;
     }
     .modal-backdrop.open { display: flex; }
+    .modal-backdrop.center-modal {
+      align-items: center;
+      padding: 16px;
+    }
     .modal-sheet {
       background: var(--surface);
       border-top: 1px solid var(--border);
@@ -573,7 +597,18 @@
       padding: 16px 16px 24px;
       max-height: 88vh;
       overflow-y: auto;
-      animation: slideUp 0.18s ease-out;
+      animation: slideUp 0.16s ease-out;
+    }
+    .modal-card-center {
+      background: var(--surface);
+      border: 2px solid var(--primary);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 440px;
+      padding: 18px;
+      max-height: 86vh;
+      overflow-y: auto;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
     }
     @keyframes slideUp {
       from { transform: translateY(100%); }
@@ -587,7 +622,44 @@
       margin: 0 auto 12px;
     }
     .m-code { font-size: 0.76rem; font-weight: 800; color: var(--primary); text-transform: uppercase; }
-    .m-title { font-size: 0.96rem; font-weight: 700; color: var(--text); margin: 3px 0 12px; }
+    .m-title { font-size: 0.98rem; font-weight: 800; color: var(--text); margin: 3px 0 10px; }
+
+    /* Opciones dentro del modal de conflicto */
+    .conflict-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .conflict-choice-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+    }
+    .conflict-choice-btn:active {
+      background: var(--surface-2);
+      border-color: var(--primary);
+    }
+    .conflict-count {
+      background: var(--primary-dark);
+      color: #fff;
+      padding: 4px 9px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
     .field { margin-bottom: 11px; }
     .field label { display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
     .field input, .field select {
@@ -661,20 +733,14 @@
     .btn-cancel { background: var(--surface-2); color: var(--text); }
     .btn-ok { background: var(--primary-dark); color: #fff; }
 
-    /* Selector de Categorías por Hojas */
     .cat-group-title {
       font-size: 0.75rem;
       font-weight: 800;
       color: var(--primary);
       text-transform: uppercase;
       margin: 12px 0 6px;
-      letter-spacing: 0.4px;
     }
-    .cat-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 6px;
-    }
+    .cat-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
     .cat-option-btn {
       display: flex;
       justify-content: space-between;
@@ -742,13 +808,13 @@
         <button class="mode-btn active" id="tabOrderBtn" onclick="switchMode('order')">🔧 Hacer Pedido</button>
         <button class="mode-btn" id="tabTransBtn" onclick="switchMode('translator')">📦 Traductor Almacén</button>
       </div>
-      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema Sol / Oscuro">☀️</button>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar modo Sol / Oscuro">☀️</button>
     </div>
 
     <div id="orderHeaderTools">
       <div class="search-wrap">
         <form onsubmit="handleSearchSubmit(event)" style="margin:0;">
-          <input type="search" id="searchInput" enterkeyhint="search" placeholder="Buscar material, código o metros (ej: acometida, divisor, 3235)..." autocomplete="off">
+          <input type="search" id="searchInput" enterkeyhint="search" placeholder="Buscar material, código o metros (ej: acometidas, divisores, 3235)..." autocomplete="off">
         </form>
         <button type="button" class="clear-btn" id="clearSearchBtn" onclick="clearSearch()">✕</button>
       </div>
@@ -766,19 +832,15 @@
 <main>
   <!-- VISTA 1: HACER PEDIDO -->
   <div id="orderView">
-    <!-- Panel de bloqueo preventivo cuando hay conflicto entre tablas -->
-    <div class="conflict-gate" id="conflictGate">
-      <div class="conflict-gate-title">⚠️ ¿Para qué fin buscas este material?</div>
-      <div class="conflict-gate-sub">Existen materiales similares en distintas tablas que no se deben mezclar. Elige la tabla que necesitas:</div>
-      <div class="conflict-options" id="conflictOptions"></div>
+    <!-- Etiqueta informativa cuando se ha elegido una tabla en la ventana flotante -->
+    <div class="active-scope-bar" id="activeScopeBar">
+      <span>🎯 Tabla: <strong id="activeScopeName" style="color:var(--table-tag);"></strong></span>
+      <button class="scope-change-btn" onclick="reopenConflictModal()">Cambiar tabla</button>
     </div>
 
-    <!-- Barra rápida para alternar entre las tablas del conflicto sin mezclarlas -->
-    <div class="conflict-switcher" id="conflictSwitcher"></div>
-
     <div class="status-bar" id="statusBar">
-      <span id="resultsCount">321 materiales</span>
-      <span>Toca para elegir unidades</span>
+      <span id="resultsCount">321 materiales en catálogo</span>
+      <span>Toca un artículo para añadir</span>
     </div>
 
     <div class="materials-list" id="materialsList"></div>
@@ -790,8 +852,17 @@
       </button>
     </div>
 
-    <!-- Lista de Material Inferior (Oculta si hay 0 artículos) -->
-    <section class="order-card" id="orderSection">
+    <!-- ==========================================
+         NUEVA HOJA DE ALBARÁN NUMERADA (PEDIDO)
+         ========================================== -->
+    <section class="albaran-sheet" id="orderSection">
+      <div class="albaran-header">
+        <div class="albaran-title">
+          <span>🧾 ALBARÁN DE PEDIDO (<span id="cartCount">0</span> LÍNEAS)</span>
+        </div>
+        <button class="albaran-save-kit" onclick="promptSaveCurrentAsKit()">💾 Guardar Kit</button>
+      </div>
+
       <div class="edit-kit-banner" id="editKitBanner">
         <span>✏️ Editando Kit: <strong id="editingKitName"></strong></span>
         <div style="display:flex;gap:6px;">
@@ -800,19 +871,30 @@
         </div>
       </div>
 
-      <div class="order-top">
-        <div class="order-title">📋 Lista de Material (<span id="cartCount">0</span>)</div>
-        <button class="save-kit-btn" onclick="promptSaveCurrentAsKit()">💾 Guardar como Kit</button>
+      <div class="albaran-subheader">
+        <span>Toca el nombre de cualquier línea para desplegar toda la información</span>
+        <span>1m = 1 ud</span>
       </div>
-      <div class="order-hint">💡 Toca el nombre de cualquier material añadido para verlo completo.</div>
 
-      <div class="order-items" id="cartList"></div>
+      <table class="albaran-table">
+        <thead>
+          <tr>
+            <th class="col-num">#</th>
+            <th class="col-qty">Cant.</th>
+            <th>Código / Material (Tabla)</th>
+            <th class="col-actions">Ajustar</th>
+          </tr>
+        </thead>
+        <tbody id="cartTableBody"></tbody>
+      </table>
 
-      <div class="export-grid">
-        <button class="btn-action btn-copy-main" onclick="copyOrder()">📋 Copiar para Correo / Parte</button>
-        <button class="btn-action btn-mail" onclick="sendEmail()">✉️ Abrir Correo</button>
-        <button class="btn-action btn-wa" onclick="sendWhatsApp()">💬 WhatsApp</button>
-        <button class="btn-action btn-empty" onclick="clearCart()">🗑️ Vaciar lista</button>
+      <div class="albaran-footer">
+        <div class="export-grid">
+          <button class="btn-action btn-copy-main" onclick="copyOrder()">📋 Copiar para Correo / Parte</button>
+          <button class="btn-action btn-mail" onclick="sendEmail()">✉️ Abrir Correo</button>
+          <button class="btn-action btn-wa" onclick="sendWhatsApp()">💬 WhatsApp</button>
+          <button class="btn-action btn-empty" onclick="clearCart()">🗑️ Vaciar albarán</button>
+        </div>
       </div>
     </section>
   </div>
@@ -836,8 +918,20 @@
 
 <!-- Barra flotante inferior -->
 <div class="bottom-bar" id="bottomBar" onclick="scrollToOrder()">
-  <span id="bottomBarText">📋 0 materiales en la lista</span>
-  <span>Ver pedido ↓</span>
+  <span id="bottomBarText">🧾 0 líneas en el albarán</span>
+  <span>Ver albarán ↓</span>
+</div>
+
+<!-- VENTANA FLOTANTE CENTRADA: "¿PARA QUÉ FIN BUSCAS ESTE MATERIAL?" -->
+<div class="modal-backdrop center-modal" id="conflictModal">
+  <div class="modal-card-center">
+    <div class="m-code">SELECCIÓN DE TABLA OBLIGATORIA</div>
+    <div class="m-title">⚠️ ¿Para qué fin buscas este material?</div>
+    <div style="font-size:0.8rem;color:var(--muted);">
+      Selecciona la categoría exacta para no mezclar referencias de distintas tablas. Al elegir se abrirá el teclado para que sigas escribiendo:
+    </div>
+    <div class="conflict-options" id="conflictModalOptions"></div>
+  </div>
 </div>
 
 <!-- MODAL BOTTOM-SHEET: UNIDADES / MATERIAL PUNTUAL -->
@@ -909,12 +1003,12 @@
 
     <div class="m-footer">
       <button class="btn-cancel" onclick="closeModals()">Cancelar</button>
-      <button class="btn-ok" onclick="confirmModalItem()">Añadir a la lista</button>
+      <button class="btn-ok" onclick="confirmModalItem()">Añadir al albarán</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL BOTTOM-SHEET: SELECTOR DE TABLAS / CATEGORÍAS DEL EXCEL -->
+<!-- MODAL BOTTOM-SHEET: SELECTOR DE TABLAS DEL EXCEL -->
 <div class="modal-backdrop" id="categoriesModal" onclick="if(event.target===this)closeModals()">
   <div class="modal-sheet">
     <div class="sheet-handle"></div>
@@ -935,7 +1029,7 @@
     <div class="m-title">⭐ Mis Kits Guardados</div>
     <div id="kitsContainer" style="margin-bottom:12px;"></div>
     <div style="font-size:0.75rem;color:var(--muted);margin-bottom:12px;">
-      Para crear un kit nuevo: añade los materiales a tu lista de pedido y pulsa <strong>"💾 Guardar como Kit"</strong>.
+      Para crear un kit nuevo: añade los materiales al albarán inferior y pulsa <strong>"💾 Guardar Kit"</strong>.
     </div>
     <div class="m-footer">
       <button class="btn-cancel" onclick="closeModals()">Cerrar</button>
@@ -946,7 +1040,7 @@
 <div class="toast" id="toast">Listo</div>
 
 <script>
-// Las 33 Tablas exactas extraídas de las 4 hojas de MATERIAL ACACIOPHONE.xlsx [Hoja, Título de Tabla]
+// Las 33 Tablas oficiales de MATERIAL ACACIOPHONE.xlsx
 const TABLES = [
   ["Instalación Clientes","ROUTER DOMÉSTICO"],
   ["Instalación Clientes","CABLES ACOMETIDA FIBRA PROPIA"],
@@ -983,7 +1077,7 @@ const TABLES = [
   ["Sin Código (Proveedores)","EQUIPOS SIN CÓDIGO"]
 ];
 
-// Todos los artículos del Excel con su índice de tabla exacto [codigo, nombre, tableIdx, proveedor]
+// Catálogo íntegro de 321 registros [codigo, nombre, tableIdx, proveedor]
 const RAW_DATA = [
 ["3946","ROUTER ASUS ax3000 PARA DUAL O BALANCEO DE CARGA",0,"VARIOS"],
 ["3912","HUAWEI X6 ONT ADAMO",0,"VARIOS"],
@@ -1316,25 +1410,66 @@ function norm(s) {
   return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-// Diccionario de sinónimos técnicos y corrección de erratas del Excel
+// Motor gramatical Singular / Plural en español para que cualquier término en plural encuentre el singular y viceversa
+function getSingularVariants(word) {
+  const variants = [word];
+  if (word.length > 4 && word.endsWith("ces")) {
+    variants.push(word.slice(0, -3) + "z");
+  }
+  if (word.length > 4 && word.endsWith("es")) {
+    variants.push(word.slice(0, -2));
+  }
+  if (word.length > 3 && word.endsWith("s")) {
+    variants.push(word.slice(0, -1));
+  }
+  return variants;
+}
+
+// Diccionario de sinónimos en singular y plural + corrección de erratas del Excel
 function getSynonymsForItem(code, name, tableIdx) {
   const extra = [];
-  if (code === "4101") extra.push("canula tubito smouv canutillo protector fusion empalme");
-  if (tableIdx === 9) extra.push("termico pia automatico magneto magnetotermico cuadro diferencial sobretensiones");
-  if (tableIdx === 29 || code === "2429") extra.push("divisor divisores repartidor splitter");
-  if (tableIdx === 0) extra.push("ont router wifi domestico cliente");
-  if (tableIdx === 23) extra.push("torpedo botella sangrado empalme");
-  if (tableIdx === 18) extra.push("sfp gbic optico transceiver modulo");
-  if (tableIdx === 12 || tableIdx === 22) extra.push("utp ftp rj45 ethernet red cat5 cat5e cat6 lan");
-  if (tableIdx === 30 || tableIdx === 31 || tableIdx === 10) extra.push("tensor cuna amarre herraje poste fachada fijacion");
-  if (tableIdx === 14 || name.includes("HPOW") || name.includes("POE")) extra.push("alimentador transformador fuente poe");
-  if (tableIdx === 21) extra.push("bandeja repartidor odf");
+  if (code === "4101") {
+    extra.push("canula canulas tubito tubitos smouv smouvs canutillo canutillos protector protectores fusion fusiones empalme empalmes manguito manguitos");
+  }
+  if (tableIdx === 9) {
+    extra.push("termico termicos pia pias automatico automaticos magneto magnetos magnetotermico magnetotermicos cuadro cuadros diferencial diferenciales sobretension sobretensiones");
+  }
+  if (tableIdx === 29 || code === "2429") {
+    extra.push("divisor divisores repartidor repartidores splitter splitters");
+  }
+  if (tableIdx === 0) {
+    extra.push("ont onts router routers wifi domestico domesticos cliente clientes repetidor repetidores");
+  }
+  if (tableIdx === 23) {
+    extra.push("torpedo torpedos botella botellas sangrado sangrados empalme empalmes nodo nodos");
+  }
+  if (tableIdx === 18) {
+    extra.push("sfp sfps gbic gbics optico opticos transceiver transceivers modulo modulos");
+  }
+  if (tableIdx === 12 || tableIdx === 22) {
+    extra.push("utp ftp rj45 ethernet red cat5 cat5e cat6 lan cable cables bobina bobinas");
+  }
+  if (tableIdx === 30 || tableIdx === 31 || tableIdx === 10) {
+    extra.push("tensor tensores cuna cunas amarre amarres herraje herrajes poste postes fachada fachadas fijacion fijaciones pinza pinzas grapa grapas retenedor retenedores mastil mastiles garra garras tirafondo tirafondos");
+  }
+  if (tableIdx === 14 || name.includes("HPOW") || name.includes("POE")) {
+    extra.push("alimentador alimentadores transformador transformadores fuente fuentes inyector inyectores poe");
+  }
+  if (tableIdx === 21) {
+    extra.push("bandeja bandejas repartidor repartidores odf odfs");
+  }
+  if (tableIdx === 3) {
+    extra.push("roseta rosetas adaptador adaptadores enfrentador enfrentadores");
+  }
+  if (tableIdx === 28) {
+    extra.push("enfrentador enfrentadores adaptador adaptadores acoplador acopladores");
+  }
 
   // Erratas del Excel
-  if (name.includes("PIGATIL")) extra.push("pigtail");
-  if (name.includes("PERCONECTORIZADO")) extra.push("preconectorizado");
-  if (name.includes("TIRAFONO")) extra.push("tirafondo");
-  if (name.includes("RETENDOR")) extra.push("retenedor");
+  if (name.includes("PIGATIL")) extra.push("pigtail pigtails");
+  if (name.includes("PERCONECTORIZADO")) extra.push("preconectorizado preconectorizados");
+  if (name.includes("TIRAFONO")) extra.push("tirafondo tirafondos");
+  if (name.includes("RETENDOR")) extra.push("retenedor retenedores");
   if (name.includes("ADROID")) extra.push("android");
   if (name.includes("MIKEOTIK")) extra.push("mikrotik");
 
@@ -1361,40 +1496,40 @@ const MATERIALS = RAW_DATA.map((r, i) => {
   };
 });
 
-// Mapa de códigos para el Traductor de Almacén (une tablas si un código aparece en dos tablas)
+// Comprobación de coincidencia con soporte Singular / Plural
+function itemMatchesToken(matSearchStr, token) {
+  const variants = getSingularVariants(token);
+  return variants.some(v => matSearchStr.includes(v));
+}
+
 const CODE_MAP = {};
 MATERIALS.forEach(m => {
   if (m.code !== "SIN CÓDIGO") {
     if (!CODE_MAP[m.code]) {
-      CODE_MAP[m.code] = {
-        code: m.code,
-        name: m.name,
-        tables: [m.tableName],
-        prov: m.prov
-      };
+      CODE_MAP[m.code] = { code: m.code, name: m.name, tables: [m.tableName], prov: m.prov };
     } else if (!CODE_MAP[m.code].tables.includes(m.tableName)) {
       CODE_MAP[m.code].tables.push(m.tableName);
     }
   }
 });
 
-// Familias de conflicto entre tablas que no se pueden mezclar
+// Familias de conflicto: SOLO PALABRAS COMPLETAS en singular o plural (sin "acom")
 const CONFLICT_FAMILIES = [
-  { id: "acometida", regex: /\bacom/, tables: [1, 2] },
-  { id: "pigtail", regex: /\bpig(t|at)/, tables: [27, 1, 3] },
-  { id: "router", regex: /\b(rout|ont\b)/, tables: [0, 19, 32] },
-  { id: "antena", regex: /\banten/, tables: [6, 7, 8, 11, 5] },
-  { id: "cable", regex: /\bcabl/, tables: [25, 12, 1, 2] },
-  { id: "caja", regex: /\bcaj/, tables: [24, 23, 5] },
-  { id: "fijacion", regex: /\b(fijac|grap|reten|masti|garr|tiraf)/, tables: [31, 10, 30, 2] },
-  { id: "adaptador", regex: /\b(adapt|enfrent)/, tables: [3, 28, 4] },
-  { id: "latiguillo", regex: /\b(latig|patch)/, tables: [26, 1, 3, 22] }
+  { id: "acometida", words: ["acometida", "acometidas"], tables: [1, 2] },
+  { id: "pigtail", words: ["pigtail", "pigtails"], tables: [27, 1, 3] },
+  { id: "router", words: ["router", "routers", "ont", "onts"], tables: [0, 19, 32] },
+  { id: "antena", words: ["antena", "antenas"], tables: [6, 7, 8, 11, 5] },
+  { id: "cable", words: ["cable", "cables"], tables: [25, 12, 1, 2] },
+  { id: "caja", words: ["caja", "cajas"], tables: [24, 23, 5] },
+  { id: "fijacion", words: ["fijacion", "fijaciones", "grapa", "grapas", "retenedor", "retenedores", "mastil", "mastiles", "garra", "garras"], tables: [31, 10, 30, 2] },
+  { id: "adaptador", words: ["adaptador", "adaptadores", "enfrentador", "enfrentadores"], tables: [3, 28, 4] },
+  { id: "latiguillo", words: ["latiguillo", "latiguillos", "patchcord", "patchcords"], tables: [26, 1, 3] }
 ];
 
 // Estado
-let cart = JSON.parse(localStorage.getItem("acacio_v3_cart") || "[]");
-let userKits = JSON.parse(localStorage.getItem("acacio_v3_kits") || "[]");
-let selectedTable = "ALL"; // "ALL" o índice numérico de tabla
+let cart = JSON.parse(localStorage.getItem("acacio_v4_cart") || "[]");
+let userKits = JSON.parse(localStorage.getItem("acacio_v4_kits") || "[]");
+let selectedTable = "ALL";
 let activeConflictFamilyId = null;
 let resolvedConflictTable = null;
 let expandedCartKeys = new Set();
@@ -1416,7 +1551,7 @@ function toggleTheme() {
   document.getElementById("metaThemeColor").setAttribute("content", isLight ? "#f1f5f9" : "#0b0f19");
 }
 
-// Cerrar teclado al pulsar Intro o al deslizar resultados
+// Buscador y control de teclado
 const searchInput = document.getElementById("searchInput");
 const clearSearchBtn = document.getElementById("clearSearchBtn");
 
@@ -1437,6 +1572,7 @@ searchInput.addEventListener("input", () => {
   if (!val) {
     activeConflictFamilyId = null;
     resolvedConflictTable = null;
+    document.getElementById("conflictModal").classList.remove("open");
   }
   renderMaterials();
 });
@@ -1446,10 +1582,10 @@ function clearSearch() {
   clearSearchBtn.style.display = "none";
   activeConflictFamilyId = null;
   resolvedConflictTable = null;
+  document.getElementById("conflictModal").classList.remove("open");
   renderMaterials();
 }
 
-// Cambio de Modo (Pedido vs Traductor Almacén)
 function switchMode(mode) {
   const isOrder = mode === "order";
   document.getElementById("tabOrderBtn").classList.toggle("active", isOrder);
@@ -1460,40 +1596,55 @@ function switchMode(mode) {
   updateBottomBar();
 }
 
-// Detectar si la búsqueda activa alguna familia de conflicto entre tablas
+// Detectar palabra completa de conflicto
 function detectConflictFamily(tokens) {
   if (!tokens.length) return null;
+  // Si ya escribió acometida/acometidas, priorizar sobre "cable"
+  if (tokens.includes("acometida") || tokens.includes("acometidas")) {
+    return CONFLICT_FAMILIES[0];
+  }
   for (const fam of CONFLICT_FAMILIES) {
-    if (fam.id === "cable" && tokens.some(t => /\bacom/.test(t))) continue;
-    if (tokens.some(t => fam.regex.test(t))) return fam;
+    if (tokens.some(t => fam.words.includes(t))) return fam;
   }
   return null;
 }
 
-function chooseConflictTable(tIdx) {
+// Al tocar una tabla en la ventana flotante: cierra modal y reabre teclado inmediatamente
+function chooseConflictTableFromModal(tIdx) {
   resolvedConflictTable = tIdx;
-  searchInput.blur();
+  document.getElementById("conflictModal").classList.remove("open");
+
+  // Añadir espacio al final si no lo tiene y abrir el teclado para seguir escribiendo
+  const currVal = searchInput.value;
+  if (currVal && !currVal.endsWith(" ")) {
+    searchInput.value = currVal + " ";
+  }
+  searchInput.focus();
+  const len = searchInput.value.length;
+  searchInput.setSelectionRange(len, len);
+
   renderMaterials();
 }
 
-// Renderizado principal con filtro anti-confusión
+function reopenConflictModal() {
+  resolvedConflictTable = null;
+  renderMaterials();
+}
+
 function renderMaterials() {
   const q = norm(searchInput.value.trim());
   const tokens = q ? q.split(/\s+/) : [];
-  const gateEl = document.getElementById("conflictGate");
-  const switcherEl = document.getElementById("conflictSwitcher");
+  const scopeBar = document.getElementById("activeScopeBar");
   const listEl = document.getElementById("materialsList");
-  const statusEl = document.getElementById("statusBar");
 
-  // Filtrar coincidencias por texto
   const textMatches = MATERIALS.filter(m => {
     for (const t of tokens) {
-      if (!m.search.includes(t)) return false;
+      if (!itemMatchesToken(m.search, t)) return false;
     }
     return true;
   });
 
-  // Si el usuario está en "Todas las tablas", comprobar si hay conflicto entre tablas
+  // Comprobar si hay conflicto de palabra completa cuando se busca en "Todas las tablas"
   if (selectedTable === "ALL" && tokens.length > 0) {
     const fam = detectConflictFamily(tokens);
     if (fam) {
@@ -1501,22 +1652,24 @@ function renderMaterials() {
         activeConflictFamilyId = fam.id;
         resolvedConflictTable = null;
       }
-      // Contar coincidencias en las tablas de esa familia
+
       const matchingTables = [];
       fam.tables.forEach(tIdx => {
         const count = textMatches.filter(m => m.tIdx === tIdx).length;
-        if (count > 0) matchingTables.push({ tIdx, tableName: TABLES[tIdx][1], sheetName: TABLES[tIdx][0], count });
+        if (count > 0) {
+          matchingTables.push({ tIdx, tableName: TABLES[tIdx][1], sheetName: TABLES[tIdx][0], count });
+        }
       });
 
-      // Si hay más de 1 tabla con resultados, obligar primero a elegir tabla
       if (matchingTables.length > 1) {
-        if (resolvedConflictTable === null || !matchingTables.some(mt => mt.tIdx === resolvedConflictTable)) {
-          gateEl.style.display = "block";
-          switcherEl.style.display = "none";
-          statusEl.style.display = "none";
+        if (resolvedConflictTable === null) {
+          // Ocultar teclado y abrir ventana flotante obligatoria
+          searchInput.blur();
+          scopeBar.style.display = "none";
           listEl.innerHTML = "";
-          document.getElementById("conflictOptions").innerHTML = matchingTables.map(mt => `
-            <button class="conflict-choice-btn" onclick="chooseConflictTable(${mt.tIdx})">
+          document.getElementById("resultsCount").textContent = "Elige la tabla en la ventana emergente...";
+          document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
+            <button type="button" class="conflict-choice-btn" onclick="chooseConflictTableFromModal(${mt.tIdx})">
               <div>
                 <div style="color:var(--table-tag);">(${mt.tableName})</div>
                 <div style="font-size:0.73rem;color:var(--muted);font-weight:500;margin-top:2px;">Hoja: ${mt.sheetName}</div>
@@ -1524,37 +1677,25 @@ function renderMaterials() {
               <span class="conflict-count">${mt.count} art. →</span>
             </button>
           `).join("");
+          document.getElementById("conflictModal").classList.add("open");
           return;
         } else {
-          // Ya eligió tabla: mostrar barra superior para alternar con 1 toque sin mezclar
-          gateEl.style.display = "none";
-          switcherEl.style.display = "flex";
-          statusEl.style.display = "flex";
-          switcherEl.innerHTML = matchingTables.map(mt => `
-            <button class="switch-chip ${mt.tIdx === resolvedConflictTable ? 'active' : ''}" onclick="chooseConflictTable(${mt.tIdx})">
-              (${mt.tableName}) · ${mt.count}
-            </button>
-          `).join("");
+          // Ya eligió la tabla: mostrar solo el indicador discreto de tabla activa
+          scopeBar.style.display = "flex";
+          document.getElementById("activeScopeName").textContent = `(${TABLES[resolvedConflictTable][1]})`;
         }
       } else {
-        gateEl.style.display = "none";
-        switcherEl.style.display = "none";
-        statusEl.style.display = "flex";
+        scopeBar.style.display = "none";
       }
     } else {
       activeConflictFamilyId = null;
       resolvedConflictTable = null;
-      gateEl.style.display = "none";
-      switcherEl.style.display = "none";
-      statusEl.style.display = "flex";
+      scopeBar.style.display = "none";
     }
   } else {
-    gateEl.style.display = "none";
-    switcherEl.style.display = "none";
-    statusEl.style.display = "flex";
+    scopeBar.style.display = "none";
   }
 
-  // Aplicar filtro de tabla seleccionada o de conflicto resuelto
   let finalItems = textMatches;
   if (selectedTable !== "ALL") {
     finalItems = textMatches.filter(m => m.tIdx === selectedTable);
@@ -1592,7 +1733,7 @@ function renderMaterials() {
   }).join("");
 }
 
-// Modal de Selección de Categorías / Tablas del Excel
+// Modal de Categorías / Tablas del Excel
 function openCategoriesModal() {
   const container = document.getElementById("categoriesContainer");
   const counts = {};
@@ -1742,12 +1883,13 @@ function confirmModalItem() {
     else cart.push(obj);
   }
 
-  saveCart();
   closeModals();
-  showToast("Añadido a la lista");
+  clearSearch();
+  saveCart();
+  showToast("✅ Añadido al albarán");
 }
 
-// Gestión de la Lista de Material
+// Gestión de la Tabla de Albarán Numerada
 function toggleExpandCartItem(key) {
   if (expandedCartKeys.has(key)) expandedCartKeys.delete(key);
   else expandedCartKeys.add(key);
@@ -1767,7 +1909,7 @@ function removeCartIdx(idx) {
 
 function clearCart() {
   if (!cart.length) return;
-  if (confirm("¿Vaciar toda la lista de material?")) {
+  if (confirm("¿Vaciar todo el albarán de pedido?")) {
     cart = [];
     cancelEditKit();
     saveCart();
@@ -1775,46 +1917,50 @@ function clearCart() {
 }
 
 function saveCart() {
-  localStorage.setItem("acacio_v3_cart", JSON.stringify(cart));
+  localStorage.setItem("acacio_v4_cart", JSON.stringify(cart));
   renderCart();
   renderMaterials();
 }
 
 function renderCart() {
   const sectionEl = document.getElementById("orderSection");
-  const listEl = document.getElementById("cartList");
+  const tbodyEl = document.getElementById("cartTableBody");
   document.getElementById("cartCount").textContent = cart.length;
   updateBottomBar();
 
   if (!cart.length && editingKitIndex === null) {
     sectionEl.style.display = "none";
-    listEl.innerHTML = "";
+    tbodyEl.innerHTML = "";
     return;
   }
 
   sectionEl.style.display = "block";
-  listEl.innerHTML = cart.map((item, i) => {
+  tbodyEl.innerHTML = cart.map((item, i) => {
     const isExp = expandedCartKeys.has(item.key);
     const safeKey = item.key.replace(/'/g, "\\'");
-    const headerLine = item.code === "SIN CÓDIGO"
-      ? `SIN CÓDIGO – ${item.qty} unidades`
+    const codeDisplay = item.code === "SIN CÓDIGO"
+      ? "SIN CÓDIGO"
       : item.code === "PUNTUAL"
-        ? `MATERIAL PUNTUAL – ${item.qty} unidades`
-        : `${item.code} – ${item.qty} unidades`;
+        ? "PUNTUAL"
+        : `Cód. ${item.code}`;
 
     return `
-      <div class="cart-item ${isExp ? 'expanded' : ''}">
-        <div class="cart-info" onclick="toggleExpandCartItem('${safeKey}')">
-          <div class="cart-line1">${headerLine} ${item.note ? '(' + item.note + ')' : ''}</div>
-          <div class="cart-line2">${item.name} (${item.tableName})</div>
-          <div class="cart-extra">Tabla: (${item.tableName}) · Proveedor: ${item.prov}</div>
-        </div>
-        <div class="cart-ctrls">
-          <button class="c-btn" onclick="changeCartQty(${i}, -1)">−</button>
-          <button class="c-btn" onclick="changeCartQty(${i}, 1)">+</button>
-          <button class="c-btn del" onclick="removeCartIdx(${i})">✕</button>
-        </div>
-      </div>
+      <tr class="albaran-row ${isExp ? 'expanded' : ''}">
+        <td class="col-num">#${i + 1}</td>
+        <td class="col-qty">
+          <span class="albaran-qty-box">${item.qty} u.</span>
+        </td>
+        <td class="col-desc" onclick="toggleExpandCartItem('${safeKey}')">
+          <div class="alb-code-line">${codeDisplay} ${item.note ? '· (' + item.note + ')' : ''}</div>
+          <div class="alb-name-line">${item.name} (${item.tableName})</div>
+          <div class="alb-extra-line">📂 Tabla: (${item.tableName}) · Prov: ${item.prov}</div>
+        </td>
+        <td class="col-actions">
+          <button class="alb-btn" onclick="changeCartQty(${i}, -1)">−</button>
+          <button class="alb-btn" onclick="changeCartQty(${i}, 1)">+</button>
+          <button class="alb-btn del" onclick="removeCartIdx(${i})">✕</button>
+        </td>
+      </tr>
     `;
   }).join("");
 }
@@ -1824,7 +1970,7 @@ function updateBottomBar() {
   const isOrderView = document.getElementById("orderView").style.display !== "none";
   if (cart.length > 0 && isOrderView) {
     bar.style.display = "flex";
-    document.getElementById("bottomBarText").textContent = `📋 ${cart.length} materiales en la lista`;
+    document.getElementById("bottomBarText").textContent = `🧾 ${cart.length} líneas en el albarán de pedido`;
   } else {
     bar.style.display = "none";
   }
@@ -1882,7 +2028,7 @@ function updateKitsBadge() {
 }
 
 function promptSaveCurrentAsKit() {
-  if (!cart.length) return alert("Añade materiales a la lista primero.");
+  if (!cart.length) return alert("Añade materiales al albarán primero.");
   const def = editingKitIndex !== null && userKits[editingKitIndex] ? userKits[editingKitIndex].name : "";
   const name = prompt("Nombre para guardar este Kit:", def);
   if (!name || !name.trim()) return;
@@ -1896,7 +2042,7 @@ function promptSaveCurrentAsKit() {
     userKits.push(kitObj);
     showToast("⭐ Kit guardado");
   }
-  localStorage.setItem("acacio_v3_kits", JSON.stringify(userKits));
+  localStorage.setItem("acacio_v4_kits", JSON.stringify(userKits));
   updateKitsBadge();
 }
 
@@ -1959,7 +2105,7 @@ function saveEditedKit() {
   const newName = prompt("Nombre del Kit:", userKits[editingKitIndex].name);
   if (!newName || !newName.trim()) return;
   userKits[editingKitIndex] = { name: newName.trim(), items: JSON.parse(JSON.stringify(cart)) };
-  localStorage.setItem("acacio_v3_kits", JSON.stringify(userKits));
+  localStorage.setItem("acacio_v4_kits", JSON.stringify(userKits));
   updateKitsBadge();
   cancelEditKit();
   renderCart();
@@ -1975,12 +2121,12 @@ function cancelEditKit() {
 function deleteUserKit(idx) {
   if (!confirm(`¿Eliminar el kit "${userKits[idx].name}"?`)) return;
   userKits.splice(idx, 1);
-  localStorage.setItem("acacio_v3_kits", JSON.stringify(userKits));
+  localStorage.setItem("acacio_v4_kits", JSON.stringify(userKits));
   updateKitsBadge();
   renderKitsList();
 }
 
-// Traductor de Códigos para Almacén (con título de la tabla entre paréntesis)
+// Traductor de Códigos para Almacén
 function pasteFromClipboard() {
   navigator.clipboard.readText().then(t => {
     document.getElementById("transInput").value = t;
@@ -2076,7 +2222,9 @@ function runTranslator() {
 }
 
 function closeModals() {
-  document.querySelectorAll(".modal-backdrop").forEach(m => m.classList.remove("open"));
+  document.querySelectorAll(".modal-backdrop").forEach(m => {
+    if (m.id !== "conflictModal") m.classList.remove("open");
+  });
 }
 
 function scrollToOrder() {
