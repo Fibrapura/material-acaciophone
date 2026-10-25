@@ -10,7 +10,6 @@
   <link rel="manifest" id="pwa-manifest">
   <style>
     :root {
-      /* Nivel 0, 1 y 2 de profundidad (Modo Oscuro Técnico) */
       --bg: #080c14;
       --panel: #101726;
       --panel-elevated: #162033;
@@ -30,7 +29,6 @@
       --albaran-bg: #0d1522;
       --albaran-head: #064e3b;
       --albaran-border: rgba(16, 185, 129, 0.45);
-      /* Colores de barra lateral por hoja del Excel */
       --sheet-clientes: #38bdf8;
       --sheet-fibra: #10b981;
       --sheet-antenas: #f59e0b;
@@ -73,9 +71,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* =====================================================
-       CABECERA CORPORATIVA Y CONTROL SEGMENTADO (MEJORA B)
-       ===================================================== */
     header {
       position: sticky;
       top: 0;
@@ -145,7 +140,6 @@
       flex-shrink: 0;
     }
 
-    /* Buscador Técnico */
     .search-wrap {
       position: relative;
       margin-bottom: 9px;
@@ -194,7 +188,6 @@
       justify-content: center;
     }
 
-    /* Barra de filtros (Tablas y Kits) */
     .filter-bar {
       display: flex;
       gap: 8px;
@@ -236,12 +229,8 @@
       flex-shrink: 0;
     }
 
-    /* =====================================================
-       CONTENEDOR PRINCIPAL Y CATÁLOGO CORPORATIVO (OPCIÓN B)
-       ===================================================== */
     main { max-width: 660px; margin: 0 auto; padding: 12px 14px; }
 
-    /* Indicador de tabla activa tras resolver un conflicto */
     .scope-banner {
       display: none;
       align-items: center;
@@ -266,7 +255,6 @@
       cursor: pointer;
     }
 
-    /* Panel agrupado de Catálogo (Nivel 1 de profundidad) */
     .catalog-panel {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -292,7 +280,6 @@
     .mat-row:last-child { border-bottom: none; }
     .mat-row:active { background: var(--panel-hover); }
 
-    /* Indicador lateral fino por familia del Excel */
     .mat-row.sheet-0 { border-left-color: var(--sheet-clientes); }
     .mat-row.sheet-1 { border-left-color: var(--sheet-fibra); }
     .mat-row.sheet-2 { border-left-color: var(--sheet-antenas); }
@@ -302,7 +289,6 @@
       background: var(--success-soft);
     }
 
-    /* Pastilla técnica para el código */
     .code-badge {
       font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;
       font-size: 0.84rem;
@@ -322,7 +308,6 @@
       font-size: 0.72rem;
     }
 
-    /* Jerarquía en 2 niveles (Mejora A) */
     .mat-content {
       flex: 1;
       min-width: 0;
@@ -353,7 +338,6 @@
       flex-shrink: 0;
     }
 
-    /* Botón sutil inferior para Material Puntual */
     .puntual-wrap {
       text-align: center;
       padding: 16px 0 20px;
@@ -373,9 +357,6 @@
       color: var(--warning);
     }
 
-    /* =====================================================
-       HOJA DE TRABAJO / ALBARÁN DE SALIDA (MEJORA C)
-       ===================================================== */
     .albaran-doc {
       background: var(--albaran-bg);
       border: 1.5px solid var(--albaran-border);
@@ -439,7 +420,6 @@
       font-size: 0.78rem;
     }
 
-    /* Filas de 3 columnas limpias del Albarán */
     .albaran-body {
       display: flex;
       flex-direction: column;
@@ -497,7 +477,6 @@
       text-overflow: ellipsis;
       margin-top: 1px;
     }
-    /* Despliegue completo al tocar la fila en el Albarán */
     .alb-row.expanded .alb-name-line {
       white-space: normal;
       overflow: visible;
@@ -519,7 +498,6 @@
     }
     .alb-row.expanded .alb-prov-line { display: block; }
 
-    /* Cápsula unificada de cantidad [ − | 4 u. | + ] + Borrar */
     .alb-right {
       display: flex;
       align-items: center;
@@ -574,7 +552,6 @@
       justify-content: center;
     }
 
-    /* Pie del documento de Albarán */
     .albaran-footer {
       background: var(--panel);
       border-top: 1px solid var(--border);
@@ -615,7 +592,6 @@
       border-color: rgba(239, 68, 68, 0.25);
     }
 
-    /* Píldora Flotante Inferior */
     .floating-pill {
       position: fixed;
       bottom: 16px;
@@ -637,9 +613,6 @@
       white-space: nowrap;
     }
 
-    /* =====================================================
-       VISTA TRADUCTOR ALMACÉN (ESTILO TÉCNICO UNIFICADO)
-       ===================================================== */
     #translatorView { display: none; }
     .trans-box {
       background: var(--panel);
@@ -705,9 +678,6 @@
       color: #fff;
     }
 
-    /* =====================================================
-       VENTANAS EMERGENTES / MODALES
-       ===================================================== */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -760,7 +730,6 @@
     .m-meta { font-size: 0.74rem; font-weight: 800; color: var(--accent); text-transform: uppercase; }
     .m-title { font-size: 0.98rem; font-weight: 700; color: var(--text); margin: 4px 0 14px; }
 
-    /* Opciones del modal de conflicto */
     .conflict-list {
       display: flex;
       flex-direction: column;
@@ -885,7 +854,6 @@
     .btn-ok { background: var(--accent); color: #080c14; font-weight: 800; }
     body.light-mode .btn-ok { color: #ffffff; }
 
-    /* Selector de Tablas */
     .cat-group-title {
       font-size: 0.71rem;
       font-weight: 800;
@@ -921,7 +889,6 @@
       color: var(--muted);
     }
 
-    /* Mis Kits */
     .kit-row {
       display: flex;
       justify-content: space-between;
@@ -997,14 +964,13 @@
       <button onclick="reopenConflictModal()">Cambiar tabla</button>
     </div>
 
-    <!-- Contenedor Agrupado del Catálogo (Opción B) -->
     <div class="catalog-panel" id="materialsList"></div>
 
     <div class="puntual-wrap">
       <button class="puntual-btn" onclick="openPuntualModal()">+ Añadir material puntual sin código</button>
     </div>
 
-    <!-- HOJA DE TRABAJO: ALBARÁN DE SALIDA (Mejora C) -->
+    <!-- HOJA DE TRABAJO: ALBARÁN DE SALIDA -->
     <section class="albaran-doc" id="orderSection">
       <div class="albaran-header">
         <div class="albaran-header-left">
@@ -1550,10 +1516,10 @@ function getSynonymsForItem(code, name, tableIdx) {
 }
 
 function getSheetColorIndex(tIdx) {
-  if (tIdx <= 6) return 0;   // Instalación Clientes
-  if (tIdx <= 16) return 2;  // Antenas Despliegue
-  if (tIdx <= 31) return 1;  // Fibra Despliegue
-  return 3;                  // Sin Código
+  if (tIdx <= 6) return 0;
+  if (tIdx <= 16) return 2;
+  if (tIdx <= 31) return 1;
+  return 3;
 }
 
 const MATERIALS = RAW_DATA.map((r, i) => {
@@ -1948,7 +1914,6 @@ function confirmModalItem() {
   }
 
   closeModals();
-  clearSearch();
   saveCart();
   showToast("Añadido al albarán");
 }
