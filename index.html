@@ -11,7 +11,6 @@
   <link rel="apple-touch-icon" id="appleTouchIcon">
   <link rel="manifest" id="pwa-manifest">
   <style>
-    /* Paleta Corporativa Acaciophone (Modo Claro por defecto) */
     :root {
       --corp-navy: #041b3a;
       --corp-blue: #0a3d7a;
@@ -43,7 +42,6 @@
       --sheet-sc: #7c3aed;
     }
 
-    /* Modo Oscuro Opcional */
     body.dark-mode {
       --corp-navy: #0f294a;
       --corp-blue: #1e4976;
@@ -80,17 +78,19 @@
       font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
-      padding-bottom: 104px;
+      padding-bottom: 108px;
       line-height: 1.4;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Cabecera Corporativa Blanca y Limpia */
+    /* =====================================================
+       CABECERA Y BOTÓN INTERACTIVO [ ‹ Inicio | logo ]
+       ===================================================== */
     header {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(255, 255, 255, 0.94);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 2px solid var(--border);
@@ -98,7 +98,7 @@
       box-shadow: 0 2px 12px rgba(4, 27, 58, 0.06);
     }
     body.dark-mode header {
-      background: rgba(16, 24, 39, 0.92);
+      background: rgba(16, 24, 39, 0.94);
       box-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
     }
     .header-inner { max-width: 660px; margin: 0 auto; }
@@ -107,26 +107,56 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 11px;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    /* Botón interactivo [ ‹ Inicio | Logo ] */
+    .home-logo-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--panel-elevated);
+      border: 1.5px solid var(--border-strong);
+      padding: 6px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 1px 3px rgba(4, 27, 58, 0.06);
+      transition: transform 0.12s, border-color 0.15s, background 0.15s;
+    }
+    .home-logo-btn:active {
+      transform: scale(0.95);
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .home-chevron {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .home-btn-text {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .home-divider {
+      width: 1px;
+      height: 14px;
+      background: var(--border-strong);
     }
     .brand-logo {
-      height: 22px;
-      max-width: 126px;
+      height: 15px;
+      max-width: 88px;
       object-fit: contain;
-      cursor: pointer;
       filter: none;
-      transition: transform 0.12s, filter 0.15s;
-      flex-shrink: 0;
-    }
-    .brand-logo:active {
-      transform: scale(0.95);
+      display: block;
     }
     body.dark-mode .brand-logo {
       filter: brightness(0) invert(1);
     }
 
-    /* Selector Pedidos | Lector de códigos */
     .segmented-control {
       flex: 1;
       display: grid;
@@ -140,9 +170,9 @@
       border: none;
       background: transparent;
       color: var(--muted);
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       font-weight: 700;
-      padding: 7px 6px;
+      padding: 7px 5px;
       border-radius: 8px;
       cursor: pointer;
       white-space: nowrap;
@@ -159,13 +189,13 @@
     }
 
     .theme-btn {
-      width: 36px;
-      height: 36px;
+      width: 35px;
+      height: 35px;
       border-radius: 10px;
       border: 1px solid var(--border);
       background: var(--panel-elevated);
       color: var(--text);
-      font-size: 0.98rem;
+      font-size: 0.95rem;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -173,7 +203,7 @@
       flex-shrink: 0;
     }
 
-    /* Buscador y Filtros */
+    /* Buscador y Filtros principales */
     .search-wrap {
       position: relative;
       margin-bottom: 9px;
@@ -265,9 +295,184 @@
       flex-shrink: 0;
     }
 
-    /* Contenedor Principal */
     main { max-width: 660px; margin: 0 auto; padding: 14px; }
 
+    /* =====================================================
+       PANTALLA DE INICIO (PORTADA CORPORATIVA)
+       ===================================================== */
+    #homeView {
+      padding: 10px 0 24px;
+    }
+    .home-hero {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 26px 20px 22px;
+      text-align: center;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(4, 27, 58, 0.06);
+    }
+    .home-shield {
+      width: 68px;
+      height: 68px;
+      border-radius: 16px;
+      object-fit: contain;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      padding: 4px;
+      background: #f1f5f9;
+    }
+    .home-main-logo {
+      height: 30px;
+      max-width: 210px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 8px;
+    }
+    body.dark-mode .home-main-logo {
+      filter: brightness(0) invert(1);
+    }
+    .home-subtitle {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .home-cards-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .home-nav-card {
+      background: var(--panel);
+      border: 2px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 18px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.12s, border-color 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 14px rgba(4, 27, 58, 0.05);
+    }
+    .home-nav-card:active {
+      transform: scale(0.98);
+      border-color: var(--accent);
+    }
+    .home-nav-card.primary-card {
+      border-color: var(--corp-navy);
+      border-left: 6px solid var(--corp-navy);
+    }
+    body.dark-mode .home-nav-card.primary-card {
+      border-color: var(--accent);
+      border-left: 6px solid var(--accent);
+    }
+    .home-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.45rem;
+      flex-shrink: 0;
+    }
+    .home-card-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .home-card-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .home-card-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .home-card-badge {
+      display: inline-block;
+      margin-top: 6px;
+      background: var(--success-soft);
+      color: var(--success);
+      border: 1px solid var(--success);
+      font-size: 0.73rem;
+      font-weight: 800;
+      padding: 2px 9px;
+      border-radius: 12px;
+    }
+    .home-card-arrow {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* =====================================================
+       TARJETAS POR BLOQUES (VISTA DESPEJADA EN PEDIDOS)
+       ===================================================== */
+    .blocks-dashboard {
+      margin-bottom: 12px;
+    }
+    .blocks-section-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      padding-left: 2px;
+    }
+    .blocks-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+    .block-card {
+      background: var(--panel);
+      border: 1.5px solid var(--border);
+      border-top: 4px solid var(--accent);
+      border-radius: 13px;
+      padding: 13px 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.1s, border-color 0.15s;
+      box-shadow: 0 2px 8px rgba(4, 27, 58, 0.04);
+    }
+    .block-card:active {
+      transform: scale(0.97);
+    }
+    .block-card.b-0 { border-top-color: var(--sheet-clientes); }
+    .block-card.b-1 { border-top-color: var(--sheet-fibra); }
+    .block-card.b-2 { border-top-color: var(--sheet-antenas); }
+    .block-card.b-3 { border-top-color: var(--sheet-sc); }
+
+    .block-icon {
+      font-size: 1.25rem;
+      margin-bottom: 5px;
+    }
+    .block-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.25;
+    }
+    .block-meta {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* =====================================================
+       BARRA DE FILTROS INTELIGENTES POR CARACTERÍSTICAS
+       ===================================================== */
     .scope-banner {
       display: none;
       align-items: center;
@@ -277,9 +482,10 @@
       color: var(--accent);
       padding: 9px 13px;
       border-radius: 11px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       font-size: 0.8rem;
       font-weight: 800;
+      gap: 8px;
     }
     .scope-banner button {
       background: var(--corp-navy);
@@ -293,7 +499,63 @@
       flex-shrink: 0;
     }
 
-    /* Bloque de Catálogo Bien Diferenciado */
+    .subfilters-panel {
+      display: none;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(4, 27, 58, 0.04);
+    }
+    .sf-row {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+      align-items: center;
+    }
+    .sf-row::-webkit-scrollbar { display: none; }
+    .sf-row + .sf-row {
+      margin-top: 7px;
+      padding-top: 7px;
+      border-top: 1px dashed var(--border);
+    }
+    .sf-label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-right: 2px;
+      flex-shrink: 0;
+    }
+    .sf-chip {
+      border: 1px solid var(--border-strong);
+      background: var(--panel-elevated);
+      color: var(--text-secondary);
+      padding: 5px 10px;
+      border-radius: 16px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .sf-chip.active {
+      background: var(--corp-navy);
+      color: #ffffff;
+      border-color: var(--corp-navy);
+    }
+    body.dark-mode .sf-chip.active {
+      background: var(--accent);
+      color: #041b3a;
+      border-color: var(--accent);
+    }
+
+    /* =====================================================
+       LISTA DE CATÁLOGO Y ETIQUETAS RÁPIDAS DE ESPECIFICACIÓN
+       ===================================================== */
     .catalog-panel {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -349,6 +611,38 @@
       flex: 1;
       min-width: 0;
     }
+    .spec-tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+    .spec-tag {
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.69rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 5px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid var(--code-border);
+    }
+    .spec-tag.tag-dark {
+      background: #1e293b;
+      color: #f8fafc;
+      border-color: #334155;
+    }
+    .spec-tag.tag-light {
+      background: #f8fafc;
+      color: #0f172a;
+      border-color: #94a3b8;
+    }
+    .spec-tag.tag-green {
+      background: var(--success-soft);
+      color: var(--success);
+      border-color: rgba(5, 150, 105, 0.3);
+    }
+
     .mat-line1 {
       font-size: 0.89rem;
       font-weight: 650;
@@ -374,10 +668,9 @@
       flex-shrink: 0;
     }
 
-    /* Botón sutil inferior para Material Puntual */
     .puntual-wrap {
       text-align: center;
-      padding: 18px 0 22px;
+      padding: 16px 0 20px;
     }
     .puntual-btn {
       background: var(--panel);
@@ -388,7 +681,6 @@
       font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 1px 4px rgba(4, 27, 58, 0.04);
     }
     .puntual-btn:active {
       border-color: var(--accent);
@@ -396,7 +688,7 @@
     }
 
     /* =====================================================
-       APARTADO DE PEDIDO (CORPORATIVO ACACIOPHONE)
+       APARTADO DE PEDIDO
        ===================================================== */
     .pedido-doc {
       background: var(--pedido-bg);
@@ -404,7 +696,7 @@
       border-radius: 15px;
       overflow: hidden;
       display: none;
-      margin-top: 8px;
+      margin-top: 6px;
       box-shadow: 0 10px 28px rgba(4, 27, 58, 0.14);
     }
 
@@ -641,7 +933,7 @@
       border-color: rgba(220, 38, 38, 0.3);
     }
 
-    /* Botón Flotante Inferior ("Pedido") Más Grande y Destacado */
+    /* Botón Flotante Inferior ("Pedido") Más Grande */
     .floating-pill {
       position: fixed;
       bottom: 18px;
@@ -650,13 +942,13 @@
       background: var(--corp-navy);
       border: 2px solid #ffffff;
       color: #ffffff;
-      padding: 13px 28px;
+      padding: 14px 32px;
       border-radius: 36px;
       display: none;
       align-items: center;
       gap: 12px;
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       z-index: 40;
       box-shadow: 0 10px 28px rgba(4, 27, 58, 0.45);
       cursor: pointer;
@@ -978,7 +1270,7 @@
 
     .toast {
       position: fixed;
-      bottom: 76px;
+      bottom: 78px;
       left: 50%;
       transform: translateX(-50%);
       background: var(--corp-navy);
@@ -995,10 +1287,17 @@
 </head>
 <body>
 
-<header>
+<header id="appHeader" style="display:none;">
   <div class="header-inner">
     <div class="top-bar">
-      <img id="headerLogo" alt="Acaciophone" class="brand-logo" onclick="scrollToTop()" title="Subir al inicio">
+      <!-- Botón interactivo [ ‹ Inicio | Logo ] que lleva a la Portada Principal -->
+      <button type="button" class="home-logo-btn" onclick="switchMode('home')" title="Ir a la pantalla de inicio">
+        <span class="home-chevron">‹</span>
+        <span class="home-btn-text">Inicio</span>
+        <span class="home-divider"></span>
+        <img id="headerLogo" alt="Acaciophone" class="brand-logo">
+      </button>
+
       <div class="segmented-control">
         <button class="seg-btn active" id="tabOrderBtn" onclick="switchMode('order')">Pedidos</button>
         <button class="seg-btn" id="tabTransBtn" onclick="switchMode('translator')">Lector de códigos</button>
@@ -1026,14 +1325,77 @@
 </header>
 
 <main>
+  <!-- VISTA 0: PORTADA DE INICIO -->
+  <div id="homeView">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+      <button class="theme-btn" id="homeThemeBtn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
+    </div>
+    <div class="home-hero">
+      <img id="homeShieldImg" alt="Acacio" class="home-shield">
+      <img id="homeLogoImg" alt="Acaciophone" class="home-main-logo">
+      <div class="home-subtitle">Gestión de Material, Partes y Pedidos a Almacén</div>
+    </div>
+
+    <div class="home-cards-grid">
+      <button type="button" class="home-nav-card primary-card" onclick="switchMode('order')">
+        <div class="home-card-icon">📦</div>
+        <div class="home-card-body">
+          <div class="home-card-title">Pedidos</div>
+          <div class="home-card-desc">Buscar material por categoría o características, usar kits personales y generar códigos para el correo o parte.</div>
+          <div id="homeOrderBadge" class="home-card-badge" style="display:none;"></div>
+        </div>
+        <span class="home-card-arrow">›</span>
+      </button>
+
+      <button type="button" class="home-nav-card" onclick="switchMode('translator')">
+        <div class="home-card-icon">🔍</div>
+        <div class="home-card-body">
+          <div class="home-card-title">Lector de códigos</div>
+          <div class="home-card-desc">Pegar la lista de códigos recibida por correo en almacén para obtener el listado detallado de materiales.</div>
+        </div>
+        <span class="home-card-arrow">›</span>
+      </button>
+    </div>
+  </div>
+
   <!-- VISTA 1: PEDIDOS -->
-  <div id="orderView">
+  <div id="orderView" style="display:none;">
     <div class="scope-banner" id="activeScopeBar">
       <span id="activeScopeName"></span>
       <button onclick="reopenConflictModal()">Cambiar categoría</button>
     </div>
 
-    <div class="catalog-panel" id="materialsList"></div>
+    <!-- Barra de subfiltros inteligentes por características (Metros, Grosor, Color, etc.) -->
+    <div class="subfilters-panel" id="subFiltersBar"></div>
+
+    <!-- Vista despejada por bloques (Evita mostrar los 321 artículos de golpe al entrar) -->
+    <div class="blocks-dashboard" id="blocksDashboard">
+      <div class="blocks-section-label">Selecciona un bloque o usa el buscador superior</div>
+      <div class="blocks-grid">
+        <button type="button" class="block-card b-0" onclick="openCategoriesModal('Instalación Clientes')">
+          <div class="block-icon">🏠</div>
+          <div class="block-title">Instalación Clientes</div>
+          <div class="block-meta">7 categorías · 151 art.</div>
+        </button>
+        <button type="button" class="block-card b-1" onclick="openCategoriesModal('Fibra Despliegue')">
+          <div class="block-icon">🧵</div>
+          <div class="block-title">Fibra Despliegue</div>
+          <div class="block-meta">15 categorías · 116 art.</div>
+        </button>
+        <button type="button" class="block-card b-2" onclick="openCategoriesModal('Antenas Despliegue')">
+          <div class="block-icon">📡</div>
+          <div class="block-title">Antenas Despliegue</div>
+          <div class="block-meta">10 categorías · 40 art.</div>
+        </button>
+        <button type="button" class="block-card b-3" onclick="selectTableFilter(32)">
+          <div class="block-icon">⚡</div>
+          <div class="block-title">Equipos Sin Código</div>
+          <div class="block-meta">Instant Byte · 14 art.</div>
+        </button>
+      </div>
+    </div>
+
+    <div class="catalog-panel" id="materialsList" style="display:none;"></div>
 
     <div class="puntual-wrap">
       <button class="puntual-btn" onclick="openPuntualModal()">+ Añadir material puntual sin código</button>
@@ -1072,7 +1434,7 @@
   </div>
 
   <!-- VISTA 2: LECTOR DE CÓDIGOS -->
-  <div id="translatorView">
+  <div id="translatorView" style="display:none;">
     <div class="trans-box">
       <div class="trans-toolbar">
         <span class="trans-title">Códigos de entrada</span>
@@ -1165,7 +1527,7 @@
 
 <!-- MODAL: CATEGORÍAS (Sin título superior) -->
 <div class="modal-backdrop" id="categoriesModal" onclick="if(event.target===this)closeActiveModal()">
-  <div class="modal-sheet">
+  <div class="modal-sheet" id="categoriesSheet">
     <div class="sheet-handle"></div>
     <div id="categoriesContainer"></div>
   </div>
@@ -1183,13 +1545,35 @@
 <div class="toast" id="toast">Listo</div>
 
 <script>
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
+function forceScrollTop() {
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  });
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, 35);
+}
+
 // Imágenes corporativas incrustadas en Base64 real
 const LOGO_DATA_URI = "data:image/png;base64,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";
 
 const ICON_DATA_URI = "data:image/png;base64,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";
 
 document.getElementById("headerLogo").src = LOGO_DATA_URI;
+document.getElementById("homeLogoImg").src = LOGO_DATA_URI;
 document.getElementById("pedidoLogo").src = LOGO_DATA_URI;
+document.getElementById("homeShieldImg").src = ICON_DATA_URI;
 document.getElementById("appFavicon").href = ICON_DATA_URI;
 document.getElementById("appleTouchIcon").href = ICON_DATA_URI;
 
@@ -1569,6 +1953,61 @@ function getSingularVariants(word) {
   return variants;
 }
 
+// =========================================================================
+// MOTOR DE BÚSQUEDA TOLERANTE A FALLOS (ORTOGRAFÍA + QWERTY + LEVENSHTEIN)
+// =========================================================================
+function toPhonetic(str) {
+  return norm(str)
+    .replace(/h/g, "")
+    .replace(/v/g, "b")
+    .replace(/z/g, "s")
+    .replace(/c([eiy])/g, "s$1")
+    .replace(/qu/g, "k")
+    .replace(/c/g, "k")
+    .replace(/g([eiy])/g, "j$1")
+    .replace(/gu([eiy])/g, "g$1")
+    .replace(/ll/g, "y")
+    .replace(/w/g, "g")
+    .replace(/(.)\1+/g, "$1");
+}
+
+const QWERTY_NEIGHBORS = {
+  q: "wa", w: "qeasd", e: "wrsdf", r: "etdfg", t: "ryfgh", y: "tughj", u: "yihjk", i: "uojkl", o: "ipkl", p: "ol",
+  a: "qwsxz", s: "qweadzx", d: "wersfxc", f: "ertdgcv", g: "rtyfhvb", h: "tyugjbn", j: "yuihknm", k: "uiojlm", l: "iopk",
+  z: "asx", x: "zsdc", c: "xdfv", v: "cfgb", b: "vghn", n: "bhjm", m: "njk"
+};
+
+function areKeysNeighbors(a, b) {
+  return (QWERTY_NEIGHBORS[a] && QWERTY_NEIGHBORS[a].includes(b)) || false;
+}
+
+// Distancia Damerau-Levenshtein ponderada (prioriza teclas vecinas y letras bailadas)
+function typoDistance(a, b, maxAllowed) {
+  const la = a.length, lb = b.length;
+  if (Math.abs(la - lb) > maxAllowed) return maxAllowed + 1;
+  const dp = Array.from({ length: la + 1 }, () => new Array(lb + 1).fill(0));
+  for (let i = 0; i <= la; i++) dp[i][0] = i;
+  for (let j = 0; j <= lb; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= la; i++) {
+    let rowMin = 99;
+    for (let j = 1; j <= lb; j++) {
+      let cost = a[i - 1] === b[j - 1] ? 0 : (areKeysNeighbors(a[i - 1], b[j - 1]) ? 0.75 : 1);
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + cost
+      );
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        dp[i][j] = Math.min(dp[i][j], dp[i - 2][j - 2] + 0.8);
+      }
+      if (dp[i][j] < rowMin) rowMin = dp[i][j];
+    }
+    if (rowMin > maxAllowed + 0.8) return maxAllowed + 1;
+  }
+  return dp[la][lb];
+}
+
 function getSynonymsForItem(code, name, tableIdx) {
   const extra = [];
   if (code === "4101") extra.push("canula canulas tubito tubitos smouv smouvs canutillo canutillos protector protectores fusion fusiones empalme empalmes manguito manguitos");
@@ -1601,6 +2040,116 @@ function getSheetColorIndex(tIdx) {
   return 3;
 }
 
+// =========================================================================
+// EXTRACCIÓN DE ATRIBUTOS Y ETIQUETAS VISUALES PARA FILTRADO RÁPIDO (100%)
+// =========================================================================
+function extractItemAttributes(code, name, tIdx) {
+  const up = name.toUpperCase();
+  const badges = [];
+  let typeGroup = "Otros";
+  let measureGroup = null;
+
+  // Extraer metros si existen
+  const mMatch = up.match(/\b(\d+(?:[.,]\d+)?)\s*(?:M|MT|MTS|METROS)\b/);
+  if (mMatch) {
+    const mVal = mMatch[1].replace(",", ".") + "m";
+    measureGroup = mVal;
+    badges.push({ text: mVal, cls: "tag-green" });
+  }
+
+  // Extraer grosor mm
+  if (up.includes("5 MM") || up.includes("5MM")) badges.push({ text: "5 mm", cls: "" });
+  else if (up.includes("4,2MM") || up.includes("4.2MM")) badges.push({ text: "4.2 mm", cls: "" });
+  else if (up.includes("3 MM") || up.includes("3MM")) badges.push({ text: "3 mm", cls: "" });
+  else if (up.includes("2 MM") || up.includes("2MM")) badges.push({ text: "2 mm", cls: "" });
+  else if (up.includes("0,9 MM") || up.includes("0.9 MM")) badges.push({ text: "0.9 mm", cls: "" });
+
+  // Extraer color
+  if (up.includes("NEGRO") || up.includes("NEGRA")) badges.push({ text: "NEGRO", cls: "tag-dark" });
+  else if (up.includes("BLANCO") || up.includes("BLANCA")) badges.push({ text: "BLANCO", cls: "tag-light" });
+
+  // Clasificación específica por tabla abundante (100% cobertura)
+  if (tIdx === 1) { // CABLES ACOMETIDA FIBRA PROPIA (30)
+    if (up.includes("ALARGADOR")) typeGroup = "Alargadores 2m";
+    else if (up.includes("SERIE FORCE")) { typeGroup = "Armado Force 3mm"; badges.push({ text: "Armado Force", cls: "" }); }
+    else if (up.includes("SM9/125")) { typeGroup = "Ext. SM9/125"; badges.push({ text: "SM9/125", cls: "" }); }
+    else if (up.includes("5 MM")) typeGroup = "Opticom 5mm";
+    else if (up.includes("NEGRO")) typeGroup = "Opticom 3mm Negro";
+    else if (up.includes("BLANCO")) typeGroup = "Opticom 3mm Blanco";
+  } else if (tIdx === 2) { // CABLES ACOMETIDA FIBRA MARCA BLANCA (47)
+    if (up.includes("OPTITAP") || up.includes("CORNING")) { typeGroup = "Ext. Corning Optitap"; badges.push({ text: "Optitap", cls: "" }); }
+    else if (up.includes("FASTCONNECT") || up.includes("HUAWEI")) { typeGroup = "Ext. Huawei FastConnect"; badges.push({ text: "FastConnect", cls: "" }); }
+    else if (up.includes("G657A2")) { typeGroup = "Ext. Reforzado SC/APC"; badges.push({ text: "G657A2 SC/APC", cls: "" }); }
+    else if (up.includes("CIRCO") || up.includes("MMV")) { typeGroup = "Ext. Circo MMV"; badges.push({ text: "Circo MMV", cls: "" }); }
+    else if (up.includes("4,2MM")) typeGroup = "Interior 4.2mm";
+    else if (up.includes("INTERIOR")) typeGroup = "Interior 3mm";
+    else typeGroup = "Genérica / Fijación";
+  } else if (tIdx === 0) { // ROUTER DOMÉSTICO (33)
+    if (up.includes("HUAWEI")) typeGroup = "Huawei";
+    else if (up.includes("TP-LINK") || up.includes("TP- LINK") || up.includes("TPLINK")) typeGroup = "TP-Link";
+    else if (up.includes("SAGECOM") || up.includes("ZTE") || up.includes("SERCOMM")) typeGroup = "Sagemcom / ZTE / Sercomm";
+    else if (up.includes("MIKROTIK") || up.includes("ASUS")) typeGroup = "Mikrotik / Asus";
+    else typeGroup = "Otros / 4G / DSL";
+
+    if (up.includes("WIFI 7") || up.includes("WIFI 6") || up.includes("AX")) { measureGroup = "WiFi 6 / WiFi 7"; badges.push({ text: "WiFi 6/7", cls: "tag-green" }); }
+    else if (up.includes("NEBA") || up.includes("VULA")) { measureGroup = "NEBA / VULA"; badges.push({ text: "NEBA/VULA", cls: "" }); }
+    else if (up.includes("REPETIDOR") || up.includes("MESH")) { measureGroup = "Repetidor / Mesh"; badges.push({ text: "Repetidor", cls: "" }); }
+    else if (up.includes("4G") || up.includes("SATELITE") || up.includes("DSL")) { measureGroup = "4G / Satélite / DSL"; }
+    else { measureGroup = "ONT / Router GPON"; }
+  } else if (tIdx === 26) { // PATCH CORD (18)
+    if (up.includes("SC/APC - SC/APC")) { typeGroup = "SC/APC - SC/APC"; badges.push({ text: "SC/APC-SC/APC", cls: "" }); }
+    else if (up.includes("SC/APC - SC/UPC")) { typeGroup = "SC/APC - SC/UPC"; badges.push({ text: "SC/APC-SC/UPC", cls: "" }); }
+    else if (up.includes("LC") && up.includes("SC")) { typeGroup = "SC - LC"; badges.push({ text: "SC-LC", cls: "" }); }
+    else if (up.includes("LC/")) { typeGroup = "LC - LC"; badges.push({ text: "LC-LC", cls: "" }); }
+    else { typeGroup = "SC/UPC - SC/UPC"; badges.push({ text: "SC/UPC-SC/UPC", cls: "" }); }
+    if (up.includes("DUPLEX")) badges.push({ text: "DÚPLEX", cls: "tag-dark" });
+  } else if (tIdx === 25) { // CABLE FIBRA ÓPTICA (12)
+    const foMatch = up.match(/\b(\d+)\s*FO\b/);
+    if (foMatch) {
+      measureGroup = foMatch[1] + " FO";
+      badges.push({ text: measureGroup, cls: "tag-green" });
+    }
+    if (up.includes("ARMADURA")) { typeGroup = "Armadura Metálica"; badges.push({ text: "Armado", cls: "" }); }
+    else if (up.includes("ROEDORES")) { typeGroup = "Anti-roedores"; badges.push({ text: "Anti-roedores", cls: "" }); }
+    else typeGroup = "Estándar";
+  } else if (tIdx === 6) { // ANTENA DOMÉSTICA (18)
+    if (up.includes("MIKROTIK") || up.includes("SXT") || up.includes("LHG") || up.includes("LDF") || up.includes("DISC")) typeGroup = "Mikrotik";
+    else if (up.includes("PUNTO DE ACCESO") || up.includes("UNIFI")) typeGroup = "Punto Acceso / WiFi";
+    else if (up.includes("PARABOLICA") || up.includes("OFFSET")) typeGroup = "Parabólica / Satélite";
+    else typeGroup = "Cambium / NanoBeam";
+  } else if (tIdx === 17) { // OLT (12)
+    if (up.includes("TARJETA")) typeGroup = "Tarjetas OLT";
+    else if (up.includes("HUAWEI")) typeGroup = "Chasis OLT Huawei";
+    else typeGroup = "BDCOM / Cabecera";
+  } else if (tIdx === 21) { // ODF (10)
+    const pMatch = up.match(/\b(\d+)\s*PUERTOS\b/);
+    if (pMatch) { measureGroup = pMatch[1] + " Puertos"; badges.push({ text: measureGroup, cls: "tag-green" }); }
+    typeGroup = up.includes("DUPLEX") ? "Dúplex con fusiones" : "Estándar";
+  } else if (tIdx === 24) { // CTO (10)
+    if (up.includes("INTERIOR")) typeGroup = "Interior";
+    else if (up.includes("POSTE")) typeGroup = "Fachada / Poste";
+    else if (up.includes("ARQUETA") || up.includes("COMPACT")) typeGroup = "Arqueta / Compact";
+    else typeGroup = "Multi / Con Splitter";
+    if (up.includes("8 PUERTOS") || up.includes("-8-")) { measureGroup = "8 Puertos"; badges.push({ text: "8 P", cls: "tag-green" }); }
+    else if (up.includes("16")) { measureGroup = "16 Puertos"; badges.push({ text: "16 P", cls: "tag-green" }); }
+    else if (up.includes("48")) { measureGroup = "48 Puertos"; badges.push({ text: "48 P", cls: "tag-green" }); }
+  } else if (tIdx === 23) { // EMPALME/NODO (7)
+    typeGroup = up.includes("TORPEDO") ? "Torpedo" : "Estanca / Mini CAU";
+    const fMatch = up.match(/\b(\d+)\s*FUSIONES\b/);
+    if (fMatch) { measureGroup = fMatch[1] + " Fusiones"; badges.push({ text: fMatch[1] + " Fus.", cls: "tag-green" }); }
+  } else if (tIdx === 29) { // SPLITTER (7)
+    typeGroup = (up.includes("PRECONECTORIZADO") || up.includes("PERCONECTORIZADO")) ? "Conectorizado SC/APC" : "Sin conectorizar";
+    const sMatch = up.match(/(1:\d+)/);
+    if (sMatch) { measureGroup = sMatch[1]; badges.push({ text: sMatch[1], cls: "tag-green" }); }
+  } else if (tIdx === 5) { // MATERIAL TV CLIENTE (12)
+    if (up.includes("ANDROID") || up.includes("ADROID") || up.includes("DECO")) typeGroup = "Decos Android TV";
+    else if (up.includes("ANTENA") || up.includes("PARABOLICA")) typeGroup = "Antenas Satélite / TDT";
+    else typeGroup = "LNB / Receptor Sat";
+  }
+
+  return { badges, typeGroup, measureGroup };
+}
+
 const MATERIALS = RAW_DATA.map((r, i) => {
   const code = r[0];
   const name = r[1];
@@ -1609,6 +2158,11 @@ const MATERIALS = RAW_DATA.map((r, i) => {
   const sheetName = TABLES[tIdx][0];
   const tableName = TABLES[tIdx][1];
   const syns = getSynonymsForItem(code, name, tIdx);
+  const fullText = norm(`${code} ${name} ${tableName} ${prov} ${syns}`);
+  const words = fullText.split(/[^a-z0-9]+/).filter(w => w.length >= 3);
+  const phoneticFull = toPhonetic(fullText);
+  const attrs = extractItemAttributes(code, name, tIdx);
+
   return {
     id: i,
     code,
@@ -1618,12 +2172,49 @@ const MATERIALS = RAW_DATA.map((r, i) => {
     sheetName,
     tableName,
     prov,
-    search: norm(`${code} ${name} ${tableName} ${prov} ${syns}`)
+    search: fullText,
+    words,
+    phoneticFull,
+    badges: attrs.badges,
+    typeGroup: attrs.typeGroup,
+    measureGroup: attrs.measureGroup
   };
 });
 
-function itemMatchesToken(matSearchStr, token) {
-  return getSingularVariants(token).some(v => matSearchStr.includes(v));
+// Coincidencia tolerante a errores ortográficos, fonéticos y de teclado táctil
+function itemMatchesToken(mat, token) {
+  // 1. Si el token contiene números (código o metros), coincidencia exacta obligatoria
+  if (/\d/.test(token)) {
+    return mat.search.includes(token);
+  }
+  // 2. Coincidencia normal o singular/plural
+  const variants = getSingularVariants(token);
+  if (variants.some(v => mat.search.includes(v))) return true;
+
+  // 3. Coincidencia fonética española (b/v, c/s/z, ll/y, h muda, k/qu, letras dobles)
+  if (token.length >= 3) {
+    const phToken = toPhonetic(token);
+    if (phToken.length >= 3 && mat.phoneticFull.includes(phToken)) return true;
+  }
+
+  // 4. Coincidencia por teclado táctil (QWERTY) o letras bailadas/comidas (Damerau-Levenshtein)
+  if (token.length >= 4) {
+    const maxDist = token.length >= 7 ? 2.0 : 1.1;
+    for (const v of variants) {
+      if (v.length < 4) continue;
+      for (const w of mat.words) {
+        if (Math.abs(w.length - v.length) <= 2) {
+          if (typoDistance(v, w, maxDist) <= maxDist) return true;
+        }
+        // También comprobar prefijo si el usuario lleva escrita una palabra larga
+        if (v.length >= 5 && w.length > v.length) {
+          const wPrefix = w.slice(0, v.length);
+          if (typoDistance(v, wPrefix, 1.0) <= 1.0) return true;
+        }
+      }
+    }
+  }
+  return false;
 }
 
 const CODE_MAP = {};
@@ -1649,37 +2240,51 @@ const CONFLICT_FAMILIES = [
   { id: "latiguillo", words: ["latiguillo", "latiguillos", "patchcord", "patchcords"], tables: [26, 1, 3] }
 ];
 
+// Comprobar si un token escrito coincide (exacta o con errata al terminar la palabra) con una palabra de conflicto
+function tokenMatchesConflictWord(token, targetWord, endsWithSpace) {
+  if (token === targetWord) return true;
+  if (toPhonetic(token) === toPhonetic(targetWord) && token.length >= targetWord.length - 1) return true;
+  if (targetWord.length >= 5) {
+    // Si tiene la misma longitud (ej. acomrtida / acomeitda / roiter / atnena) o ya pulsó espacio
+    if (token.length >= targetWord.length || (endsWithSpace && token.length >= targetWord.length - 1)) {
+      const maxD = targetWord.length >= 8 ? 1.8 : 1.0;
+      if (typoDistance(token, targetWord, maxD) <= maxD) return true;
+    }
+  }
+  return false;
+}
+
 let cart = JSON.parse(localStorage.getItem("acacio_v4_cart") || "[]");
 let userKits = JSON.parse(localStorage.getItem("acacio_v4_kits") || "[]");
+let currentView = "home"; // "home" | "order" | "translator"
 let selectedTable = "ALL";
 let activeConflictFamilyId = null;
 let resolvedConflictTable = null;
 let conflictDismissed = false;
+let activeSubType = "ALL";
+let activeSubMeasure = "ALL";
 let expandedCartKeys = new Set();
 let modalMode = "CATALOG";
 let currentItem = null;
 let editingKitIndex = null;
 let handlingPopState = false;
 
-history.replaceState({ view: "order", modal: null }, "");
+history.replaceState({ view: "home", modal: null }, "");
 
-// Tema Claro Corporativo por defecto; Modo Oscuro si el usuario lo activa
 if (localStorage.getItem("acacio_theme_v5") === "dark") {
   document.body.classList.add("dark-mode");
   document.getElementById("themeBtn").textContent = "☀️";
+  document.getElementById("homeThemeBtn").textContent = "☀️";
   document.getElementById("metaThemeColor").setAttribute("content", "#101827");
 }
 
 function toggleTheme() {
   const isDark = document.body.classList.toggle("dark-mode");
   localStorage.setItem("acacio_theme_v5", isDark ? "dark" : "light");
-  document.getElementById("themeBtn").textContent = isDark ? "☀️" : "🌙";
+  const icon = isDark ? "☀️" : "🌙";
+  document.getElementById("themeBtn").textContent = icon;
+  document.getElementById("homeThemeBtn").textContent = icon;
   document.getElementById("metaThemeColor").setAttribute("content", isDark ? "#101827" : "#ffffff");
-}
-
-// Al pulsar el logo sube arriba del todo sin cambiar de apartado
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 const searchInput = document.getElementById("searchInput");
@@ -1703,6 +2308,8 @@ searchInput.addEventListener("input", () => {
     activeConflictFamilyId = null;
     resolvedConflictTable = null;
     conflictDismissed = false;
+    activeSubType = "ALL";
+    activeSubMeasure = "ALL";
     document.getElementById("conflictModal").classList.remove("open");
   }
   renderMaterials();
@@ -1714,6 +2321,8 @@ function clearSearch() {
   activeConflictFamilyId = null;
   resolvedConflictTable = null;
   conflictDismissed = false;
+  activeSubType = "ALL";
+  activeSubMeasure = "ALL";
   document.getElementById("conflictModal").classList.remove("open");
   renderMaterials();
 }
@@ -1726,7 +2335,7 @@ function openModalById(modalId) {
   const el = document.getElementById(modalId);
   if (!el.classList.contains("open")) {
     el.classList.add("open");
-    history.pushState({ view: getCurrentView(), modal: modalId }, "");
+    history.pushState({ view: currentView, modal: modalId }, "");
   }
 }
 
@@ -1745,32 +2354,42 @@ function closeActiveModal() {
   }
 }
 
-function getCurrentView() {
-  return document.getElementById("translatorView").style.display !== "none" ? "translator" : "order";
-}
-
 function applyViewDOM(mode) {
+  currentView = mode;
+  const isHome = mode === "home";
   const isOrder = mode === "order";
-  document.getElementById("tabOrderBtn").classList.toggle("active", isOrder);
-  document.getElementById("tabTransBtn").classList.toggle("active", !isOrder);
-  document.getElementById("orderHeaderTools").style.display = isOrder ? "block" : "none";
+  const isTrans = mode === "translator";
+
+  document.getElementById("appHeader").style.display = isHome ? "none" : "block";
+  document.getElementById("homeView").style.display = isHome ? "block" : "none";
   document.getElementById("orderView").style.display = isOrder ? "block" : "none";
-  document.getElementById("translatorView").style.display = isOrder ? "none" : "block";
-  window.scrollTo({ top: 0, behavior: "instant" });
+  document.getElementById("translatorView").style.display = isTrans ? "block" : "none";
+
+  if (!isHome) {
+    document.getElementById("tabOrderBtn").classList.toggle("active", isOrder);
+    document.getElementById("tabTransBtn").classList.toggle("active", isTrans);
+    document.getElementById("orderHeaderTools").style.display = isOrder ? "block" : "none";
+  }
+
+  forceScrollTop();
   updateBottomBar();
+  updateHomeBadge();
 }
 
 function switchMode(mode) {
-  const curr = getCurrentView();
-  if (curr === mode) return;
+  if (currentView === mode) {
+    forceScrollTop();
+    return;
+  }
+  const prevView = currentView;
   applyViewDOM(mode);
   if (!handlingPopState) {
-    if (mode === "translator") {
-      history.pushState({ view: "translator", modal: null }, "");
-    } else if (history.state && history.state.view === "translator") {
-      history.back();
+    if (mode === "home") {
+      history.pushState({ view: "home", modal: null }, "");
+    } else if (prevView === "home") {
+      history.pushState({ view: mode, modal: null }, "");
     } else {
-      history.replaceState({ view: "order", modal: null }, "");
+      history.pushState({ view: mode, modal: null }, "");
     }
   }
 }
@@ -1781,17 +2400,23 @@ window.addEventListener("popstate", (e) => {
     conflictDismissed = true;
   }
   closeAllModalDOM();
-  const targetView = (e.state && e.state.view) ? e.state.view : "order";
+  const targetView = (e.state && e.state.view) ? e.state.view : "home";
   applyViewDOM(targetView);
   renderMaterials();
   handlingPopState = false;
 });
 
-function detectConflictFamily(tokens) {
+function detectConflictFamily(tokens, endsWithSpace) {
   if (!tokens.length) return null;
-  if (tokens.includes("acometida") || tokens.includes("acometidas")) return CONFLICT_FAMILIES[0];
+  for (const t of tokens) {
+    if (CONFLICT_FAMILIES[0].words.some(w => tokenMatchesConflictWord(t, w, endsWithSpace))) {
+      return CONFLICT_FAMILIES[0];
+    }
+  }
   for (const fam of CONFLICT_FAMILIES) {
-    if (tokens.some(t => fam.words.includes(t))) return fam;
+    if (tokens.some(t => fam.words.some(w => tokenMatchesConflictWord(t, w, endsWithSpace)))) {
+      return fam;
+    }
   }
   return null;
 }
@@ -1799,8 +2424,10 @@ function detectConflictFamily(tokens) {
 function chooseConflictTableFromModal(tIdx) {
   resolvedConflictTable = tIdx;
   conflictDismissed = false;
+  activeSubType = "ALL";
+  activeSubMeasure = "ALL";
   closeActiveModal();
-  window.scrollTo({ top: 0, behavior: "instant" });
+  forceScrollTop();
 
   const currVal = searchInput.value;
   if (currVal && !currVal.endsWith(" ")) {
@@ -1816,29 +2443,109 @@ function chooseConflictTableFromModal(tIdx) {
 function reopenConflictModal() {
   resolvedConflictTable = null;
   conflictDismissed = false;
+  activeSubType = "ALL";
+  activeSubMeasure = "ALL";
   renderMaterials();
 }
 
+function setSubFilter(kind, val) {
+  if (kind === "TYPE") activeSubType = val;
+  else if (kind === "MEASURE") activeSubMeasure = val;
+  renderMaterials();
+  forceScrollTop();
+}
+
+// Construcción dinámica de la barra de subfiltros por características
+function renderSubFiltersBar(activeTIdx, baseCategoryItems) {
+  const barEl = document.getElementById("subFiltersBar");
+  if (activeTIdx === null || baseCategoryItems.length < 7) {
+    barEl.style.display = "none";
+    barEl.innerHTML = "";
+    return;
+  }
+
+  const typeSet = [];
+  const measureSet = [];
+  baseCategoryItems.forEach(m => {
+    if (m.typeGroup && !typeSet.includes(m.typeGroup)) typeSet.push(m.typeGroup);
+    if (m.measureGroup && !measureSet.includes(m.measureGroup)) measureSet.push(m.measureGroup);
+  });
+
+  // Ordenar medidas numéricamente si tienen números
+  measureSet.sort((a, b) => {
+    const na = parseFloat(a.replace(/[^\d.]/g, "")) || 9999;
+    const nb = parseFloat(b.replace(/[^\d.]/g, "")) || 9999;
+    return na - nb;
+  });
+
+  if (typeSet.length <= 1 && measureSet.length <= 1) {
+    barEl.style.display = "none";
+    barEl.innerHTML = "";
+    return;
+  }
+
+  let html = "";
+  if (typeSet.length > 1) {
+    html += `<div class="sf-row"><span class="sf-label">Tipo:</span>`;
+    html += `<button type="button" class="sf-chip ${activeSubType === 'ALL' ? 'active' : ''}" onclick="setSubFilter('TYPE','ALL')">Todos</button>`;
+    typeSet.forEach(tg => {
+      const safe = tg.replace(/'/g, "\\'");
+      html += `<button type="button" class="sf-chip ${activeSubType === tg ? 'active' : ''}" onclick="setSubFilter('TYPE','${safe}')">${tg}</button>`;
+    });
+    html += `</div>`;
+  }
+
+  if (measureSet.length > 1) {
+    html += `<div class="sf-row"><span class="sf-label">Medida:</span>`;
+    html += `<button type="button" class="sf-chip ${activeSubMeasure === 'ALL' ? 'active' : ''}" onclick="setSubFilter('MEASURE','ALL')">Todas</button>`;
+    measureSet.forEach(mg => {
+      const safe = mg.replace(/'/g, "\\'");
+      html += `<button type="button" class="sf-chip ${activeSubMeasure === mg ? 'active' : ''}" onclick="setSubFilter('MEASURE','${safe}')">${mg}</button>`;
+    });
+    html += `</div>`;
+  }
+
+  barEl.innerHTML = html;
+  barEl.style.display = "block";
+}
+
 function renderMaterials() {
-  const q = norm(searchInput.value.trim());
+  const rawVal = searchInput.value;
+  const endsWithSpace = /\s$/.test(rawVal);
+  const q = norm(rawVal.trim());
   const tokens = q ? q.split(/\s+/) : [];
   const scopeBar = document.getElementById("activeScopeBar");
   const listEl = document.getElementById("materialsList");
+  const blocksEl = document.getElementById("blocksDashboard");
+  const subBarEl = document.getElementById("subFiltersBar");
+
+  // Si no hay texto escrito y está en "Todas las categorías", mostrar vista limpia por bloques
+  if (!q && selectedTable === "ALL" && resolvedConflictTable === null) {
+    scopeBar.style.display = "none";
+    subBarEl.style.display = "none";
+    listEl.style.display = "none";
+    blocksEl.style.display = "block";
+    return;
+  }
+
+  blocksEl.style.display = "none";
 
   const textMatches = MATERIALS.filter(m => {
     for (const t of tokens) {
-      if (!itemMatchesToken(m.search, t)) return false;
+      if (!itemMatchesToken(m, t)) return false;
     }
     return true;
   });
 
   if (selectedTable === "ALL" && tokens.length > 0) {
-    const fam = detectConflictFamily(tokens);
+    const fam = detectConflictFamily(tokens, endsWithSpace);
     if (fam) {
       if (activeConflictFamilyId !== fam.id) {
         activeConflictFamilyId = fam.id;
         resolvedConflictTable = null;
         conflictDismissed = false;
+        activeSubType = "ALL";
+        activeSubMeasure = "ALL";
       }
 
       const matchingTables = [];
@@ -1853,6 +2560,7 @@ function renderMaterials() {
         if (resolvedConflictTable === null && !conflictDismissed) {
           searchInput.blur();
           scopeBar.style.display = "none";
+          subBarEl.style.display = "none";
           listEl.style.display = "none";
           document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
             <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
@@ -1881,11 +2589,24 @@ function renderMaterials() {
     scopeBar.style.display = "none";
   }
 
-  let finalItems = textMatches;
-  if (selectedTable !== "ALL") {
-    finalItems = textMatches.filter(m => m.tIdx === selectedTable);
-  } else if (resolvedConflictTable !== null) {
-    finalItems = textMatches.filter(m => m.tIdx === resolvedConflictTable);
+  const activeTIdx = selectedTable !== "ALL" ? selectedTable : resolvedConflictTable;
+
+  let baseItems = textMatches;
+  if (activeTIdx !== null) {
+    baseItems = textMatches.filter(m => m.tIdx === activeTIdx);
+  }
+
+  // Mostrar subfiltros de características si estamos dentro de una categoría abundante
+  renderSubFiltersBar(activeTIdx, MATERIALS.filter(m => m.tIdx === activeTIdx));
+
+  let finalItems = baseItems;
+  if (activeTIdx !== null) {
+    if (activeSubType !== "ALL") {
+      finalItems = finalItems.filter(m => m.typeGroup === activeSubType);
+    }
+    if (activeSubMeasure !== "ALL") {
+      finalItems = finalItems.filter(m => m.measureGroup === activeSubMeasure);
+    }
   }
 
   finalItems.sort((a, b) => {
@@ -1897,22 +2618,26 @@ function renderMaterials() {
   const cartMap = {};
   cart.forEach(c => { cartMap[c.key] = c.qty; });
 
-  const limit = (!q && selectedTable === "ALL" && resolvedConflictTable === null) ? 80 : finalItems.length;
-
   if (finalItems.length === 0) {
-    listEl.style.display = "none";
+    listEl.style.display = "block";
+    listEl.innerHTML = `<div style="padding:20px;text-align:center;color:var(--muted);font-size:0.85rem;">No hay coincidencias con este filtro.</div>`;
     return;
   }
 
   listEl.style.display = "block";
-  listEl.innerHTML = finalItems.slice(0, limit).map(m => {
+  listEl.innerHTML = finalItems.map(m => {
     const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
     const qtyInCart = cartMap[key];
     const isSC = m.code === "SIN CÓDIGO";
+    const badgesHTML = m.badges.length
+      ? `<div class="spec-tags-row">${m.badges.map(b => `<span class="spec-tag ${b.cls}">${b.text}</span>`).join("")}</div>`
+      : "";
+
     return `
       <div class="mat-row sheet-${m.sheetColorIdx} ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
         <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : m.code}</span>
         <div class="mat-content">
+          ${badgesHTML}
           <div class="mat-line1">${m.name}</div>
           <div class="mat-line2">(${m.tableName})</div>
         </div>
@@ -1922,23 +2647,34 @@ function renderMaterials() {
   }).join("");
 }
 
-function openCategoriesModal() {
+function openCategoriesModal(onlySheet) {
   const container = document.getElementById("categoriesContainer");
   const counts = {};
   MATERIALS.forEach(m => { counts[m.tIdx] = (counts[m.tIdx] || 0) + 1; });
 
   const groups = {};
   TABLES.forEach((t, idx) => {
+    if (onlySheet && t[0] !== onlySheet) return;
     if (!groups[t[0]]) groups[t[0]] = [];
     groups[t[0]].push({ idx, title: t[1], count: counts[idx] || 0 });
   });
 
-  let html = `
-    <button class="cat-item ${selectedTable === 'ALL' ? 'active' : ''}" onclick="selectTableFilter('ALL')">
-      <span>Todas las categorías</span>
-      <span class="cat-count">${MATERIALS.length}</span>
-    </button>
-  `;
+  let html = "";
+  if (!onlySheet) {
+    html += `
+      <button class="cat-item ${selectedTable === 'ALL' ? 'active' : ''}" onclick="selectTableFilter('ALL')">
+        <span>Todas las categorías</span>
+        <span class="cat-count">${MATERIALS.length}</span>
+      </button>
+    `;
+  } else {
+    html += `
+      <button class="cat-item" onclick="openCategoriesModal()">
+        <span style="color:var(--accent);font-weight:800;">‹ Ver todas las categorías</span>
+        <span class="cat-count">${MATERIALS.length}</span>
+      </button>
+    `;
+  }
 
   Object.keys(groups).forEach(sheetName => {
     html += `<div class="cat-group-title">${sheetName}</div>`;
@@ -1954,12 +2690,16 @@ function openCategoriesModal() {
 
   container.innerHTML = html;
   openModalById("categoriesModal");
+  const sheetEl = document.getElementById("categoriesSheet");
+  if (sheetEl) sheetEl.scrollTop = 0;
 }
 
 function selectTableFilter(val) {
   selectedTable = val;
   resolvedConflictTable = null;
   conflictDismissed = false;
+  activeSubType = "ALL";
+  activeSubMeasure = "ALL";
   const labelEl = document.getElementById("selectedCatLabel");
   const triggerBtn = document.getElementById("catTriggerBtn");
   if (val === "ALL") {
@@ -1971,7 +2711,7 @@ function selectTableFilter(val) {
   }
   closeActiveModal();
   renderMaterials();
-  window.scrollTo({ top: 0, behavior: "instant" });
+  forceScrollTop();
 }
 
 function openCatalogModal(id) {
@@ -2100,10 +2840,22 @@ function clearCart() {
   }
 }
 
+function updateHomeBadge() {
+  const badge = document.getElementById("homeOrderBadge");
+  if (!badge) return;
+  if (cart.length > 0) {
+    badge.style.display = "inline-block";
+    badge.textContent = ` Pedido activo: ${cart.length} ${cart.length === 1 ? 'material' : 'materiales'}`;
+  } else {
+    badge.style.display = "none";
+  }
+}
+
 function saveCart() {
   localStorage.setItem("acacio_v4_cart", JSON.stringify(cart));
   renderCart();
   renderMaterials();
+  updateHomeBadge();
 }
 
 function renderCart() {
@@ -2111,6 +2863,7 @@ function renderCart() {
   const tbodyEl = document.getElementById("cartTableBody");
   document.getElementById("cartCount").textContent = cart.length;
   updateBottomBar();
+  updateHomeBadge();
 
   if (!cart.length && editingKitIndex === null) {
     sectionEl.style.display = "none";
@@ -2155,8 +2908,7 @@ function renderCart() {
 
 function updateBottomBar() {
   const bar = document.getElementById("bottomBar");
-  const isOrderView = document.getElementById("orderView").style.display !== "none";
-  if (cart.length > 0 && isOrderView) {
+  if (cart.length > 0 && currentView === "order") {
     bar.style.display = "flex";
     document.getElementById("bottomBarText").textContent = `Pedido (${cart.length})`;
   } else {
