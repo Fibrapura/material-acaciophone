@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#f4f7fb" id="metaThemeColor">
+  <meta name="theme-color" content="#f1f5f9" id="metaThemeColor">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>Material Acaciophone</title>
@@ -14,164 +14,203 @@
     :root {
       --corp-navy: #041b3a;
       --corp-blue: #0a3d7a;
-      --bg: #f4f7fb;
+      --corp-accent: #0284c7;
+      --bg: #e8eef5;
       --panel: #ffffff;
-      --panel-elevated: #f8fafc;
-      --panel-hover: #edf2f7;
-      --border: #e2e8f0;
-      --border-strong: #cbd5e1;
-      --text: #041b3a;
-      --text-secondary: #334e68;
+      --panel-elevated: #f1f5f9;
+      --panel-hover: #e2e8f0;
+      --border: #cbd5e1;
+      --border-strong: #94a3b8;
+      --text: #0f172a;
+      --text-secondary: #334155;
       --muted: #64748b;
-      --accent: #0055b8;
-      --accent-soft: #eaf2ff;
-      --code-bg: #f1f6fd;
-      --code-border: #cfe0f5;
+      --accent: #0369a1;
+      --accent-soft: #e0f2fe;
+      --code-bg: #0f172a;
+      --code-text: #ffffff;
+      --code-border: #1e293b;
       --success: #059669;
-      --success-soft: #e6f7f0;
+      --success-dark: #047857;
+      --success-soft: #d1fae5;
       --warning: #d97706;
+      --warning-soft: #fef3c7;
       --danger: #dc2626;
+      --danger-soft: #fee2e2;
+      --purple: #7c3aed;
+      --purple-soft: #ede9fe;
       --pedido-bg: #ffffff;
       --pedido-head: #041b3a;
-      --pedido-border: #cbd5e1;
-      --shadow-sm: 0 2px 8px rgba(4, 27, 58, 0.04);
-      --shadow-md: 0 6px 20px rgba(4, 27, 58, 0.08);
+      --pedido-border: #0369a1;
+      --sheet-clientes: #0284c7;
+      --sheet-fibra: #059669;
+      --sheet-antenas: #d97706;
+      --sheet-sc: #7c3aed;
     }
 
     body.dark-mode {
       --corp-navy: #0f294a;
       --corp-blue: #1e4976;
+      --corp-accent: #38bdf8;
       --bg: #090e17;
-      --panel: #111827;
-      --panel-elevated: #1a2436;
-      --panel-hover: #243046;
-      --border: #1f2d42;
-      --border-strong: #2e405c;
-      --text: #f1f5f9;
+      --panel: #131c2e;
+      --panel-elevated: #1e293b;
+      --panel-hover: #283548;
+      --border: #2a3950;
+      --border-strong: #475569;
+      --text: #f8fafc;
       --text-secondary: #cbd5e1;
-      --muted: #829ab1;
+      --muted: #94a3b8;
       --accent: #38bdf8;
-      --accent-soft: rgba(56, 189, 248, 0.14);
-      --code-bg: #0d1524;
-      --code-border: #233854;
+      --accent-soft: rgba(56, 189, 248, 0.16);
+      --code-bg: #0284c7;
+      --code-text: #ffffff;
+      --code-border: #38bdf8;
       --success: #10b981;
-      --success-soft: rgba(16, 185, 129, 0.14);
+      --success-dark: #059669;
+      --success-soft: rgba(16, 185, 129, 0.18);
       --warning: #f59e0b;
+      --warning-soft: rgba(245, 158, 11, 0.18);
       --danger: #ef4444;
-      --pedido-bg: #111827;
-      --pedido-head: #041b3a;
-      --pedido-border: #2e405c;
-      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.25);
-      --shadow-md: 0 8px 26px rgba(0, 0, 0, 0.4);
+      --danger-soft: rgba(239, 68, 68, 0.18);
+      --purple: #a78bfa;
+      --purple-soft: rgba(167, 139, 250, 0.18);
+      --pedido-bg: #131c2e;
+      --pedido-head: #071324;
+      --pedido-border: #38bdf8;
+      --sheet-clientes: #38bdf8;
+      --sheet-fibra: #10b981;
+      --sheet-antenas: #f59e0b;
+      --sheet-sc: #a855f7;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html, body {
-      width: 100%;
-      overflow-x: hidden;
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
       font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.4;
+      padding-bottom: 120px;
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
-      -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-      padding-bottom: 96px;
     }
 
     /* =====================================================
-       CABECERA SUPERIOR CENTRADA Y PROPORCIONADA
+       CABECERA REESTRUCTURADA (SIN CORTES EN MÓVIL)
        ===================================================== */
     header {
       position: sticky;
       top: 0;
       z-index: 50;
       background: var(--panel);
-      border-bottom: 1px solid var(--border);
-      padding: 10px 14px;
-      box-shadow: var(--shadow-sm);
+      border-bottom: 2px solid var(--border);
+      padding: 12px 14px 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
-
-    .header-inner {
-      max-width: 560px;
-      margin: 0 auto;
+    body.dark-mode header {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
     }
+    .header-inner { max-width: 680px; margin: 0 auto; }
 
     .top-bar {
       display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .top-bar-row1 {
+      display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
+      gap: 10px;
     }
 
+    /* Botón interactivo [ ‹ Inicio | Logo ] siempre visible */
     .home-logo-btn {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       background: var(--panel-elevated);
-      border: 1px solid var(--border-strong);
-      padding: 6px 10px;
-      border-radius: 8px;
+      border: 1.5px solid var(--border-strong);
+      padding: 6px 12px;
+      border-radius: 12px;
       cursor: pointer;
       flex-shrink: 0;
-      transition: background 0.15s, border-color 0.15s;
+      transition: transform 0.12s, border-color 0.15s;
     }
     .home-logo-btn:active {
+      transform: scale(0.96);
       border-color: var(--accent);
-      background: var(--accent-soft);
     }
     .home-chevron {
-      font-size: 0.95rem;
-      font-weight: 800;
+      font-size: 1.15rem;
+      font-weight: 900;
       color: var(--accent);
       line-height: 1;
     }
     .home-btn-text {
-      font-size: 0.74rem;
-      font-weight: 700;
+      font-size: 0.84rem;
+      font-weight: 800;
       color: var(--text);
     }
     .home-divider {
-      width: 1px;
-      height: 12px;
+      width: 1.5px;
+      height: 16px;
       background: var(--border-strong);
     }
+    .logo-white-pill {
+      background: #ffffff;
+      padding: 3px 7px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #cbd5e1;
+    }
     .brand-logo {
-      height: 13px;
-      max-width: 78px;
+      height: 16px;
+      max-width: 92px;
       object-fit: contain;
       display: block;
     }
-    body.dark-mode .brand-logo {
-      filter: brightness(0) invert(1);
+
+    .theme-btn {
+      height: 40px;
+      padding: 0 14px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-strong);
+      background: var(--panel-elevated);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .theme-btn:active {
+      transform: scale(0.96);
+      border-color: var(--accent);
     }
 
     .segmented-control {
-      flex: 1;
+      width: 100%;
       display: grid;
-      grid-template-columns: 1fr 1.3fr;
+      grid-template-columns: 1fr 1fr;
       background: var(--panel-elevated);
-      padding: 3px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      gap: 4px;
     }
     .seg-btn {
       border: none;
       background: transparent;
-      color: var(--muted);
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 6px 4px;
-      border-radius: 7px;
+      color: var(--text-secondary);
+      font-size: 0.86rem;
+      font-weight: 800;
+      padding: 9px 10px;
+      border-radius: 9px;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.15s ease;
@@ -179,67 +218,58 @@
     .seg-btn.active {
       background: var(--corp-navy);
       color: #ffffff;
+      box-shadow: 0 2px 8px rgba(4, 27, 58, 0.25);
     }
     body.dark-mode .seg-btn.active {
       background: var(--accent);
       color: #041b3a;
     }
 
-    .theme-btn {
-      height: 32px;
-      padding: 0 10px;
-      border-radius: 8px;
-      border: 1px solid var(--border-strong);
-      background: var(--panel-elevated);
-      color: var(--text-secondary);
-      font-size: 0.72rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
     /* Buscador y Filtros principales */
     .search-wrap {
       position: relative;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 1rem;
+      pointer-events: none;
     }
     .search-wrap input {
       width: 100%;
-      padding: 9px 34px 9px 14px;
-      border-radius: 9px;
-      border: 1px solid var(--border-strong);
+      padding: 13px 42px 13px 42px;
+      border-radius: 12px;
+      border: 2px solid var(--border-strong);
       background: var(--panel-elevated);
       color: var(--text);
-      font-size: 16px;
-      font-weight: 500;
+      font-size: 0.98rem;
+      font-weight: 600;
       outline: none;
-      transition: border-color 0.15s, background 0.15s;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
     }
     .search-wrap input:focus {
-      border-color: var(--accent);
       background: var(--panel);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
     }
-    .search-wrap input::placeholder {
-      color: var(--muted);
-      font-weight: 400;
-      font-size: 0.86rem;
-    }
+    .search-wrap input::placeholder { color: var(--muted); font-weight: 500; }
     .clear-btn {
       position: absolute;
-      right: 8px;
+      right: 10px;
       top: 50%;
       transform: translateY(-50%);
-      background: var(--border);
-      border: none;
-      color: var(--text-secondary);
-      width: 22px;
-      height: 22px;
+      background: var(--danger-soft);
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 0.85rem;
+      font-weight: 800;
       cursor: pointer;
       display: none;
       align-items: center;
@@ -248,22 +278,22 @@
 
     .filter-bar {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       align-items: center;
     }
     .filter-pill {
-      border: 1px solid var(--border-strong);
+      border: 1.5px solid var(--border-strong);
       background: var(--panel-elevated);
       color: var(--text);
-      padding: 7px 12px;
-      border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 11px;
+      font-size: 0.85rem;
+      font-weight: 800;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: space-between;
-      gap: 6px;
+      gap: 8px;
       transition: all 0.15s;
     }
     .filter-pill.cat-selector {
@@ -279,429 +309,574 @@
       border-color: var(--accent);
       background: var(--accent-soft);
       color: var(--accent);
-      font-weight: 700;
     }
     .kits-pill {
-      background: var(--panel-elevated);
-      border-color: var(--border-strong);
-      color: var(--accent);
-      font-weight: 700;
+      background: var(--purple-soft);
+      border-color: var(--purple);
+      color: var(--purple);
+      font-weight: 800;
       flex-shrink: 0;
     }
 
-    /* Contenedor Principal Centrado */
-    main {
-      max-width: 560px;
-      margin: 0 auto;
-      padding: 12px 14px;
-    }
+    main { max-width: 680px; margin: 0 auto; padding: 16px 14px; }
 
     /* =====================================================
-       PORTADA DE INICIO SIN MARCO NI ICONOS
+       PANTALLA DE INICIO (PORTADA CORPORATIVA)
        ===================================================== */
     #homeView {
-      padding: 8px 0 24px;
+      padding: 6px 0 28px;
     }
-    .home-top-actions {
+    .home-top-bar {
       display: flex;
       justify-content: flex-end;
       margin-bottom: 12px;
     }
-    .home-brand-area {
+    .home-hero {
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 20px 24px;
       text-align: center;
-      padding: 20px 12px 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+    /* Contenedor blanco garantizado para que el icono y el logo se vean en Modo Noche */
+    .home-brand-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 18px;
+      padding: 18px 28px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(4, 27, 58, 0.08);
     }
     .home-shield {
-      width: 64px;
-      height: 64px;
+      width: 68px;
+      height: 68px;
+      border-radius: 14px;
       object-fit: contain;
-      display: block;
-      margin: 0 auto 14px;
-    }
-    body.dark-mode .home-shield {
-      filter: brightness(0) invert(1);
+      background: #f8fafc;
+      padding: 4px;
+      border: 1px solid #e2e8f0;
     }
     .home-main-logo {
-      height: 26px;
-      max-width: 190px;
+      height: 30px;
+      max-width: 210px;
       object-fit: contain;
       display: block;
-      margin: 0 auto;
     }
-    body.dark-mode .home-main-logo {
-      filter: brightness(0) invert(1);
+    .home-subtitle {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-top: 4px;
     }
 
     .home-cards-grid {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
     }
     .home-nav-card {
       background: var(--panel);
-      border: 1px solid var(--border-strong);
-      border-radius: 12px;
-      padding: 18px 20px;
+      border: 2px solid var(--border-strong);
+      border-left: 8px solid var(--accent);
+      border-radius: 18px;
+      padding: 20px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
       cursor: pointer;
       text-align: left;
-      transition: transform 0.12s, border-color 0.15s, box-shadow 0.15s;
-      box-shadow: var(--shadow-sm);
+      transition: transform 0.12s, border-color 0.15s;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
     }
     .home-nav-card:active {
-      transform: scale(0.985);
-      border-color: var(--accent);
+      transform: scale(0.98);
+    }
+    .home-nav-card.primary-card {
+      border-left-color: var(--sheet-clientes);
+    }
+    .home-nav-card.secondary-card {
+      border-left-color: var(--sheet-fibra);
+    }
+    .home-card-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
     }
     .home-card-body {
       flex: 1;
       min-width: 0;
     }
     .home-card-title {
-      font-size: 1rem;
+      font-size: 1.15rem;
       font-weight: 800;
       color: var(--text);
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
     .home-card-desc {
-      font-size: 0.81rem;
-      color: var(--muted);
-      line-height: 1.4;
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
     }
     .home-card-badge {
       display: inline-block;
-      margin-top: 8px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 6px;
+      margin-top: 10px;
+      background: var(--success-soft);
+      color: var(--success);
+      border: 1.5px solid var(--success);
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 11px;
+      border-radius: 12px;
     }
     .home-card-arrow {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--muted);
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--accent);
       flex-shrink: 0;
     }
 
     /* =====================================================
-       BLOQUES DE CATEGORÍAS EN PEDIDOS (SIN ICONOS)
+       TARJETAS POR BLOQUES (VISTA PRINCIPAL PEDIDOS)
        ===================================================== */
     .blocks-dashboard {
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
     .blocks-section-label {
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 0.82rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--muted);
-      margin-bottom: 8px;
-      text-align: center;
+      letter-spacing: 0.6px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      padding-left: 4px;
     }
     .blocks-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 14px;
     }
     .block-card {
       background: var(--panel);
-      border: 1px solid var(--border-strong);
-      border-radius: 10px;
-      padding: 14px 12px;
+      border: 2px solid var(--border);
+      border-top: 6px solid var(--accent);
+      border-radius: 16px;
+      padding: 18px 14px;
       cursor: pointer;
-      text-align: center;
-      transition: transform 0.1s, border-color 0.15s;
-      box-shadow: var(--shadow-sm);
+      text-align: left;
+      transition: transform 0.12s, box-shadow 0.15s;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
     .block-card:active {
-      transform: scale(0.98);
-      border-color: var(--accent);
+      transform: scale(0.97);
+    }
+    .block-card.b-0 { border-top-color: var(--sheet-clientes); }
+    .block-card.b-1 { border-top-color: var(--sheet-fibra); }
+    .block-card.b-2 { border-top-color: var(--sheet-antenas); }
+    .block-card.b-3 { border-top-color: var(--sheet-sc); }
+
+    .block-icon {
+      font-size: 1.65rem;
+      margin-bottom: 8px;
     }
     .block-title {
-      font-size: 0.84rem;
-      font-weight: 700;
+      font-size: 0.96rem;
+      font-weight: 800;
       color: var(--text);
-      line-height: 1.25;
+      line-height: 1.3;
     }
     .block-meta {
-      font-size: 0.72rem;
-      font-weight: 500;
+      font-size: 0.78rem;
+      font-weight: 700;
       color: var(--muted);
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     /* =====================================================
-       BARRA UNIFICADA "FILTRAR"
+       BARRA DE CATEGORÍA ACTIVA Y SUBFILTROS DIFERENCIADOS
        ===================================================== */
     .scope-banner {
       display: none;
       align-items: center;
       justify-content: space-between;
       background: var(--accent-soft);
-      border: 1px solid var(--code-border);
-      color: var(--accent);
-      padding: 8px 12px;
-      border-radius: 9px;
-      margin-bottom: 10px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      gap: 8px;
+      border: 2px solid var(--accent);
+      color: var(--text);
+      padding: 12px 15px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      gap: 10px;
     }
     .scope-banner button {
       background: var(--corp-navy);
       border: none;
       color: #ffffff;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.72rem;
-      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 9px;
+      font-size: 0.8rem;
+      font-weight: 800;
       cursor: pointer;
       flex-shrink: 0;
+    }
+    body.dark-mode .scope-banner button {
+      background: var(--accent);
+      color: #041b3a;
     }
 
     .subfilters-panel {
       display: none;
       background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-bottom: 10px;
-      box-shadow: var(--shadow-sm);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     }
-    .sf-header {
+    .sf-row {
       display: flex;
-      justify-content: space-between;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
       align-items: center;
-      margin-bottom: 8px;
     }
-    .sf-title {
-      font-size: 0.72rem;
-      font-weight: 800;
+    .sf-row::-webkit-scrollbar { display: none; }
+    .sf-row + .sf-row {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1.5px dashed var(--border);
+    }
+    .sf-label {
+      font-size: 0.75rem;
+      font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--muted);
-    }
-    .sf-reset {
-      background: none;
-      border: none;
-      color: var(--accent);
-      font-size: 0.72rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .sf-chips-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+      color: var(--text-secondary);
+      margin-right: 4px;
+      flex-shrink: 0;
     }
     .sf-chip {
-      border: 1px solid var(--border-strong);
+      border: 1.5px solid var(--border-strong);
       background: var(--panel-elevated);
-      color: var(--text-secondary);
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 0.74rem;
-      font-weight: 600;
+      color: var(--text);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      white-space: nowrap;
       cursor: pointer;
-      transition: all 0.12s;
+      flex-shrink: 0;
     }
     .sf-chip.active {
-      background: var(--corp-navy);
+      background: var(--accent);
       color: #ffffff;
-      border-color: var(--corp-navy);
+      border-color: var(--accent);
     }
     body.dark-mode .sf-chip.active {
-      background: var(--accent);
       color: #041b3a;
-      border-color: var(--accent);
+    }
+    .sf-chip.measure-chip.active {
+      background: var(--success);
+      color: #ffffff;
+      border-color: var(--success);
     }
 
     /* =====================================================
-       LISTA DE MATERIALES CENTRADA Y ORDENADA
+       TARJETAS DE MATERIALES (SEPARADAS Y LEGIBLES)
        ===================================================== */
     .catalog-panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      width: 100%;
-      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .mat-row {
-      display: grid;
-      grid-template-columns: 60px 1fr auto;
+      display: flex;
       align-items: center;
-      padding: 11px 14px;
-      border-bottom: 1px solid var(--border);
+      justify-content: space-between;
+      padding: 15px 16px;
+      background: var(--panel);
+      border: 1.5px solid var(--border);
+      border-left: 7px solid var(--accent);
+      border-radius: 15px;
       cursor: pointer;
-      gap: 12px;
-      transition: background 0.1s;
+      gap: 14px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+      transition: transform 0.1s, border-color 0.15s;
     }
-    .mat-row:last-child { border-bottom: none; }
-    .mat-row:active { background: var(--panel-hover); }
+    .mat-row:active {
+      transform: scale(0.99);
+      background: var(--panel-hover);
+    }
+
+    .mat-row.sheet-0 { border-left-color: var(--sheet-clientes); }
+    .mat-row.sheet-1 { border-left-color: var(--sheet-fibra); }
+    .mat-row.sheet-2 { border-left-color: var(--sheet-antenas); }
+    .mat-row.sheet-3 { border-left-color: var(--sheet-sc); }
 
     .mat-row.in-cart {
       background: var(--success-soft);
+      border-color: var(--success);
     }
 
     .code-badge {
       font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--accent);
+      font-size: 0.92rem;
+      font-weight: 900;
+      color: var(--code-text);
       background: var(--code-bg);
-      border: 1px solid var(--code-border);
-      padding: 5px 4px;
-      border-radius: 6px;
-      width: 60px;
+      border: 1.5px solid var(--code-border);
+      padding: 8px 10px;
+      border-radius: 10px;
+      min-width: 62px;
       text-align: center;
+      flex-shrink: 0;
     }
     .code-badge.sc {
-      color: var(--warning);
-      background: rgba(217, 119, 6, 0.08);
-      border-color: rgba(217, 119, 6, 0.3);
-      font-size: 0.7rem;
+      color: #ffffff;
+      background: var(--warning);
+      border-color: var(--warning);
+      font-size: 0.8rem;
     }
 
     .mat-content {
+      flex: 1;
       min-width: 0;
-      text-align: left;
     }
-    .mat-line1 {
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.32;
-      word-wrap: break-word;
+    .spec-tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
     }
-    .mat-line2 {
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: var(--muted);
-      margin-top: 2px;
+    .spec-tag {
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .spec-tag.tag-purple {
+      background: var(--purple-soft);
+      color: var(--purple);
+      border-color: var(--purple);
+    }
+    .spec-tag.tag-dark {
+      background: #0f172a;
+      color: #f8fafc;
+      border-color: #475569;
+    }
+    .spec-tag.tag-light {
+      background: #ffffff;
+      color: #0f172a;
+      border: 1.5px solid #64748b;
+    }
+    .spec-tag.tag-green {
+      background: var(--success-soft);
+      color: var(--success);
+      border-color: var(--success);
     }
 
-    .mat-right-ind {
+    .mat-line1 {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+    .mat-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .mat-line2 {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--text-secondary);
+      background: var(--panel-elevated);
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .mat-prov-tag {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .add-action-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--panel-elevated);
+      border: 1.5px solid var(--border-strong);
+      color: var(--accent);
+      font-size: 1.25rem;
+      font-weight: 900;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      min-width: 24px;
+      justify-content: center;
+      flex-shrink: 0;
     }
-    .row-chevron {
-      color: var(--border-strong);
-      font-size: 1rem;
-      font-weight: 600;
-    }
+
     .cart-pill {
       background: var(--success);
       color: #ffffff;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 12px;
+      font-size: 0.84rem;
+      font-weight: 900;
+      padding: 6px 12px;
+      border-radius: 20px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
     }
 
     .puntual-wrap {
       text-align: center;
-      padding: 16px 0 18px;
+      padding: 22px 0 24px;
     }
     .puntual-btn {
       background: var(--panel);
-      border: 1px solid var(--border-strong);
-      color: var(--text-secondary);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 0.76rem;
-      font-weight: 600;
+      border: 2px dashed var(--accent);
+      color: var(--accent);
+      padding: 12px 22px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
       cursor: pointer;
     }
     .puntual-btn:active {
-      border-color: var(--accent);
-      color: var(--accent);
+      background: var(--accent-soft);
     }
 
     /* =====================================================
-       APARTADO DE PEDIDO Y EDICIÓN DE KIT
+       APARTADO DE PEDIDO Y EDICIÓN DE KIT CORREGIDA
        ===================================================== */
     .pedido-doc {
       background: var(--pedido-bg);
-      border: 1px solid var(--pedido-border);
-      border-radius: 12px;
+      border: 2.5px solid var(--pedido-border);
+      border-radius: 18px;
       overflow: hidden;
       display: none;
-      margin-top: 6px;
-      box-shadow: var(--shadow-md);
+      margin-top: 8px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
     }
 
     .pedido-header {
       background: var(--pedido-head);
       color: #ffffff;
-      padding: 11px 14px;
+      padding: 14px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
       gap: 10px;
     }
     .pedido-header-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+    }
+    .pedido-logo-box {
+      background: #ffffff;
+      padding: 3px 7px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
     }
     .pedido-logo {
-      height: 13px;
+      height: 15px;
       object-fit: contain;
-      filter: brightness(0) invert(1);
     }
     .pedido-badge-count {
-      background: rgba(255, 255, 255, 0.2);
+      background: var(--success);
       color: #ffffff;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.74rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 900;
+      padding: 3px 10px;
+      border-radius: 12px;
     }
     .pedido-doc-title {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.4px;
+      font-size: 0.92rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
     }
     .pedido-kit-btn {
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.18);
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
       color: #ffffff;
-      padding: 5px 11px;
-      border-radius: 6px;
-      font-size: 0.74rem;
-      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
       cursor: pointer;
     }
-    .kit-edit-actions {
+
+    /* Barra de Edición de Kit con botones Guardar y Salir siempre visibles */
+    .edit-kit-bar {
       display: none;
-      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--warning-soft);
+      border-bottom: 2px solid var(--warning);
+      padding: 14px 16px;
     }
-    .kit-edit-btn {
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 0.74rem;
+    .edit-kit-info {
+      font-size: 0.9rem;
       font-weight: 700;
+      color: var(--text);
+      flex: 1;
+      min-width: 170px;
+    }
+    .edit-kit-info strong {
+      color: var(--warning);
+      font-weight: 900;
+    }
+    .edit-kit-actions {
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .kit-action-btn {
+      padding: 9px 16px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 800;
       cursor: pointer;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      background: transparent;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .kit-action-btn.save {
+      background: var(--success);
       color: #ffffff;
     }
-    .kit-edit-btn.save {
-      background: #ffffff;
-      color: #041b3a;
-      border-color: #ffffff;
+    .kit-action-btn.exit {
+      background: var(--danger);
+      color: #ffffff;
     }
 
     .pedido-body {
@@ -712,24 +887,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
-      gap: 10px;
+      padding: 14px 16px;
+      border-bottom: 1.5px solid var(--border);
+      gap: 12px;
     }
     .alb-row:last-child { border-bottom: none; }
 
     .alb-left {
       display: flex;
       align-items: flex-start;
-      gap: 8px;
+      gap: 10px;
       flex: 1;
       min-width: 0;
       cursor: pointer;
     }
     .alb-index {
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 0.8rem;
+      font-weight: 900;
       color: var(--muted);
       margin-top: 2px;
       flex-shrink: 0;
@@ -740,68 +915,68 @@
     }
     .alb-code-line {
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.8rem;
-      font-weight: 800;
+      font-size: 0.92rem;
+      font-weight: 900;
       color: var(--accent);
     }
     .alb-name-line {
-      font-size: 0.8rem;
-      font-weight: 500;
+      font-size: 0.9rem;
+      font-weight: 700;
       color: var(--text);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-top: 1px;
+      margin-top: 3px;
     }
     .alb-table-line {
-      font-size: 0.69rem;
+      font-size: 0.76rem;
+      font-weight: 700;
       color: var(--muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-top: 1px;
+      margin-top: 3px;
     }
     .alb-row.expanded .alb-name-line {
       white-space: normal;
       overflow: visible;
-      margin-top: 3px;
     }
     .alb-row.expanded .alb-table-line {
       white-space: normal;
       overflow: visible;
       color: var(--accent);
-      margin-top: 2px;
     }
     .alb-prov-line {
       display: none;
-      font-size: 0.7rem;
+      font-size: 0.78rem;
       color: var(--text-secondary);
-      margin-top: 2px;
+      margin-top: 4px;
+      font-weight: 700;
     }
     .alb-row.expanded .alb-prov-line { display: block; }
 
     .alb-right {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       flex-shrink: 0;
     }
     .qty-capsule {
       display: inline-flex;
       align-items: center;
       background: var(--panel-elevated);
-      border: 1px solid var(--border-strong);
-      border-radius: 6px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 10px;
       overflow: hidden;
     }
     .cap-btn {
-      width: 26px;
-      height: 26px;
+      width: 34px;
+      height: 34px;
       border: none;
       background: transparent;
       color: var(--text);
-      font-size: 0.9rem;
-      font-weight: 700;
+      font-size: 1.15rem;
+      font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -810,24 +985,24 @@
     .cap-btn:active { background: var(--panel-hover); }
     .cap-val {
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.76rem;
-      font-weight: 700;
+      font-size: 0.86rem;
+      font-weight: 900;
       color: var(--success);
-      padding: 0 6px;
-      min-width: 36px;
+      padding: 0 9px;
+      min-width: 46px;
       text-align: center;
       border-left: 1px solid var(--border);
       border-right: 1px solid var(--border);
     }
     .del-icon-btn {
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
-      border: 1px solid rgba(220, 38, 38, 0.25);
-      background: rgba(220, 38, 38, 0.06);
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1.5px solid var(--danger);
+      background: var(--danger-soft);
       color: var(--danger);
-      font-size: 0.74rem;
-      font-weight: 700;
+      font-size: 0.9rem;
+      font-weight: 900;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -836,20 +1011,21 @@
 
     .pedido-footer {
       background: var(--panel-elevated);
-      border-top: 1px solid var(--border);
-      padding: 12px;
+      border-top: 1.5px solid var(--border);
+      padding: 16px;
     }
     .btn-copy-primary {
       width: 100%;
-      padding: 12px;
-      border-radius: 8px;
+      padding: 15px;
+      border-radius: 12px;
       border: none;
       background: var(--corp-navy);
       color: #ffffff;
-      font-size: 0.88rem;
-      font-weight: 700;
+      font-size: 1rem;
+      font-weight: 900;
       cursor: pointer;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(4, 27, 58, 0.25);
     }
     body.dark-mode .btn-copy-primary {
       background: var(--success);
@@ -857,110 +1033,111 @@
     .pedido-subactions {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 6px;
+      gap: 10px;
     }
     .sub-action-btn {
-      padding: 8px 6px;
-      border-radius: 7px;
-      border: 1px solid var(--border-strong);
+      padding: 11px 8px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-strong);
       background: var(--panel);
       color: var(--text);
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.84rem;
+      font-weight: 800;
       cursor: pointer;
       text-align: center;
     }
     .sub-action-btn.danger {
       color: var(--danger);
-      border-color: rgba(220, 38, 38, 0.3);
+      border-color: var(--danger);
+      background: var(--danger-soft);
     }
 
     /* Botón Flotante Inferior ("Pedido") */
     .floating-pill {
       position: fixed;
-      bottom: 18px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       background: var(--corp-navy);
-      border: 1.5px solid rgba(255, 255, 255, 0.8);
+      border: 2.5px solid #ffffff;
       color: #ffffff;
-      padding: 12px 28px;
-      border-radius: 30px;
+      padding: 14px 34px;
+      border-radius: 36px;
       display: none;
       align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 0.9rem;
+      gap: 12px;
+      font-weight: 900;
+      font-size: 1rem;
       z-index: 40;
-      box-shadow: 0 8px 24px rgba(4, 27, 58, 0.35);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
       cursor: pointer;
       white-space: nowrap;
     }
     body.dark-mode .floating-pill {
-      background: var(--accent);
-      color: #041b3a;
-      border-color: transparent;
+      background: var(--success-dark);
+      border-color: #ffffff;
     }
 
     /* Vista Lector de Códigos */
     #translatorView { display: none; }
     .trans-box {
       background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow-sm);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
     }
     .trans-toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
     .trans-title {
-      font-size: 0.74rem;
-      font-weight: 700;
+      font-size: 0.88rem;
+      font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: var(--muted);
+      color: var(--text);
     }
     .trans-textarea {
       width: 100%;
-      min-height: 110px;
+      min-height: 130px;
       background: var(--panel-elevated);
-      border: 1px solid var(--border-strong);
-      border-radius: 8px;
+      border: 2px solid var(--border-strong);
+      border-radius: 12px;
       color: var(--text);
-      padding: 10px 12px;
+      padding: 13px;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 16px;
+      font-size: 0.92rem;
       outline: none;
       resize: vertical;
     }
     .trans-textarea:focus { border-color: var(--accent); background: var(--panel); }
     .trans-row {
-      display: grid;
-      grid-template-columns: 22px 60px 1fr auto;
+      display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 11px 14px;
-      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--panel);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
       cursor: pointer;
     }
-    .trans-row:last-child { border-bottom: none; }
-    .trans-row.checked { opacity: 0.4; background: var(--panel-elevated); }
+    .trans-row.checked { opacity: 0.45; background: var(--panel-elevated); }
     .trans-check {
-      width: 20px;
-      height: 20px;
-      border-radius: 5px;
-      border: 1.5px solid var(--border-strong);
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      border: 2px solid var(--border-strong);
       background: var(--panel);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.72rem;
-      font-weight: 800;
+      flex-shrink: 0;
+      font-size: 0.88rem;
+      font-weight: 900;
       color: transparent;
     }
     .trans-row.checked .trans-check {
@@ -969,79 +1146,77 @@
       color: #fff;
     }
 
-    /* =====================================================
-       MODALES COMPACTOS Y CENTRADOS (SIN HACER ZOOM OUT)
-       ===================================================== */
+    /* Modales */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(4, 27, 58, 0.55);
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
+      background: rgba(4, 27, 58, 0.65);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       display: none;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
       z-index: 100;
-      padding: 16px;
     }
     .modal-backdrop.open { display: flex; }
-
-    .modal-dialog {
-      background: var(--panel);
-      border: 1px solid var(--border-strong);
-      border-radius: 14px;
-      width: 100%;
-      max-width: 360px;
-      padding: 16px;
-      max-height: 86vh;
-      overflow-y: auto;
-      box-shadow: var(--shadow-md);
+    .modal-backdrop.center-modal {
+      align-items: center;
+      padding: 18px;
     }
-
     .modal-sheet {
       background: var(--panel);
-      border: 1px solid var(--border-strong);
-      border-radius: 14px;
+      border-top: 2px solid var(--border-strong);
+      border-radius: 24px 24px 0 0;
       width: 100%;
-      max-width: 420px;
-      padding: 16px;
-      max-height: 82vh;
+      max-width: 680px;
+      padding: 16px 18px 30px;
+      max-height: 86vh;
       overflow-y: auto;
-      box-shadow: var(--shadow-md);
+      animation: slideUp 0.16s ease-out;
+      box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.25);
     }
-
-    .m-meta {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
+    .modal-dialog {
+      background: var(--panel);
+      border: 2px solid var(--accent);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 430px;
+      padding: 20px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.4);
     }
-    .m-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text);
-      margin: 3px 0 12px;
-      line-height: 1.3;
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
     }
+    .sheet-handle {
+      width: 44px;
+      height: 5px;
+      background: var(--border-strong);
+      border-radius: 4px;
+      margin: 0 auto 16px;
+    }
+    .m-meta { font-size: 0.8rem; font-weight: 900; color: var(--accent); text-transform: uppercase; }
+    .m-title { font-size: 1.08rem; font-weight: 800; color: var(--text); margin: 6px 0 16px; line-height: 1.35; }
 
     .conflict-list {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 10px;
     }
     .conflict-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      padding: 11px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border-strong);
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-strong);
       background: var(--panel-elevated);
       color: var(--text);
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.9rem;
+      font-weight: 800;
       text-align: left;
       cursor: pointer;
     }
@@ -1050,255 +1225,209 @@
       background: var(--accent-soft);
     }
     .conflict-badge {
-      background: var(--corp-navy);
+      background: var(--accent);
       color: #ffffff;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 12px;
       margin-left: 8px;
       flex-shrink: 0;
     }
 
-    .field { margin-bottom: 8px; }
+    .field { margin-bottom: 12px; }
     .field input, .field select {
       width: 100%;
-      padding: 8px 11px;
-      border-radius: 8px;
-      border: 1px solid var(--border-strong);
+      padding: 13px 14px;
+      border-radius: 11px;
+      border: 1.5px solid var(--border-strong);
       background: var(--panel-elevated);
       color: var(--text);
-      font-size: 16px;
-      font-weight: 500;
+      font-size: 0.96rem;
+      font-weight: 600;
       outline: none;
     }
-    .field input::placeholder {
-      font-size: 0.82rem;
-      color: var(--muted);
+    .field input:focus, .field select:focus {
+      border-color: var(--accent);
+      background: var(--panel);
     }
-
     .qty-stepper {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
+      gap: 12px;
+      margin-bottom: 14px;
     }
     .qty-stepper input {
       flex: 1;
       text-align: center;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 1.2rem;
-      font-weight: 800;
-      height: 38px;
-      padding: 4px;
-      border-radius: 8px;
-      border: 1.5px solid var(--accent);
+      font-size: 1.6rem;
+      font-weight: 900;
+      padding: 10px;
+      border-radius: 12px;
+      border: 2px solid var(--accent);
       background: var(--panel);
       color: var(--text);
       width: 100%;
     }
     .step-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      border: 1px solid var(--border-strong);
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-strong);
       background: var(--panel-elevated);
       color: var(--text);
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-size: 1.4rem;
+      font-weight: 800;
       cursor: pointer;
     }
     .quick-pills {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 5px;
-      margin-bottom: 8px;
+      gap: 8px;
+      margin-bottom: 14px;
     }
     .q-pill {
-      padding: 6px 2px;
-      border-radius: 6px;
-      border: 1px solid var(--border-strong);
+      padding: 10px 4px;
+      border-radius: 9px;
+      border: 1.5px solid var(--border-strong);
       background: var(--panel-elevated);
       color: var(--text);
-      font-weight: 600;
-      font-size: 0.74rem;
+      font-weight: 800;
+      font-size: 0.84rem;
       cursor: pointer;
       text-align: center;
     }
     .cable-pills {
       display: none;
-      gap: 5px;
+      gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 8px;
+      margin-bottom: 14px;
     }
     .cable-pill {
-      padding: 5px 9px;
-      border-radius: 6px;
-      border: 1px solid rgba(217, 119, 6, 0.35);
-      background: rgba(217, 119, 6, 0.1);
+      padding: 8px 13px;
+      border-radius: 9px;
+      border: 1.5px solid var(--warning);
+      background: var(--warning-soft);
       color: var(--warning);
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 0.82rem;
+      font-weight: 800;
       cursor: pointer;
     }
-    .m-footer {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
+    .m-footer { display: flex; gap: 12px; margin-top: 16px; }
     .m-footer button {
       flex: 1;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 14px;
+      border-radius: 12px;
       border: none;
-      font-weight: 700;
-      font-size: 0.84rem;
+      font-weight: 900;
+      font-size: 0.96rem;
       cursor: pointer;
     }
-    .btn-cancel {
-      background: var(--panel-elevated);
-      color: var(--text-secondary);
-      border: 1px solid var(--border) !important;
-    }
-    .btn-ok {
-      background: var(--corp-navy);
-      color: #ffffff;
-    }
-    body.dark-mode .btn-ok {
-      background: var(--accent);
-      color: #041b3a;
-    }
+    .btn-cancel { background: var(--panel-elevated); color: var(--text); border: 1.5px solid var(--border-strong) !important; }
+    .btn-ok { background: var(--corp-navy); color: #ffffff; }
+    body.dark-mode .btn-ok { background: var(--accent); color: #041b3a; }
 
-    /* Categorías en el selector */
     .cat-group-title {
-      font-size: 0.7rem;
-      font-weight: 800;
+      font-size: 0.8rem;
+      font-weight: 900;
       color: var(--accent);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin: 12px 0 4px;
+      letter-spacing: 0.6px;
+      margin: 18px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 2px solid var(--accent-soft);
     }
     .cat-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      padding: 10px 8px;
+      padding: 13px 12px;
       border: none;
       border-bottom: 1px solid var(--border);
       background: none;
       color: var(--text);
-      font-size: 0.82rem;
-      font-weight: 500;
+      font-size: 0.92rem;
+      font-weight: 700;
       text-align: left;
       cursor: pointer;
     }
     .cat-item.active {
       color: var(--accent);
-      font-weight: 700;
+      font-weight: 900;
       background: var(--accent-soft);
-      border-radius: 6px;
+      border-radius: 10px;
     }
     .cat-count {
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.74rem;
-      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--text-secondary);
+      background: var(--panel-elevated);
+      padding: 3px 9px;
+      border-radius: 10px;
     }
 
-    /* Mis Kits: Solo nombres y ventana de previsualización */
-    .kit-name-only-row {
+    .kit-row {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      width: 100%;
-      padding: 13px 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      padding: 14px 12px;
       background: var(--panel-elevated);
-      color: var(--text);
-      font-size: 0.88rem;
-      font-weight: 700;
-      text-align: left;
-      cursor: pointer;
-      margin-bottom: 8px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      gap: 12px;
     }
-    .kit-name-only-row:active {
-      border-color: var(--accent);
-      background: var(--accent-soft);
-    }
-    .kit-preview-list {
-      max-height: 46vh;
-      overflow-y: auto;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--panel-elevated);
-      margin-bottom: 12px;
-    }
-    .kit-preview-item {
+    .kit-title { font-weight: 800; font-size: 0.96rem; color: var(--text); }
+    .kit-sub { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; line-height: 1.35; }
+    .kit-btn-group {
       display: flex;
-      justify-content: space-between;
+      gap: 8px;
       align-items: center;
-      padding: 9px 11px;
-      border-bottom: 1px solid var(--border);
-      gap: 10px;
-      font-size: 0.78rem;
     }
-    .kit-preview-item:last-child { border-bottom: none; }
-    .kit-preview-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 7px;
-    }
-    .kp-btn {
-      padding: 10px 6px;
+    .kit-mini-btn {
+      padding: 7px 12px;
       border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 700;
+      font-size: 0.8rem;
+      font-weight: 800;
       cursor: pointer;
-      border: 1px solid var(--border-strong);
-      background: var(--panel-elevated);
+      border: 1.5px solid var(--border-strong);
+      background: var(--panel);
       color: var(--text);
-      text-align: center;
     }
-    .kp-btn.primary {
-      background: var(--corp-navy);
-      color: #ffffff;
-      border-color: var(--corp-navy);
-    }
-    body.dark-mode .kp-btn.primary {
-      background: var(--accent);
-      color: #041b3a;
-      border-color: var(--accent);
-    }
-    .kp-btn.danger {
-      color: var(--danger);
-      border-color: rgba(220, 38, 38, 0.35);
-    }
+    .kit-mini-btn.load { background: var(--success); color: #fff; border-color: var(--success); }
+    .kit-mini-btn.del { background: var(--danger-soft); color: var(--danger); border-color: var(--danger); }
 
     .text-btn {
-      background: none;
-      border: none;
+      background: var(--panel-elevated);
+      border: 1.5px solid var(--border-strong);
       color: var(--accent);
-      font-size: 0.78rem;
-      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
       cursor: pointer;
     }
 
     .toast {
       position: fixed;
-      bottom: 74px;
+      bottom: 84px;
       left: 50%;
       transform: translateX(-50%);
       background: var(--corp-navy);
+      border: 2px solid #ffffff;
       color: #ffffff;
-      padding: 9px 18px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 0.8rem;
+      padding: 12px 24px;
+      border-radius: 26px;
+      font-weight: 800;
+      font-size: 0.9rem;
       display: none;
       z-index: 200;
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
   </style>
 </head>
@@ -1307,64 +1436,74 @@
 <header id="appHeader" style="display:none;">
   <div class="header-inner">
     <div class="top-bar">
-      <button type="button" class="home-logo-btn" onclick="switchMode('home')" title="Ir al inicio">
-        <span class="home-chevron">‹</span>
-        <span class="home-btn-text">Inicio</span>
-        <span class="home-divider"></span>
-        <img id="headerLogo" alt="Acaciophone" class="brand-logo">
-      </button>
+      <div class="top-bar-row1">
+        <button type="button" class="home-logo-btn" onclick="switchMode('home')" title="Ir a la pantalla de inicio">
+          <span class="home-chevron">‹</span>
+          <span class="home-btn-text">Inicio</span>
+          <span class="home-divider"></span>
+          <span class="logo-white-pill">
+            <img id="headerLogo" alt="Acaciophone" class="brand-logo">
+          </span>
+        </button>
+
+        <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar entre modo día y noche">🌙 Noche</button>
+      </div>
 
       <div class="segmented-control">
-        <button class="seg-btn active" id="tabOrderBtn" onclick="switchMode('order')">Pedidos</button>
-        <button class="seg-btn" id="tabTransBtn" onclick="switchMode('translator')">Lector de códigos</button>
+        <button class="seg-btn active" id="tabOrderBtn" onclick="switchMode('order')">📦 Pedidos</button>
+        <button class="seg-btn" id="tabTransBtn" onclick="switchMode('translator')">🔍 Lector de códigos</button>
       </div>
-      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">Noche</button>
     </div>
 
     <div id="orderHeaderTools">
       <div class="search-wrap">
+        <span class="search-icon">🔍</span>
         <form onsubmit="handleSearchSubmit(event)" style="margin:0;">
-          <input type="search" id="searchInput" enterkeyhint="search" placeholder="Buscar material o código..." autocomplete="off">
+          <input type="search" id="searchInput" enterkeyhint="search" placeholder="Buscar material, código o medida..." autocomplete="off">
         </form>
         <button type="button" class="clear-btn" id="clearSearchBtn" onclick="clearSearch()">✕</button>
       </div>
       <div class="filter-bar">
         <button class="filter-pill cat-selector" id="catTriggerBtn" onclick="openCategoriesModal()">
-          <span class="truncate" id="selectedCatLabel">Todas las categorías</span>
+          <span class="truncate" id="selectedCatLabel">📂 Todas las categorías</span>
           <span>▾</span>
         </button>
-        <button class="filter-pill kits-pill" id="kitsBtn" onclick="openKitsModal()">Mis Kits (0)</button>
+        <button class="filter-pill kits-pill" id="kitsBtn" onclick="openKitsModal()">🧰 Kits (0)</button>
       </div>
     </div>
   </div>
 </header>
 
 <main>
-  <!-- VISTA 0: PORTADA PRINCIPAL -->
+  <!-- VISTA 0: PORTADA DE INICIO -->
   <div id="homeView">
-    <div class="home-top-actions">
-      <button class="theme-btn" id="homeThemeBtn" onclick="toggleTheme()">Noche</button>
+    <div class="home-top-bar">
+      <button class="theme-btn" id="homeThemeBtn" onclick="toggleTheme()" title="Cambiar entre modo día y noche">🌙 Noche</button>
     </div>
-
-    <div class="home-brand-area">
-      <img id="homeShieldImg" alt="Acacio" class="home-shield">
-      <img id="homeLogoImg" alt="Acaciophone" class="home-main-logo">
+    <div class="home-hero">
+      <div class="home-brand-box">
+        <img id="homeShieldImg" alt="Acacio" class="home-shield">
+        <img id="homeLogoImg" alt="Acaciophone" class="home-main-logo">
+      </div>
+      <div class="home-subtitle">Gestión de Material, Partes y Pedidos a Almacén</div>
     </div>
 
     <div class="home-cards-grid">
-      <button type="button" class="home-nav-card" onclick="switchMode('order')">
+      <button type="button" class="home-nav-card primary-card" onclick="switchMode('order')">
+        <div class="home-card-icon">📦</div>
         <div class="home-card-body">
-          <div class="home-card-title">Pedidos</div>
-          <div class="home-card-desc">Busca material por nombre o categoría, crea kits tus habituales y genera los códigos para pedir el material.</div>
+          <div class="home-card-title">Pedidos y Catálogo</div>
+          <div class="home-card-desc">Buscar material por categoría o medidas, cargar kits personales y generar el listado para correo o WhatsApp.</div>
           <div id="homeOrderBadge" class="home-card-badge" style="display:none;"></div>
         </div>
         <span class="home-card-arrow">›</span>
       </button>
 
-      <button type="button" class="home-nav-card" onclick="switchMode('translator')">
+      <button type="button" class="home-nav-card secondary-card" onclick="switchMode('translator')">
+        <div class="home-card-icon">🔍</div>
         <div class="home-card-body">
           <div class="home-card-title">Lector de códigos</div>
-          <div class="home-card-desc">Pega un código o una lista códigos para obtener el listado detallado de materiales.</div>
+          <div class="home-card-desc">Pegar una lista de códigos recibida para traducirla al instante en nombres de materiales y proveedores.</div>
         </div>
         <span class="home-card-arrow">›</span>
       </button>
@@ -1373,33 +1512,44 @@
 
   <!-- VISTA 1: PEDIDOS -->
   <div id="orderView" style="display:none;">
+    <!-- Barra cuando hay conflicto resuelto -->
     <div class="scope-banner" id="activeScopeBar">
       <span id="activeScopeName"></span>
-      <button onclick="reopenConflictModal()">Cambiar categoría</button>
+      <button type="button" onclick="reopenConflictModal()">Cambiar categoría</button>
     </div>
 
-    <!-- Panel único de filtrado: "Filtrar" -->
+    <!-- Barra cuando hay una categoría seleccionada desde bloques/menú -->
+    <div class="scope-banner" id="selectedCatBanner" style="display:none;">
+      <span id="selectedCatBannerText"></span>
+      <button type="button" onclick="selectTableFilter('ALL')">✕ Volver a bloques</button>
+    </div>
+
+    <!-- Barra de subfiltros inteligentes por características -->
     <div class="subfilters-panel" id="subFiltersBar"></div>
 
-    <!-- Bloques limpios cuando no hay búsqueda ni categoría seleccionada -->
+    <!-- Vista despejada por bloques -->
     <div class="blocks-dashboard" id="blocksDashboard">
-      <div class="blocks-section-label">Selecciona un grupo de material</div>
+      <div class="blocks-section-label">Selecciona un bloque o usa el buscador superior</div>
       <div class="blocks-grid">
-        <button type="button" class="block-card" onclick="openCategoriesModal('Instalación Clientes')">
+        <button type="button" class="block-card b-0" onclick="openCategoriesModal('Instalación Clientes')">
+          <div class="block-icon">🏠</div>
           <div class="block-title">Instalación Clientes</div>
-          <div class="block-meta">7 categorías</div>
+          <div class="block-meta">7 categorías · 151 art.</div>
         </button>
-        <button type="button" class="block-card" onclick="openCategoriesModal('Fibra Despliegue')">
+        <button type="button" class="block-card b-1" onclick="openCategoriesModal('Fibra Despliegue')">
+          <div class="block-icon">🧵</div>
           <div class="block-title">Fibra Despliegue</div>
-          <div class="block-meta">15 categorías</div>
+          <div class="block-meta">15 categorías · 116 art.</div>
         </button>
-        <button type="button" class="block-card" onclick="openCategoriesModal('Antenas Despliegue')">
+        <button type="button" class="block-card b-2" onclick="openCategoriesModal('Antenas Despliegue')">
+          <div class="block-icon">📡</div>
           <div class="block-title">Antenas Despliegue</div>
-          <div class="block-meta">10 categorías</div>
+          <div class="block-meta">10 categorías · 40 art.</div>
         </button>
-        <button type="button" class="block-card" onclick="selectTableFilter(32)">
+        <button type="button" class="block-card b-3" onclick="selectTableFilter(32)">
+          <div class="block-icon">⚡</div>
           <div class="block-title">Equipos Sin Código</div>
-          <div class="block-meta">Instant Byte</div>
+          <div class="block-meta">Instant Byte · 14 art.</div>
         </button>
       </div>
     </div>
@@ -1407,32 +1557,41 @@
     <div class="catalog-panel" id="materialsList" style="display:none;"></div>
 
     <div class="puntual-wrap">
-      <button class="puntual-btn" onclick="openPuntualModal()">Añadir material puntual sin código</button>
+      <button type="button" class="puntual-btn" onclick="openPuntualModal()">+ Añadir material puntual fuera de catálogo</button>
     </div>
 
-    <!-- APARTADO DE PEDIDO / EDICIÓN DE KIT -->
+    <!-- APARTADO DE PEDIDO -->
     <section class="pedido-doc" id="orderSection">
       <div class="pedido-header">
         <div class="pedido-header-left">
-          <img id="pedidoLogo" alt="Acaciophone" class="pedido-logo">
-          <span class="pedido-doc-title" id="pedidoHeaderTitle">Pedido</span>
+          <span class="pedido-logo-box">
+            <img id="pedidoLogo" alt="Acaciophone" class="pedido-logo">
+          </span>
+          <span class="pedido-doc-title">Pedido</span>
           <span class="pedido-badge-count" id="cartCount">0</span>
         </div>
-        <button class="pedido-kit-btn" id="saveKitHeaderBtn" onclick="promptSaveCurrentAsKit()">Guardar Kit</button>
-        <div class="kit-edit-actions" id="kitEditHeaderActions">
-          <button class="kit-edit-btn save" onclick="saveEditedKit()">Guardar</button>
-          <button class="kit-edit-btn" onclick="cancelEditKit()">Salir</button>
+        <button type="button" class="pedido-kit-btn" id="headerSaveKitBtn" onclick="promptSaveCurrentAsKit()">🧰 Guardar como Kit</button>
+      </div>
+
+      <!-- Barra de edición de Kit corregida con Guardar y Salir visibles -->
+      <div class="edit-kit-bar" id="editKitBanner">
+        <div class="edit-kit-info">
+          ✏️ Editando Kit: <strong id="editingKitName"></strong>
+        </div>
+        <div class="edit-kit-actions">
+          <button type="button" class="kit-action-btn save" onclick="saveEditedKit()">💾 Guardar</button>
+          <button type="button" class="kit-action-btn exit" onclick="cancelEditKit()">✕ Salir</button>
         </div>
       </div>
 
       <div class="pedido-body" id="cartTableBody"></div>
 
-      <div class="pedido-footer" id="pedidoFooterActions">
-        <button class="btn-copy-primary" onclick="copyOrder()">Copiar Pedido</button>
+      <div class="pedido-footer">
+        <button type="button" class="btn-copy-primary" onclick="copyOrder()">📋 Copiar Pedido</button>
         <div class="pedido-subactions">
-          <button class="sub-action-btn" onclick="sendEmail()">Correo</button>
-          <button class="sub-action-btn" onclick="sendWhatsApp()">WhatsApp</button>
-          <button class="sub-action-btn danger" onclick="clearCart()">Vaciar</button>
+          <button type="button" class="sub-action-btn" onclick="sendEmail()">✉️ Correo</button>
+          <button type="button" class="sub-action-btn" onclick="sendWhatsApp()">💬 WhatsApp</button>
+          <button type="button" class="sub-action-btn danger" onclick="clearCart()">🗑️ Vaciar</button>
         </div>
       </div>
     </section>
@@ -1443,12 +1602,12 @@
     <div class="trans-box">
       <div class="trans-toolbar">
         <span class="trans-title">Códigos de entrada</span>
-        <div style="display:flex;gap:14px;">
-          <button class="text-btn" onclick="pasteFromClipboard()">Pegar</button>
-          <button class="text-btn" style="color:var(--muted);" onclick="clearTranslator()">Limpiar</button>
+        <div style="display:flex;gap:10px;">
+          <button type="button" class="text-btn" onclick="pasteFromClipboard()">📋 Pegar</button>
+          <button type="button" class="text-btn" style="color:var(--danger);" onclick="clearTranslator()">✕ Limpiar</button>
         </div>
       </div>
-      <textarea class="trans-textarea" id="transInput" placeholder="Pegar códigos..." oninput="runTranslator()"></textarea>
+      <textarea class="trans-textarea" id="transInput" placeholder="Pega aquí la lista de códigos del pedido..." oninput="runTranslator()"></textarea>
     </div>
     <div class="catalog-panel" id="transOutput" style="display:none;"></div>
   </div>
@@ -1461,17 +1620,18 @@
 </div>
 
 <!-- VENTANA FLOTANTE: SELECCIÓN DE CATEGORÍA -->
-<div class="modal-backdrop" id="conflictModal" onclick="if(event.target===this)closeActiveModal()">
+<div class="modal-backdrop center-modal" id="conflictModal" onclick="if(event.target===this)closeActiveModal()">
   <div class="modal-dialog">
     <div class="m-meta">SELECCIÓN DE CATEGORÍA</div>
-    <div class="m-title">¿Para qué fin buscas este material?</div>
+    <div class="m-title">¿Para qué apartado buscas este material?</div>
     <div class="conflict-list" id="conflictModalOptions"></div>
   </div>
 </div>
 
-<!-- VENTANA COMPACTA: UNIDADES / MATERIAL PUNTUAL -->
+<!-- MODAL BOTTOM-SHEET: UNIDADES / PUNTUAL -->
 <div class="modal-backdrop" id="itemModal" onclick="if(event.target===this)closeActiveModal()">
-  <div class="modal-dialog">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
     <div class="m-meta" id="mCode"></div>
     <div class="m-title" id="mTitle"></div>
 
@@ -1498,33 +1658,33 @@
     </div>
 
     <div class="cable-pills" id="cableHelper">
-      <button class="cable-pill" onclick="setQuickCable(305, 'Bobina 305m')">Bobina 305m</button>
-      <button class="cable-pill" onclick="setQuickCable(500, 'Bobina 500m')">Bobina 500m</button>
-      <button class="cable-pill" onclick="setQuickCable(1, 'Bobina entera')">Bobina entera</button>
+      <button type="button" class="cable-pill" onclick="setQuickCable(305, 'Bobina 305m')">Bobina 305m</button>
+      <button type="button" class="cable-pill" onclick="setQuickCable(500, 'Bobina 500m')">Bobina 500m</button>
+      <button type="button" class="cable-pill" onclick="setQuickCable(1, 'Bobina entera')">Bobina entera</button>
     </div>
 
     <div class="qty-stepper">
-      <button class="step-btn" onclick="stepQty(-1)">−</button>
+      <button type="button" class="step-btn" onclick="stepQty(-1)">−</button>
       <input type="number" id="mQtyInput" value="1" min="1" inputmode="numeric">
-      <button class="step-btn" onclick="stepQty(1)">+</button>
+      <button type="button" class="step-btn" onclick="stepQty(1)">+</button>
     </div>
 
     <div class="quick-pills">
-      <button class="q-pill" onclick="addQty(1)">+1</button>
-      <button class="q-pill" onclick="addQty(5)">+5</button>
-      <button class="q-pill" onclick="addQty(10)">+10</button>
-      <button class="q-pill" onclick="addQty(50)">+50</button>
-      <button class="q-pill" onclick="addQty(100)">+100</button>
-      <button class="q-pill" style="color:var(--warning);" onclick="resetQty()">1</button>
+      <button type="button" class="q-pill" onclick="addQty(1)">+1</button>
+      <button type="button" class="q-pill" onclick="addQty(5)">+5</button>
+      <button type="button" class="q-pill" onclick="addQty(10)">+10</button>
+      <button type="button" class="q-pill" onclick="addQty(50)">+50</button>
+      <button type="button" class="q-pill" onclick="addQty(100)">+100</button>
+      <button type="button" class="q-pill" style="color:var(--warning);" onclick="resetQty()">Reset (1)</button>
     </div>
 
-    <div class="field" style="margin-bottom:0;">
-      <input type="text" id="mNoteInput" placeholder="Nota opcional">
+    <div class="field">
+      <input type="text" id="mNoteInput" placeholder="Nota opcional (ej. urgente, obra...)">
     </div>
 
     <div class="m-footer">
-      <button class="btn-cancel" onclick="closeActiveModal()">Cancelar</button>
-      <button class="btn-ok" onclick="confirmModalItem()">Añadir</button>
+      <button type="button" class="btn-cancel" onclick="closeActiveModal()">Cancelar</button>
+      <button type="button" class="btn-ok" onclick="confirmModalItem()">Añadir al pedido</button>
     </div>
   </div>
 </div>
@@ -1532,35 +1692,17 @@
 <!-- MODAL: CATEGORÍAS -->
 <div class="modal-backdrop" id="categoriesModal" onclick="if(event.target===this)closeActiveModal()">
   <div class="modal-sheet" id="categoriesSheet">
+    <div class="sheet-handle"></div>
     <div id="categoriesContainer"></div>
   </div>
 </div>
 
-<!-- MODAL: MIS KITS (Solo listado de nombres) -->
+<!-- MODAL: KITS -->
 <div class="modal-backdrop" id="kitsModal" onclick="if(event.target===this)closeActiveModal()">
-  <div class="modal-dialog">
-    <div class="m-title" style="margin-top:0;">Mis Kits</div>
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <div class="m-title" style="margin-top:0;">🧰 Mis Kits Guardados</div>
     <div id="kitsContainer"></div>
-    <div class="m-footer">
-      <button class="btn-cancel" onclick="closeActiveModal()">Cerrar</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: PREVISUALIZACIÓN DE KIT SELECCIONADO -->
-<div class="modal-backdrop" id="kitPreviewModal" onclick="if(event.target===this)backToKitsList()">
-  <div class="modal-dialog">
-    <div class="m-meta">CONTENIDO DEL KIT</div>
-    <div class="m-title" id="previewKitTitle"></div>
-    <div class="kit-preview-list" id="previewKitItems"></div>
-    <div class="kit-preview-actions">
-      <button type="button" class="kp-btn primary" id="kpAddBtn">Añadir a pedido</button>
-      <button type="button" class="kp-btn" id="kpEditBtn">Editar</button>
-      <button type="button" class="kp-btn danger" id="kpDelBtn">Eliminar</button>
-    </div>
-    <div class="m-footer" style="margin-top:8px;">
-      <button class="btn-cancel" onclick="backToKitsList()">Volver a Mis Kits</button>
-    </div>
   </div>
 </div>
 
@@ -1584,13 +1726,12 @@ function forceScrollTop() {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-  }, 30);
+  }, 35);
 }
 
-// Imágenes corporativas incrustadas en Base64 real
 const LOGO_DATA_URI = "data:image/png;base64,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";
 
-const ICON_DATA_URI = "data:image/png;base64,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";
+const ICON_DATA_URI = "data:image/png;base64,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";
 
 document.getElementById("headerLogo").src = LOGO_DATA_URI;
 document.getElementById("homeLogoImg").src = LOGO_DATA_URI;
@@ -1958,8 +2099,7 @@ const RAW_DATA = [
 ["SIN CÓDIGO","MIKROTIK SXSQ-5AXD",32,"INSTANT BYTE"],
 ["SIN CÓDIGO","MIKROTIK RBSXTSQ",32,"INSTANT BYTE"]
 ];
-
-const CABLE_CODES = new Set([
+  const CABLE_CODES = new Set([
   "4038","4039","4040","4084","4085","4086","4087","4088","4089","4090","4091","4092","4093","4143","4180"
 ]);
 
@@ -2051,114 +2191,115 @@ function getSynonymsForItem(code, name, tableIdx) {
   return extra.join(" ");
 }
 
-// Extracción de filtros útiles por categoría bajo el título único "Filtrar"
-function extractFilterTags(code, name, tIdx) {
+function getSheetColorIndex(tIdx) {
+  if (tIdx <= 6) return 0;
+  if (tIdx <= 16) return 2;
+  if (tIdx <= 31) return 1;
+  return 3;
+}
+
+function extractItemAttributes(code, name, tIdx) {
   const up = name.toUpperCase();
-  const tags = [];
+  const badges = [];
+  let typeGroup = "Otros";
+  let measureGroup = null;
 
-  if (tIdx === 1) { // CABLES ACOMETIDA FIBRA PROPIA (30)
-    if (up.includes("ALARGADOR")) tags.push("Alargador 2m");
-    else if (up.includes("SERIE FORCE")) tags.push("Armado Force 3mm");
-    else if (up.includes("SM9/125")) tags.push("Exterior SM9/125");
-    else if (up.includes("5 MM")) tags.push("Opticom 5mm");
-    else if (up.includes("3 MM")) tags.push("Opticom 3mm");
-
-    if (up.includes("NEGRO")) tags.push("Negro");
-    else if (up.includes("BLANCO")) tags.push("Blanco");
-
-    const m = up.match(/\b(\d+)\s*(?:M|MT|MTS|METROS)\b/);
-    if (m) tags.push(m[1] + "m");
-  } else if (tIdx === 2) { // CABLES ACOMETIDA FIBRA MARCA BLANCA (47)
-    if (up.includes("OPTITAP") || up.includes("CORNING")) tags.push("Corning Optitap");
-    else if (up.includes("FASTCONNECT") || up.includes("HUAWEI")) tags.push("Huawei FastConnect");
-    else if (up.includes("G657A2")) tags.push("Ext. G657A2 SC/APC");
-    else if (up.includes("CIRCO") || up.includes("MMV")) tags.push("Circo MMV");
-    else if (up.includes("4,2MM")) tags.push("Interior 4.2mm");
-    else if (up.includes("INTERIOR")) tags.push("Interior 3mm");
-    else tags.push("Fijación / Genérica");
-
-    const m = up.match(/\b(\d+)\s*(?:M|MT|MTS|METROS)\b/);
-    if (m) tags.push(m[1] + "m");
-  } else if (tIdx === 0) { // ROUTER DOMÉSTICO (33)
-    if (up.includes("HUAWEI")) tags.push("Huawei");
-    else if (up.includes("TP-LINK") || up.includes("TP- LINK") || up.includes("TPLINK")) tags.push("TP-Link");
-    else if (up.includes("SAGECOM") || up.includes("ZTE") || up.includes("SERCOMM")) tags.push("Sagemcom / ZTE / Sercomm");
-    else if (up.includes("MIKROTIK") || up.includes("ASUS")) tags.push("Mikrotik / Asus");
-
-    if (up.includes("WIFI 6") || up.includes("WIFI 7") || up.includes("AX")) tags.push("WiFi 6 / WiFi 7");
-    if (up.includes("NEBA") || up.includes("VULA")) tags.push("NEBA / VULA");
-    if (up.includes("REPETIDOR") || up.includes("MESH")) tags.push("Repetidor / Mesh");
-    if (up.includes("4G") || up.includes("SATELITE") || up.includes("DSL")) tags.push("4G / Satélite / DSL");
-  } else if (tIdx === 26) { // PATCH CORD (18)
-    if (up.includes("SC/APC - SC/APC")) tags.push("SC/APC - SC/APC");
-    else if (up.includes("SC/APC - SC/UPC")) tags.push("SC/APC - SC/UPC");
-    else if (up.includes("LC") && up.includes("SC")) tags.push("SC - LC");
-    else if (up.includes("LC/")) tags.push("LC - LC");
-    else tags.push("SC/UPC - SC/UPC");
-
-    if (up.includes("DUPLEX")) tags.push("Dúplex");
-    if (up.includes("2 MM")) tags.push("2mm");
-    else if (up.includes("3 MM")) tags.push("3mm");
-
-    const m = up.match(/\b(\d+)\s*MT\b/);
-    if (m) tags.push(m[1] + "m");
-  } else if (tIdx === 25) { // CABLE FIBRA ÓPTICA (12)
-    const fo = up.match(/\b(\d+)\s*FO\b/);
-    if (fo) tags.push(fo[1] + " FO");
-    if (up.includes("ARMADURA")) tags.push("Armadura metálica");
-    else if (up.includes("ROEDORES")) tags.push("Anti-roedores");
-  } else if (tIdx === 6) { // ANTENA DOMÉSTICA (18)
-    if (up.includes("MIKROTIK") || up.includes("SXT") || up.includes("LHG") || up.includes("LDF") || up.includes("DISC")) tags.push("Mikrotik");
-    else if (up.includes("PUNTO DE ACCESO") || up.includes("UNIFI")) tags.push("Punto Acceso / WiFi");
-    else if (up.includes("PARABOLICA") || up.includes("OFFSET")) tags.push("Parabólica");
-    else tags.push("Cambium / NanoBeam");
-  } else if (tIdx === 17) { // OLT (12)
-    if (up.includes("TARJETA")) tags.push("Tarjetas MA5600/5800");
-    else if (up.includes("HUAWEI")) tags.push("Chasis OLT Huawei");
-    else tags.push("BDCOM / Cabecera");
-  } else if (tIdx === 21) { // ODF (10)
-    if (up.includes("DUPLEX")) tags.push("Dúplex");
-    const p = up.match(/\b(\d+)\s*PUERTOS\b/);
-    if (p) tags.push(p[1] + " Puertos");
-  } else if (tIdx === 24) { // CTO (10)
-    if (up.includes("INTERIOR")) tags.push("Interior");
-    else if (up.includes("POSTE")) tags.push("Fachada / Poste");
-    else if (up.includes("ARQUETA") || up.includes("COMPACT")) tags.push("Arqueta / Compact");
-    else tags.push("Multi / Con Splitter");
-
-    if (up.includes("8 PUERTOS") || up.includes("-8-")) tags.push("8 Puertos");
-    else if (up.includes("16")) tags.push("16 Puertos");
-    else if (up.includes("48")) tags.push("48 Puertos");
-  } else if (tIdx === 23) { // EMPALME/NODO (7)
-    if (up.includes("TORPEDO")) tags.push("Torpedo");
-    else tags.push("Estanca / Mini CAU");
-    const f = up.match(/\b(\d+)\s*FUSIONES\b/);
-    if (f) tags.push(f[1] + " Fusiones");
-  } else if (tIdx === 29) { // SPLITTER (7)
-    const s = up.match(/(1:\d+)/);
-    if (s) tags.push(s[1]);
-    if (up.includes("PRECONECTORIZADO") || up.includes("PERCONECTORIZADO")) tags.push("Conectorizado SC/APC");
-    else tags.push("Sin conectorizar");
-  } else if (tIdx === 5) { // MATERIAL TV CLIENTE (12)
-    if (up.includes("ANDROID") || up.includes("ADROID") || up.includes("DECO")) tags.push("Decos Android TV");
-    else if (up.includes("ANTENA") || up.includes("PARABOLICA")) tags.push("Antenas / TDT");
-    else tags.push("LNB / Receptor Sat");
-  } else if (tIdx === 10) { // MATERIAL FIJACION - ANTENAS (7)
-    if (up.includes("MASTIL")) tags.push("Mástiles");
-    else if (up.includes("GARRA") || up.includes("SOPORTE")) tags.push("Garras / Soportes");
-    else tags.push("Grapas");
-  } else if (tIdx === 31) { // MATERIAL FIJACIÓN - FIBRA (10)
-    if (up.includes("RETENEDOR") || up.includes("RETENDOR") || up.includes("ANCLAJE")) tags.push("Retenedores / Anclajes");
-    else if (up.includes("GRAPA")) tags.push("Grapas pared");
-    else tags.push("Tacos / Tirafondos / Bridas");
-  } else if (tIdx === 32) { // EQUIPOS SIN CÓDIGO (14)
-    if (up.includes("RBLHG") || up.includes("SXSQ") || up.includes("RBSXT") || up.includes("CAPGI")) tags.push("Antenas / AP Mikrotik");
-    else if (up.includes("CRS") || up.includes("CSS")) tags.push("Switches Mikrotik");
-    else if (up.includes("HPOW") || up.includes("POE")) tags.push("Fuentes / PoE");
-    else tags.push("Routers / Telefonía");
+  const mMatch = up.match(/\b(\d+(?:[.,]\d+)?)\s*(?:M|MT|MTS|METROS)\b/);
+  if (mMatch) {
+    const mVal = mMatch[1].replace(",", ".") + "m";
+    measureGroup = mVal;
+    badges.push({ text: mVal, cls: "tag-green" });
   }
 
-  return tags;
+  // Grosores en color morado (tag-purple) para diferenciarlos de conectores y metros
+  if (up.includes("5 MM") || up.includes("5MM")) badges.push({ text: "5 mm", cls: "tag-purple" });
+  else if (up.includes("4,2MM") || up.includes("4.2MM")) badges.push({ text: "4.2 mm", cls: "tag-purple" });
+  else if (up.includes("3 MM") || up.includes("3MM")) badges.push({ text: "3 mm", cls: "tag-purple" });
+  else if (up.includes("2 MM") || up.includes("2MM")) badges.push({ text: "2 mm", cls: "tag-purple" });
+  else if (up.includes("0,9 MM") || up.includes("0.9 MM")) badges.push({ text: "0.9 mm", cls: "tag-purple" });
+
+  if (up.includes("NEGRO") || up.includes("NEGRA")) badges.push({ text: "NEGRO", cls: "tag-dark" });
+  else if (up.includes("BLANCO") || up.includes("BLANCA")) badges.push({ text: "BLANCO", cls: "tag-light" });
+
+  if (tIdx === 1) {
+    if (up.includes("ALARGADOR")) typeGroup = "Alargadores 2m";
+    else if (up.includes("SERIE FORCE")) { typeGroup = "Armado Force 3mm"; badges.push({ text: "Armado Force", cls: "" }); }
+    else if (up.includes("SM9/125")) { typeGroup = "Ext. SM9/125"; badges.push({ text: "SM9/125", cls: "" }); }
+    else if (up.includes("5 MM")) typeGroup = "Opticom 5mm";
+    else if (up.includes("NEGRO")) typeGroup = "Opticom 3mm Negro";
+    else if (up.includes("BLANCO")) typeGroup = "Opticom 3mm Blanco";
+  } else if (tIdx === 2) {
+    if (up.includes("OPTITAP") || up.includes("CORNING")) { typeGroup = "Ext. Corning Optitap"; badges.push({ text: "Optitap", cls: "" }); }
+    else if (up.includes("FASTCONNECT") || up.includes("HUAWEI")) { typeGroup = "Ext. Huawei FastConnect"; badges.push({ text: "FastConnect", cls: "" }); }
+    else if (up.includes("G657A2")) { typeGroup = "Ext. Reforzado SC/APC"; badges.push({ text: "G657A2 SC/APC", cls: "" }); }
+    else if (up.includes("CIRCO") || up.includes("MMV")) { typeGroup = "Ext. Circo MMV"; badges.push({ text: "Circo MMV", cls: "" }); }
+    else if (up.includes("4,2MM")) typeGroup = "Interior 4.2mm";
+    else if (up.includes("INTERIOR")) typeGroup = "Interior 3mm";
+    else typeGroup = "Genérica / Fijación";
+  } else if (tIdx === 0) {
+    if (up.includes("HUAWEI")) typeGroup = "Huawei";
+    else if (up.includes("TP-LINK") || up.includes("TP- LINK") || up.includes("TPLINK")) typeGroup = "TP-Link";
+    else if (up.includes("SAGECOM") || up.includes("ZTE") || up.includes("SERCOMM")) typeGroup = "Sagemcom / ZTE / Sercomm";
+    else if (up.includes("MIKROTIK") || up.includes("ASUS")) typeGroup = "Mikrotik / Asus";
+    else typeGroup = "Otros / 4G / DSL";
+
+    if (up.includes("WIFI 7") || up.includes("WIFI 6") || up.includes("AX")) { measureGroup = "WiFi 6 / WiFi 7"; badges.push({ text: "WiFi 6/7", cls: "tag-green" }); }
+    else if (up.includes("NEBA") || up.includes("VULA")) { measureGroup = "NEBA / VULA"; badges.push({ text: "NEBA/VULA", cls: "" }); }
+    else if (up.includes("REPETIDOR") || up.includes("MESH")) { measureGroup = "Repetidor / Mesh"; badges.push({ text: "Repetidor", cls: "tag-purple" }); }
+    else if (up.includes("4G") || up.includes("SATELITE") || up.includes("DSL")) { measureGroup = "4G / Satélite / DSL"; }
+    else { measureGroup = "ONT / Router GPON"; }
+  } else if (tIdx === 26) {
+    if (up.includes("SC/APC - SC/APC")) { typeGroup = "SC/APC - SC/APC"; badges.push({ text: "SC/APC-SC/APC", cls: "" }); }
+    else if (up.includes("SC/APC - SC/UPC")) { typeGroup = "SC/APC - SC/UPC"; badges.push({ text: "SC/APC-SC/UPC", cls: "" }); }
+    else if (up.includes("LC") && up.includes("SC")) { typeGroup = "SC - LC"; badges.push({ text: "SC-LC", cls: "" }); }
+    else if (up.includes("LC/")) { typeGroup = "LC - LC"; badges.push({ text: "LC-LC", cls: "" }); }
+    else { typeGroup = "SC/UPC - SC/UPC"; badges.push({ text: "SC/UPC-SC/UPC", cls: "" }); }
+    if (up.includes("DUPLEX")) badges.push({ text: "DÚPLEX", cls: "tag-dark" });
+  } else if (tIdx === 25) {
+    const foMatch = up.match(/\b(\d+)\s*FO\b/);
+    if (foMatch) {
+      measureGroup = foMatch[1] + " FO";
+      badges.push({ text: measureGroup, cls: "tag-green" });
+    }
+    if (up.includes("ARMADURA")) { typeGroup = "Armadura Metálica"; badges.push({ text: "Armado", cls: "" }); }
+    else if (up.includes("ROEDORES")) { typeGroup = "Anti-roedores"; badges.push({ text: "Anti-roedores", cls: "" }); }
+    else typeGroup = "Estándar";
+  } else if (tIdx === 6) {
+    if (up.includes("MIKROTIK") || up.includes("SXT") || up.includes("LHG") || up.includes("LDF") || up.includes("DISC")) typeGroup = "Mikrotik";
+    else if (up.includes("PUNTO DE ACCESO") || up.includes("UNIFI")) typeGroup = "Punto Acceso / WiFi";
+    else if (up.includes("PARABOLICA") || up.includes("OFFSET")) typeGroup = "Parabólica / Satélite";
+    else typeGroup = "Cambium / NanoBeam";
+  } else if (tIdx === 17) {
+    if (up.includes("TARJETA")) typeGroup = "Tarjetas OLT";
+    else if (up.includes("HUAWEI")) typeGroup = "Chasis OLT Huawei";
+    else typeGroup = "BDCOM / Cabecera";
+  } else if (tIdx === 21) {
+    const pMatch = up.match(/\b(\d+)\s*PUERTOS\b/);
+    if (pMatch) { measureGroup = pMatch[1] + " Puertos"; badges.push({ text: measureGroup, cls: "tag-green" }); }
+    typeGroup = up.includes("DUPLEX") ? "Dúplex con fusiones" : "Estándar";
+  } else if (tIdx === 24) {
+    if (up.includes("INTERIOR")) typeGroup = "Interior";
+    else if (up.includes("POSTE")) typeGroup = "Fachada / Poste";
+    else if (up.includes("ARQUETA") || up.includes("COMPACT")) typeGroup = "Arqueta / Compact";
+    else typeGroup = "Multi / Con Splitter";
+    if (up.includes("8 PUERTOS") || up.includes("-8-")) { measureGroup = "8 Puertos"; badges.push({ text: "8 P", cls: "tag-green" }); }
+    else if (up.includes("16")) { measureGroup = "16 Puertos"; badges.push({ text: "16 P", cls: "tag-green" }); }
+    else if (up.includes("48")) { measureGroup = "48 Puertos"; badges.push({ text: "48 P", cls: "tag-green" }); }
+  } else if (tIdx === 23) {
+    typeGroup = up.includes("TORPEDO") ? "Torpedo" : "Estanca / Mini CAU";
+    const fMatch = up.match(/\b(\d+)\s*FUSIONES\b/);
+    if (fMatch) { measureGroup = fMatch[1] + " Fusiones"; badges.push({ text: fMatch[1] + " Fus.", cls: "tag-green" }); }
+  } else if (tIdx === 29) {
+    typeGroup = (up.includes("PRECONECTORIZADO") || up.includes("PERCONECTORIZADO")) ? "Conectorizado SC/APC" : "Sin conectorizar";
+    const sMatch = up.match(/(1:\d+)/);
+    if (sMatch) { measureGroup = sMatch[1]; badges.push({ text: sMatch[1], cls: "tag-green" }); }
+  } else if (tIdx === 5) {
+    if (up.includes("ANDROID") || up.includes("ADROID") || up.includes("DECO")) typeGroup = "Decos Android TV";
+    else if (up.includes("ANTENA") || up.includes("PARABOLICA")) typeGroup = "Antenas Satélite / TDT";
+    else typeGroup = "LNB / Receptor Sat";
+  }
+
+  return { badges, typeGroup, measureGroup };
 }
 
 const MATERIALS = RAW_DATA.map((r, i) => {
@@ -2172,20 +2313,23 @@ const MATERIALS = RAW_DATA.map((r, i) => {
   const fullText = norm(`${code} ${name} ${tableName} ${prov} ${syns}`);
   const words = fullText.split(/[^a-z0-9]+/).filter(w => w.length >= 3);
   const phoneticFull = toPhonetic(fullText);
-  const filterTags = extractFilterTags(code, name, tIdx);
+  const attrs = extractItemAttributes(code, name, tIdx);
 
   return {
     id: i,
     code,
     name,
     tIdx,
+    sheetColorIdx: getSheetColorIndex(tIdx),
     sheetName,
     tableName,
     prov,
     search: fullText,
     words,
     phoneticFull,
-    filterTags
+    badges: attrs.badges,
+    typeGroup: attrs.typeGroup,
+    measureGroup: attrs.measureGroup
   };
 });
 
@@ -2223,7 +2367,7 @@ const CODE_MAP = {};
 MATERIALS.forEach(m => {
   if (m.code !== "SIN CÓDIGO") {
     if (!CODE_MAP[m.code]) {
-      CODE_MAP[m.code] = { code: m.code, name: m.name, tables: [m.tableName], prov: m.prov };
+      CODE_MAP[m.code] = { code: m.code, name: m.name, tables: [m.tableName], prov: m.prov, sheetColorIdx: m.sheetColorIdx };
     } else if (!CODE_MAP[m.code].tables.includes(m.tableName)) {
       CODE_MAP[m.code].tables.push(m.tableName);
     }
@@ -2261,33 +2405,35 @@ let selectedTable = "ALL";
 let activeConflictFamilyId = null;
 let resolvedConflictTable = null;
 let conflictDismissed = false;
-let selectedFilterTags = [];
+let activeSubType = "ALL";
+let activeSubMeasure = "ALL";
 let expandedCartKeys = new Set();
 let modalMode = "CATALOG";
 let currentItem = null;
 let editingKitIndex = null;
-let backupCartBeforeKitEdit = null;
+let cartBackupBeforeKitEdit = null;
 let handlingPopState = false;
 
 history.replaceState({ view: "home", modal: null }, "");
 
+function syncThemeButtons(isDark) {
+  const label = isDark ? "☀️ Día" : "🌙 Noche";
+  document.getElementById("themeBtn").textContent = label;
+  document.getElementById("homeThemeBtn").textContent = label;
+  document.getElementById("metaThemeColor").setAttribute("content", isDark ? "#131c2e" : "#ffffff");
+}
+
 if (localStorage.getItem("acacio_theme_v5") === "dark") {
   document.body.classList.add("dark-mode");
-  document.getElementById("themeBtn").textContent = "Día";
-  document.getElementById("homeThemeBtn").textContent = "Día";
-  document.getElementById("metaThemeColor").setAttribute("content", "#111827");
+  syncThemeButtons(true);
 }
 
 function toggleTheme() {
   const isDark = document.body.classList.toggle("dark-mode");
   localStorage.setItem("acacio_theme_v5", isDark ? "dark" : "light");
-  const label = isDark ? "Día" : "Noche";
-  document.getElementById("themeBtn").textContent = label;
-  document.getElementById("homeThemeBtn").textContent = label;
-  document.getElementById("metaThemeColor").setAttribute("content", isDark ? "#111827" : "#f4f7fb");
+  syncThemeButtons(isDark);
 }
-
-const searchInput = document.getElementById("searchInput");
+  const searchInput = document.getElementById("searchInput");
 const clearSearchBtn = document.getElementById("clearSearchBtn");
 
 function handleSearchSubmit(e) {
@@ -2308,7 +2454,8 @@ searchInput.addEventListener("input", () => {
     activeConflictFamilyId = null;
     resolvedConflictTable = null;
     conflictDismissed = false;
-    selectedFilterTags = [];
+    activeSubType = "ALL";
+    activeSubMeasure = "ALL";
     document.getElementById("conflictModal").classList.remove("open");
   }
   renderMaterials();
@@ -2320,7 +2467,8 @@ function clearSearch() {
   activeConflictFamilyId = null;
   resolvedConflictTable = null;
   conflictDismissed = false;
-  selectedFilterTags = [];
+  activeSubType = "ALL";
+  activeSubMeasure = "ALL";
   document.getElementById("conflictModal").classList.remove("open");
   renderMaterials();
 }
@@ -2393,10 +2541,6 @@ window.addEventListener("popstate", (e) => {
   closeAllModalDOM();
   const targetView = (e.state && e.state.view) ? e.state.view : "home";
   applyViewDOM(targetView);
-  if (e.state && e.state.modal) {
-    const mEl = document.getElementById(e.state.modal);
-    if (mEl) mEl.classList.add("open");
-  }
   renderMaterials();
   handlingPopState = false;
 });
@@ -2419,7 +2563,8 @@ function detectConflictFamily(tokens, endsWithSpace) {
 function chooseConflictTableFromModal(tIdx) {
   resolvedConflictTable = tIdx;
   conflictDismissed = false;
-  selectedFilterTags = [];
+  activeSubType = "ALL";
+  activeSubMeasure = "ALL";
   closeActiveModal();
   forceScrollTop();
 
@@ -2437,73 +2582,66 @@ function chooseConflictTableFromModal(tIdx) {
 function reopenConflictModal() {
   resolvedConflictTable = null;
   conflictDismissed = false;
-  selectedFilterTags = [];
+  activeSubType = "ALL";
+  activeSubMeasure = "ALL";
   renderMaterials();
 }
 
-function toggleFilterTag(tag) {
-  const idx = selectedFilterTags.indexOf(tag);
-  if (idx >= 0) {
-    selectedFilterTags.splice(idx, 1);
-  } else {
-    selectedFilterTags.push(tag);
-  }
+function setSubFilter(kind, val) {
+  if (kind === "TYPE") activeSubType = val;
+  else if (kind === "MEASURE") activeSubMeasure = val;
   renderMaterials();
   forceScrollTop();
 }
 
-function resetFilterTags() {
-  selectedFilterTags = [];
-  renderMaterials();
-  forceScrollTop();
-}
-
-// Panel único "Filtrar" con opciones útiles según la categoría activa
-function renderUnifiedFilterPanel(activeTIdx, categoryItems) {
+function renderSubFiltersBar(activeTIdx, baseCategoryItems) {
   const barEl = document.getElementById("subFiltersBar");
-  if (activeTIdx === null || categoryItems.length < 4) {
+  if (activeTIdx === null || baseCategoryItems.length < 6) {
     barEl.style.display = "none";
     barEl.innerHTML = "";
     return;
   }
 
-  const allTags = [];
-  categoryItems.forEach(m => {
-    m.filterTags.forEach(t => {
-      if (!allTags.includes(t)) allTags.push(t);
-    });
+  const typeSet = [];
+  const measureSet = [];
+  baseCategoryItems.forEach(m => {
+    if (m.typeGroup && !typeSet.includes(m.typeGroup)) typeSet.push(m.typeGroup);
+    if (m.measureGroup && !measureSet.includes(m.measureGroup)) measureSet.push(m.measureGroup);
   });
 
-  if (allTags.length <= 1) {
-    barEl.style.display = "none";
-    barEl.innerHTML = "";
-    return;
-  }
-
-  // Ordenar: primero características descriptivas y luego medidas numéricas ordenadas
-  const descTags = allTags.filter(t => !/^\d/.test(t));
-  const numTags = allTags.filter(t => /^\d/.test(t)).sort((a, b) => {
-    const na = parseFloat(a.replace(/[^\d.]/g, "")) || 0;
-    const nb = parseFloat(b.replace(/[^\d.]/g, "")) || 0;
+  measureSet.sort((a, b) => {
+    const na = parseFloat(a.replace(/[^\d.]/g, "")) || 9999;
+    const nb = parseFloat(b.replace(/[^\d.]/g, "")) || 9999;
     return na - nb;
   });
-  const sortedTags = [...descTags, ...numTags];
 
-  let html = `
-    <div class="sf-header">
-      <span class="sf-title">Filtrar</span>
-      ${selectedFilterTags.length > 0 ? `<button type="button" class="sf-reset" onclick="resetFilterTags()">Ver todos</button>` : ''}
-    </div>
-    <div class="sf-chips-wrap">
-  `;
+  if (typeSet.length <= 1 && measureSet.length <= 1) {
+    barEl.style.display = "none";
+    barEl.innerHTML = "";
+    return;
+  }
 
-  sortedTags.forEach(tag => {
-    const isAct = selectedFilterTags.includes(tag);
-    const safe = tag.replace(/'/g, "\\'");
-    html += `<button type="button" class="sf-chip ${isAct ? 'active' : ''}" onclick="toggleFilterTag('${safe}')">${tag}</button>`;
-  });
+  let html = "";
+  if (typeSet.length > 1) {
+    html += `<div class="sf-row"><span class="sf-label">Tipo:</span>`;
+    html += `<button type="button" class="sf-chip ${activeSubType === 'ALL' ? 'active' : ''}" onclick="setSubFilter('TYPE','ALL')">Todos</button>`;
+    typeSet.forEach(tg => {
+      const safe = tg.replace(/'/g, "\\'");
+      html += `<button type="button" class="sf-chip ${activeSubType === tg ? 'active' : ''}" onclick="setSubFilter('TYPE','${safe}')">${tg}</button>`;
+    });
+    html += `</div>`;
+  }
 
-  html += `</div>`;
+  if (measureSet.length > 1) {
+    html += `<div class="sf-row"><span class="sf-label">Medida:</span>`;
+    html += `<button type="button" class="sf-chip measure-chip ${activeSubMeasure === 'ALL' ? 'active' : ''}" onclick="setSubFilter('MEASURE','ALL')">Todas</button>`;
+    measureSet.forEach(mg => {
+      const safe = mg.replace(/'/g, "\\'");
+      html += `<button type="button" class="sf-chip measure-chip ${activeSubMeasure === mg ? 'active' : ''}" onclick="setSubFilter('MEASURE','${safe}')">${mg}</button>`;
+    });
+    html += `</div>`;
+  }
+
   barEl.innerHTML = html;
   barEl.style.display = "block";
 }
@@ -2514,9 +2652,18 @@ function renderMaterials() {
   const q = norm(rawVal.trim());
   const tokens = q ? q.split(/\s+/) : [];
   const scopeBar = document.getElementById("activeScopeBar");
+  const selectedCatBanner = document.getElementById("selectedCatBanner");
   const listEl = document.getElementById("materialsList");
   const blocksEl = document.getElementById("blocksDashboard");
   const subBarEl = document.getElementById("subFiltersBar");
+
+  // Mostrar u ocultar barra de categoría seleccionada
+  if (selectedTable !== "ALL") {
+    selectedCatBanner.style.display = "flex";
+    document.getElementById("selectedCatBannerText").textContent = `📂 ${TABLES[selectedTable][1]}`;
+  } else {
+    selectedCatBanner.style.display = "none";
+  }
 
   if (!q && selectedTable === "ALL" && resolvedConflictTable === null) {
     scopeBar.style.display = "none";
@@ -2542,7 +2689,8 @@ function renderMaterials() {
         activeConflictFamilyId = fam.id;
         resolvedConflictTable = null;
         conflictDismissed = false;
-        selectedFilterTags = [];
+        activeSubType = "ALL";
+        activeSubMeasure = "ALL";
       }
 
       const matchingTables = [];
@@ -2561,7 +2709,7 @@ function renderMaterials() {
           listEl.style.display = "none";
           document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
             <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
-              <span>(${mt.tableName})</span>
+              <span>${mt.tableName}</span>
               <span class="conflict-badge">${mt.count}</span>
             </button>
           `).join("");
@@ -2569,7 +2717,7 @@ function renderMaterials() {
           return;
         } else if (resolvedConflictTable !== null) {
           scopeBar.style.display = "flex";
-          document.getElementById("activeScopeName").textContent = `(${TABLES[resolvedConflictTable][1]})`;
+          document.getElementById("activeScopeName").textContent = `📂 ${TABLES[resolvedConflictTable][1]}`;
         } else {
           scopeBar.style.display = "none";
         }
@@ -2593,11 +2741,16 @@ function renderMaterials() {
     baseItems = textMatches.filter(m => m.tIdx === activeTIdx);
   }
 
-  renderUnifiedFilterPanel(activeTIdx, MATERIALS.filter(m => m.tIdx === activeTIdx));
+  renderSubFiltersBar(activeTIdx, MATERIALS.filter(m => m.tIdx === activeTIdx));
 
   let finalItems = baseItems;
-  if (activeTIdx !== null && selectedFilterTags.length > 0) {
-    finalItems = finalItems.filter(m => selectedFilterTags.every(tag => m.filterTags.includes(tag)));
+  if (activeTIdx !== null) {
+    if (activeSubType !== "ALL") {
+      finalItems = finalItems.filter(m => m.typeGroup === activeSubType);
+    }
+    if (activeSubMeasure !== "ALL") {
+      finalItems = finalItems.filter(m => m.measureGroup === activeSubMeasure);
+    }
   }
 
   finalItems.sort((a, b) => {
@@ -2610,27 +2763,32 @@ function renderMaterials() {
   cart.forEach(c => { cartMap[c.key] = c.qty; });
 
   if (finalItems.length === 0) {
-    listEl.style.display = "block";
-    listEl.innerHTML = `<div style="padding:22px 14px;text-align:center;color:var(--muted);font-size:0.82rem;">No hay materiales que coincidan con el filtro seleccionado.</div>`;
+    listEl.style.display = "flex";
+    listEl.innerHTML = `<div style="padding:26px;text-align:center;background:var(--panel);border-radius:14px;border:1.5px solid var(--border);color:var(--text-secondary);font-size:0.92rem;font-weight:700;">No hay materiales que coincidan con este filtro.</div>`;
     return;
   }
 
-  listEl.style.display = "block";
+  listEl.style.display = "flex";
   listEl.innerHTML = finalItems.map(m => {
     const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
     const qtyInCart = cartMap[key];
     const isSC = m.code === "SIN CÓDIGO";
+    const badgesHTML = m.badges.length
+      ? `<div class="spec-tags-row">${m.badges.map(b => `<span class="spec-tag ${b.cls}">${b.text}</span>`).join("")}</div>`
+      : "";
 
     return `
-      <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
+      <div class="mat-row sheet-${m.sheetColorIdx} ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
         <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : m.code}</span>
         <div class="mat-content">
+          ${badgesHTML}
           <div class="mat-line1">${m.name}</div>
-          <div class="mat-line2">(${m.tableName})</div>
+          <div class="mat-meta-row">
+            <span class="mat-line2">${m.tableName}</span>
+            <span class="mat-prov-tag">· ${m.prov}</span>
+          </div>
         </div>
-        <div class="mat-right-ind">
-          ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
-        </div>
+        ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="add-action-circle">+</span>`}
       </div>
     `;
   }).join("");
@@ -2651,15 +2809,15 @@ function openCategoriesModal(onlySheet) {
   let html = "";
   if (!onlySheet) {
     html += `
-      <button class="cat-item ${selectedTable === 'ALL' ? 'active' : ''}" onclick="selectTableFilter('ALL')">
-        <span>Todas las categorías</span>
+      <button type="button" class="cat-item ${selectedTable === 'ALL' ? 'active' : ''}" onclick="selectTableFilter('ALL')">
+        <span>📂 Todas las categorías (Vista por bloques)</span>
         <span class="cat-count">${MATERIALS.length}</span>
       </button>
     `;
   } else {
     html += `
-      <button class="cat-item" onclick="openCategoriesModal()">
-        <span style="color:var(--accent);font-weight:700;">‹ Ver todas las categorías</span>
+      <button type="button" class="cat-item" onclick="openCategoriesModal()">
+        <span style="color:var(--accent);font-weight:900;">‹ Ver los 4 bloques completos</span>
         <span class="cat-count">${MATERIALS.length}</span>
       </button>
     `;
@@ -2669,8 +2827,8 @@ function openCategoriesModal(onlySheet) {
     html += `<div class="cat-group-title">${sheetName}</div>`;
     groups[sheetName].forEach(tb => {
       html += `
-        <button class="cat-item ${selectedTable === tb.idx ? 'active' : ''}" onclick="selectTableFilter(${tb.idx})">
-          <span>(${tb.title})</span>
+        <button type="button" class="cat-item ${selectedTable === tb.idx ? 'active' : ''}" onclick="selectTableFilter(${tb.idx})">
+          <span>${tb.title}</span>
           <span class="cat-count">${tb.count}</span>
         </button>
       `;
@@ -2687,14 +2845,15 @@ function selectTableFilter(val) {
   selectedTable = val;
   resolvedConflictTable = null;
   conflictDismissed = false;
-  selectedFilterTags = [];
+  activeSubType = "ALL";
+  activeSubMeasure = "ALL";
   const labelEl = document.getElementById("selectedCatLabel");
   const triggerBtn = document.getElementById("catTriggerBtn");
   if (val === "ALL") {
-    labelEl.textContent = "Todas las categorías";
+    labelEl.textContent = "📂 Todas las categorías";
     triggerBtn.classList.remove("active");
   } else {
-    labelEl.textContent = `(${TABLES[val][1]})`;
+    labelEl.textContent = `📂 ${TABLES[val][1]}`;
     triggerBtn.classList.add("active");
   }
   closeActiveModal();
@@ -2799,10 +2958,12 @@ function confirmModalItem() {
 
   closeActiveModal();
   saveCart();
-  showToast(editingKitIndex !== null ? "Añadido al kit" : "Añadido al pedido");
+  showToast("Añadido al pedido");
 }
 
-function toggleExpandCartItem(key) {
+function toggleExpandCartIdx(idx) {
+  if (!cart[idx]) return;
+  const key = cart[idx].key;
   if (expandedCartKeys.has(key)) expandedCartKeys.delete(key);
   else expandedCartKeys.add(key);
   renderCart();
@@ -2821,8 +2982,12 @@ function removeCartIdx(idx) {
 
 function clearCart() {
   if (!cart.length) return;
-  if (confirm("¿Vaciar pedido?")) {
+  if (confirm("¿Vaciar todo el pedido actual?")) {
     cart = [];
+    editingKitIndex = null;
+    cartBackupBeforeKitEdit = null;
+    document.getElementById("editKitBanner").style.display = "none";
+    document.getElementById("headerSaveKitBtn").style.display = "inline-block";
     saveCart();
   }
 }
@@ -2830,18 +2995,16 @@ function clearCart() {
 function updateHomeBadge() {
   const badge = document.getElementById("homeOrderBadge");
   if (!badge) return;
-  if (cart.length > 0 && editingKitIndex === null) {
+  if (cart.length > 0) {
     badge.style.display = "inline-block";
-    badge.textContent = `Pedido en curso: ${cart.length} ${cart.length === 1 ? 'material' : 'materiales'}`;
+    badge.textContent = `Pedido activo: ${cart.length} ${cart.length === 1 ? 'material' : 'materiales'}`;
   } else {
     badge.style.display = "none";
   }
 }
 
 function saveCart() {
-  if (editingKitIndex === null) {
-    localStorage.setItem("acacio_v4_cart", JSON.stringify(cart));
-  }
+  localStorage.setItem("acacio_v4_cart", JSON.stringify(cart));
   renderCart();
   renderMaterials();
   updateHomeBadge();
@@ -2850,26 +3013,9 @@ function saveCart() {
 function renderCart() {
   const sectionEl = document.getElementById("orderSection");
   const tbodyEl = document.getElementById("cartTableBody");
-  const titleEl = document.getElementById("pedidoHeaderTitle");
-  const saveKitBtn = document.getElementById("saveKitHeaderBtn");
-  const kitEditActions = document.getElementById("kitEditHeaderActions");
-  const footerActions = document.getElementById("pedidoFooterActions");
-
   document.getElementById("cartCount").textContent = cart.length;
   updateBottomBar();
   updateHomeBadge();
-
-  if (editingKitIndex !== null && userKits[editingKitIndex]) {
-    titleEl.textContent = `Editando: ${userKits[editingKitIndex].name}`;
-    saveKitBtn.style.display = "none";
-    kitEditActions.style.display = "flex";
-    footerActions.style.display = "none";
-  } else {
-    titleEl.textContent = "Pedido";
-    saveKitBtn.style.display = "inline-block";
-    kitEditActions.style.display = "none";
-    footerActions.style.display = "block";
-  }
 
   if (!cart.length && editingKitIndex === null) {
     sectionEl.style.display = "none";
@@ -2878,14 +3024,8 @@ function renderCart() {
   }
 
   sectionEl.style.display = "block";
-  if (!cart.length && editingKitIndex !== null) {
-    tbodyEl.innerHTML = `<div style="padding:18px;text-align:center;color:var(--muted);font-size:0.8rem;">El kit está vacío. Busca materiales arriba para añadirlos.</div>`;
-    return;
-  }
-
   tbodyEl.innerHTML = cart.map((item, i) => {
     const isExp = expandedCartKeys.has(item.key);
-    const safeKey = item.key.replace(/'/g, "\\'");
     const numStr = String(i + 1).padStart(2, "0");
     const codeDisplay = item.code === "SIN CÓDIGO"
       ? "SIN CÓDIGO"
@@ -2895,7 +3035,7 @@ function renderCart() {
 
     return `
       <div class="alb-row ${isExp ? 'expanded' : ''}">
-        <div class="alb-left" onclick="toggleExpandCartItem('${safeKey}')">
+        <div class="alb-left" onclick="toggleExpandCartIdx(${i})">
           <span class="alb-index">${numStr}</span>
           <div class="alb-text-wrap">
             <div class="alb-code-line">${codeDisplay} ${item.note ? '· (' + item.note + ')' : ''}</div>
@@ -2906,11 +3046,11 @@ function renderCart() {
         </div>
         <div class="alb-right">
           <div class="qty-capsule">
-            <button class="cap-btn" onclick="changeCartQty(${i}, -1)">−</button>
+            <button type="button" class="cap-btn" onclick="changeCartQty(${i}, -1)">−</button>
             <span class="cap-val">${item.qty} u.</span>
-            <button class="cap-btn" onclick="changeCartQty(${i}, 1)">+</button>
+            <button type="button" class="cap-btn" onclick="changeCartQty(${i}, 1)">+</button>
           </div>
-          <button class="del-icon-btn" onclick="removeCartIdx(${i})">✕</button>
+          <button type="button" class="del-icon-btn" onclick="removeCartIdx(${i})">✕</button>
         </div>
       </div>
     `;
@@ -2919,10 +3059,9 @@ function renderCart() {
 
 function updateBottomBar() {
   const bar = document.getElementById("bottomBar");
-  if ((cart.length > 0 || editingKitIndex !== null) && currentView === "order") {
+  if (cart.length > 0 && currentView === "order") {
     bar.style.display = "flex";
-    document.getElementById("bottomBarText").textContent =
-      editingKitIndex !== null ? `Kit (${cart.length})` : `Pedido (${cart.length})`;
+    document.getElementById("bottomBarText").textContent = `Pedido (${cart.length})`;
   } else {
     bar.style.display = "none";
   }
@@ -2957,7 +3096,7 @@ function buildOfficialText() {
 function copyOrder() {
   const txt = buildOfficialText();
   if (!txt) return;
-  navigator.clipboard.writeText(txt).then(() => showToast("Pedido copiado"));
+  navigator.clipboard.writeText(txt).then(() => showToast("Pedido copiado al portapapeles"));
 }
 
 function sendEmail() {
@@ -2973,22 +3112,31 @@ function sendWhatsApp() {
   window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
 }
 
-// =========================================================================
-// FLUJO DE MIS KITS: SOLO NOMBRES -> PREVISUALIZACIÓN -> EDITAR / VOLVER
-// =========================================================================
 function updateKitsBadge() {
-  document.getElementById("kitsBtn").textContent = `Mis Kits (${userKits.length})`;
+  document.getElementById("kitsBtn").textContent = `🧰 Kits (${userKits.length})`;
 }
 
 function promptSaveCurrentAsKit() {
   if (!cart.length) return;
-  const name = prompt("Nombre del Kit:");
+  const def = editingKitIndex !== null && userKits[editingKitIndex] ? userKits[editingKitIndex].name : "";
+  const name = prompt("Nombre del Kit:", def);
   if (!name || !name.trim()) return;
 
-  userKits.push({ name: name.trim(), items: JSON.parse(JSON.stringify(cart)) });
+  const kitObj = { name: name.trim(), items: JSON.parse(JSON.stringify(cart)) };
+  if (editingKitIndex !== null && userKits[editingKitIndex]) {
+    userKits[editingKitIndex] = kitObj;
+    editingKitIndex = null;
+    cartBackupBeforeKitEdit = null;
+    document.getElementById("editKitBanner").style.display = "none";
+    document.getElementById("headerSaveKitBtn").style.display = "inline-block";
+    showToast("Kit actualizado");
+  } else {
+    userKits.push(kitObj);
+    showToast("Kit guardado");
+  }
   localStorage.setItem("acacio_v4_kits", JSON.stringify(userKits));
   updateKitsBadge();
-  showToast("Kit guardado");
+  renderCart();
 }
 
 function openKitsModal() {
@@ -2999,65 +3147,30 @@ function openKitsModal() {
 function renderKitsList() {
   const box = document.getElementById("kitsContainer");
   if (!userKits.length) {
-    box.innerHTML = `<div style="padding:18px 0;color:var(--muted);font-size:0.82rem;text-align:center;">No hay kits guardados</div>`;
+    box.innerHTML = `<div style="padding:24px 0;color:var(--muted);font-size:0.9rem;font-weight:700;text-align:center;">Todavía no tienes kits guardados.</div>`;
     return;
   }
-  box.innerHTML = userKits.map((k, idx) => `
-    <button type="button" class="kit-name-only-row" onclick="openKitPreviewModal(${idx})">
-      <span>${k.name}</span>
-      <span class="row-chevron">›</span>
-    </button>
-  `).join("");
-}
-
-function openKitPreviewModal(idx) {
-  const kit = userKits[idx];
-  if (!kit) return;
-
-  document.getElementById("kitsModal").classList.remove("open");
-  document.getElementById("previewKitTitle").textContent = kit.name;
-
-  const listEl = document.getElementById("previewKitItems");
-  if (!kit.items.length) {
-    listEl.innerHTML = `<div style="padding:14px;text-align:center;color:var(--muted);font-size:0.8rem;">Sin materiales</div>`;
-  } else {
-    listEl.innerHTML = kit.items.map(it => {
-      const codeStr = it.code === "SIN CÓDIGO" ? "S/C" : (it.code === "PUNTUAL" ? "PUNTUAL" : it.code);
-      return `
-        <div class="kit-preview-item">
-          <div style="min-width:0;flex:1;">
-            <strong style="color:var(--accent);font-family:monospace;">${codeStr}</strong>
-            <span style="margin-left:6px;color:var(--text);">${it.name}</span>
-          </div>
-          <span style="font-family:monospace;font-weight:700;color:var(--success);flex-shrink:0;">${it.qty} u.</span>
+  box.innerHTML = userKits.map((k, idx) => {
+    const summary = k.items.map(it => `${it.code !== 'SIN CÓDIGO' && it.code !== 'PUNTUAL' ? it.code : it.name} (${it.qty})`).join(", ");
+    return `
+      <div class="kit-row">
+        <div style="flex:1;min-width:180px;">
+          <div class="kit-title">${k.name}</div>
+          <div class="kit-sub">${summary}</div>
         </div>
-      `;
-    }).join("");
-  }
-
-  document.getElementById("kpAddBtn").onclick = () => loadUserKit(idx);
-  document.getElementById("kpEditBtn").onclick = () => startEditUserKit(idx);
-  document.getElementById("kpDelBtn").onclick = () => deleteUserKit(idx);
-
-  document.getElementById("kitPreviewModal").classList.add("open");
-}
-
-function backToKitsList() {
-  document.getElementById("kitPreviewModal").classList.remove("open");
-  renderKitsList();
-  document.getElementById("kitsModal").classList.add("open");
+        <div class="kit-btn-group">
+          <button type="button" class="kit-mini-btn load" onclick="loadUserKit(${idx})">Cargar</button>
+          <button type="button" class="kit-mini-btn" onclick="startEditUserKit(${idx})">Editar</button>
+          <button type="button" class="kit-mini-btn del" onclick="deleteUserKit(${idx})">✕</button>
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
 function loadUserKit(idx) {
   const kit = userKits[idx];
   if (!kit) return;
-  if (editingKitIndex !== null) {
-    editingKitIndex = null;
-    if (backupCartBeforeKitEdit !== null) {
-      cart = backupCartBeforeKitEdit;
-      backupCartBeforeKitEdit = null;
-    }
-  }
   kit.items.forEach(kItem => {
     const existing = cart.find(c => c.key === kItem.key);
     if (existing) existing.qty += kItem.qty;
@@ -3065,55 +3178,58 @@ function loadUserKit(idx) {
   });
   saveCart();
   closeActiveModal();
-  showToast("Kit añadido al pedido");
+  showToast(`Kit "${kit.name}" añadido al pedido`);
 }
 
 function startEditUserKit(idx) {
   const kit = userKits[idx];
   if (!kit) return;
   if (editingKitIndex === null) {
-    backupCartBeforeKitEdit = JSON.parse(JSON.stringify(cart));
+    cartBackupBeforeKitEdit = JSON.parse(JSON.stringify(cart));
   }
   editingKitIndex = idx;
   cart = JSON.parse(JSON.stringify(kit.items));
+  document.getElementById("editingKitName").textContent = kit.name;
+  document.getElementById("editKitBanner").style.display = "flex";
+  document.getElementById("headerSaveKitBtn").style.display = "none";
+  saveCart();
   closeActiveModal();
-  renderCart();
-  renderMaterials();
   scrollToOrder();
 }
 
 function saveEditedKit() {
   if (editingKitIndex === null || !userKits[editingKitIndex]) return;
-  userKits[editingKitIndex].items = JSON.parse(JSON.stringify(cart));
+  const newName = prompt("Nombre del Kit:", userKits[editingKitIndex].name);
+  if (!newName || !newName.trim()) return;
+  userKits[editingKitIndex] = { name: newName.trim(), items: JSON.parse(JSON.stringify(cart)) };
   localStorage.setItem("acacio_v4_kits", JSON.stringify(userKits));
   updateKitsBadge();
-
   editingKitIndex = null;
-  if (backupCartBeforeKitEdit !== null) {
-    cart = backupCartBeforeKitEdit;
-    backupCartBeforeKitEdit = null;
-  }
+  cartBackupBeforeKitEdit = null;
+  document.getElementById("editKitBanner").style.display = "none";
+  document.getElementById("headerSaveKitBtn").style.display = "inline-block";
   saveCart();
-  showToast("Kit actualizado");
-  openKitsModal();
+  showToast("Kit actualizado correctamente");
 }
 
 function cancelEditKit() {
   editingKitIndex = null;
-  if (backupCartBeforeKitEdit !== null) {
-    cart = backupCartBeforeKitEdit;
-    backupCartBeforeKitEdit = null;
+  document.getElementById("editKitBanner").style.display = "none";
+  document.getElementById("headerSaveKitBtn").style.display = "inline-block";
+  if (cartBackupBeforeKitEdit !== null) {
+    cart = cartBackupBeforeKitEdit;
+    cartBackupBeforeKitEdit = null;
   }
   saveCart();
-  openKitsModal();
+  showToast("Edición de kit cancelada");
 }
 
 function deleteUserKit(idx) {
-  if (!confirm(`¿Eliminar "${userKits[idx].name}"?`)) return;
+  if (!confirm(`¿Eliminar el kit "${userKits[idx].name}"?`)) return;
   userKits.splice(idx, 1);
   localStorage.setItem("acacio_v4_kits", JSON.stringify(userKits));
   updateKitsBadge();
-  backToKitsList();
+  renderKitsList();
 }
 
 function pasteFromClipboard() {
@@ -3141,6 +3257,31 @@ function runTranslator() {
 
   const parsed = [];
   lines.forEach(line => {
+    // 1. Línea de material SIN CÓDIGO del catálogo
+    const scMatch = line.match(/^SIN\s+C[ÓO]DIGO\s*[-–—:]\s*(.+?)\s*[-–—:]\s*(\d+)\s*(?:unidades|uds|u)?\s*(.*)$/i);
+    if (scMatch) {
+      parsed.push({
+        type: "SC_ITEM",
+        name: scMatch[1].trim(),
+        qty: scMatch[2],
+        extra: scMatch[3] ? scMatch[3].trim() : ""
+      });
+      return;
+    }
+
+    // 2. Línea de Material Puntual con guion inicial
+    const pMatch = line.match(/^-\s*(.+?)\s*[-–—:]\s*(\d+)\s*(?:unidades|uds|u)?\s*(.*)$/i);
+    if (pMatch) {
+      parsed.push({
+        type: "PUNTUAL_ITEM",
+        name: pMatch[1].trim(),
+        qty: pMatch[2],
+        extra: pMatch[3] ? pMatch[3].trim() : ""
+      });
+      return;
+    }
+
+    // 3. Línea estándar con código numérico
     const m = line.match(/^(\d{3,5})\s*[-–—:]?\s*(\d+)?\s*(?:unidades|uds|u|m|metros)?\s*(.*)$/i);
     if (m) {
       const code = m[1];
@@ -3155,7 +3296,7 @@ function runTranslator() {
         mat: found,
         rawLine: line
       });
-    } else if (!/^material puntual|^correo:/i.test(line)) {
+    } else if (!/^material puntual:?|^correo:/i.test(line)) {
       parsed.push({ type: "TEXT", rawLine: line });
     }
   });
@@ -3165,17 +3306,50 @@ function runTranslator() {
     return;
   }
 
-  out.style.display = "block";
+  out.style.display = "flex";
   out.innerHTML = parsed.map(p => {
     if (p.type === "FOUND") {
-      const tableTags = p.mat.tables.map(t => `(${t})`).join(" · ");
+      const tableTags = p.mat.tables.map(t => `${t}`).join(" · ");
       return `
         <div class="trans-row" onclick="this.classList.toggle('checked')">
           <div class="trans-check">✓</div>
           <span class="code-badge">${p.code}</span>
           <div class="mat-content">
             <div class="mat-line1">${p.mat.name}</div>
-            <div class="mat-line2">${tableTags} · ${p.mat.prov} ${p.extra ? '· ' + p.extra : ''}</div>
+            <div class="mat-meta-row">
+              <span class="mat-line2">${tableTags}</span>
+              <span class="mat-prov-tag">· ${p.mat.prov} ${p.extra ? '· ' + p.extra : ''}</span>
+            </div>
+          </div>
+          <span class="cart-pill">${p.qty} u.</span>
+        </div>
+      `;
+    } else if (p.type === "SC_ITEM") {
+      return `
+        <div class="trans-row" onclick="this.classList.toggle('checked')">
+          <div class="trans-check">✓</div>
+          <span class="code-badge sc">S/C</span>
+          <div class="mat-content">
+            <div class="mat-line1">${p.name}</div>
+            <div class="mat-meta-row">
+              <span class="mat-line2">SIN CÓDIGO</span>
+              <span class="mat-prov-tag">${p.extra}</span>
+            </div>
+          </div>
+          <span class="cart-pill">${p.qty} u.</span>
+        </div>
+      `;
+    } else if (p.type === "PUNTUAL_ITEM") {
+      return `
+        <div class="trans-row" onclick="this.classList.toggle('checked')">
+          <div class="trans-check">✓</div>
+          <span class="code-badge sc">PUNT.</span>
+          <div class="mat-content">
+            <div class="mat-line1">${p.name}</div>
+            <div class="mat-meta-row">
+              <span class="mat-line2">MATERIAL PUNTUAL</span>
+              <span class="mat-prov-tag">${p.extra}</span>
+            </div>
           </div>
           <span class="cart-pill">${p.qty} u.</span>
         </div>
@@ -3186,19 +3360,23 @@ function runTranslator() {
           <div class="trans-check">✓</div>
           <span class="code-badge sc">${p.code}</span>
           <div class="mat-content">
-            <div class="mat-line1" style="color:var(--danger);">Código no registrado</div>
-            <div class="mat-line2">${p.rawLine}</div>
+            <div class="mat-line1" style="color:var(--danger);">Código no registrado en catálogo</div>
+            <div class="mat-meta-row">
+              <span class="mat-prov-tag">${p.rawLine}</span>
+            </div>
           </div>
           <span class="cart-pill" style="background:var(--danger);">${p.qty} u.</span>
         </div>
       `;
     } else {
       return `
-        <div class="trans-row" style="grid-template-columns: 22px 1fr;" onclick="this.classList.toggle('checked')">
+        <div class="trans-row" onclick="this.classList.toggle('checked')">
           <div class="trans-check">✓</div>
           <div class="mat-content">
             <div class="mat-line1">${p.rawLine}</div>
-            <div class="mat-line2">(MATERIAL PUNTUAL / NOTA)</div>
+            <div class="mat-meta-row">
+              <span class="mat-line2">NOTA</span>
+            </div>
           </div>
         </div>
       `;
@@ -3222,7 +3400,7 @@ const manifest = {
   short_name: "Acaciophone",
   start_url: ".",
   display: "standalone",
-  background_color: "#f4f7fb",
+  background_color: "#e8eef5",
   theme_color: "#041b3a",
   icons: [{
     src: ICON_DATA_URI,
