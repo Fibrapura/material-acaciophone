@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#f1f5f9" id="metaThemeColor">
+  <meta name="theme-color" content="#041b3a" id="metaThemeColor">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Material Acaciophone</title>
   <link rel="icon" type="image/png" id="appFavicon">
   <link rel="apple-touch-icon" id="appleTouchIcon">
@@ -13,88 +13,85 @@
   <style>
     :root {
       --corp-navy: #041b3a;
-      --corp-blue: #0a3d7a;
-      --corp-accent: #0284c7;
+      --corp-blue: #0055b8;
       --bg: #e8eef5;
       --panel: #ffffff;
-      --panel-elevated: #f1f5f9;
-      --panel-hover: #e2e8f0;
+      --panel-alt: #f1f5f9;
       --border: #cbd5e1;
-      --border-strong: #94a3b8;
+      --border-soft: #e2e8f0;
       --text: #0f172a;
       --text-secondary: #334155;
       --muted: #64748b;
-      --accent: #0369a1;
-      --accent-soft: #e0f2fe;
-      --code-bg: #0f172a;
+      --code-bg: #041b3a;
       --code-text: #ffffff;
-      --code-border: #1e293b;
-      --success: #059669;
-      --success-dark: #047857;
+      --cat-bg: #e0f2fe;
+      --cat-text: #0369a1;
+      --cat-border: #7dd3fc;
+      --kits-bg: #fef3c7;
+      --kits-text: #b45309;
+      --kits-border: #fcd34d;
+      --success: #047857;
       --success-soft: #d1fae5;
-      --warning: #d97706;
-      --warning-soft: #fef3c7;
+      --success-border: #6ee7b7;
+      --warning: #b45309;
       --danger: #dc2626;
-      --danger-soft: #fee2e2;
-      --purple: #7c3aed;
-      --purple-soft: #ede9fe;
-      --pedido-bg: #ffffff;
-      --pedido-head: #041b3a;
-      --pedido-border: #0369a1;
-      --sheet-clientes: #0284c7;
-      --sheet-fibra: #059669;
-      --sheet-antenas: #d97706;
-      --sheet-sc: #7c3aed;
+      --shadow-card: 0 4px 16px rgba(4, 27, 58, 0.08);
+      --shadow-modal: 0 16px 40px rgba(4, 27, 58, 0.28);
     }
 
     body.dark-mode {
-      --corp-navy: #0f294a;
-      --corp-blue: #1e4976;
-      --corp-accent: #38bdf8;
-      --bg: #090e17;
+      --corp-navy: #0f172a;
+      --corp-blue: #38bdf8;
+      --bg: #090d16;
       --panel: #131c2e;
-      --panel-elevated: #1e293b;
-      --panel-hover: #283548;
-      --border: #2a3950;
-      --border-strong: #475569;
+      --panel-alt: #1e293b;
+      --border: #334155;
+      --border-soft: #1e293b;
       --text: #f8fafc;
       --text-secondary: #cbd5e1;
       --muted: #94a3b8;
-      --accent: #38bdf8;
-      --accent-soft: rgba(56, 189, 248, 0.16);
       --code-bg: #0284c7;
       --code-text: #ffffff;
-      --code-border: #38bdf8;
-      --success: #10b981;
-      --success-dark: #059669;
+      --cat-bg: rgba(56, 189, 248, 0.15);
+      --cat-text: #7dd3fc;
+      --cat-border: rgba(56, 189, 248, 0.4);
+      --kits-bg: rgba(245, 158, 11, 0.16);
+      --kits-text: #fcd34d;
+      --kits-border: rgba(245, 158, 11, 0.45);
+      --success: #059669;
       --success-soft: rgba(16, 185, 129, 0.18);
-      --warning: #f59e0b;
-      --warning-soft: rgba(245, 158, 11, 0.18);
+      --success-border: rgba(16, 185, 129, 0.45);
+      --warning: #d97706;
       --danger: #ef4444;
-      --danger-soft: rgba(239, 68, 68, 0.18);
-      --purple: #a78bfa;
-      --purple-soft: rgba(167, 139, 250, 0.18);
-      --pedido-bg: #131c2e;
-      --pedido-head: #071324;
-      --pedido-border: #38bdf8;
-      --sheet-clientes: #38bdf8;
-      --sheet-fibra: #10b981;
-      --sheet-antenas: #f59e0b;
-      --sheet-sc: #a855f7;
+      --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.4);
+      --shadow-modal: 0 18px 44px rgba(0, 0, 0, 0.7);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body {
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
-      padding-bottom: 120px;
-      line-height: 1.5;
+      line-height: 1.45;
       -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      padding-bottom: 115px;
     }
 
     /* =====================================================
-       CABECERA REESTRUCTURADA (SIN CORTES EN MÓVIL)
+       CABECERA CORPORATIVA SIN CORTES LATERALES
        ===================================================== */
     header {
       position: sticky;
@@ -102,173 +99,135 @@
       z-index: 50;
       background: var(--panel);
       border-bottom: 2px solid var(--border);
-      padding: 12px 14px 14px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      box-shadow: var(--shadow-card);
+      width: 100%;
     }
-    body.dark-mode header {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
-    }
-    .header-inner { max-width: 680px; margin: 0 auto; }
 
-    .top-bar {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 12px;
+    .brand-bar {
+      background: #041b3a;
+      padding: 10px 14px;
+      width: 100%;
     }
-    .top-bar-row1 {
+    .brand-bar-inner {
+      max-width: 580px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
     }
 
-    /* Botón interactivo [ ‹ Inicio | Logo ] siempre visible */
     .home-logo-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: var(--panel-elevated);
-      border: 1.5px solid var(--border-strong);
-      padding: 6px 12px;
-      border-radius: 12px;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
       cursor: pointer;
       flex-shrink: 0;
-      transition: transform 0.12s, border-color 0.15s;
     }
     .home-logo-btn:active {
-      transform: scale(0.96);
-      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.28);
     }
-    .home-chevron {
-      font-size: 1.15rem;
-      font-weight: 900;
-      color: var(--accent);
-      line-height: 1;
-    }
-    .home-btn-text {
-      font-size: 0.84rem;
-      font-weight: 800;
-      color: var(--text);
-    }
-    .home-divider {
-      width: 1.5px;
-      height: 16px;
-      background: var(--border-strong);
-    }
-    .logo-white-pill {
-      background: #ffffff;
-      padding: 3px 7px;
-      border-radius: 6px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid #cbd5e1;
-    }
+
     .brand-logo {
-      height: 16px;
-      max-width: 92px;
+      height: 17px;
+      max-width: 120px;
       object-fit: contain;
+      filter: brightness(0) invert(1);
+      cursor: pointer;
       display: block;
     }
 
     .theme-btn {
-      height: 40px;
-      padding: 0 14px;
-      border-radius: 12px;
-      border: 1.5px solid var(--border-strong);
-      background: var(--panel-elevated);
-      color: var(--text);
-      font-size: 0.85rem;
-      font-weight: 800;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
       flex-shrink: 0;
+      white-space: nowrap;
     }
-    .theme-btn:active {
-      transform: scale(0.96);
-      border-color: var(--accent);
+
+    .header-tools-wrap {
+      max-width: 580px;
+      margin: 0 auto;
+      padding: 12px 14px 14px;
     }
 
     .segmented-control {
-      width: 100%;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      background: var(--panel-elevated);
+      background: var(--panel-alt);
       padding: 4px;
-      border-radius: 12px;
+      border-radius: 10px;
       border: 1.5px solid var(--border);
-      gap: 4px;
+      margin-bottom: 12px;
     }
     .seg-btn {
       border: none;
       background: transparent;
-      color: var(--text-secondary);
-      font-size: 0.86rem;
+      color: var(--muted);
+      font-size: 0.85rem;
       font-weight: 800;
-      padding: 9px 10px;
-      border-radius: 9px;
+      padding: 9px 6px;
+      border-radius: 7px;
       cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.15s ease;
+      text-align: center;
+      transition: all 0.15s;
     }
     .seg-btn.active {
-      background: var(--corp-navy);
+      background: var(--corp-blue);
       color: #ffffff;
-      box-shadow: 0 2px 8px rgba(4, 27, 58, 0.25);
+      box-shadow: 0 2px 6px rgba(0, 85, 184, 0.25);
     }
     body.dark-mode .seg-btn.active {
-      background: var(--accent);
-      color: #041b3a;
+      color: #090d16;
     }
 
-    /* Buscador y Filtros principales */
     .search-wrap {
       position: relative;
-      margin-bottom: 10px;
-    }
-    .search-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      font-size: 1rem;
-      pointer-events: none;
+      margin-bottom: 12px;
     }
     .search-wrap input {
       width: 100%;
-      padding: 13px 42px 13px 42px;
-      border-radius: 12px;
-      border: 2px solid var(--border-strong);
-      background: var(--panel-elevated);
+      padding: 12px 40px 12px 14px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--panel-alt);
       color: var(--text);
-      font-size: 0.98rem;
+      font-size: 16px !important;
       font-weight: 600;
       outline: none;
-      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
     }
     .search-wrap input:focus {
+      border-color: var(--corp-blue);
       background: var(--panel);
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-soft);
     }
-    .search-wrap input::placeholder { color: var(--muted); font-weight: 500; }
+    .search-wrap input::placeholder {
+      color: var(--muted);
+      font-weight: 400;
+    }
     .clear-btn {
       position: absolute;
       right: 10px;
       top: 50%;
       transform: translateY(-50%);
-      background: var(--danger-soft);
-      border: 1px solid var(--danger);
-      color: var(--danger);
-      width: 28px;
-      height: 28px;
+      background: var(--border);
+      border: none;
+      color: var(--text);
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 800;
       cursor: pointer;
       display: none;
@@ -277,27 +236,24 @@
     }
 
     .filter-bar {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto;
       gap: 10px;
       align-items: center;
     }
     .filter-pill {
-      border: 1.5px solid var(--border-strong);
-      background: var(--panel-elevated);
-      color: var(--text);
+      border: 2px solid var(--cat-border);
+      background: var(--cat-bg);
+      color: var(--cat-text);
       padding: 10px 14px;
-      border-radius: 11px;
+      border-radius: 10px;
       font-size: 0.85rem;
       font-weight: 800;
       cursor: pointer;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      transition: all 0.15s;
-    }
-    .filter-pill.cat-selector {
-      flex: 1;
       min-width: 0;
     }
     .filter-pill span.truncate {
@@ -305,115 +261,96 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .filter-pill.active {
-      border-color: var(--accent);
-      background: var(--accent-soft);
-      color: var(--accent);
-    }
     .kits-pill {
-      background: var(--purple-soft);
-      border-color: var(--purple);
-      color: var(--purple);
+      border: 2px solid var(--kits-border);
+      background: var(--kits-bg);
+      color: var(--kits-text);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.85rem;
       font-weight: 800;
-      flex-shrink: 0;
+      cursor: pointer;
+      white-space: nowrap;
     }
 
-    main { max-width: 680px; margin: 0 auto; padding: 16px 14px; }
+    main {
+      max-width: 580px;
+      margin: 0 auto;
+      padding: 18px 14px;
+    }
 
     /* =====================================================
-       PANTALLA DE INICIO (PORTADA CORPORATIVA)
+       PORTADA DE INICIO (ESCUDO SIEMPRE VISIBLE EN DÍA/NOCHE)
        ===================================================== */
     #homeView {
-      padding: 6px 0 28px;
+      padding: 8px 0 32px;
     }
-    .home-top-bar {
+    .home-top-actions {
       display: flex;
       justify-content: flex-end;
-      margin-bottom: 12px;
-    }
-    .home-hero {
-      background: var(--panel);
-      border: 2px solid var(--border);
-      border-radius: 20px;
-      padding: 28px 20px 24px;
-      text-align: center;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-    }
-    /* Contenedor blanco garantizado para que el icono y el logo se vean en Modo Noche */
-    .home-brand-box {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      background: #ffffff;
-      border: 2px solid #cbd5e1;
-      border-radius: 18px;
-      padding: 18px 28px;
       margin-bottom: 14px;
-      box-shadow: 0 4px 12px rgba(4, 27, 58, 0.08);
+    }
+    .home-theme-btn {
+      background: var(--panel);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 9px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow-card);
+    }
+
+    .home-brand-area {
+      text-align: center;
+      padding: 18px 12px 34px;
     }
     .home-shield {
-      width: 68px;
-      height: 68px;
-      border-radius: 14px;
+      width: 84px;
+      height: 84px;
       object-fit: contain;
-      background: #f8fafc;
-      padding: 4px;
-      border: 1px solid #e2e8f0;
+      display: block;
+      margin: 0 auto 18px;
+      background: #f1f5f9;
+      padding: 6px;
+      border-radius: 20px;
+      border: 2px solid var(--border);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
     }
     .home-main-logo {
       height: 30px;
-      max-width: 210px;
+      max-width: 220px;
       object-fit: contain;
       display: block;
+      margin: 0 auto;
     }
-    .home-subtitle {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-secondary);
-      margin-top: 4px;
+    body.dark-mode .home-main-logo {
+      filter: brightness(0) invert(1);
     }
 
     .home-cards-grid {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
     }
     .home-nav-card {
       background: var(--panel);
-      border: 2px solid var(--border-strong);
-      border-left: 8px solid var(--accent);
-      border-radius: 18px;
-      padding: 20px 18px;
+      border: 2px solid var(--border);
+      border-left: 7px solid var(--corp-blue);
+      border-radius: 14px;
+      padding: 22px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
       cursor: pointer;
       text-align: left;
-      transition: transform 0.12s, border-color 0.15s;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+      box-shadow: var(--shadow-card);
+      width: 100%;
     }
     .home-nav-card:active {
-      transform: scale(0.98);
-    }
-    .home-nav-card.primary-card {
-      border-left-color: var(--sheet-clientes);
-    }
-    .home-nav-card.secondary-card {
-      border-left-color: var(--sheet-fibra);
-    }
-    .home-card-icon {
-      width: 54px;
-      height: 54px;
-      border-radius: 14px;
-      background: var(--accent-soft);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      flex-shrink: 0;
+      transform: scale(0.985);
     }
     .home-card-body {
       flex: 1;
@@ -423,45 +360,45 @@
       font-size: 1.15rem;
       font-weight: 800;
       color: var(--text);
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
     .home-card-desc {
-      font-size: 0.86rem;
+      font-size: 0.9rem;
       color: var(--text-secondary);
       line-height: 1.45;
     }
     .home-card-badge {
       display: inline-block;
-      margin-top: 10px;
+      margin-top: 12px;
       background: var(--success-soft);
       color: var(--success);
-      border: 1.5px solid var(--success);
-      font-size: 0.78rem;
+      border: 1.5px solid var(--success-border);
+      font-size: 0.8rem;
       font-weight: 800;
-      padding: 4px 11px;
-      border-radius: 12px;
+      padding: 5px 12px;
+      border-radius: 8px;
     }
     .home-card-arrow {
       font-size: 1.5rem;
-      font-weight: 900;
-      color: var(--accent);
+      font-weight: 800;
+      color: var(--corp-blue);
       flex-shrink: 0;
     }
 
     /* =====================================================
-       TARJETAS POR BLOQUES (VISTA PRINCIPAL PEDIDOS)
+       GRUPOS DE MATERIAL (BIEN SEPARADOS Y COLOREADOS)
        ===================================================== */
     .blocks-dashboard {
-      margin-bottom: 18px;
+      margin-bottom: 24px;
     }
     .blocks-section-label {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.6px;
       color: var(--text-secondary);
-      margin-bottom: 12px;
-      padding-left: 4px;
+      margin-bottom: 14px;
+      text-align: center;
     }
     .blocks-grid {
       display: grid;
@@ -471,412 +408,334 @@
     .block-card {
       background: var(--panel);
       border: 2px solid var(--border);
-      border-top: 6px solid var(--accent);
-      border-radius: 16px;
-      padding: 18px 14px;
+      border-top: 6px solid var(--corp-blue);
+      border-radius: 14px;
+      padding: 20px 14px;
       cursor: pointer;
-      text-align: left;
-      transition: transform 0.12s, box-shadow 0.15s;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      box-shadow: var(--shadow-card);
     }
     .block-card:active {
       transform: scale(0.97);
     }
-    .block-card.b-0 { border-top-color: var(--sheet-clientes); }
-    .block-card.b-1 { border-top-color: var(--sheet-fibra); }
-    .block-card.b-2 { border-top-color: var(--sheet-antenas); }
-    .block-card.b-3 { border-top-color: var(--sheet-sc); }
+    .block-card.grp-1 { border-top-color: #0284c7; }
+    .block-card.grp-2 { border-top-color: #059669; }
+    .block-card.grp-3 { border-top-color: #d97706; }
+    .block-card.grp-4 { border-top-color: #7c3aed; }
 
-    .block-icon {
-      font-size: 1.65rem;
-      margin-bottom: 8px;
-    }
     .block-title {
       font-size: 0.96rem;
       font-weight: 800;
       color: var(--text);
       line-height: 1.3;
+      margin-bottom: 8px;
     }
     .block-meta {
+      display: inline-block;
       font-size: 0.78rem;
       font-weight: 700;
-      color: var(--muted);
-      margin-top: 6px;
+      color: var(--text-secondary);
+      background: var(--panel-alt);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 12px;
     }
 
     /* =====================================================
-       BARRA DE CATEGORÍA ACTIVA Y SUBFILTROS DIFERENCIADOS
+       BARRA UNIFICADA "FILTRAR"
        ===================================================== */
     .scope-banner {
       display: none;
       align-items: center;
       justify-content: space-between;
-      background: var(--accent-soft);
-      border: 2px solid var(--accent);
-      color: var(--text);
-      padding: 12px 15px;
-      border-radius: 14px;
-      margin-bottom: 14px;
+      background: var(--cat-bg);
+      border: 2px solid var(--cat-border);
+      color: var(--cat-text);
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
       font-size: 0.88rem;
       font-weight: 800;
       gap: 10px;
     }
     .scope-banner button {
-      background: var(--corp-navy);
+      background: #041b3a;
       border: none;
       color: #ffffff;
-      padding: 8px 14px;
-      border-radius: 9px;
-      font-size: 0.8rem;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
       font-weight: 800;
       cursor: pointer;
       flex-shrink: 0;
-    }
-    body.dark-mode .scope-banner button {
-      background: var(--accent);
-      color: #041b3a;
     }
 
     .subfilters-panel {
       display: none;
       background: var(--panel);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      border: 2px solid var(--cat-border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-card);
     }
-    .sf-row {
+    .sf-header {
       display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
+      justify-content: space-between;
       align-items: center;
+      margin-bottom: 12px;
     }
-    .sf-row::-webkit-scrollbar { display: none; }
-    .sf-row + .sf-row {
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1.5px dashed var(--border);
-    }
-    .sf-label {
-      font-size: 0.75rem;
-      font-weight: 900;
+    .sf-title {
+      font-size: 0.8rem;
+      font-weight: 800;
       text-transform: uppercase;
-      color: var(--text-secondary);
-      margin-right: 4px;
-      flex-shrink: 0;
+      letter-spacing: 0.6px;
+      color: var(--cat-text);
+    }
+    .sf-reset {
+      background: var(--cat-bg);
+      border: 1.5px solid var(--cat-border);
+      color: var(--cat-text);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .sf-chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
     .sf-chip {
-      border: 1.5px solid var(--border-strong);
-      background: var(--panel-elevated);
+      border: 1.5px solid var(--border);
+      background: var(--panel-alt);
       color: var(--text);
-      padding: 7px 14px;
+      padding: 8px 14px;
       border-radius: 20px;
       font-size: 0.82rem;
-      font-weight: 800;
-      white-space: nowrap;
+      font-weight: 700;
       cursor: pointer;
-      flex-shrink: 0;
     }
     .sf-chip.active {
-      background: var(--accent);
+      background: var(--corp-blue);
       color: #ffffff;
-      border-color: var(--accent);
+      border-color: var(--corp-blue);
     }
     body.dark-mode .sf-chip.active {
-      color: #041b3a;
-    }
-    .sf-chip.measure-chip.active {
-      background: var(--success);
-      color: #ffffff;
-      border-color: var(--success);
+      color: #090d16;
     }
 
     /* =====================================================
-       TARJETAS DE MATERIALES (SEPARADAS Y LEGIBLES)
+       LISTA DE MATERIALES (TARJETAS SEPARADAS Y MUY CLARAS)
        ===================================================== */
     .catalog-panel {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+      width: 100%;
+      margin: 0 auto 20px;
     }
 
     .mat-row {
-      display: flex;
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
       align-items: center;
-      justify-content: space-between;
-      padding: 15px 16px;
       background: var(--panel);
       border: 1.5px solid var(--border);
-      border-left: 7px solid var(--accent);
-      border-radius: 15px;
+      border-radius: 13px;
+      padding: 15px 16px;
       cursor: pointer;
       gap: 14px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
-      transition: transform 0.1s, border-color 0.15s;
+      box-shadow: 0 2px 6px rgba(4, 27, 58, 0.04);
     }
     .mat-row:active {
-      transform: scale(0.99);
-      background: var(--panel-hover);
+      background: var(--panel-alt);
+      border-color: var(--corp-blue);
     }
-
-    .mat-row.sheet-0 { border-left-color: var(--sheet-clientes); }
-    .mat-row.sheet-1 { border-left-color: var(--sheet-fibra); }
-    .mat-row.sheet-2 { border-left-color: var(--sheet-antenas); }
-    .mat-row.sheet-3 { border-left-color: var(--sheet-sc); }
-
     .mat-row.in-cart {
       background: var(--success-soft);
-      border-color: var(--success);
+      border: 2px solid var(--success);
     }
 
     .code-badge {
       font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;
       font-size: 0.92rem;
-      font-weight: 900;
+      font-weight: 800;
       color: var(--code-text);
       background: var(--code-bg);
-      border: 1.5px solid var(--code-border);
-      padding: 8px 10px;
-      border-radius: 10px;
-      min-width: 62px;
+      padding: 8px 6px;
+      border-radius: 9px;
+      width: 72px;
       text-align: center;
-      flex-shrink: 0;
     }
     .code-badge.sc {
-      color: #ffffff;
-      background: var(--warning);
-      border-color: var(--warning);
-      font-size: 0.8rem;
+      background: var(--kits-bg);
+      color: var(--kits-text);
+      border: 1.5px solid var(--kits-border);
+      font-size: 0.76rem;
     }
 
     .mat-content {
-      flex: 1;
       min-width: 0;
+      text-align: left;
     }
-    .spec-tags-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 6px;
-    }
-    .spec-tag {
-      font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.76rem;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      border: 1px solid var(--accent);
-    }
-    .spec-tag.tag-purple {
-      background: var(--purple-soft);
-      color: var(--purple);
-      border-color: var(--purple);
-    }
-    .spec-tag.tag-dark {
-      background: #0f172a;
-      color: #f8fafc;
-      border-color: #475569;
-    }
-    .spec-tag.tag-light {
-      background: #ffffff;
-      color: #0f172a;
-      border: 1.5px solid #64748b;
-    }
-    .spec-tag.tag-green {
-      background: var(--success-soft);
-      color: var(--success);
-      border-color: var(--success);
-    }
-
     .mat-line1 {
       font-size: 0.96rem;
       font-weight: 700;
       color: var(--text);
-      line-height: 1.4;
+      line-height: 1.38;
       word-wrap: break-word;
     }
-    .mat-meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      margin-top: 6px;
-    }
     .mat-line2 {
-      font-size: 0.76rem;
-      font-weight: 800;
-      color: var(--text-secondary);
-      background: var(--panel-elevated);
-      padding: 2px 8px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-    }
-    .mat-prov-tag {
+      display: inline-block;
       font-size: 0.74rem;
       font-weight: 700;
-      color: var(--muted);
+      color: var(--cat-text);
+      background: var(--cat-bg);
+      border: 1px solid var(--cat-border);
+      padding: 3px 9px;
+      border-radius: 6px;
+      margin-top: 7px;
     }
 
-    .add-action-circle {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: var(--panel-elevated);
-      border: 1.5px solid var(--border-strong);
-      color: var(--accent);
-      font-size: 1.25rem;
-      font-weight: 900;
+    .mat-right-ind {
       display: flex;
       align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      justify-content: flex-end;
+      min-width: 28px;
     }
-
+    .row-chevron {
+      color: var(--corp-blue);
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
     .cart-pill {
       background: var(--success);
       color: #ffffff;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.84rem;
-      font-weight: 900;
-      padding: 6px 12px;
-      border-radius: 20px;
-      flex-shrink: 0;
-      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 14px;
     }
 
     .puntual-wrap {
       text-align: center;
-      padding: 22px 0 24px;
+      padding: 10px 0 24px;
     }
     .puntual-btn {
       background: var(--panel);
-      border: 2px dashed var(--accent);
-      color: var(--accent);
+      border: 2px dashed var(--border);
+      color: var(--text);
       padding: 12px 22px;
-      border-radius: 14px;
-      font-size: 0.88rem;
-      font-weight: 800;
+      border-radius: 12px;
+      font-size: 0.86rem;
+      font-weight: 700;
       cursor: pointer;
-    }
-    .puntual-btn:active {
-      background: var(--accent-soft);
     }
 
     /* =====================================================
-       APARTADO DE PEDIDO Y EDICIÓN DE KIT CORREGIDA
+       BLOQUE DE PEDIDO Y MODO EDICIÓN DE KIT (100% VISIBLE)
        ===================================================== */
     .pedido-doc {
-      background: var(--pedido-bg);
-      border: 2.5px solid var(--pedido-border);
-      border-radius: 18px;
+      background: var(--panel);
+      border: 2.5px solid var(--success);
+      border-radius: 16px;
       overflow: hidden;
       display: none;
-      margin-top: 8px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+      margin-top: 10px;
+      box-shadow: var(--shadow-card);
+    }
+    .pedido-doc.editing-mode {
+      border-color: var(--warning);
     }
 
     .pedido-header {
-      background: var(--pedido-head);
+      background: var(--success);
       color: #ffffff;
       padding: 14px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
       gap: 10px;
     }
+    .pedido-doc.editing-mode .pedido-header {
+      background: var(--warning);
+    }
+
     .pedido-header-left {
       display: flex;
       align-items: center;
       gap: 10px;
-    }
-    .pedido-logo-box {
-      background: #ffffff;
-      padding: 3px 7px;
-      border-radius: 6px;
-      display: inline-flex;
-      align-items: center;
+      flex: 1;
+      min-width: 0;
     }
     .pedido-logo {
       height: 15px;
       object-fit: contain;
-    }
-    .pedido-badge-count {
-      background: var(--success);
-      color: #ffffff;
-      font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.82rem;
-      font-weight: 900;
-      padding: 3px 10px;
-      border-radius: 12px;
-    }
-    .pedido-doc-title {
-      font-size: 0.92rem;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-    .pedido-kit-btn {
-      background: rgba(255, 255, 255, 0.18);
-      border: 1.5px solid rgba(255, 255, 255, 0.45);
-      color: #ffffff;
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-size: 0.82rem;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    /* Barra de Edición de Kit con botones Guardar y Salir siempre visibles */
-    .edit-kit-bar {
-      display: none;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      background: var(--warning-soft);
-      border-bottom: 2px solid var(--warning);
-      padding: 14px 16px;
-    }
-    .edit-kit-info {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text);
-      flex: 1;
-      min-width: 170px;
-    }
-    .edit-kit-info strong {
-      color: var(--warning);
-      font-weight: 900;
-    }
-    .edit-kit-actions {
-      display: flex;
-      gap: 10px;
+      filter: brightness(0) invert(1);
       flex-shrink: 0;
     }
-    .kit-action-btn {
-      padding: 9px 16px;
-      border-radius: 10px;
-      font-size: 0.84rem;
+    .pedido-doc-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pedido-badge-count {
+      background: rgba(255, 255, 255, 0.28);
+      color: #ffffff;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 2px 10px;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+    .pedido-kit-btn {
+      background: #ffffff;
+      border: none;
+      color: var(--success);
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 0.8rem;
       font-weight: 800;
       cursor: pointer;
-      border: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Barra de edición de Kit: 2 botones grandes al 50% (Guardar y Salir) */
+    .kit-edit-bar {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--kits-bg);
+      border-bottom: 2px solid var(--kits-border);
+      width: 100%;
+    }
+    .kit-action-btn {
+      width: 100%;
+      padding: 12px 10px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
     }
     .kit-action-btn.save {
       background: var(--success);
       color: #ffffff;
+      border: 2px solid var(--success);
     }
     .kit-action-btn.exit {
-      background: var(--danger);
-      color: #ffffff;
+      background: var(--panel);
+      color: var(--danger);
+      border: 2px solid var(--danger);
     }
 
     .pedido-body {
@@ -887,8 +746,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 16px;
-      border-bottom: 1.5px solid var(--border);
+      padding: 15px 16px;
+      border-bottom: 1.5px solid var(--border-soft);
       gap: 12px;
     }
     .alb-row:last-child { border-bottom: none; }
@@ -904,7 +763,7 @@
     .alb-index {
       font-family: ui-monospace, SFMono-Regular, monospace;
       font-size: 0.8rem;
-      font-weight: 900;
+      font-weight: 800;
       color: var(--muted);
       margin-top: 2px;
       flex-shrink: 0;
@@ -915,9 +774,9 @@
     }
     .alb-code-line {
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.92rem;
-      font-weight: 900;
-      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--corp-blue);
     }
     .alb-name-line {
       font-size: 0.9rem;
@@ -929,8 +788,8 @@
       margin-top: 3px;
     }
     .alb-table-line {
-      font-size: 0.76rem;
-      font-weight: 700;
+      font-size: 0.75rem;
+      font-weight: 600;
       color: var(--muted);
       white-space: nowrap;
       overflow: hidden;
@@ -944,11 +803,11 @@
     .alb-row.expanded .alb-table-line {
       white-space: normal;
       overflow: visible;
-      color: var(--accent);
+      color: var(--cat-text);
     }
     .alb-prov-line {
       display: none;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-secondary);
       margin-top: 4px;
       font-weight: 700;
@@ -964,45 +823,44 @@
     .qty-capsule {
       display: inline-flex;
       align-items: center;
-      background: var(--panel-elevated);
-      border: 1.5px solid var(--border-strong);
-      border-radius: 10px;
+      background: var(--panel-alt);
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
       overflow: hidden;
     }
     .cap-btn {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border: none;
       background: transparent;
       color: var(--text);
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .cap-btn:active { background: var(--panel-hover); }
     .cap-val {
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.86rem;
-      font-weight: 900;
+      font-size: 0.84rem;
+      font-weight: 800;
       color: var(--success);
-      padding: 0 9px;
-      min-width: 46px;
+      padding: 0 8px;
+      min-width: 42px;
       text-align: center;
       border-left: 1px solid var(--border);
       border-right: 1px solid var(--border);
     }
     .del-icon-btn {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      border: 1.5px solid var(--danger);
-      background: var(--danger-soft);
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      border: 1.5px solid rgba(220, 38, 38, 0.35);
+      background: rgba(220, 38, 38, 0.08);
       color: var(--danger);
-      font-size: 0.9rem;
-      font-weight: 900;
+      font-size: 0.84rem;
+      font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -1010,133 +868,123 @@
     }
 
     .pedido-footer {
-      background: var(--panel-elevated);
-      border-top: 1.5px solid var(--border);
+      background: var(--panel-alt);
+      border-top: 2px solid var(--border-soft);
       padding: 16px;
     }
     .btn-copy-primary {
       width: 100%;
-      padding: 15px;
-      border-radius: 12px;
+      padding: 14px;
+      border-radius: 11px;
       border: none;
-      background: var(--corp-navy);
-      color: #ffffff;
-      font-size: 1rem;
-      font-weight: 900;
-      cursor: pointer;
-      margin-bottom: 12px;
-      box-shadow: 0 4px 12px rgba(4, 27, 58, 0.25);
-    }
-    body.dark-mode .btn-copy-primary {
       background: var(--success);
+      color: #ffffff;
+      font-size: 0.96rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-bottom: 10px;
     }
     .pedido-subactions {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
+      gap: 8px;
     }
     .sub-action-btn {
-      padding: 11px 8px;
-      border-radius: 10px;
-      border: 1.5px solid var(--border-strong);
+      padding: 11px 6px;
+      border-radius: 9px;
+      border: 1.5px solid var(--border);
       background: var(--panel);
       color: var(--text);
-      font-size: 0.84rem;
-      font-weight: 800;
+      font-size: 0.82rem;
+      font-weight: 700;
       cursor: pointer;
       text-align: center;
     }
     .sub-action-btn.danger {
       color: var(--danger);
-      border-color: var(--danger);
-      background: var(--danger-soft);
+      border-color: rgba(220, 38, 38, 0.4);
     }
 
-    /* Botón Flotante Inferior ("Pedido") */
     .floating-pill {
       position: fixed;
-      bottom: 20px;
+      bottom: 18px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--corp-navy);
-      border: 2.5px solid #ffffff;
+      background: var(--success);
+      border: 2px solid #ffffff;
       color: #ffffff;
-      padding: 14px 34px;
-      border-radius: 36px;
+      padding: 13px 32px;
+      border-radius: 32px;
       display: none;
       align-items: center;
-      gap: 12px;
-      font-weight: 900;
-      font-size: 1rem;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 0.96rem;
       z-index: 40;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 8px 26px rgba(4, 120, 87, 0.45);
       cursor: pointer;
       white-space: nowrap;
-    }
-    body.dark-mode .floating-pill {
-      background: var(--success-dark);
-      border-color: #ffffff;
     }
 
     /* Vista Lector de Códigos */
     #translatorView { display: none; }
     .trans-box {
       background: var(--panel);
-      border: 2px solid var(--border);
-      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
       padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-card);
     }
     .trans-toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .trans-title {
-      font-size: 0.88rem;
-      font-weight: 900;
+      font-size: 0.82rem;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: var(--text);
     }
     .trans-textarea {
       width: 100%;
-      min-height: 130px;
-      background: var(--panel-elevated);
-      border: 2px solid var(--border-strong);
-      border-radius: 12px;
+      min-height: 120px;
+      background: var(--panel-alt);
+      border: 2px solid var(--border);
+      border-radius: 10px;
       color: var(--text);
-      padding: 13px;
+      padding: 12px;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.92rem;
+      font-size: 16px !important;
       outline: none;
       resize: vertical;
     }
-    .trans-textarea:focus { border-color: var(--accent); background: var(--panel); }
+    .trans-textarea:focus { border-color: var(--corp-blue); background: var(--panel); }
     .trans-row {
-      display: flex;
+      display: grid;
+      grid-template-columns: 26px 72px 1fr auto;
       align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
       background: var(--panel);
       border: 1.5px solid var(--border);
-      border-radius: 14px;
+      border-radius: 13px;
+      gap: 12px;
+      padding: 14px 16px;
       cursor: pointer;
     }
-    .trans-row.checked { opacity: 0.45; background: var(--panel-elevated); }
+    .trans-row.checked { opacity: 0.42; background: var(--panel-alt); }
     .trans-check {
-      width: 26px;
-      height: 26px;
-      border-radius: 8px;
-      border: 2px solid var(--border-strong);
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      border: 2px solid var(--border);
       background: var(--panel);
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-      font-size: 0.88rem;
+      font-size: 0.8rem;
       font-weight: 900;
       color: transparent;
     }
@@ -1146,59 +994,61 @@
       color: #fff;
     }
 
-    /* Modales */
+    /* =====================================================
+       MODALES CENTRADOS Y PROPORCIONADOS
+       ===================================================== */
     .modal-backdrop {
       position: fixed;
       inset: 0;
       background: rgba(4, 27, 58, 0.65);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
       display: none;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
       z-index: 100;
+      padding: 16px;
     }
     .modal-backdrop.open { display: flex; }
-    .modal-backdrop.center-modal {
-      align-items: center;
-      padding: 18px;
-    }
-    .modal-sheet {
-      background: var(--panel);
-      border-top: 2px solid var(--border-strong);
-      border-radius: 24px 24px 0 0;
-      width: 100%;
-      max-width: 680px;
-      padding: 16px 18px 30px;
-      max-height: 86vh;
-      overflow-y: auto;
-      animation: slideUp 0.16s ease-out;
-      box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.25);
-    }
+
     .modal-dialog {
       background: var(--panel);
-      border: 2px solid var(--accent);
-      border-radius: 18px;
+      border: 2px solid var(--border);
+      border-radius: 16px;
       width: 100%;
-      max-width: 430px;
+      max-width: 380px;
       padding: 20px;
-      max-height: 85vh;
+      max-height: 86vh;
       overflow-y: auto;
-      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.4);
+      box-shadow: var(--shadow-modal);
     }
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
+
+    .modal-sheet {
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 440px;
+      padding: 20px;
+      max-height: 82vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-modal);
     }
-    .sheet-handle {
-      width: 44px;
-      height: 5px;
-      background: var(--border-strong);
-      border-radius: 4px;
-      margin: 0 auto 16px;
+
+    .m-meta {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--corp-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
-    .m-meta { font-size: 0.8rem; font-weight: 900; color: var(--accent); text-transform: uppercase; }
-    .m-title { font-size: 1.08rem; font-weight: 800; color: var(--text); margin: 6px 0 16px; line-height: 1.35; }
+    .m-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 5px 0 14px;
+      line-height: 1.35;
+    }
 
     .conflict-list {
       display: flex;
@@ -1210,300 +1060,318 @@
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border: 1.5px solid var(--border-strong);
-      background: var(--panel-elevated);
+      padding: 14px;
+      border-radius: 11px;
+      border: 1.5px solid var(--border);
+      background: var(--panel-alt);
       color: var(--text);
-      font-size: 0.9rem;
-      font-weight: 800;
+      font-size: 0.86rem;
+      font-weight: 700;
       text-align: left;
       cursor: pointer;
     }
-    .conflict-item:active {
-      border-color: var(--accent);
-      background: var(--accent-soft);
-    }
     .conflict-badge {
-      background: var(--accent);
+      background: var(--code-bg);
       color: #ffffff;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.8rem;
-      font-weight: 900;
-      padding: 4px 10px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 3px 10px;
       border-radius: 12px;
       margin-left: 8px;
       flex-shrink: 0;
     }
 
-    .field { margin-bottom: 12px; }
+    .field { margin-bottom: 10px; }
     .field input, .field select {
       width: 100%;
-      padding: 13px 14px;
-      border-radius: 11px;
-      border: 1.5px solid var(--border-strong);
-      background: var(--panel-elevated);
+      padding: 10px 12px;
+      border-radius: 9px;
+      border: 1.5px solid var(--border);
+      background: var(--panel-alt);
       color: var(--text);
-      font-size: 0.96rem;
-      font-weight: 600;
+      font-size: 16px !important;
+      font-weight: 500;
       outline: none;
     }
-    .field input:focus, .field select:focus {
-      border-color: var(--accent);
-      background: var(--panel);
-    }
+
     .qty-stepper {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
+      gap: 10px;
+      margin-bottom: 10px;
     }
     .qty-stepper input {
       flex: 1;
       text-align: center;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 1.6rem;
-      font-weight: 900;
-      padding: 10px;
-      border-radius: 12px;
-      border: 2px solid var(--accent);
+      font-size: 1.3rem !important;
+      font-weight: 800;
+      height: 42px;
+      padding: 4px;
+      border-radius: 9px;
+      border: 2px solid var(--corp-blue);
       background: var(--panel);
       color: var(--text);
       width: 100%;
     }
     .step-btn {
-      width: 52px;
-      height: 52px;
-      border-radius: 12px;
-      border: 1.5px solid var(--border-strong);
-      background: var(--panel-elevated);
+      width: 42px;
+      height: 42px;
+      border-radius: 9px;
+      border: 1.5px solid var(--border);
+      background: var(--panel-alt);
       color: var(--text);
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: 800;
       cursor: pointer;
     }
     .quick-pills {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
-      margin-bottom: 14px;
+      gap: 6px;
+      margin-bottom: 10px;
     }
     .q-pill {
-      padding: 10px 4px;
-      border-radius: 9px;
-      border: 1.5px solid var(--border-strong);
-      background: var(--panel-elevated);
+      padding: 8px 2px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: var(--panel-alt);
       color: var(--text);
-      font-weight: 800;
-      font-size: 0.84rem;
+      font-weight: 700;
+      font-size: 0.78rem;
       cursor: pointer;
       text-align: center;
     }
     .cable-pills {
       display: none;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
     .cable-pill {
-      padding: 8px 13px;
-      border-radius: 9px;
-      border: 1.5px solid var(--warning);
-      background: var(--warning-soft);
-      color: var(--warning);
-      font-size: 0.82rem;
+      padding: 7px 11px;
+      border-radius: 8px;
+      border: 1.5px solid var(--kits-border);
+      background: var(--kits-bg);
+      color: var(--kits-text);
+      font-size: 0.76rem;
       font-weight: 800;
       cursor: pointer;
     }
-    .m-footer { display: flex; gap: 12px; margin-top: 16px; }
+    .m-footer {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
     .m-footer button {
       flex: 1;
-      padding: 14px;
-      border-radius: 12px;
+      padding: 12px;
+      border-radius: 10px;
       border: none;
-      font-weight: 900;
-      font-size: 0.96rem;
+      font-weight: 800;
+      font-size: 0.88rem;
       cursor: pointer;
     }
-    .btn-cancel { background: var(--panel-elevated); color: var(--text); border: 1.5px solid var(--border-strong) !important; }
-    .btn-ok { background: var(--corp-navy); color: #ffffff; }
-    body.dark-mode .btn-ok { background: var(--accent); color: #041b3a; }
+    .btn-cancel {
+      background: var(--panel-alt);
+      color: var(--text);
+      border: 1.5px solid var(--border) !important;
+    }
+    .btn-ok {
+      background: var(--code-bg);
+      color: #ffffff;
+    }
 
     .cat-group-title {
-      font-size: 0.8rem;
-      font-weight: 900;
-      color: var(--accent);
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--corp-blue);
       text-transform: uppercase;
-      letter-spacing: 0.6px;
+      letter-spacing: 0.5px;
       margin: 18px 0 8px;
-      padding-bottom: 4px;
-      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 5px;
+      border-bottom: 2px solid var(--cat-border);
     }
     .cat-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      padding: 13px 12px;
+      padding: 13px 10px;
       border: none;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-soft);
       background: none;
       color: var(--text);
-      font-size: 0.92rem;
-      font-weight: 700;
+      font-size: 0.88rem;
+      font-weight: 600;
       text-align: left;
       cursor: pointer;
     }
     .cat-item.active {
-      color: var(--accent);
-      font-weight: 900;
-      background: var(--accent-soft);
-      border-radius: 10px;
+      color: var(--cat-text);
+      font-weight: 800;
+      background: var(--cat-bg);
+      border-radius: 8px;
     }
     .cat-count {
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.82rem;
-      font-weight: 800;
-      color: var(--text-secondary);
-      background: var(--panel-elevated);
-      padding: 3px 9px;
-      border-radius: 10px;
-    }
-
-    .kit-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 12px;
-      background: var(--panel-elevated);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 10px;
-      gap: 12px;
-    }
-    .kit-title { font-weight: 800; font-size: 0.96rem; color: var(--text); }
-    .kit-sub { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; line-height: 1.35; }
-    .kit-btn-group {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .kit-mini-btn {
-      padding: 7px 12px;
-      border-radius: 8px;
       font-size: 0.8rem;
       font-weight: 800;
-      cursor: pointer;
-      border: 1.5px solid var(--border-strong);
-      background: var(--panel);
-      color: var(--text);
+      color: var(--muted);
     }
-    .kit-mini-btn.load { background: var(--success); color: #fff; border-color: var(--success); }
-    .kit-mini-btn.del { background: var(--danger-soft); color: var(--danger); border-color: var(--danger); }
+
+    .kit-name-only-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 15px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      background: var(--panel-alt);
+      color: var(--text);
+      font-size: 0.94rem;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    .kit-preview-list {
+      max-height: 46vh;
+      overflow-y: auto;
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      background: var(--panel-alt);
+      margin-bottom: 14px;
+    }
+    .kit-preview-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid var(--border-soft);
+      gap: 10px;
+      font-size: 0.84rem;
+    }
+    .kit-preview-item:last-child { border-bottom: none; }
+    .kit-preview-actions {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 8px;
+    }
+    .kp-btn {
+      padding: 12px 6px;
+      border-radius: 9px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: var(--panel-alt);
+      color: var(--text);
+      text-align: center;
+    }
+    .kp-btn.primary {
+      background: var(--success);
+      color: #ffffff;
+      border-color: var(--success);
+    }
+    .kp-btn.danger {
+      color: var(--danger);
+      border-color: rgba(220, 38, 38, 0.45);
+    }
 
     .text-btn {
-      background: var(--panel-elevated);
-      border: 1.5px solid var(--border-strong);
-      color: var(--accent);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.82rem;
+      background: none;
+      border: none;
+      color: var(--corp-blue);
+      font-size: 0.84rem;
       font-weight: 800;
       cursor: pointer;
     }
 
     .toast {
       position: fixed;
-      bottom: 84px;
+      bottom: 78px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--corp-navy);
-      border: 2px solid #ffffff;
+      background: #041b3a;
       color: #ffffff;
-      padding: 12px 24px;
-      border-radius: 26px;
-      font-weight: 800;
-      font-size: 0.9rem;
+      padding: 11px 22px;
+      border-radius: 24px;
+      font-weight: 700;
+      font-size: 0.86rem;
       display: none;
       z-index: 200;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      box-shadow: var(--shadow-modal);
     }
   </style>
 </head>
 <body>
 
 <header id="appHeader" style="display:none;">
-  <div class="header-inner">
-    <div class="top-bar">
-      <div class="top-bar-row1">
-        <button type="button" class="home-logo-btn" onclick="switchMode('home')" title="Ir a la pantalla de inicio">
-          <span class="home-chevron">‹</span>
-          <span class="home-btn-text">Inicio</span>
-          <span class="home-divider"></span>
-          <span class="logo-white-pill">
-            <img id="headerLogo" alt="Acaciophone" class="brand-logo">
-          </span>
-        </button>
+  <div class="brand-bar">
+    <div class="brand-bar-inner">
+      <button type="button" class="home-logo-btn" onclick="switchMode('home')" title="Volver al inicio">
+        <span>‹ Inicio</span>
+      </button>
 
-        <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar entre modo día y noche">🌙 Noche</button>
-      </div>
+      <img id="headerLogo" alt="Acaciophone" class="brand-logo" onclick="switchMode('home')">
 
-      <div class="segmented-control">
-        <button class="seg-btn active" id="tabOrderBtn" onclick="switchMode('order')">📦 Pedidos</button>
-        <button class="seg-btn" id="tabTransBtn" onclick="switchMode('translator')">🔍 Lector de códigos</button>
-      </div>
+      <button type="button" class="theme-btn" id="themeBtn" onclick="toggleTheme()">Noche</button>
+    </div>
+  </div>
+
+  <div class="header-tools-wrap">
+    <div class="segmented-control">
+      <button type="button" class="seg-btn active" id="tabOrderBtn" onclick="switchMode('order')">Pedidos</button>
+      <button type="button" class="seg-btn" id="tabTransBtn" onclick="switchMode('translator')">Lector de códigos</button>
     </div>
 
     <div id="orderHeaderTools">
       <div class="search-wrap">
-        <span class="search-icon">🔍</span>
         <form onsubmit="handleSearchSubmit(event)" style="margin:0;">
-          <input type="search" id="searchInput" enterkeyhint="search" placeholder="Buscar material, código o medida..." autocomplete="off">
+          <input type="search" id="searchInput" enterkeyhint="search" placeholder="Buscar material por nombre, código o metros..." autocomplete="off">
         </form>
         <button type="button" class="clear-btn" id="clearSearchBtn" onclick="clearSearch()">✕</button>
       </div>
       <div class="filter-bar">
-        <button class="filter-pill cat-selector" id="catTriggerBtn" onclick="openCategoriesModal()">
-          <span class="truncate" id="selectedCatLabel">📂 Todas las categorías</span>
+        <button type="button" class="filter-pill" id="catTriggerBtn" onclick="openCategoriesModal()">
+          <span class="truncate" id="selectedCatLabel">Todas las categorías</span>
           <span>▾</span>
         </button>
-        <button class="filter-pill kits-pill" id="kitsBtn" onclick="openKitsModal()">🧰 Kits (0)</button>
+        <button type="button" class="kits-pill" id="kitsBtn" onclick="openKitsModal()">Mis Kits (0)</button>
       </div>
     </div>
   </div>
 </header>
 
 <main>
-  <!-- VISTA 0: PORTADA DE INICIO -->
+  <!-- VISTA 0: PORTADA PRINCIPAL -->
   <div id="homeView">
-    <div class="home-top-bar">
-      <button class="theme-btn" id="homeThemeBtn" onclick="toggleTheme()" title="Cambiar entre modo día y noche">🌙 Noche</button>
+    <div class="home-top-actions">
+      <button type="button" class="home-theme-btn" id="homeThemeBtn" onclick="toggleTheme()">Modo Noche</button>
     </div>
-    <div class="home-hero">
-      <div class="home-brand-box">
-        <img id="homeShieldImg" alt="Acacio" class="home-shield">
-        <img id="homeLogoImg" alt="Acaciophone" class="home-main-logo">
-      </div>
-      <div class="home-subtitle">Gestión de Material, Partes y Pedidos a Almacén</div>
+
+    <div class="home-brand-area">
+      <img id="homeShieldImg" alt="Acacio" class="home-shield">
+      <img id="homeLogoImg" alt="Acaciophone" class="home-main-logo">
     </div>
 
     <div class="home-cards-grid">
-      <button type="button" class="home-nav-card primary-card" onclick="switchMode('order')">
-        <div class="home-card-icon">📦</div>
+      <button type="button" class="home-nav-card" onclick="switchMode('order')">
         <div class="home-card-body">
-          <div class="home-card-title">Pedidos y Catálogo</div>
-          <div class="home-card-desc">Buscar material por categoría o medidas, cargar kits personales y generar el listado para correo o WhatsApp.</div>
+          <div class="home-card-title">Pedidos</div>
+          <div class="home-card-desc">Busca material por nombre o categoría, crea kits tus habituales y genera los códigos para pedir el material.</div>
           <div id="homeOrderBadge" class="home-card-badge" style="display:none;"></div>
         </div>
         <span class="home-card-arrow">›</span>
       </button>
 
-      <button type="button" class="home-nav-card secondary-card" onclick="switchMode('translator')">
-        <div class="home-card-icon">🔍</div>
+      <button type="button" class="home-nav-card" onclick="switchMode('translator')">
         <div class="home-card-body">
           <div class="home-card-title">Lector de códigos</div>
-          <div class="home-card-desc">Pegar una lista de códigos recibida para traducirla al instante en nombres de materiales y proveedores.</div>
+          <div class="home-card-desc">Pega un código o una lista códigos para obtener el listado detallado de materiales.</div>
         </div>
         <span class="home-card-arrow">›</span>
       </button>
@@ -1512,44 +1380,33 @@
 
   <!-- VISTA 1: PEDIDOS -->
   <div id="orderView" style="display:none;">
-    <!-- Barra cuando hay conflicto resuelto -->
     <div class="scope-banner" id="activeScopeBar">
       <span id="activeScopeName"></span>
       <button type="button" onclick="reopenConflictModal()">Cambiar categoría</button>
     </div>
 
-    <!-- Barra cuando hay una categoría seleccionada desde bloques/menú -->
-    <div class="scope-banner" id="selectedCatBanner" style="display:none;">
-      <span id="selectedCatBannerText"></span>
-      <button type="button" onclick="selectTableFilter('ALL')">✕ Volver a bloques</button>
-    </div>
-
-    <!-- Barra de subfiltros inteligentes por características -->
+    <!-- Panel único "Filtrar" -->
     <div class="subfilters-panel" id="subFiltersBar"></div>
 
-    <!-- Vista despejada por bloques -->
+    <!-- Grupos de materiales diferenciados -->
     <div class="blocks-dashboard" id="blocksDashboard">
-      <div class="blocks-section-label">Selecciona un bloque o usa el buscador superior</div>
+      <div class="blocks-section-label">Grupos de material</div>
       <div class="blocks-grid">
-        <button type="button" class="block-card b-0" onclick="openCategoriesModal('Instalación Clientes')">
-          <div class="block-icon">🏠</div>
+        <button type="button" class="block-card grp-1" onclick="openCategoriesModal('Instalación Clientes')">
           <div class="block-title">Instalación Clientes</div>
-          <div class="block-meta">7 categorías · 151 art.</div>
+          <div class="block-meta">7 categorías</div>
         </button>
-        <button type="button" class="block-card b-1" onclick="openCategoriesModal('Fibra Despliegue')">
-          <div class="block-icon">🧵</div>
+        <button type="button" class="block-card grp-2" onclick="openCategoriesModal('Fibra Despliegue')">
           <div class="block-title">Fibra Despliegue</div>
-          <div class="block-meta">15 categorías · 116 art.</div>
+          <div class="block-meta">15 categorías</div>
         </button>
-        <button type="button" class="block-card b-2" onclick="openCategoriesModal('Antenas Despliegue')">
-          <div class="block-icon">📡</div>
+        <button type="button" class="block-card grp-3" onclick="openCategoriesModal('Antenas Despliegue')">
           <div class="block-title">Antenas Despliegue</div>
-          <div class="block-meta">10 categorías · 40 art.</div>
+          <div class="block-meta">10 categorías</div>
         </button>
-        <button type="button" class="block-card b-3" onclick="selectTableFilter(32)">
-          <div class="block-icon">⚡</div>
+        <button type="button" class="block-card grp-4" onclick="selectTableFilter(32)">
           <div class="block-title">Equipos Sin Código</div>
-          <div class="block-meta">Instant Byte · 14 art.</div>
+          <div class="block-meta">Instant Byte</div>
         </button>
       </div>
     </div>
@@ -1557,41 +1414,34 @@
     <div class="catalog-panel" id="materialsList" style="display:none;"></div>
 
     <div class="puntual-wrap">
-      <button type="button" class="puntual-btn" onclick="openPuntualModal()">+ Añadir material puntual fuera de catálogo</button>
+      <button type="button" class="puntual-btn" onclick="openPuntualModal()">Añadir material puntual sin código</button>
     </div>
 
-    <!-- APARTADO DE PEDIDO -->
+    <!-- APARTADO DE PEDIDO / EDICIÓN DE KIT -->
     <section class="pedido-doc" id="orderSection">
       <div class="pedido-header">
         <div class="pedido-header-left">
-          <span class="pedido-logo-box">
-            <img id="pedidoLogo" alt="Acaciophone" class="pedido-logo">
-          </span>
-          <span class="pedido-doc-title">Pedido</span>
+          <img id="pedidoLogo" alt="Acaciophone" class="pedido-logo">
+          <span class="pedido-doc-title" id="pedidoHeaderTitle">Pedido</span>
           <span class="pedido-badge-count" id="cartCount">0</span>
         </div>
-        <button type="button" class="pedido-kit-btn" id="headerSaveKitBtn" onclick="promptSaveCurrentAsKit()">🧰 Guardar como Kit</button>
+        <button type="button" class="pedido-kit-btn" id="saveKitHeaderBtn" onclick="promptSaveCurrentAsKit()">Guardar Kit</button>
       </div>
 
-      <!-- Barra de edición de Kit corregida con Guardar y Salir visibles -->
-      <div class="edit-kit-bar" id="editKitBanner">
-        <div class="edit-kit-info">
-          ✏️ Editando Kit: <strong id="editingKitName"></strong>
-        </div>
-        <div class="edit-kit-actions">
-          <button type="button" class="kit-action-btn save" onclick="saveEditedKit()">💾 Guardar</button>
-          <button type="button" class="kit-action-btn exit" onclick="cancelEditKit()">✕ Salir</button>
-        </div>
+      <!-- Barra de 2 botones grandes al 50% (Guardar y Salir) siempre visible al editar un Kit -->
+      <div class="kit-edit-bar" id="kitEditHeaderActions">
+        <button type="button" class="kit-action-btn save" onclick="saveEditedKit()">Guardar</button>
+        <button type="button" class="kit-action-btn exit" onclick="cancelEditKit()">Salir</button>
       </div>
 
       <div class="pedido-body" id="cartTableBody"></div>
 
-      <div class="pedido-footer">
-        <button type="button" class="btn-copy-primary" onclick="copyOrder()">📋 Copiar Pedido</button>
+      <div class="pedido-footer" id="pedidoFooterActions">
+        <button type="button" class="btn-copy-primary" onclick="copyOrder()">Copiar Pedido</button>
         <div class="pedido-subactions">
-          <button type="button" class="sub-action-btn" onclick="sendEmail()">✉️ Correo</button>
-          <button type="button" class="sub-action-btn" onclick="sendWhatsApp()">💬 WhatsApp</button>
-          <button type="button" class="sub-action-btn danger" onclick="clearCart()">🗑️ Vaciar</button>
+          <button type="button" class="sub-action-btn" onclick="sendEmail()">Correo</button>
+          <button type="button" class="sub-action-btn" onclick="sendWhatsApp()">WhatsApp</button>
+          <button type="button" class="sub-action-btn danger" onclick="clearCart()">Vaciar</button>
         </div>
       </div>
     </section>
@@ -1602,12 +1452,12 @@
     <div class="trans-box">
       <div class="trans-toolbar">
         <span class="trans-title">Códigos de entrada</span>
-        <div style="display:flex;gap:10px;">
-          <button type="button" class="text-btn" onclick="pasteFromClipboard()">📋 Pegar</button>
-          <button type="button" class="text-btn" style="color:var(--danger);" onclick="clearTranslator()">✕ Limpiar</button>
+        <div style="display:flex;gap:16px;">
+          <button type="button" class="text-btn" onclick="pasteFromClipboard()">Pegar</button>
+          <button type="button" class="text-btn" style="color:var(--muted);" onclick="clearTranslator()">Limpiar</button>
         </div>
       </div>
-      <textarea class="trans-textarea" id="transInput" placeholder="Pega aquí la lista de códigos del pedido..." oninput="runTranslator()"></textarea>
+      <textarea class="trans-textarea" id="transInput" placeholder="Pegar códigos..." oninput="runTranslator()"></textarea>
     </div>
     <div class="catalog-panel" id="transOutput" style="display:none;"></div>
   </div>
@@ -1620,18 +1470,17 @@
 </div>
 
 <!-- VENTANA FLOTANTE: SELECCIÓN DE CATEGORÍA -->
-<div class="modal-backdrop center-modal" id="conflictModal" onclick="if(event.target===this)closeActiveModal()">
+<div class="modal-backdrop" id="conflictModal" onclick="if(event.target===this)closeActiveModal()">
   <div class="modal-dialog">
     <div class="m-meta">SELECCIÓN DE CATEGORÍA</div>
-    <div class="m-title">¿Para qué apartado buscas este material?</div>
+    <div class="m-title">¿Para qué fin buscas este material?</div>
     <div class="conflict-list" id="conflictModalOptions"></div>
   </div>
 </div>
 
-<!-- MODAL BOTTOM-SHEET: UNIDADES / PUNTUAL -->
+<!-- VENTANA COMPACTA: UNIDADES / MATERIAL PUNTUAL -->
 <div class="modal-backdrop" id="itemModal" onclick="if(event.target===this)closeActiveModal()">
-  <div class="modal-sheet">
-    <div class="sheet-handle"></div>
+  <div class="modal-dialog">
     <div class="m-meta" id="mCode"></div>
     <div class="m-title" id="mTitle"></div>
 
@@ -1675,16 +1524,16 @@
       <button type="button" class="q-pill" onclick="addQty(10)">+10</button>
       <button type="button" class="q-pill" onclick="addQty(50)">+50</button>
       <button type="button" class="q-pill" onclick="addQty(100)">+100</button>
-      <button type="button" class="q-pill" style="color:var(--warning);" onclick="resetQty()">Reset (1)</button>
+      <button type="button" class="q-pill" style="color:var(--warning);" onclick="resetQty()">1</button>
     </div>
 
-    <div class="field">
-      <input type="text" id="mNoteInput" placeholder="Nota opcional (ej. urgente, obra...)">
+    <div class="field" style="margin-bottom:0;">
+      <input type="text" id="mNoteInput" placeholder="Nota opcional">
     </div>
 
     <div class="m-footer">
       <button type="button" class="btn-cancel" onclick="closeActiveModal()">Cancelar</button>
-      <button type="button" class="btn-ok" onclick="confirmModalItem()">Añadir al pedido</button>
+      <button type="button" class="btn-ok" onclick="confirmModalItem()">Añadir</button>
     </div>
   </div>
 </div>
@@ -1692,17 +1541,35 @@
 <!-- MODAL: CATEGORÍAS -->
 <div class="modal-backdrop" id="categoriesModal" onclick="if(event.target===this)closeActiveModal()">
   <div class="modal-sheet" id="categoriesSheet">
-    <div class="sheet-handle"></div>
     <div id="categoriesContainer"></div>
   </div>
 </div>
 
-<!-- MODAL: KITS -->
+<!-- MODAL: MIS KITS (Solo listado de nombres) -->
 <div class="modal-backdrop" id="kitsModal" onclick="if(event.target===this)closeActiveModal()">
-  <div class="modal-sheet">
-    <div class="sheet-handle"></div>
-    <div class="m-title" style="margin-top:0;">🧰 Mis Kits Guardados</div>
+  <div class="modal-dialog">
+    <div class="m-title" style="margin-top:0;">Mis Kits</div>
     <div id="kitsContainer"></div>
+    <div class="m-footer">
+      <button type="button" class="btn-cancel" onclick="closeActiveModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: PREVISUALIZACIÓN DE KIT SELECCIONADO -->
+<div class="modal-backdrop" id="kitPreviewModal" onclick="if(event.target===this)backToKitsList()">
+  <div class="modal-dialog">
+    <div class="m-meta">CONTENIDO DEL KIT</div>
+    <div class="m-title" id="previewKitTitle"></div>
+    <div class="kit-preview-list" id="previewKitItems"></div>
+    <div class="kit-preview-actions">
+      <button type="button" class="kp-btn primary" id="kpAddBtn">Añadir a pedido</button>
+      <button type="button" class="kp-btn" id="kpEditBtn">Editar</button>
+      <button type="button" class="kp-btn danger" id="kpDelBtn">Eliminar</button>
+    </div>
+    <div class="m-footer" style="margin-top:10px;">
+      <button type="button" class="btn-cancel" onclick="backToKitsList()">Volver a Mis Kits</button>
+    </div>
   </div>
 </div>
 
@@ -1726,12 +1593,12 @@ function forceScrollTop() {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-  }, 35);
+  }, 30);
 }
 
 const LOGO_DATA_URI = "data:image/png;base64,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";
 
-const ICON_DATA_URI = "data:image/png;base64,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";
+const ICON_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADABAMAAACg8nE0AAAAMFBMVEXx9fnw9Pjv8/ft8vbr8PXo7PHa4OawucV0gpQ3SmMNI0EGHTsEHD0EHDsEGzsEGzq28THKAAAYhUlEQVR42u1bS1xa17pfmw1szwxEkpwZvtpzZ1sB285QwbazrbIxnhFpBMQRaRMexqSmjTwM6ck5pwIbSX93cuUhSWbHKBCH8tjo7LQNIsNzmphmds/vFCl3bdgbNVGwvc0d3F9WNdL9WP/1vb9vrQ8A3o634+14O96O/39DDCSq4Tc3PQ90dgkI8s0BCAi+yoa8QQbxtT1YzDL0BhGkqtldn/bNzY93COOJfw6KTn1AdLZ5kNOe61A5cpXC/OkvnlFXVHyRHHS9dlkEUCy+Wd17LJUNA+XYkVUgPUNADdBxmVYsErecv52vu8ZTI2rQ+YqEcb5sNletVsoL/SRCHpUEohlHtRKlHvNLcXlLAC0y+ZhglveqvqPkxQeb1Wq1GKndVh7eYahFBYTwTtYyzBtvxaBB0d2UE4Gvq4/zV9xr/Oo5nL9a2XfyNEOg5/CeZlDcoZYJF3eSS2r+VCtdV733IJXRq5FXaOUpgGOnxABUC5lPyWGN7MjNXh0Jzi9up8rpQf5gCwCSDzUl6SfEOuIV1ZqOb1brIxnR8zT4kXt8LZhYzKeqlaefqVuJQHEutFktZ10yzTGAdtGHoQI7f7W859ej/YcekMQF08HtBAPt629OgRgZusA8uJl1Al5/w3LQboAt50ocQLWY938C2jvFchlP3gW1Teh4sJ2qQafll5sCyFFi9gUjyNQPTtmwWDoEEHm3QsNwYGezejhS+YAVskbb3zMGgM7uoYu1+auVDUtfs/k1gBSGahNVdrOuMcAn+yQarbwP2O/vpKpHR4r+d8D2CXzlnM1OxfMFjrrUCtrMX5Ai8mKO5XMqG7Cq0JqXNnnir8xfrSYq9E9UwO2hYvv080TjcjkzhjfT0VHpHY4TlU36GeWy2Wx2T5B+/ur8UFkTP9PMeFlOHAqnWknMy5pZmRZ7sHn4bJHe2Yit7tI7R6c4OhkziscvFsPNvFHHoDl3bIbNn398WUykqmcf5Yz+VCF041KFd/P4IovFYvWXjeSXstPk3DOIYqlS9X85imGe4lQxqGZbrjfRagXl7y8Rp2U2PGVos8Xrhd3nrXmkHD1RRaEQLuZaLe+AihdarWFNQJyY9IB2craFvpR31686dhOnMJ9TjO/14ydTINA9ZBlcOW3+f1/TCD10uXSSUfzc4NHSyaagkTSM4OcTRVnY/QH6WJHQc/C6YRc26Q2OhMJ3yIlqRIo5I6hs0OXU60vc/7cTwLROJHDEX7HtQuogF7BxGlJ+ajkJQKDFVtm3ki7P7vZx+63AJUateAfkLjoO7Mv0i0SqyN5JpPbz6y49aOh40ndyZmtm9aOSIYT2IPRAiWKJtefE5n42cA3tZ2hHyGEw4XlI56G/g6P0gt6OuqyAVLflOVmlT1IjnpAjsehTEnydZ5mmf6z7MzjHThQukSTrrrhbZ0BNnuDDXcablmKUy0qghiG09wiPTsr7/sCJuDBvFJMq1OSmYgc0N8cUf1wuhtrB/CJi5RjQ6GxuZtiskG1Ipwz0TtznBPPkP0/iUcMIin4UyCQweOtMdhhRAnAOAwwVoA9I+iGLxKIeGVCQtbxMLhYBnnq4T6zuxmXmBov2TspfGxyqVrIWrQqRKxq5owoKdlSgAmptr0EzDlTSXlyJADlpGBOLxZ0imFWCHnVnr/cwrTlJBr87dDKpcIdIBCSQHV1dYmTcTH024llQ9vd6/LyPKCqgd1AW+COk/N1H3ldjXNpRzn56EofaDmNZOWtRkCouk+nz7t96N76k5QvjGXISimTeS1vgD0anj+TruMHMuZCk33BiQJg99HRJH9rDpc8ofmf1C+HqX8aUWGJ9ajJBJVburN5eXrW0ZddFhxOJSI5D5cyVE+O+AAuljsQ9oGFfRgSh4goWvzc68lHumeXjrDW04k364knLZO7pkejIwx5wZurjnVxC4uZ8g0nJBVwg495MLH+LxZdwpTkTvzVZA1j1x+KW2cwDyxGAj3KNxWlOjjZ83Z3cYdy71MGxCMsupkdCS52js+nQ/GQullzyxiKZuGXuu/gRbcQ5R5H0dfecnBPxZFgjf678YBG1s9c/zpgzI/ElsWouHPJN5vPfW7zB9UzI4g2H/tyIjQjJajkkoA+IT6vhHI0EN3m7XcHm1R9nHBljfEmKe8Pef/wuu5wZ91I76/GrIX9oRS0i61zivceK4DQJ1LnxjpczhkKYi3uimcLqrjW+pCNDG6vp32cdOYs38GMkbn0YS3wn4OI70pbjCGiWOooaxlDOkCxAx1cH9K4zHnHbHtE7GXN2mv6rN5D0x215OpduRF8RG6xSYbRZgdytahhDwsJamuhOlFr1rRZ3A4lAcMORMa2ueP0x/6p9IxBcH+s21J+SXa+F2UpqXko0SU3HlBP3NzllqDMXEYb+SxgKx2k6mrdcpB1ZSyjt9YVcSUdWP7nzKajbIyKtm1k5Myggmu1FdBKcthXXBNAtt0MA94LW7qp5ZuN7bpt7yu6yL7itbrubNLkvawBPXFtGfWHJcH9n0xpWxptYZdUtLeiCNHQPwaK4UTEz8uPXKIOxWYXCtWpkKqZY68WKrPJp+vHmRWC/l9PnT7pH3C4Cn3BfI6ed79iv2t1up3La/ek0pMU6breNT8C/QG139Y4CaV2JKk+vIGgLAHKSFXPR0mM+yDkHlunv9d70QMgX2v3xH1iIjkzmaXqNH0ojk/kfI2NkKE1ekkk/ztXJHm25k6BkFbqa/HOv98e9cNvO7u68d2Mq5Fve3N0y72x/b6YT+1vY6oZ+Mpd/evXc8oZehivqWlpZQ5BWWzoCHWvzSZ9wNXI3Pbnhjvu8yVshnzdiX7i+4aHt1F7Uj+V/gp7Vs7+Abe5ZRDg+W2HdvLTVXgVfzwphL4wl53/vv5kB0EUkoRvyhknIKyF1DV4XtmUZz2qK++CH28Sgaq6uRPc0aKsNMUR1nUtu2l58MYB70z13t+ZSaSiDDcrn/ds5Pf988tbQZDp0z5w1hFYmM6ElOUHUV5WcJ0FfC4BuyUyRAyjewju8W50303OJp6Gl0C79d29YqdVCClSzW17fZPZSaGVmy7uCykdrAJWCRdFyW61n2My5rbb8FwPEXLrj7pY3kkr6QlFqyRvuHldgyduDc//yhj+AFISvb3nXSIm2JrjKM0vrDbUeMMkBnN/9YtJ/I83zrkHXDwHCAr13TUhZsOSC2st41owGSgZ+0EoGOIDW24LthwDGuG82M5sxwRj5Ly8DYDLc/H56fx5L3uoNHeQyv8/a477QQT4zJhDWKoszAYhFDQB9aP3R1uRO9ODr62sziXvLG7HITCGYYCjAVqOx9cnEo+QC/LBhEWCbdQC9rCVA9yEF+ll63/dhnM5avN9eoKEl01DudGYMg9pPO805R57OTNDO6bxFWndFvxRg6t1g1EA4Yn6xwy+kFjwU5ed7Yj7lAHXlo6i+jbLDCxgUCQUBcmcG6MJnCiyAQWS6xkMEJkPPO5fBgF6nM4yqhNZ+QqW7JDR0CnRGA0n0Ggd7jaMoC/CT5QwAqpkXXNCErl0G9VorNGpxQ4faMPDZOza90GbVaKz8AVgTdI3Wc0e0nWVR+QwAAK8HPwjQ0dkBnaNgePxi8YuBSPeF8EcrZjo8mcpY2sKCWdoHM2MRwpQMEhagujvfGgDBvSXWktFOxrcLic4bFPQI2gtbbWt/csccEe+SOaNf9nxL4tyWHgeQvHUGO5BxESfNY5Nf/vTFv3+eVmBpR+Q7kdezMrt0ffVKyGXVqMdYAAmWZyvk1vvjqJh115V/cA+rwXUfFRG25ZKRtGbOk4tZFq/PO2gnAIMNCl6wLr41gEAT4ty1YLC+PAMWnc7ErrWlHeEImPNEM8blb3w2RxrlYjXaxQKkVs5AwQS7n5BcQusSQ6fM6enYj1+2rbWtBW1Bhy9kywQfU6a0gNsi5csx1sVvCQhFK4QPN1mAe3WBCfqIuVLYGP2kbev9/57Np81fz1DhibSXDmu5HAtVYI9KbCpCtNpbRrmYXLwl485D7G4nsKkxJ/zPbTV9dsHtHHBddF8lUE4pUeEDNu8aUrUCkHxQBzg0+3NW5YhVbzQghFHdZ+QRRpQQGoFR02tslGIIW6JC/yVrBSBrxBs2b5Y51i2LEWzZz4O/WNAppEZxR9QQjNpiETF3PijgqgOLqJUMDkOyoL649vvf+KNBR+YHfPJxBrLfnPlkIAjTX8qeCbA6Iwdq1niS8+quVgDso6VwvdJCkOBkJD3ndka1E7bInPu2d/0TYdTsj7ouPnayAAowxgH8peX5Ac496mOTNNk3i5GtufmLaR3xx625h2F7lNAsLwZ+ijmy6XaORUQ9bakWV9pbuSKOm8kFtj4Qz8aorbnb3iUUTES97rQgqidmV/02r8sVI0QsBcTndQ9ZWuO1OiPCWDsrWtgklmd3RB57bRsu/A/O4F1X+lyUwO2zPpfX5TwE4Hx85TteC3fHhg5GS9lTIpk3tPDNs9l8hng/mzHn1rCYXuSNu7IMi0Y5GeCNMDjWIrk+LOZUrL6JpgMGewDm7Npej/O8+7bOpVLaA0a7C/MssELuG5Ic1oB9zUNCI6dIo5xCE0AAfwH/krTmvKGiKYFqHFYfQ9xug0jN1geQ8Es9eNMKh6sWq2sattRH1COEtE9nsxkmrDarTmMzkiPWUZO1a2CU5PhNCtiIU/35ynDTExCCzcNr+y2NUwW8R3o+4HZTLrdfg6XCI4vr+uvrU+pDcbbzWGcELa3pMRcEuME5a/yIzY8oMU9gMRBY9iuxSEQYdV+6+6djezaH2r1EtADg7OzLQdUR3ZJiHsrtCFDQIYUp7LHHMhc7nkB0HtpnMz1F8R52JYUrRwGk/cJaHety8bEIZXrsdXr9x1cqYynfCw81kwHSLmWP0Z5dwY+sREgMuG0eT8Dl0mDbkcBi0OO1kMcokLHpWmmtvxkFPXxhfdOknLncgR7dh9F57JBFLpfynNvqmnaZ7JcVxyYSf8Cpd0fTtE4g3GQB1FL06LazzmH3w+LeJagxTg9UQoJxCnJun51/IXfMy59mBpw+w+fwI7wUyISeQCBgD/jPie1Wu8vkMrn1Wq2EIPmsKPjvcSvra1oACg4X0neEBQLFABSxJxh1KbGnkWBmkboe1eNSQPajHMAIx9tPmskA5wAq3woUx5KlCahC9n8u+qXvuCKmcDAwF9CO2d1uWV8DgI3K2cuqZhGfz8qqtMY/urPHF2EUZQpAW5aL2sJtfwnG7Pevjt+gM1OjLCP5ak79LjUDUHDVR3GlS3qUAvLDxYA9Y6dc4FzIOTNP3XHfhKXsRtSgb4ivbmmwRGgO8Mcca/GDSoB0tXfWGCrulZ93U7DCcbt6MVioXXFQs1ELfp3OXB7UAl5nPWxssiVCM4BeGVuFJ/8s00hk9X6QHgjCP2ez2Yw2vfWc1GadGMWsmJU3BGPEGCChPTBnCrKb7NFVc4D6gTuTHQAtSppsRjXeruEZbVZiAPAQHbwANUGEmGwGoJSNkFotVGCbVS9Vtbezb1abVrK9XHmT/CsPn/A82Ig6gRZMBwtRF6nRmahHG5Szg8TtsUrUKehzUAGVTuh4tBGYUilQFuDnpgAKwAHc45F36fLmLgyB5+/nq/vZeem7oXz5CZ0eUkzE96r7GYv6Zj6jHzLTpQrt4w9KWIC9+aYAohscwBi2mjigC8nbwJxLlBKpsPwPucT+duKpBZ8tJKqJ5ArvRmLdIAwlUoVExqBqZyPVXlMKukU32e2ueYN5p7LuKSWWlN7N4vMdOMfsdiXgeZG8BRPdg1g+kQbXYSl9IVcqVUrJL/mS65XWMkDGRF+xALe05tjGvPDBk/D5B6mMbZGmr5hj6xasmPRhheIPtq/orB4C6Gdyu35HPrUiQM8CAIZFd9mI+VdRr9Emtz8srbXlimHQRrn17xitI3YYsmCt5pOb4QUG4G7hqQV7WFwT9N8ssXbQnEVcSL7XrgImT7zKACSXhslxLZALTJ4kNMH/yCXnh8kxoLoBAbyJTI8ulEgL2T2vFhsuhwBLuMDxkKZf1gC+HhwGSkLgeUDT8M5kLnmlX4WSxOc1gDR/iPlHxfkifXOAz6tsaBVj8fx+9MEmA3CvC6YogundF7vUZtJnhgCwOFE2ANShRAY5F2drnKbNMw2A0hqYyT0JWEN1AFLoMqq/KiQCExAAUjAvP+8y6CEAAVlEEpBFcizF7XC0AGA3KtLgRuEHi7BGASPkQnQBzqV/Hwr5fSgU1JyNWqAMiOuMkOFTQ+9zkUraHIDbCUl33ClktNOp0hq2mvretlg8+BKuE5hfQDV9Xnpsu1PK1QBmckmopgkfPvOcfZHftMQUzXJ7OZdvFsvuxRelNdS7WdnYLj+9FEo9c98vJX0DjKHtlNN6CGD4KFEpFIvJW3J2CwWGwqbVgYh115WnlplciabLCUYY0DM8eQzmEns0XUj4hmdzNVeBX4euQhNKbCagmQ+wR717K01LHLSP23tPzk/EX1YyXjqtxUL56ousk5jMvzyIhOh/tWPx7epBxkLMwaIEd9ScnXCae8/X37SDbPiDxoM6x2rUaaYCpGo6uBp1dYmFntWoxUH5e7X2YGLdpemDNwm50LMcDej7uMPo5MJYUwAFqwyw2FLCSAL4Q2M8GdDZjCrQDut7IxjvHxJMAaPtGk8pE2r6tKOAb7LqFVxbEvQURHOAC4cnkiQQXiYNuqkRo0FnhMOgNWqYjUAj/DNMGuFHHWk0wBtapcrceI1oWqP1q7GX3FHgPHnRbQxQHp8bZr0Bt8cK/y64PW6KcrgDbhPlDvjdTqvDARMyF9ZoF0jjTY9Y+nqFj0rccSlijrqjsaDfveiJBAJBG7VMQTAqGr1DPXZPB6lAAP78ye0OBP0O7vRtLzzcDABRCQe4tVQyV012pofMarLDf2zMsFumbfXP1onaBRfzhN3mOGxS/FrJawog7W+c/O/52aIS1ApmpiTGUSCFJSeAeXc3WtuhrL2GfdNoByhYNM0OcRCRBr9ZapyKG4wGhbpfrlAMdYp7xrvlchgWNF2aQYVartRp5cP9Ct2YhCSEi/nDd/TK5pU+CWYa/UkpP6FQIeKuPoDweB0qsViEjmpgKiZGREyzg5hJtyQwLC1uNw7SC2HQFICHq9H3G6fi5RxMioblCq1cqVSqtWr1sIIk4f+rSbmGAD2kWqshhwZswe3DLpvkbd54MxbxcFzXOPuvVjczTpxp2ZR38iRi5thRIgYiCWCagTuZJhqFjD/hONqkWH6q1xD8ZkKWyTSCwz6ySjLLdMxoSFWnGMHRYQlfxgMSdrNWriaAyX28SbHwGNHgvBbb1+iRPq9yKhewMqY/rIYCGAKa4Rr5ahxoulVAZw/S28f6HJMLrfpxGYCjnWpMQ2XAZR0HSnXvGNANK7TMDPJOjQEX2IO7O8ebnArpUfwMbeMjR3vtmIbK/Abltk7hSLdCxNfW6OePMylNvnC8TQsSoDlD37iUON4tWEmkKjT9E9MDBch68a1R8aaXX+8QLaan1GcA0PS1vdrNV0wwraXrAasIiIaYzux3XusiYwT23KnBlWdgEar2pk5qLT2g112XkCGoaiOOExpcK8nIuEpyFhJ4qsnciV12iYPtwFVELRJ66Nfb8CqpzBUECM4gZIgg+OrkdsbCJh252i1cpF/vRaxsZp29MnC2gXRfjJ/S85jYjxhgFvR6j+KTrB+QZwUAiBxm/Kd0Yh5QycQJPYpZ1/BQFzjz6NAt7pyGsFt+XQGYHkgBgarODCDQvre8fUpr7KuXGVOMWnnQtw6Kzjo/Og7IiUVYY7Zu8K0kntDP3Fc7laRKcXYCantA73l2Sy37e6FeMf3lsPwFIsCTgV8wNLjQ/oh+mWjWxVxO7e8EXAYgHQS/fCjFADF5HtH5cuK0RmaG+a5LfLIP/KrRQ5KAack8oF8WTmRVin7mMsgQLRD/qvlh2iBql+E8nZ2K7dKvk1FJQd0Bw3JZO48c+zUAvG7olIASR3CByU3F6VcF/mQ7oAe9BA9v56nVvwYAimB4SN0+3D/UD9p1diiNY+EllfXr+WOgVz346xjEdD8AnKeWSZhGT3UfEMIItn3kawx7fhlQ9EEKQRf4LUaXDAhti3RDEMmAvve3/dYY0i1HRzxcL2QxY0F04+C3RYAVaCMJTTn5ot/+m4F8zei794ts1zNkvkL0287P06kEquma50guML0IOvy3BUCHAaIV3ikypYmeFKEtT11/jRympEw5XAzDxEsiAm8AgOh97+Em5JBEJQNvZvAFX5UqTN/5+BsC6AGzL8ppyTh4Q1/+REnRx4nEmmDqDa0fAojbaHpFQHS/KQQcCN0BpwS8wS/4AtF4bY/7jQ1owyLwZocYvB1vx9vxdrwd/+fjfwAN2n3NxajM8wAAAABJRU5ErkJggg==";
 
 document.getElementById("headerLogo").src = LOGO_DATA_URI;
 document.getElementById("homeLogoImg").src = LOGO_DATA_URI;
@@ -1775,8 +1642,7 @@ const TABLES = [
   ["Fibra Despliegue","MATERIAL FIJACIÓN - FIBRA"],
   ["Sin Código (Proveedores)","EQUIPOS SIN CÓDIGO"]
 ];
-
-const RAW_DATA = [
+  const RAW_DATA = [
 ["3946","ROUTER ASUS ax3000 PARA DUAL O BALANCEO DE CARGA",0,"VARIOS"],
 ["3912","HUAWEI X6 ONT ADAMO",0,"VARIOS"],
 ["3905","ROUTER ONT Huawei WiFi 7",0,"VARIOS"],
@@ -2191,115 +2057,113 @@ function getSynonymsForItem(code, name, tableIdx) {
   return extra.join(" ");
 }
 
-function getSheetColorIndex(tIdx) {
-  if (tIdx <= 6) return 0;
-  if (tIdx <= 16) return 2;
-  if (tIdx <= 31) return 1;
-  return 3;
-}
-
-function extractItemAttributes(code, name, tIdx) {
+function extractFilterTags(code, name, tIdx) {
   const up = name.toUpperCase();
-  const badges = [];
-  let typeGroup = "Otros";
-  let measureGroup = null;
-
-  const mMatch = up.match(/\b(\d+(?:[.,]\d+)?)\s*(?:M|MT|MTS|METROS)\b/);
-  if (mMatch) {
-    const mVal = mMatch[1].replace(",", ".") + "m";
-    measureGroup = mVal;
-    badges.push({ text: mVal, cls: "tag-green" });
-  }
-
-  // Grosores en color morado (tag-purple) para diferenciarlos de conectores y metros
-  if (up.includes("5 MM") || up.includes("5MM")) badges.push({ text: "5 mm", cls: "tag-purple" });
-  else if (up.includes("4,2MM") || up.includes("4.2MM")) badges.push({ text: "4.2 mm", cls: "tag-purple" });
-  else if (up.includes("3 MM") || up.includes("3MM")) badges.push({ text: "3 mm", cls: "tag-purple" });
-  else if (up.includes("2 MM") || up.includes("2MM")) badges.push({ text: "2 mm", cls: "tag-purple" });
-  else if (up.includes("0,9 MM") || up.includes("0.9 MM")) badges.push({ text: "0.9 mm", cls: "tag-purple" });
-
-  if (up.includes("NEGRO") || up.includes("NEGRA")) badges.push({ text: "NEGRO", cls: "tag-dark" });
-  else if (up.includes("BLANCO") || up.includes("BLANCA")) badges.push({ text: "BLANCO", cls: "tag-light" });
+  const tags = [];
 
   if (tIdx === 1) {
-    if (up.includes("ALARGADOR")) typeGroup = "Alargadores 2m";
-    else if (up.includes("SERIE FORCE")) { typeGroup = "Armado Force 3mm"; badges.push({ text: "Armado Force", cls: "" }); }
-    else if (up.includes("SM9/125")) { typeGroup = "Ext. SM9/125"; badges.push({ text: "SM9/125", cls: "" }); }
-    else if (up.includes("5 MM")) typeGroup = "Opticom 5mm";
-    else if (up.includes("NEGRO")) typeGroup = "Opticom 3mm Negro";
-    else if (up.includes("BLANCO")) typeGroup = "Opticom 3mm Blanco";
-  } else if (tIdx === 2) {
-    if (up.includes("OPTITAP") || up.includes("CORNING")) { typeGroup = "Ext. Corning Optitap"; badges.push({ text: "Optitap", cls: "" }); }
-    else if (up.includes("FASTCONNECT") || up.includes("HUAWEI")) { typeGroup = "Ext. Huawei FastConnect"; badges.push({ text: "FastConnect", cls: "" }); }
-    else if (up.includes("G657A2")) { typeGroup = "Ext. Reforzado SC/APC"; badges.push({ text: "G657A2 SC/APC", cls: "" }); }
-    else if (up.includes("CIRCO") || up.includes("MMV")) { typeGroup = "Ext. Circo MMV"; badges.push({ text: "Circo MMV", cls: "" }); }
-    else if (up.includes("4,2MM")) typeGroup = "Interior 4.2mm";
-    else if (up.includes("INTERIOR")) typeGroup = "Interior 3mm";
-    else typeGroup = "Genérica / Fijación";
-  } else if (tIdx === 0) {
-    if (up.includes("HUAWEI")) typeGroup = "Huawei";
-    else if (up.includes("TP-LINK") || up.includes("TP- LINK") || up.includes("TPLINK")) typeGroup = "TP-Link";
-    else if (up.includes("SAGECOM") || up.includes("ZTE") || up.includes("SERCOMM")) typeGroup = "Sagemcom / ZTE / Sercomm";
-    else if (up.includes("MIKROTIK") || up.includes("ASUS")) typeGroup = "Mikrotik / Asus";
-    else typeGroup = "Otros / 4G / DSL";
+    if (up.includes("ALARGADOR")) tags.push("Alargador 2m");
+    else if (up.includes("SERIE FORCE")) tags.push("Armado Force 3mm");
+    else if (up.includes("SM9/125")) tags.push("Exterior SM9/125");
+    else if (up.includes("5 MM")) tags.push("Opticom 5mm");
+    else if (up.includes("3 MM")) tags.push("Opticom 3mm");
 
-    if (up.includes("WIFI 7") || up.includes("WIFI 6") || up.includes("AX")) { measureGroup = "WiFi 6 / WiFi 7"; badges.push({ text: "WiFi 6/7", cls: "tag-green" }); }
-    else if (up.includes("NEBA") || up.includes("VULA")) { measureGroup = "NEBA / VULA"; badges.push({ text: "NEBA/VULA", cls: "" }); }
-    else if (up.includes("REPETIDOR") || up.includes("MESH")) { measureGroup = "Repetidor / Mesh"; badges.push({ text: "Repetidor", cls: "tag-purple" }); }
-    else if (up.includes("4G") || up.includes("SATELITE") || up.includes("DSL")) { measureGroup = "4G / Satélite / DSL"; }
-    else { measureGroup = "ONT / Router GPON"; }
+    if (up.includes("NEGRO")) tags.push("Negro");
+    else if (up.includes("BLANCO")) tags.push("Blanco");
+
+    const m = up.match(/\b(\d+)\s*(?:M|MT|MTS|METROS)\b/);
+    if (m) tags.push(m[1] + "m");
+  } else if (tIdx === 2) {
+    if (up.includes("OPTITAP") || up.includes("CORNING")) tags.push("Corning Optitap");
+    else if (up.includes("FASTCONNECT") || up.includes("HUAWEI")) tags.push("Huawei FastConnect");
+    else if (up.includes("G657A2")) tags.push("Ext. G657A2 SC/APC");
+    else if (up.includes("CIRCO") || up.includes("MMV")) tags.push("Circo MMV");
+    else if (up.includes("4,2MM")) tags.push("Interior 4.2mm");
+    else if (up.includes("INTERIOR")) tags.push("Interior 3mm");
+    else tags.push("Fijación / Genérica");
+
+    const m = up.match(/\b(\d+)\s*(?:M|MT|MTS|METROS)\b/);
+    if (m) tags.push(m[1] + "m");
+  } else if (tIdx === 0) {
+    if (up.includes("HUAWEI")) tags.push("Huawei");
+    else if (up.includes("TP-LINK") || up.includes("TP- LINK") || up.includes("TPLINK")) tags.push("TP-Link");
+    else if (up.includes("SAGECOM") || up.includes("ZTE") || up.includes("SERCOMM")) tags.push("Sagemcom / ZTE / Sercomm");
+    else if (up.includes("MIKROTIK") || up.includes("ASUS")) tags.push("Mikrotik / Asus");
+
+    if (up.includes("WIFI 6") || up.includes("WIFI 7") || up.includes("AX")) tags.push("WiFi 6 / WiFi 7");
+    if (up.includes("NEBA") || up.includes("VULA")) tags.push("NEBA / VULA");
+    if (up.includes("REPETIDOR") || up.includes("MESH")) tags.push("Repetidor / Mesh");
+    if (up.includes("4G") || up.includes("SATELITE") || up.includes("DSL")) tags.push("4G / Satélite / DSL");
   } else if (tIdx === 26) {
-    if (up.includes("SC/APC - SC/APC")) { typeGroup = "SC/APC - SC/APC"; badges.push({ text: "SC/APC-SC/APC", cls: "" }); }
-    else if (up.includes("SC/APC - SC/UPC")) { typeGroup = "SC/APC - SC/UPC"; badges.push({ text: "SC/APC-SC/UPC", cls: "" }); }
-    else if (up.includes("LC") && up.includes("SC")) { typeGroup = "SC - LC"; badges.push({ text: "SC-LC", cls: "" }); }
-    else if (up.includes("LC/")) { typeGroup = "LC - LC"; badges.push({ text: "LC-LC", cls: "" }); }
-    else { typeGroup = "SC/UPC - SC/UPC"; badges.push({ text: "SC/UPC-SC/UPC", cls: "" }); }
-    if (up.includes("DUPLEX")) badges.push({ text: "DÚPLEX", cls: "tag-dark" });
+    if (up.includes("SC/APC - SC/APC")) tags.push("SC/APC - SC/APC");
+    else if (up.includes("SC/APC - SC/UPC")) tags.push("SC/APC - SC/UPC");
+    else if (up.includes("LC") && up.includes("SC")) tags.push("SC - LC");
+    else if (up.includes("LC/")) tags.push("LC - LC");
+    else tags.push("SC/UPC - SC/UPC");
+
+    if (up.includes("DUPLEX")) tags.push("Dúplex");
+    if (up.includes("2 MM")) tags.push("2mm");
+    else if (up.includes("3 MM")) tags.push("3mm");
+
+    const m = up.match(/\b(\d+)\s*MT\b/);
+    if (m) tags.push(m[1] + "m");
   } else if (tIdx === 25) {
-    const foMatch = up.match(/\b(\d+)\s*FO\b/);
-    if (foMatch) {
-      measureGroup = foMatch[1] + " FO";
-      badges.push({ text: measureGroup, cls: "tag-green" });
-    }
-    if (up.includes("ARMADURA")) { typeGroup = "Armadura Metálica"; badges.push({ text: "Armado", cls: "" }); }
-    else if (up.includes("ROEDORES")) { typeGroup = "Anti-roedores"; badges.push({ text: "Anti-roedores", cls: "" }); }
-    else typeGroup = "Estándar";
+    const fo = up.match(/\b(\d+)\s*FO\b/);
+    if (fo) tags.push(fo[1] + " FO");
+    if (up.includes("ARMADURA")) tags.push("Armadura metálica");
+    else if (up.includes("ROEDORES")) tags.push("Anti-roedores");
   } else if (tIdx === 6) {
-    if (up.includes("MIKROTIK") || up.includes("SXT") || up.includes("LHG") || up.includes("LDF") || up.includes("DISC")) typeGroup = "Mikrotik";
-    else if (up.includes("PUNTO DE ACCESO") || up.includes("UNIFI")) typeGroup = "Punto Acceso / WiFi";
-    else if (up.includes("PARABOLICA") || up.includes("OFFSET")) typeGroup = "Parabólica / Satélite";
-    else typeGroup = "Cambium / NanoBeam";
+    if (up.includes("MIKROTIK") || up.includes("SXT") || up.includes("LHG") || up.includes("LDF") || up.includes("DISC")) tags.push("Mikrotik");
+    else if (up.includes("PUNTO DE ACCESO") || up.includes("UNIFI")) tags.push("Punto Acceso / WiFi");
+    else if (up.includes("PARABOLICA") || up.includes("OFFSET")) tags.push("Parabólica");
+    else tags.push("Cambium / NanoBeam");
   } else if (tIdx === 17) {
-    if (up.includes("TARJETA")) typeGroup = "Tarjetas OLT";
-    else if (up.includes("HUAWEI")) typeGroup = "Chasis OLT Huawei";
-    else typeGroup = "BDCOM / Cabecera";
+    if (up.includes("TARJETA")) tags.push("Tarjetas MA5600/5800");
+    else if (up.includes("HUAWEI")) tags.push("Chasis OLT Huawei");
+    else tags.push("BDCOM / Cabecera");
   } else if (tIdx === 21) {
-    const pMatch = up.match(/\b(\d+)\s*PUERTOS\b/);
-    if (pMatch) { measureGroup = pMatch[1] + " Puertos"; badges.push({ text: measureGroup, cls: "tag-green" }); }
-    typeGroup = up.includes("DUPLEX") ? "Dúplex con fusiones" : "Estándar";
+    if (up.includes("DUPLEX")) tags.push("Dúplex");
+    const p = up.match(/\b(\d+)\s*PUERTOS\b/);
+    if (p) tags.push(p[1] + " Puertos");
   } else if (tIdx === 24) {
-    if (up.includes("INTERIOR")) typeGroup = "Interior";
-    else if (up.includes("POSTE")) typeGroup = "Fachada / Poste";
-    else if (up.includes("ARQUETA") || up.includes("COMPACT")) typeGroup = "Arqueta / Compact";
-    else typeGroup = "Multi / Con Splitter";
-    if (up.includes("8 PUERTOS") || up.includes("-8-")) { measureGroup = "8 Puertos"; badges.push({ text: "8 P", cls: "tag-green" }); }
-    else if (up.includes("16")) { measureGroup = "16 Puertos"; badges.push({ text: "16 P", cls: "tag-green" }); }
-    else if (up.includes("48")) { measureGroup = "48 Puertos"; badges.push({ text: "48 P", cls: "tag-green" }); }
+    if (up.includes("INTERIOR")) tags.push("Interior");
+    else if (up.includes("POSTE")) tags.push("Fachada / Poste");
+    else if (up.includes("ARQUETA") || up.includes("COMPACT")) tags.push("Arqueta / Compact");
+    else tags.push("Multi / Con Splitter");
+
+    if (up.includes("8 PUERTOS") || up.includes("-8-")) tags.push("8 Puertos");
+    else if (up.includes("16")) tags.push("16 Puertos");
+    else if (up.includes("48")) tags.push("48 Puertos");
   } else if (tIdx === 23) {
-    typeGroup = up.includes("TORPEDO") ? "Torpedo" : "Estanca / Mini CAU";
-    const fMatch = up.match(/\b(\d+)\s*FUSIONES\b/);
-    if (fMatch) { measureGroup = fMatch[1] + " Fusiones"; badges.push({ text: fMatch[1] + " Fus.", cls: "tag-green" }); }
+    if (up.includes("TORPEDO")) tags.push("Torpedo");
+    else tags.push("Estanca / Mini CAU");
+    const f = up.match(/\b(\d+)\s*FUSIONES\b/);
+    if (f) tags.push(f[1] + " Fusiones");
   } else if (tIdx === 29) {
-    typeGroup = (up.includes("PRECONECTORIZADO") || up.includes("PERCONECTORIZADO")) ? "Conectorizado SC/APC" : "Sin conectorizar";
-    const sMatch = up.match(/(1:\d+)/);
-    if (sMatch) { measureGroup = sMatch[1]; badges.push({ text: sMatch[1], cls: "tag-green" }); }
+    const s = up.match(/(1:\d+)/);
+    if (s) tags.push(s[1]);
+    if (up.includes("PRECONECTORIZADO") || up.includes("PERCONECTORIZADO")) tags.push("Conectorizado SC/APC");
+    else tags.push("Sin conectorizar");
   } else if (tIdx === 5) {
-    if (up.includes("ANDROID") || up.includes("ADROID") || up.includes("DECO")) typeGroup = "Decos Android TV";
-    else if (up.includes("ANTENA") || up.includes("PARABOLICA")) typeGroup = "Antenas Satélite / TDT";
-    else typeGroup = "LNB / Receptor Sat";
+    if (up.includes("ANDROID") || up.includes("ADROID") || up.includes("DECO")) tags.push("Decos Android TV");
+    else if (up.includes("ANTENA") || up.includes("PARABOLICA")) tags.push("Antenas / TDT");
+    else tags.push("LNB / Receptor Sat");
+  } else if (tIdx === 10) {
+    if (up.includes("MASTIL")) tags.push("Mástiles");
+    else if (up.includes("GARRA") || up.includes("SOPORTE")) tags.push("Garras / Soportes");
+    else tags.push("Grapas");
+  } else if (tIdx === 31) {
+    if (up.includes("RETENEDOR") || up.includes("RETENDOR") || up.includes("ANCLAJE")) tags.push("Retenedores / Anclajes");
+    else if (up.includes("GRAPA")) tags.push("Grapas pared");
+    else tags.push("Tacos / Tirafondos / Bridas");
+  } else if (tIdx === 32) {
+    if (up.includes("RBLHG") || up.includes("SXSQ") || up.includes("RBSXT") || up.includes("CAPGI")) tags.push("Antenas / AP Mikrotik");
+    else if (up.includes("CRS") || up.includes("CSS")) tags.push("Switches Mikrotik");
+    else if (up.includes("HPOW") || up.includes("POE")) tags.push("Fuentes / PoE");
+    else tags.push("Routers / Telefonía");
   }
 
-  return { badges, typeGroup, measureGroup };
+  return tags;
 }
 
 const MATERIALS = RAW_DATA.map((r, i) => {
@@ -2313,23 +2177,20 @@ const MATERIALS = RAW_DATA.map((r, i) => {
   const fullText = norm(`${code} ${name} ${tableName} ${prov} ${syns}`);
   const words = fullText.split(/[^a-z0-9]+/).filter(w => w.length >= 3);
   const phoneticFull = toPhonetic(fullText);
-  const attrs = extractItemAttributes(code, name, tIdx);
+  const filterTags = extractFilterTags(code, name, tIdx);
 
   return {
     id: i,
     code,
     name,
     tIdx,
-    sheetColorIdx: getSheetColorIndex(tIdx),
     sheetName,
     tableName,
     prov,
     search: fullText,
     words,
     phoneticFull,
-    badges: attrs.badges,
-    typeGroup: attrs.typeGroup,
-    measureGroup: attrs.measureGroup
+    filterTags
   };
 });
 
@@ -2367,7 +2228,7 @@ const CODE_MAP = {};
 MATERIALS.forEach(m => {
   if (m.code !== "SIN CÓDIGO") {
     if (!CODE_MAP[m.code]) {
-      CODE_MAP[m.code] = { code: m.code, name: m.name, tables: [m.tableName], prov: m.prov, sheetColorIdx: m.sheetColorIdx };
+      CODE_MAP[m.code] = { code: m.code, name: m.name, tables: [m.tableName], prov: m.prov };
     } else if (!CODE_MAP[m.code].tables.includes(m.tableName)) {
       CODE_MAP[m.code].tables.push(m.tableName);
     }
@@ -2405,35 +2266,32 @@ let selectedTable = "ALL";
 let activeConflictFamilyId = null;
 let resolvedConflictTable = null;
 let conflictDismissed = false;
-let activeSubType = "ALL";
-let activeSubMeasure = "ALL";
+let selectedFilterTags = [];
 let expandedCartKeys = new Set();
 let modalMode = "CATALOG";
 let currentItem = null;
 let editingKitIndex = null;
-let cartBackupBeforeKitEdit = null;
+let backupCartBeforeKitEdit = null;
 let handlingPopState = false;
 
 history.replaceState({ view: "home", modal: null }, "");
 
-function syncThemeButtons(isDark) {
-  const label = isDark ? "☀️ Día" : "🌙 Noche";
-  document.getElementById("themeBtn").textContent = label;
-  document.getElementById("homeThemeBtn").textContent = label;
-  document.getElementById("metaThemeColor").setAttribute("content", isDark ? "#131c2e" : "#ffffff");
-}
-
 if (localStorage.getItem("acacio_theme_v5") === "dark") {
   document.body.classList.add("dark-mode");
-  syncThemeButtons(true);
+  document.getElementById("themeBtn").textContent = "Día";
+  document.getElementById("homeThemeBtn").textContent = "Modo Día";
+  document.getElementById("metaThemeColor").setAttribute("content", "#090d16");
 }
 
 function toggleTheme() {
   const isDark = document.body.classList.toggle("dark-mode");
   localStorage.setItem("acacio_theme_v5", isDark ? "dark" : "light");
-  syncThemeButtons(isDark);
+  document.getElementById("themeBtn").textContent = isDark ? "Día" : "Noche";
+  document.getElementById("homeThemeBtn").textContent = isDark ? "Modo Día" : "Modo Noche";
+  document.getElementById("metaThemeColor").setAttribute("content", isDark ? "#090d16" : "#041b3a");
 }
-  const searchInput = document.getElementById("searchInput");
+
+const searchInput = document.getElementById("searchInput");
 const clearSearchBtn = document.getElementById("clearSearchBtn");
 
 function handleSearchSubmit(e) {
@@ -2454,8 +2312,7 @@ searchInput.addEventListener("input", () => {
     activeConflictFamilyId = null;
     resolvedConflictTable = null;
     conflictDismissed = false;
-    activeSubType = "ALL";
-    activeSubMeasure = "ALL";
+    selectedFilterTags = [];
     document.getElementById("conflictModal").classList.remove("open");
   }
   renderMaterials();
@@ -2467,8 +2324,7 @@ function clearSearch() {
   activeConflictFamilyId = null;
   resolvedConflictTable = null;
   conflictDismissed = false;
-  activeSubType = "ALL";
-  activeSubMeasure = "ALL";
+  selectedFilterTags = [];
   document.getElementById("conflictModal").classList.remove("open");
   renderMaterials();
 }
@@ -2480,8 +2336,15 @@ function isAnyModalOpen() {
 function openModalById(modalId) {
   const el = document.getElementById(modalId);
   if (!el.classList.contains("open")) {
+    closeAllModalDOM();
     el.classList.add("open");
-    history.pushState({ view: currentView, modal: modalId }, "");
+    if (!handlingPopState) {
+      if (history.state && history.state.modal) {
+        history.replaceState({ view: currentView, modal: modalId }, "");
+      } else {
+        history.pushState({ view: currentView, modal: modalId }, "");
+      }
+    }
   }
 }
 
@@ -2496,7 +2359,7 @@ function closeActiveModal() {
   }
   closeAllModalDOM();
   if (!handlingPopState && history.state && history.state.modal) {
-    history.back();
+    history.replaceState({ view: currentView, modal: null }, "");
   }
 }
 
@@ -2535,12 +2398,24 @@ function switchMode(mode) {
 
 window.addEventListener("popstate", (e) => {
   handlingPopState = true;
+  if (document.getElementById("kitPreviewModal").classList.contains("open")) {
+    document.getElementById("kitPreviewModal").classList.remove("open");
+    renderKitsList();
+    document.getElementById("kitsModal").classList.add("open");
+    history.pushState({ view: currentView, modal: "kitsModal" }, "");
+    handlingPopState = false;
+    return;
+  }
   if (document.getElementById("conflictModal").classList.contains("open") && resolvedConflictTable === null) {
     conflictDismissed = true;
   }
   closeAllModalDOM();
   const targetView = (e.state && e.state.view) ? e.state.view : "home";
   applyViewDOM(targetView);
+  if (e.state && e.state.modal) {
+    const mEl = document.getElementById(e.state.modal);
+    if (mEl) mEl.classList.add("open");
+  }
   renderMaterials();
   handlingPopState = false;
 });
@@ -2563,8 +2438,7 @@ function detectConflictFamily(tokens, endsWithSpace) {
 function chooseConflictTableFromModal(tIdx) {
   resolvedConflictTable = tIdx;
   conflictDismissed = false;
-  activeSubType = "ALL";
-  activeSubMeasure = "ALL";
+  selectedFilterTags = [];
   closeActiveModal();
   forceScrollTop();
 
@@ -2582,66 +2456,71 @@ function chooseConflictTableFromModal(tIdx) {
 function reopenConflictModal() {
   resolvedConflictTable = null;
   conflictDismissed = false;
-  activeSubType = "ALL";
-  activeSubMeasure = "ALL";
+  selectedFilterTags = [];
   renderMaterials();
 }
 
-function setSubFilter(kind, val) {
-  if (kind === "TYPE") activeSubType = val;
-  else if (kind === "MEASURE") activeSubMeasure = val;
+function toggleFilterTag(tag) {
+  const idx = selectedFilterTags.indexOf(tag);
+  if (idx >= 0) {
+    selectedFilterTags.splice(idx, 1);
+  } else {
+    selectedFilterTags.push(tag);
+  }
   renderMaterials();
   forceScrollTop();
 }
 
-function renderSubFiltersBar(activeTIdx, baseCategoryItems) {
+function resetFilterTags() {
+  selectedFilterTags = [];
+  renderMaterials();
+  forceScrollTop();
+}
+
+function renderUnifiedFilterPanel(activeTIdx, categoryItems) {
   const barEl = document.getElementById("subFiltersBar");
-  if (activeTIdx === null || baseCategoryItems.length < 6) {
+  if (activeTIdx === null || categoryItems.length < 4) {
     barEl.style.display = "none";
     barEl.innerHTML = "";
     return;
   }
 
-  const typeSet = [];
-  const measureSet = [];
-  baseCategoryItems.forEach(m => {
-    if (m.typeGroup && !typeSet.includes(m.typeGroup)) typeSet.push(m.typeGroup);
-    if (m.measureGroup && !measureSet.includes(m.measureGroup)) measureSet.push(m.measureGroup);
+  const allTags = [];
+  categoryItems.forEach(m => {
+    m.filterTags.forEach(t => {
+      if (!allTags.includes(t)) allTags.push(t);
+    });
   });
 
-  measureSet.sort((a, b) => {
-    const na = parseFloat(a.replace(/[^\d.]/g, "")) || 9999;
-    const nb = parseFloat(b.replace(/[^\d.]/g, "")) || 9999;
+  if (allTags.length <= 1) {
+    barEl.style.display = "none";
+    barEl.innerHTML = "";
+    return;
+  }
+
+  const descTags = allTags.filter(t => !/^\d/.test(t));
+  const numTags = allTags.filter(t => /^\d/.test(t)).sort((a, b) => {
+    const na = parseFloat(a.replace(/[^\d.]/g, "")) || 0;
+    const nb = parseFloat(b.replace(/[^\d.]/g, "")) || 0;
     return na - nb;
   });
+  const sortedTags = [...descTags, ...numTags];
 
-  if (typeSet.length <= 1 && measureSet.length <= 1) {
-    barEl.style.display = "none";
-    barEl.innerHTML = "";
-    return;
-  }
+  let html = `
+    <div class="sf-header">
+      <span class="sf-title">Filtrar</span>
+      ${selectedFilterTags.length > 0 ? `<button type="button" class="sf-reset" onclick="resetFilterTags()">Quitar filtros</button>` : ''}
+    </div>
+    <div class="sf-chips-wrap">
+  `;
 
-  let html = "";
-  if (typeSet.length > 1) {
-    html += `<div class="sf-row"><span class="sf-label">Tipo:</span>`;
-    html += `<button type="button" class="sf-chip ${activeSubType === 'ALL' ? 'active' : ''}" onclick="setSubFilter('TYPE','ALL')">Todos</button>`;
-    typeSet.forEach(tg => {
-      const safe = tg.replace(/'/g, "\\'");
-      html += `<button type="button" class="sf-chip ${activeSubType === tg ? 'active' : ''}" onclick="setSubFilter('TYPE','${safe}')">${tg}</button>`;
-    });
-    html += `</div>`;
-  }
+  sortedTags.forEach(tag => {
+    const isAct = selectedFilterTags.includes(tag);
+    const safe = tag.replace(/'/g, "\\'");
+    html += `<button type="button" class="sf-chip ${isAct ? 'active' : ''}" onclick="toggleFilterTag('${safe}')">${tag}</button>`;
+  });
 
-  if (measureSet.length > 1) {
-    html += `<div class="sf-row"><span class="sf-label">Medida:</span>`;
-    html += `<button type="button" class="sf-chip measure-chip ${activeSubMeasure === 'ALL' ? 'active' : ''}" onclick="setSubFilter('MEASURE','ALL')">Todas</button>`;
-    measureSet.forEach(mg => {
-      const safe = mg.replace(/'/g, "\\'");
-      html += `<button type="button" class="sf-chip measure-chip ${activeSubMeasure === mg ? 'active' : ''}" onclick="setSubFilter('MEASURE','${safe}')">${mg}</button>`;
-    });
-    html += `</div>`;
-  }
-
+  html += `</div>`;
   barEl.innerHTML = html;
   barEl.style.display = "block";
 }
@@ -2652,18 +2531,9 @@ function renderMaterials() {
   const q = norm(rawVal.trim());
   const tokens = q ? q.split(/\s+/) : [];
   const scopeBar = document.getElementById("activeScopeBar");
-  const selectedCatBanner = document.getElementById("selectedCatBanner");
   const listEl = document.getElementById("materialsList");
   const blocksEl = document.getElementById("blocksDashboard");
   const subBarEl = document.getElementById("subFiltersBar");
-
-  // Mostrar u ocultar barra de categoría seleccionada
-  if (selectedTable !== "ALL") {
-    selectedCatBanner.style.display = "flex";
-    document.getElementById("selectedCatBannerText").textContent = `📂 ${TABLES[selectedTable][1]}`;
-  } else {
-    selectedCatBanner.style.display = "none";
-  }
 
   if (!q && selectedTable === "ALL" && resolvedConflictTable === null) {
     scopeBar.style.display = "none";
@@ -2689,8 +2559,7 @@ function renderMaterials() {
         activeConflictFamilyId = fam.id;
         resolvedConflictTable = null;
         conflictDismissed = false;
-        activeSubType = "ALL";
-        activeSubMeasure = "ALL";
+        selectedFilterTags = [];
       }
 
       const matchingTables = [];
@@ -2709,7 +2578,7 @@ function renderMaterials() {
           listEl.style.display = "none";
           document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
             <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
-              <span>${mt.tableName}</span>
+              <span>(${mt.tableName})</span>
               <span class="conflict-badge">${mt.count}</span>
             </button>
           `).join("");
@@ -2717,7 +2586,7 @@ function renderMaterials() {
           return;
         } else if (resolvedConflictTable !== null) {
           scopeBar.style.display = "flex";
-          document.getElementById("activeScopeName").textContent = `📂 ${TABLES[resolvedConflictTable][1]}`;
+          document.getElementById("activeScopeName").textContent = `(${TABLES[resolvedConflictTable][1]})`;
         } else {
           scopeBar.style.display = "none";
         }
@@ -2741,16 +2610,11 @@ function renderMaterials() {
     baseItems = textMatches.filter(m => m.tIdx === activeTIdx);
   }
 
-  renderSubFiltersBar(activeTIdx, MATERIALS.filter(m => m.tIdx === activeTIdx));
+  renderUnifiedFilterPanel(activeTIdx, MATERIALS.filter(m => m.tIdx === activeTIdx));
 
   let finalItems = baseItems;
-  if (activeTIdx !== null) {
-    if (activeSubType !== "ALL") {
-      finalItems = finalItems.filter(m => m.typeGroup === activeSubType);
-    }
-    if (activeSubMeasure !== "ALL") {
-      finalItems = finalItems.filter(m => m.measureGroup === activeSubMeasure);
-    }
+  if (activeTIdx !== null && selectedFilterTags.length > 0) {
+    finalItems = finalItems.filter(m => selectedFilterTags.every(tag => m.filterTags.includes(tag)));
   }
 
   finalItems.sort((a, b) => {
@@ -2764,7 +2628,7 @@ function renderMaterials() {
 
   if (finalItems.length === 0) {
     listEl.style.display = "flex";
-    listEl.innerHTML = `<div style="padding:26px;text-align:center;background:var(--panel);border-radius:14px;border:1.5px solid var(--border);color:var(--text-secondary);font-size:0.92rem;font-weight:700;">No hay materiales que coincidan con este filtro.</div>`;
+    listEl.innerHTML = `<div style="padding:24px 16px;text-align:center;color:var(--muted);font-size:0.88rem;background:var(--panel);border-radius:12px;border:1.5px solid var(--border);">No hay materiales que coincidan con el filtro seleccionado.</div>`;
     return;
   }
 
@@ -2773,22 +2637,17 @@ function renderMaterials() {
     const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
     const qtyInCart = cartMap[key];
     const isSC = m.code === "SIN CÓDIGO";
-    const badgesHTML = m.badges.length
-      ? `<div class="spec-tags-row">${m.badges.map(b => `<span class="spec-tag ${b.cls}">${b.text}</span>`).join("")}</div>`
-      : "";
 
     return `
-      <div class="mat-row sheet-${m.sheetColorIdx} ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
+      <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
         <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : m.code}</span>
         <div class="mat-content">
-          ${badgesHTML}
           <div class="mat-line1">${m.name}</div>
-          <div class="mat-meta-row">
-            <span class="mat-line2">${m.tableName}</span>
-            <span class="mat-prov-tag">· ${m.prov}</span>
-          </div>
+          <span class="mat-line2">(${m.tableName})</span>
         </div>
-        ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="add-action-circle">+</span>`}
+        <div class="mat-right-ind">
+          ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
+        </div>
       </div>
     `;
   }).join("");
@@ -2810,14 +2669,14 @@ function openCategoriesModal(onlySheet) {
   if (!onlySheet) {
     html += `
       <button type="button" class="cat-item ${selectedTable === 'ALL' ? 'active' : ''}" onclick="selectTableFilter('ALL')">
-        <span>📂 Todas las categorías (Vista por bloques)</span>
+        <span>Todas las categorías</span>
         <span class="cat-count">${MATERIALS.length}</span>
       </button>
     `;
   } else {
     html += `
       <button type="button" class="cat-item" onclick="openCategoriesModal()">
-        <span style="color:var(--accent);font-weight:900;">‹ Ver los 4 bloques completos</span>
+        <span style="color:var(--corp-blue);font-weight:800;">‹ Ver todas las categorías</span>
         <span class="cat-count">${MATERIALS.length}</span>
       </button>
     `;
@@ -2828,7 +2687,7 @@ function openCategoriesModal(onlySheet) {
     groups[sheetName].forEach(tb => {
       html += `
         <button type="button" class="cat-item ${selectedTable === tb.idx ? 'active' : ''}" onclick="selectTableFilter(${tb.idx})">
-          <span>${tb.title}</span>
+          <span>(${tb.title})</span>
           <span class="cat-count">${tb.count}</span>
         </button>
       `;
@@ -2845,16 +2704,12 @@ function selectTableFilter(val) {
   selectedTable = val;
   resolvedConflictTable = null;
   conflictDismissed = false;
-  activeSubType = "ALL";
-  activeSubMeasure = "ALL";
+  selectedFilterTags = [];
   const labelEl = document.getElementById("selectedCatLabel");
-  const triggerBtn = document.getElementById("catTriggerBtn");
   if (val === "ALL") {
-    labelEl.textContent = "📂 Todas las categorías";
-    triggerBtn.classList.remove("active");
+    labelEl.textContent = "Todas las categorías";
   } else {
-    labelEl.textContent = `📂 ${TABLES[val][1]}`;
-    triggerBtn.classList.add("active");
+    labelEl.textContent = `(${TABLES[val][1]})`;
   }
   closeActiveModal();
   renderMaterials();
@@ -2958,12 +2813,10 @@ function confirmModalItem() {
 
   closeActiveModal();
   saveCart();
-  showToast("Añadido al pedido");
+  showToast(editingKitIndex !== null ? "Añadido al kit" : "Añadido al pedido");
 }
 
-function toggleExpandCartIdx(idx) {
-  if (!cart[idx]) return;
-  const key = cart[idx].key;
+function toggleExpandCartItem(key) {
   if (expandedCartKeys.has(key)) expandedCartKeys.delete(key);
   else expandedCartKeys.add(key);
   renderCart();
@@ -2982,12 +2835,8 @@ function removeCartIdx(idx) {
 
 function clearCart() {
   if (!cart.length) return;
-  if (confirm("¿Vaciar todo el pedido actual?")) {
+  if (confirm("¿Vaciar pedido?")) {
     cart = [];
-    editingKitIndex = null;
-    cartBackupBeforeKitEdit = null;
-    document.getElementById("editKitBanner").style.display = "none";
-    document.getElementById("headerSaveKitBtn").style.display = "inline-block";
     saveCart();
   }
 }
@@ -2995,16 +2844,18 @@ function clearCart() {
 function updateHomeBadge() {
   const badge = document.getElementById("homeOrderBadge");
   if (!badge) return;
-  if (cart.length > 0) {
+  if (cart.length > 0 && editingKitIndex === null) {
     badge.style.display = "inline-block";
-    badge.textContent = `Pedido activo: ${cart.length} ${cart.length === 1 ? 'material' : 'materiales'}`;
+    badge.textContent = `Pedido en curso: ${cart.length} ${cart.length === 1 ? 'material' : 'materiales'}`;
   } else {
     badge.style.display = "none";
   }
 }
 
 function saveCart() {
-  localStorage.setItem("acacio_v4_cart", JSON.stringify(cart));
+  if (editingKitIndex === null) {
+    localStorage.setItem("acacio_v4_cart", JSON.stringify(cart));
+  }
   renderCart();
   renderMaterials();
   updateHomeBadge();
@@ -3013,9 +2864,28 @@ function saveCart() {
 function renderCart() {
   const sectionEl = document.getElementById("orderSection");
   const tbodyEl = document.getElementById("cartTableBody");
+  const titleEl = document.getElementById("pedidoHeaderTitle");
+  const saveKitBtn = document.getElementById("saveKitHeaderBtn");
+  const kitEditActions = document.getElementById("kitEditHeaderActions");
+  const footerActions = document.getElementById("pedidoFooterActions");
+
   document.getElementById("cartCount").textContent = cart.length;
   updateBottomBar();
   updateHomeBadge();
+
+  if (editingKitIndex !== null && userKits[editingKitIndex]) {
+    sectionEl.classList.add("editing-mode");
+    titleEl.textContent = `Editando Kit: ${userKits[editingKitIndex].name}`;
+    saveKitBtn.style.display = "none";
+    kitEditActions.style.display = "grid";
+    footerActions.style.display = "none";
+  } else {
+    sectionEl.classList.remove("editing-mode");
+    titleEl.textContent = "Pedido";
+    saveKitBtn.style.display = "inline-block";
+    kitEditActions.style.display = "none";
+    footerActions.style.display = "block";
+  }
 
   if (!cart.length && editingKitIndex === null) {
     sectionEl.style.display = "none";
@@ -3024,8 +2894,14 @@ function renderCart() {
   }
 
   sectionEl.style.display = "block";
+  if (!cart.length && editingKitIndex !== null) {
+    tbodyEl.innerHTML = `<div style="padding:22px;text-align:center;color:var(--muted);font-size:0.86rem;">El kit está vacío. Busca materiales arriba para añadirlos.</div>`;
+    return;
+  }
+
   tbodyEl.innerHTML = cart.map((item, i) => {
     const isExp = expandedCartKeys.has(item.key);
+    const safeKey = item.key.replace(/'/g, "\\'");
     const numStr = String(i + 1).padStart(2, "0");
     const codeDisplay = item.code === "SIN CÓDIGO"
       ? "SIN CÓDIGO"
@@ -3035,7 +2911,7 @@ function renderCart() {
 
     return `
       <div class="alb-row ${isExp ? 'expanded' : ''}">
-        <div class="alb-left" onclick="toggleExpandCartIdx(${i})">
+        <div class="alb-left" onclick="toggleExpandCartItem('${safeKey}')">
           <span class="alb-index">${numStr}</span>
           <div class="alb-text-wrap">
             <div class="alb-code-line">${codeDisplay} ${item.note ? '· (' + item.note + ')' : ''}</div>
@@ -3059,9 +2935,10 @@ function renderCart() {
 
 function updateBottomBar() {
   const bar = document.getElementById("bottomBar");
-  if (cart.length > 0 && currentView === "order") {
+  if ((cart.length > 0 || editingKitIndex !== null) && currentView === "order") {
     bar.style.display = "flex";
-    document.getElementById("bottomBarText").textContent = `Pedido (${cart.length})`;
+    document.getElementById("bottomBarText").textContent =
+      editingKitIndex !== null ? `Kit (${cart.length})` : `Pedido (${cart.length})`;
   } else {
     bar.style.display = "none";
   }
@@ -3096,7 +2973,7 @@ function buildOfficialText() {
 function copyOrder() {
   const txt = buildOfficialText();
   if (!txt) return;
-  navigator.clipboard.writeText(txt).then(() => showToast("Pedido copiado al portapapeles"));
+  navigator.clipboard.writeText(txt).then(() => showToast("Pedido copiado"));
 }
 
 function sendEmail() {
@@ -3113,30 +2990,18 @@ function sendWhatsApp() {
 }
 
 function updateKitsBadge() {
-  document.getElementById("kitsBtn").textContent = `🧰 Kits (${userKits.length})`;
+  document.getElementById("kitsBtn").textContent = `Mis Kits (${userKits.length})`;
 }
 
 function promptSaveCurrentAsKit() {
   if (!cart.length) return;
-  const def = editingKitIndex !== null && userKits[editingKitIndex] ? userKits[editingKitIndex].name : "";
-  const name = prompt("Nombre del Kit:", def);
+  const name = prompt("Nombre del Kit:");
   if (!name || !name.trim()) return;
 
-  const kitObj = { name: name.trim(), items: JSON.parse(JSON.stringify(cart)) };
-  if (editingKitIndex !== null && userKits[editingKitIndex]) {
-    userKits[editingKitIndex] = kitObj;
-    editingKitIndex = null;
-    cartBackupBeforeKitEdit = null;
-    document.getElementById("editKitBanner").style.display = "none";
-    document.getElementById("headerSaveKitBtn").style.display = "inline-block";
-    showToast("Kit actualizado");
-  } else {
-    userKits.push(kitObj);
-    showToast("Kit guardado");
-  }
+  userKits.push({ name: name.trim(), items: JSON.parse(JSON.stringify(cart)) });
   localStorage.setItem("acacio_v4_kits", JSON.stringify(userKits));
   updateKitsBadge();
-  renderCart();
+  showToast("Kit guardado");
 }
 
 function openKitsModal() {
@@ -3147,30 +3012,63 @@ function openKitsModal() {
 function renderKitsList() {
   const box = document.getElementById("kitsContainer");
   if (!userKits.length) {
-    box.innerHTML = `<div style="padding:24px 0;color:var(--muted);font-size:0.9rem;font-weight:700;text-align:center;">Todavía no tienes kits guardados.</div>`;
+    box.innerHTML = `<div style="padding:20px 0;color:var(--muted);font-size:0.88rem;text-align:center;">No hay kits guardados</div>`;
     return;
   }
-  box.innerHTML = userKits.map((k, idx) => {
-    const summary = k.items.map(it => `${it.code !== 'SIN CÓDIGO' && it.code !== 'PUNTUAL' ? it.code : it.name} (${it.qty})`).join(", ");
-    return `
-      <div class="kit-row">
-        <div style="flex:1;min-width:180px;">
-          <div class="kit-title">${k.name}</div>
-          <div class="kit-sub">${summary}</div>
+  box.innerHTML = userKits.map((k, idx) => `
+    <button type="button" class="kit-name-only-row" onclick="openKitPreviewModal(${idx})">
+      <span>${k.name}</span>
+      <span class="row-chevron">›</span>
+    </button>
+  `).join("");
+}
+
+function openKitPreviewModal(idx) {
+  const kit = userKits[idx];
+  if (!kit) return;
+
+  document.getElementById("previewKitTitle").textContent = kit.name;
+
+  const listEl = document.getElementById("previewKitItems");
+  if (!kit.items.length) {
+    listEl.innerHTML = `<div style="padding:16px;text-align:center;color:var(--muted);font-size:0.86rem;">Sin materiales</div>`;
+  } else {
+    listEl.innerHTML = kit.items.map(it => {
+      const codeStr = it.code === "SIN CÓDIGO" ? "S/C" : (it.code === "PUNTUAL" ? "PUNTUAL" : it.code);
+      return `
+        <div class="kit-preview-item">
+          <div style="min-width:0;flex:1;">
+            <strong style="color:var(--corp-blue);font-family:monospace;">${codeStr}</strong>
+            <span style="margin-left:6px;color:var(--text);">${it.name}</span>
+          </div>
+          <span style="font-family:monospace;font-weight:800;color:var(--success);flex-shrink:0;">${it.qty} u.</span>
         </div>
-        <div class="kit-btn-group">
-          <button type="button" class="kit-mini-btn load" onclick="loadUserKit(${idx})">Cargar</button>
-          <button type="button" class="kit-mini-btn" onclick="startEditUserKit(${idx})">Editar</button>
-          <button type="button" class="kit-mini-btn del" onclick="deleteUserKit(${idx})">✕</button>
-        </div>
-      </div>
-    `;
-  }).join("");
+      `;
+    }).join("");
+  }
+
+  document.getElementById("kpAddBtn").onclick = () => loadUserKit(idx);
+  document.getElementById("kpEditBtn").onclick = () => startEditUserKit(idx);
+  document.getElementById("kpDelBtn").onclick = () => deleteUserKit(idx);
+
+  openModalById("kitPreviewModal");
+}
+
+function backToKitsList() {
+  renderKitsList();
+  openModalById("kitsModal");
 }
 
 function loadUserKit(idx) {
   const kit = userKits[idx];
   if (!kit) return;
+  if (editingKitIndex !== null) {
+    editingKitIndex = null;
+    if (backupCartBeforeKitEdit !== null) {
+      cart = backupCartBeforeKitEdit;
+      backupCartBeforeKitEdit = null;
+    }
+  }
   kit.items.forEach(kItem => {
     const existing = cart.find(c => c.key === kItem.key);
     if (existing) existing.qty += kItem.qty;
@@ -3178,58 +3076,55 @@ function loadUserKit(idx) {
   });
   saveCart();
   closeActiveModal();
-  showToast(`Kit "${kit.name}" añadido al pedido`);
+  showToast("Kit añadido al pedido");
 }
 
 function startEditUserKit(idx) {
   const kit = userKits[idx];
   if (!kit) return;
   if (editingKitIndex === null) {
-    cartBackupBeforeKitEdit = JSON.parse(JSON.stringify(cart));
+    backupCartBeforeKitEdit = JSON.parse(JSON.stringify(cart));
   }
   editingKitIndex = idx;
   cart = JSON.parse(JSON.stringify(kit.items));
-  document.getElementById("editingKitName").textContent = kit.name;
-  document.getElementById("editKitBanner").style.display = "flex";
-  document.getElementById("headerSaveKitBtn").style.display = "none";
-  saveCart();
   closeActiveModal();
+  renderCart();
+  renderMaterials();
   scrollToOrder();
 }
 
 function saveEditedKit() {
   if (editingKitIndex === null || !userKits[editingKitIndex]) return;
-  const newName = prompt("Nombre del Kit:", userKits[editingKitIndex].name);
-  if (!newName || !newName.trim()) return;
-  userKits[editingKitIndex] = { name: newName.trim(), items: JSON.parse(JSON.stringify(cart)) };
+  userKits[editingKitIndex].items = JSON.parse(JSON.stringify(cart));
   localStorage.setItem("acacio_v4_kits", JSON.stringify(userKits));
   updateKitsBadge();
+
   editingKitIndex = null;
-  cartBackupBeforeKitEdit = null;
-  document.getElementById("editKitBanner").style.display = "none";
-  document.getElementById("headerSaveKitBtn").style.display = "inline-block";
+  if (backupCartBeforeKitEdit !== null) {
+    cart = backupCartBeforeKitEdit;
+    backupCartBeforeKitEdit = null;
+  }
   saveCart();
-  showToast("Kit actualizado correctamente");
+  showToast("Kit actualizado");
+  openKitsModal();
 }
 
 function cancelEditKit() {
   editingKitIndex = null;
-  document.getElementById("editKitBanner").style.display = "none";
-  document.getElementById("headerSaveKitBtn").style.display = "inline-block";
-  if (cartBackupBeforeKitEdit !== null) {
-    cart = cartBackupBeforeKitEdit;
-    cartBackupBeforeKitEdit = null;
+  if (backupCartBeforeKitEdit !== null) {
+    cart = backupCartBeforeKitEdit;
+    backupCartBeforeKitEdit = null;
   }
   saveCart();
-  showToast("Edición de kit cancelada");
+  openKitsModal();
 }
 
 function deleteUserKit(idx) {
-  if (!confirm(`¿Eliminar el kit "${userKits[idx].name}"?`)) return;
+  if (!confirm(`¿Eliminar "${userKits[idx].name}"?`)) return;
   userKits.splice(idx, 1);
   localStorage.setItem("acacio_v4_kits", JSON.stringify(userKits));
   updateKitsBadge();
-  renderKitsList();
+  backToKitsList();
 }
 
 function pasteFromClipboard() {
@@ -3257,31 +3152,6 @@ function runTranslator() {
 
   const parsed = [];
   lines.forEach(line => {
-    // 1. Línea de material SIN CÓDIGO del catálogo
-    const scMatch = line.match(/^SIN\s+C[ÓO]DIGO\s*[-–—:]\s*(.+?)\s*[-–—:]\s*(\d+)\s*(?:unidades|uds|u)?\s*(.*)$/i);
-    if (scMatch) {
-      parsed.push({
-        type: "SC_ITEM",
-        name: scMatch[1].trim(),
-        qty: scMatch[2],
-        extra: scMatch[3] ? scMatch[3].trim() : ""
-      });
-      return;
-    }
-
-    // 2. Línea de Material Puntual con guion inicial
-    const pMatch = line.match(/^-\s*(.+?)\s*[-–—:]\s*(\d+)\s*(?:unidades|uds|u)?\s*(.*)$/i);
-    if (pMatch) {
-      parsed.push({
-        type: "PUNTUAL_ITEM",
-        name: pMatch[1].trim(),
-        qty: pMatch[2],
-        extra: pMatch[3] ? pMatch[3].trim() : ""
-      });
-      return;
-    }
-
-    // 3. Línea estándar con código numérico
     const m = line.match(/^(\d{3,5})\s*[-–—:]?\s*(\d+)?\s*(?:unidades|uds|u|m|metros)?\s*(.*)$/i);
     if (m) {
       const code = m[1];
@@ -3296,7 +3166,7 @@ function runTranslator() {
         mat: found,
         rawLine: line
       });
-    } else if (!/^material puntual:?|^correo:/i.test(line)) {
+    } else if (!/^material puntual|^correo:/i.test(line)) {
       parsed.push({ type: "TEXT", rawLine: line });
     }
   });
@@ -3309,47 +3179,14 @@ function runTranslator() {
   out.style.display = "flex";
   out.innerHTML = parsed.map(p => {
     if (p.type === "FOUND") {
-      const tableTags = p.mat.tables.map(t => `${t}`).join(" · ");
+      const tableTags = p.mat.tables.map(t => `(${t})`).join(" · ");
       return `
         <div class="trans-row" onclick="this.classList.toggle('checked')">
           <div class="trans-check">✓</div>
           <span class="code-badge">${p.code}</span>
           <div class="mat-content">
             <div class="mat-line1">${p.mat.name}</div>
-            <div class="mat-meta-row">
-              <span class="mat-line2">${tableTags}</span>
-              <span class="mat-prov-tag">· ${p.mat.prov} ${p.extra ? '· ' + p.extra : ''}</span>
-            </div>
-          </div>
-          <span class="cart-pill">${p.qty} u.</span>
-        </div>
-      `;
-    } else if (p.type === "SC_ITEM") {
-      return `
-        <div class="trans-row" onclick="this.classList.toggle('checked')">
-          <div class="trans-check">✓</div>
-          <span class="code-badge sc">S/C</span>
-          <div class="mat-content">
-            <div class="mat-line1">${p.name}</div>
-            <div class="mat-meta-row">
-              <span class="mat-line2">SIN CÓDIGO</span>
-              <span class="mat-prov-tag">${p.extra}</span>
-            </div>
-          </div>
-          <span class="cart-pill">${p.qty} u.</span>
-        </div>
-      `;
-    } else if (p.type === "PUNTUAL_ITEM") {
-      return `
-        <div class="trans-row" onclick="this.classList.toggle('checked')">
-          <div class="trans-check">✓</div>
-          <span class="code-badge sc">PUNT.</span>
-          <div class="mat-content">
-            <div class="mat-line1">${p.name}</div>
-            <div class="mat-meta-row">
-              <span class="mat-line2">MATERIAL PUNTUAL</span>
-              <span class="mat-prov-tag">${p.extra}</span>
-            </div>
+            <span class="mat-line2">${tableTags} · ${p.mat.prov} ${p.extra ? '· ' + p.extra : ''}</span>
           </div>
           <span class="cart-pill">${p.qty} u.</span>
         </div>
@@ -3360,23 +3197,19 @@ function runTranslator() {
           <div class="trans-check">✓</div>
           <span class="code-badge sc">${p.code}</span>
           <div class="mat-content">
-            <div class="mat-line1" style="color:var(--danger);">Código no registrado en catálogo</div>
-            <div class="mat-meta-row">
-              <span class="mat-prov-tag">${p.rawLine}</span>
-            </div>
+            <div class="mat-line1" style="color:var(--danger);">Código no registrado</div>
+            <span class="mat-line2">${p.rawLine}</span>
           </div>
           <span class="cart-pill" style="background:var(--danger);">${p.qty} u.</span>
         </div>
       `;
     } else {
       return `
-        <div class="trans-row" onclick="this.classList.toggle('checked')">
+        <div class="trans-row" style="grid-template-columns: 26px 1fr;" onclick="this.classList.toggle('checked')">
           <div class="trans-check">✓</div>
           <div class="mat-content">
             <div class="mat-line1">${p.rawLine}</div>
-            <div class="mat-meta-row">
-              <span class="mat-line2">NOTA</span>
-            </div>
+            <span class="mat-line2">(MATERIAL PUNTUAL / NOTA)</span>
           </div>
         </div>
       `;
