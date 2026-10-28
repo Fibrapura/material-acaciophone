@@ -90,9 +90,6 @@
       padding-bottom: 115px;
     }
 
-    /* =====================================================
-       CABECERA CORPORATIVA SIN CORTES LATERALES
-       ===================================================== */
     header {
       position: sticky;
       top: 0;
@@ -193,6 +190,33 @@
       color: #090d16;
     }
 
+    /* Banner superior cuando se busca en el catálogo para añadir al Lector */
+    .lector-picker-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--kits-bg);
+      border: 2px solid var(--kits-border);
+      color: var(--kits-text);
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+    .lector-picker-banner button {
+      background: #041b3a;
+      color: #ffffff;
+      border: none;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
     .search-wrap {
       position: relative;
       margin-bottom: 12px;
@@ -279,9 +303,7 @@
       padding: 18px 14px;
     }
 
-    /* =====================================================
-       PORTADA DE INICIO (ESCUDO SIEMPRE VISIBLE EN DÍA/NOCHE)
-       ===================================================== */
+    /* Portada de Inicio */
     #homeView {
       padding: 8px 0 32px;
     }
@@ -385,9 +407,7 @@
       flex-shrink: 0;
     }
 
-    /* =====================================================
-       GRUPOS DE MATERIAL (BIEN SEPARADOS Y COLOREADOS)
-       ===================================================== */
+    /* Grupos de Material */
     .blocks-dashboard {
       margin-bottom: 24px;
     }
@@ -441,9 +461,7 @@
       border-radius: 12px;
     }
 
-    /* =====================================================
-       BARRA UNIFICADA "FILTRAR"
-       ===================================================== */
+    /* Barra "Filtrar" */
     .scope-banner {
       display: none;
       align-items: center;
@@ -526,15 +544,49 @@
       color: #090d16;
     }
 
-    /* =====================================================
-       LISTA DE MATERIALES (TARJETAS SEPARADAS Y MUY CLARAS)
-       ===================================================== */
+    /* Lista de Materiales y Tarjeta de Sugerencias entre categorías */
     .catalog-panel {
       display: flex;
       flex-direction: column;
       gap: 10px;
       width: 100%;
       margin: 0 auto 20px;
+    }
+
+    .empty-suggestions-card {
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+    .empty-msg-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .alt-cat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .alt-cat-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--cat-border);
+      background: var(--cat-bg);
+      color: var(--cat-text);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
     }
 
     .mat-row {
@@ -635,9 +687,7 @@
       cursor: pointer;
     }
 
-    /* =====================================================
-       BLOQUE DE PEDIDO Y MODO EDICIÓN DE KIT (100% VISIBLE)
-       ===================================================== */
+    /* Bloque de Pedido y Cápsula con Input Directo de Unidades */
     .pedido-doc {
       background: var(--panel);
       border: 2.5px solid var(--success);
@@ -708,7 +758,6 @@
       flex-shrink: 0;
     }
 
-    /* Barra de edición de Kit: 2 botones grandes al 50% (Guardar y Salir) */
     .kit-edit-bar {
       display: none;
       grid-template-columns: 1fr 1fr;
@@ -830,7 +879,7 @@
     }
     .cap-btn {
       width: 32px;
-      height: 32px;
+      height: 34px;
       border: none;
       background: transparent;
       color: var(--text);
@@ -841,20 +890,31 @@
       align-items: center;
       justify-content: center;
     }
-    .cap-val {
-      font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.84rem;
-      font-weight: 800;
-      color: var(--success);
-      padding: 0 8px;
-      min-width: 42px;
-      text-align: center;
+    /* Input directo de unidades al clicar en el número */
+    .cap-input {
+      width: 48px;
+      height: 34px;
+      border: none;
       border-left: 1px solid var(--border);
       border-right: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--success);
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 16px !important;
+      font-weight: 800;
+      text-align: center;
+      outline: none;
+      -moz-appearance: textfield;
     }
+    .cap-input::-webkit-outer-spin-button,
+    .cap-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
     .del-icon-btn {
       width: 32px;
-      height: 32px;
+      height: 34px;
       border-radius: 9px;
       border: 1.5px solid rgba(220, 38, 38, 0.35);
       background: rgba(220, 38, 38, 0.08);
@@ -926,7 +986,7 @@
       white-space: nowrap;
     }
 
-    /* Vista Lector de Códigos */
+    /* Vista Lector de Códigos y Barra de Modificación / Impresión */
     #translatorView { display: none; }
     .trans-box {
       background: var(--panel);
@@ -951,7 +1011,7 @@
     }
     .trans-textarea {
       width: 100%;
-      min-height: 120px;
+      min-height: 115px;
       background: var(--panel-alt);
       border: 2px solid var(--border);
       border-radius: 10px;
@@ -963,18 +1023,84 @@
       resize: vertical;
     }
     .trans-textarea:focus { border-color: var(--corp-blue); background: var(--panel); }
+
+    .trans-results-wrap {
+      display: none;
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+    .trans-results-head {
+      background: #041b3a;
+      color: #ffffff;
+      padding: 13px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .trans-head-title {
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .trans-mod-btn {
+      background: #ffffff;
+      color: #041b3a;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .trans-mod-btn.done {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .trans-add-bar {
+      display: none;
+      padding: 12px 16px;
+      background: var(--kits-bg);
+      border-bottom: 1.5px solid var(--kits-border);
+      text-align: center;
+    }
+    .trans-add-btn {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 2px solid var(--corp-blue);
+      background: var(--panel);
+      color: var(--corp-blue);
+      font-size: 0.86rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .trans-list-body {
+      display: flex;
+      flex-direction: column;
+    }
     .trans-row {
       display: grid;
       grid-template-columns: 26px 72px 1fr auto;
       align-items: center;
       background: var(--panel);
-      border: 1.5px solid var(--border);
-      border-radius: 13px;
+      border-bottom: 1.5px solid var(--border-soft);
       gap: 12px;
       padding: 14px 16px;
       cursor: pointer;
     }
+    .trans-row:last-child { border-bottom: none; }
     .trans-row.checked { opacity: 0.42; background: var(--panel-alt); }
+    .trans-row.edit-mode {
+      grid-template-columns: 72px 1fr auto;
+      cursor: default;
+    }
     .trans-check {
       width: 24px;
       height: 24px;
@@ -994,9 +1120,7 @@
       color: #fff;
     }
 
-    /* =====================================================
-       MODALES CENTRADOS Y PROPORCIONADOS
-       ===================================================== */
+    /* Modales */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -1281,6 +1405,33 @@
       border-color: rgba(220, 38, 38, 0.45);
     }
 
+    /* Chips de nombres de técnicos guardados */
+    .saved-techs-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 4px;
+    }
+    .tech-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--cat-bg);
+      border: 1.5px solid var(--cat-border);
+      color: var(--cat-text);
+      padding: 6px 12px;
+      border-radius: 18px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .tech-chip-del {
+      font-size: 0.75rem;
+      color: var(--danger);
+      font-weight: 900;
+      padding-left: 4px;
+    }
+
     .text-btn {
       background: none;
       border: none;
@@ -1305,6 +1456,79 @@
       z-index: 200;
       box-shadow: var(--shadow-modal);
     }
+
+    /* =====================================================
+       FORMATO DE IMPRESIÓN A4 CHECKLIST (CASILLAS VACÍAS)
+       ===================================================== */
+    #printArea {
+      display: none;
+    }
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+      }
+      header, main, .floating-pill, .modal-backdrop, .toast {
+        display: none !important;
+      }
+      #printArea {
+        display: block !important;
+        padding: 12mm;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #000000;
+      }
+      .print-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        border-bottom: 2px solid #041b3a;
+        padding-bottom: 10px;
+        margin-bottom: 16px;
+      }
+      .print-logo {
+        height: 26px;
+        object-fit: contain;
+      }
+      .print-meta {
+        text-align: right;
+        font-size: 10pt;
+      }
+      .print-tech-box {
+        background: #f1f5f9;
+        border: 1.5px solid #041b3a;
+        border-radius: 6px;
+        padding: 10px 14px;
+        margin-bottom: 16px;
+        font-size: 13pt;
+        font-weight: bold;
+      }
+      .print-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10.5pt;
+      }
+      .print-table th {
+        background: #041b3a;
+        color: #ffffff;
+        padding: 8px 10px;
+        text-align: left;
+        font-size: 9.5pt;
+        text-transform: uppercase;
+      }
+      .print-table td {
+        padding: 9px 10px;
+        border-bottom: 1px solid #cbd5e1;
+        vertical-align: middle;
+      }
+      .print-checkbox-box {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #000000;
+        border-radius: 3px;
+        display: inline-block;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1323,9 +1547,15 @@
   </div>
 
   <div class="header-tools-wrap">
-    <div class="segmented-control">
+    <div class="segmented-control" id="mainSegmentedControl">
       <button type="button" class="seg-btn active" id="tabOrderBtn" onclick="switchMode('order')">Pedidos</button>
       <button type="button" class="seg-btn" id="tabTransBtn" onclick="switchMode('translator')">Lector de códigos</button>
+    </div>
+
+    <!-- Aviso superior cuando se está buscando en el catálogo para añadir material a la lista del Lector -->
+    <div class="lector-picker-banner" id="lectorPickerBanner">
+      <span>Añadiendo material a la lista del Lector</span>
+      <button type="button" onclick="finishPickingForTranslator()">Volver a la lista</button>
     </div>
 
     <div id="orderHeaderTools">
@@ -1362,7 +1592,7 @@
       <button type="button" class="home-nav-card" onclick="switchMode('order')">
         <div class="home-card-body">
           <div class="home-card-title">Pedidos</div>
-          <div class="home-card-desc">Busca material por nombre o categoría, crea kits tus habituales y genera los códigos para pedir el material.</div>
+          <div class="home-card-desc">Busca material por nombre o categoría, crea kits de tus habituales y genera los códigos para pedir el material.</div>
           <div id="homeOrderBadge" class="home-card-badge" style="display:none;"></div>
         </div>
         <span class="home-card-arrow">›</span>
@@ -1457,11 +1687,35 @@
           <button type="button" class="text-btn" style="color:var(--muted);" onclick="clearTranslator()">Limpiar</button>
         </div>
       </div>
-      <textarea class="trans-textarea" id="transInput" placeholder="Pegar códigos..." oninput="runTranslator()"></textarea>
+      <textarea class="trans-textarea" id="transInput" placeholder="Pegar códigos..." oninput="runTranslatorFromTextarea()"></textarea>
     </div>
-    <div class="catalog-panel" id="transOutput" style="display:none;"></div>
+
+    <!-- Contenedor del listado traducido con opción Modificar y botones de salida -->
+    <section class="trans-results-wrap" id="transResultsWrap">
+      <div class="trans-results-head">
+        <span class="trans-head-title" id="transHeadTitle">Listado de materiales</span>
+        <button type="button" class="trans-mod-btn" id="transModifyBtn" onclick="handleTransModifyClick()">Modificar</button>
+      </div>
+
+      <div class="trans-add-bar" id="transAddBar">
+        <button type="button" class="trans-add-btn" onclick="startPickingForTranslator()">+ Añadir material a esta lista</button>
+      </div>
+
+      <div class="trans-list-body" id="transOutput"></div>
+
+      <div class="pedido-footer">
+        <button type="button" class="btn-copy-primary" onclick="openPrintChecklistModal()">Imprimir Checklist</button>
+        <div class="pedido-subactions" style="grid-template-columns: 1fr 1fr;">
+          <button type="button" class="sub-action-btn" onclick="sendTranslatorWhatsApp()">Enviar por WhatsApp</button>
+          <button type="button" class="sub-action-btn" onclick="sendTranslatorEmail()">Enviar por Correo</button>
+        </div>
+      </div>
+    </section>
   </div>
 </main>
+
+<!-- Área exclusiva para impresión física en formato Checklist A4 -->
+<div id="printArea"></div>
 
 <!-- Botón flotante inferior "Pedido" -->
 <div class="floating-pill" id="bottomBar" onclick="scrollToOrder()">
@@ -1475,6 +1729,34 @@
     <div class="m-meta">SELECCIÓN DE CATEGORÍA</div>
     <div class="m-title">¿Para qué fin buscas este material?</div>
     <div class="conflict-list" id="conflictModalOptions"></div>
+  </div>
+</div>
+
+<!-- VENTANA FLOTANTE RÁPIDA: CONFIRMAR MODIFICAR LISTA EN LECTOR -->
+<div class="modal-backdrop" id="confirmTransEditModal" onclick="if(event.target===this)closeActiveModal()">
+  <div class="modal-dialog">
+    <div class="m-meta">CONFIRMACIÓN</div>
+    <div class="m-title">¿Quieres modificar la lista?</div>
+    <div class="m-footer">
+      <button type="button" class="btn-cancel" onclick="closeActiveModal()">Cancelar</button>
+      <button type="button" class="btn-ok" onclick="confirmEnableTransEdit()">Modificar</button>
+    </div>
+  </div>
+</div>
+
+<!-- VENTANA FLOTANTE: NOMBRE DEL TÉCNICO ANTES DE IMPRIMIR CHECKLIST -->
+<div class="modal-backdrop" id="printTechModal" onclick="if(event.target===this)closeActiveModal()">
+  <div class="modal-dialog">
+    <div class="m-meta">IMPRIMIR CHECKLIST</div>
+    <div class="m-title">¿Para qué técnico es este material?</div>
+    <div class="field">
+      <input type="text" id="techNameInput" placeholder="Escribe el nombre del técnico..." autocomplete="off">
+    </div>
+    <div class="saved-techs-wrap" id="savedTechsContainer"></div>
+    <div class="m-footer">
+      <button type="button" class="btn-cancel" onclick="closeActiveModal()">Cancelar</button>
+      <button type="button" class="btn-ok" onclick="executePrintChecklist()">Imprimir</button>
+    </div>
   </div>
 </div>
 
@@ -1514,7 +1796,7 @@
 
     <div class="qty-stepper">
       <button type="button" class="step-btn" onclick="stepQty(-1)">−</button>
-      <input type="number" id="mQtyInput" value="1" min="1" inputmode="numeric">
+      <input type="number" id="mQtyInput" value="1" min="1" inputmode="numeric" onfocus="this.select()">
       <button type="button" class="step-btn" onclick="stepQty(1)">+</button>
     </div>
 
@@ -1981,8 +2263,14 @@ function getSingularVariants(word) {
   return variants;
 }
 
+// Fonética hispano-inglesa (incluye ruter/router, suich/switch, guifi/wifi, b/v, c/s/z, ll/y, k/qu)
 function toPhonetic(str) {
   return norm(str)
+    .replace(/ou/g, "u")
+    .replace(/wi/g, "gui")
+    .replace(/sw/g, "su")
+    .replace(/tch/g, "ch")
+    .replace(/\bsp/g, "esp")
     .replace(/h/g, "")
     .replace(/v/g, "b")
     .replace(/z/g, "s")
@@ -2036,8 +2324,10 @@ function getSynonymsForItem(code, name, tableIdx) {
   const extra = [];
   if (code === "4101") extra.push("canula canulas tubito tubitos smouv smouvs canutillo canutillos protector protectores fusion fusiones empalme empalmes manguito manguitos");
   if (tableIdx === 9) extra.push("termico termicos pia pias automatico automaticos magneto magnetos magnetotermico magnetotermicos cuadro cuadros diferencial diferenciales sobretension sobretensiones");
-  if (tableIdx === 29 || code === "2429") extra.push("divisor divisores repartidor repartidores splitter splitters");
-  if (tableIdx === 0) extra.push("ont onts router routers wifi domestico domesticos cliente clientes repetidor repetidores");
+  if (tableIdx === 29 || code === "2429") extra.push("divisor divisores repartidor repartidores splitter splitters espliter espliters");
+  if (tableIdx === 0) extra.push("ont onts router routers ruter ruters wifi guifi domestico domesticos cliente clientes repetidor repetidores");
+  if (tableIdx === 19) extra.push("router routers ruter ruters ccr mikrotik");
+  if (tableIdx === 20 || code === "2756") extra.push("switch switches suich");
   if (tableIdx === 23) extra.push("torpedo torpedos botella botellas sangrado sangrados empalme empalmes nodo nodos");
   if (tableIdx === 18) extra.push("sfp sfps gbic gbics optico opticos transceiver transceivers modulo modulos");
   if (tableIdx === 12 || tableIdx === 22) extra.push("utp ftp rj45 ethernet red cat5 cat5e cat6 lan cable cables bobina bobinas");
@@ -2047,12 +2337,12 @@ function getSynonymsForItem(code, name, tableIdx) {
   if (tableIdx === 3) extra.push("roseta rosetas adaptador adaptadores enfrentador enfrentadores");
   if (tableIdx === 28) extra.push("enfrentador enfrentadores adaptador adaptadores acoplador acopladores");
 
-  if (name.includes("PIGATIL")) extra.push("pigtail pigtails");
+  if (name.includes("PIGATIL")) extra.push("pigtail pigtails pigtel");
   if (name.includes("PERCONECTORIZADO")) extra.push("preconectorizado preconectorizados");
   if (name.includes("TIRAFONO")) extra.push("tirafondo tirafondos");
   if (name.includes("RETENDOR")) extra.push("retenedor retenedores");
   if (name.includes("ADROID")) extra.push("android");
-  if (name.includes("MIKEOTIK")) extra.push("mikrotik");
+  if (name.includes("MIKEOTIK")) extra.push("mikrotik router ruter");
 
   return extra.join(" ");
 }
@@ -2235,10 +2525,11 @@ MATERIALS.forEach(m => {
   }
 });
 
+// Familias de conflicto con variantes fonéticas ("ruter", "ruters", "pigtel", etc.)
 const CONFLICT_FAMILIES = [
   { id: "acometida", words: ["acometida", "acometidas"], tables: [1, 2] },
-  { id: "pigtail", words: ["pigtail", "pigtails"], tables: [27, 1, 3] },
-  { id: "router", words: ["router", "routers", "ont", "onts"], tables: [0, 19, 32] },
+  { id: "pigtail", words: ["pigtail", "pigtails", "pigtel", "pigtels"], tables: [27, 1, 3] },
+  { id: "router", words: ["router", "routers", "ruter", "ruters", "ont", "onts"], tables: [0, 19, 32] },
   { id: "antena", words: ["antena", "antenas"], tables: [6, 7, 8, 11, 5] },
   { id: "cable", words: ["cable", "cables"], tables: [25, 12, 1, 2] },
   { id: "caja", words: ["caja", "cajas"], tables: [24, 23, 5] },
@@ -2247,11 +2538,17 @@ const CONFLICT_FAMILIES = [
   { id: "latiguillo", words: ["latiguillo", "latiguillos", "patchcord", "patchcords"], tables: [26, 1, 3] }
 ];
 
+// Detección inteligente de palabra de conflicto (incluso mal escrita como "ruter", "acomrtida", "atnena")
 function tokenMatchesConflictWord(token, targetWord, endsWithSpace) {
   if (token === targetWord) return true;
-  if (toPhonetic(token) === toPhonetic(targetWord) && token.length >= targetWord.length - 1) return true;
+  if (toPhonetic(token) === toPhonetic(targetWord) && token.length >= 4) return true;
   if (targetWord.length >= 5) {
-    if (token.length >= targetWord.length || (endsWithSpace && token.length >= targetWord.length - 1)) {
+    // Si es un prefijo exacto aún incompleto (ej. "cabl" de "cable"), esperar salvo que haya pulsado espacio
+    if (targetWord.startsWith(token) && token.length < targetWord.length) {
+      return endsWithSpace && token.length >= targetWord.length - 1;
+    }
+    // Si no es prefijo (ej. "acometda", "acomrtida", "roiter", "atnena"), activar al instante
+    if (token.length >= targetWord.length - 1) {
       const maxD = targetWord.length >= 8 ? 1.8 : 1.0;
       if (typoDistance(token, targetWord, maxD) <= maxD) return true;
     }
@@ -2261,6 +2558,7 @@ function tokenMatchesConflictWord(token, targetWord, endsWithSpace) {
 
 let cart = JSON.parse(localStorage.getItem("acacio_v4_cart") || "[]");
 let userKits = JSON.parse(localStorage.getItem("acacio_v4_kits") || "[]");
+let savedTechs = JSON.parse(localStorage.getItem("acacio_v5_techs") || "[]");
 let currentView = "home";
 let selectedTable = "ALL";
 let activeConflictFamilyId = null;
@@ -2273,6 +2571,11 @@ let currentItem = null;
 let editingKitIndex = null;
 let backupCartBeforeKitEdit = null;
 let handlingPopState = false;
+
+// Estado del Lector de códigos y su modo Modificar
+let transItems = [];
+let transEditMode = false;
+let pickingForTranslator = false;
 
 history.replaceState({ view: "home", modal: null }, "");
 
@@ -2369,27 +2672,36 @@ function applyViewDOM(mode) {
   const isOrder = mode === "order";
   const isTrans = mode === "translator";
 
+  if (!isOrder && pickingForTranslator) {
+    pickingForTranslator = false;
+  }
+
   document.getElementById("appHeader").style.display = isHome ? "none" : "block";
   document.getElementById("homeView").style.display = isHome ? "block" : "none";
   document.getElementById("orderView").style.display = isOrder ? "block" : "none";
   document.getElementById("translatorView").style.display = isTrans ? "block" : "none";
 
   if (!isHome) {
+    document.getElementById("mainSegmentedControl").style.display = pickingForTranslator ? "none" : "grid";
+    document.getElementById("lectorPickerBanner").style.display = pickingForTranslator ? "flex" : "none";
+    document.getElementById("kitsBtn").style.display = pickingForTranslator ? "none" : "block";
     document.getElementById("tabOrderBtn").classList.toggle("active", isOrder);
     document.getElementById("tabTransBtn").classList.toggle("active", isTrans);
     document.getElementById("orderHeaderTools").style.display = isOrder ? "block" : "none";
   }
 
   forceScrollTop();
+  renderCart();
   updateBottomBar();
   updateHomeBadge();
 }
 
 function switchMode(mode) {
-  if (currentView === mode) {
+  if (currentView === mode && !pickingForTranslator) {
     forceScrollTop();
     return;
   }
+  pickingForTranslator = false;
   applyViewDOM(mode);
   if (!handlingPopState) {
     history.pushState({ view: mode, modal: null }, "");
@@ -2403,6 +2715,13 @@ window.addEventListener("popstate", (e) => {
     renderKitsList();
     document.getElementById("kitsModal").classList.add("open");
     history.pushState({ view: currentView, modal: "kitsModal" }, "");
+    handlingPopState = false;
+    return;
+  }
+  if (pickingForTranslator && !isAnyModalOpen()) {
+    pickingForTranslator = false;
+    applyViewDOM("translator");
+    renderTranslatorList();
     handlingPopState = false;
     return;
   }
@@ -2436,6 +2755,8 @@ function detectConflictFamily(tokens, endsWithSpace) {
 }
 
 function chooseConflictTableFromModal(tIdx) {
+  selectedTable = "ALL";
+  document.getElementById("selectedCatLabel").textContent = "Todas las categorías";
   resolvedConflictTable = tIdx;
   conflictDismissed = false;
   selectedFilterTags = [];
@@ -2473,6 +2794,16 @@ function toggleFilterTag(tag) {
 
 function resetFilterTags() {
   selectedFilterTags = [];
+  renderMaterials();
+  forceScrollTop();
+}
+
+function switchToSuggestedCategory(tIdx) {
+  selectedTable = tIdx;
+  resolvedConflictTable = null;
+  conflictDismissed = true;
+  selectedFilterTags = [];
+  document.getElementById("selectedCatLabel").textContent = `(${TABLES[tIdx][1]})`;
   renderMaterials();
   forceScrollTop();
 }
@@ -2552,7 +2883,8 @@ function renderMaterials() {
     return true;
   });
 
-  if (selectedTable === "ALL" && tokens.length > 0) {
+  // Detector de familias de conflicto activo en todas las categorías (incluso si estaba en otra categoría)
+  if (tokens.length > 0) {
     const fam = detectConflictFamily(tokens, endsWithSpace);
     if (fam) {
       if (activeConflictFamilyId !== fam.id) {
@@ -2603,7 +2935,7 @@ function renderMaterials() {
     scopeBar.style.display = "none";
   }
 
-  const activeTIdx = selectedTable !== "ALL" ? selectedTable : resolvedConflictTable;
+  const activeTIdx = resolvedConflictTable !== null ? resolvedConflictTable : (selectedTable !== "ALL" ? selectedTable : null);
 
   let baseItems = textMatches;
   if (activeTIdx !== null) {
@@ -2623,19 +2955,63 @@ function renderMaterials() {
     return 0;
   });
 
-  const cartMap = {};
-  cart.forEach(c => { cartMap[c.key] = c.qty; });
-
+  // Si no hay resultados en la categoría o filtro actual, buscar sugerencias en otras categorías
   if (finalItems.length === 0) {
     listEl.style.display = "flex";
-    listEl.innerHTML = `<div style="padding:24px 16px;text-align:center;color:var(--muted);font-size:0.88rem;background:var(--panel);border-radius:12px;border:1.5px solid var(--border);">No hay materiales que coincidan con el filtro seleccionado.</div>`;
+    const otherCounts = {};
+    textMatches.forEach(m => {
+      if (m.tIdx !== activeTIdx) {
+        otherCounts[m.tIdx] = (otherCounts[m.tIdx] || 0) + 1;
+      }
+    });
+    const otherCatEntries = Object.keys(otherCounts).map(k => ({
+      tIdx: parseInt(k, 10),
+      tableName: TABLES[parseInt(k, 10)][1],
+      count: otherCounts[k]
+    }));
+
+    let emptyHTML = `<div class="empty-suggestions-card">`;
+    if (baseItems.length > 0 && selectedFilterTags.length > 0) {
+      emptyHTML += `
+        <div class="empty-msg-title">No hay materiales que coincidan con el filtro seleccionado en esta categoría.</div>
+        <button type="button" class="alt-cat-btn" onclick="resetFilterTags()">
+          <span>Quitar filtros activos en (${TABLES[activeTIdx][1]})</span>
+          <span>${baseItems.length} art. ›</span>
+        </button>
+      `;
+    } else if (otherCatEntries.length > 0) {
+      emptyHTML += `
+        <div class="empty-msg-title">No hay materiales que coincidan con el filtro seleccionado, pero sí hay resultados en:</div>
+        <div class="alt-cat-list">
+          ${otherCatEntries.map(oc => `
+            <button type="button" class="alt-cat-btn" onclick="switchToSuggestedCategory(${oc.tIdx})">
+              <span>(${oc.tableName})</span>
+              <span>${oc.count} ${oc.count === 1 ? 'resultado' : 'resultados'} ›</span>
+            </button>
+          `).join("")}
+        </div>
+      `;
+    } else {
+      emptyHTML += `<div class="empty-msg-title" style="margin-bottom:0;">No hay materiales que coincidan con la búsqueda.</div>`;
+    }
+    emptyHTML += `</div>`;
+    listEl.innerHTML = emptyHTML;
     return;
+  }
+
+  const activeListMap = {};
+  if (pickingForTranslator) {
+    transItems.forEach(t => {
+      if (t.key) activeListMap[t.key] = t.qty;
+    });
+  } else {
+    cart.forEach(c => { activeListMap[c.key] = c.qty; });
   }
 
   listEl.style.display = "flex";
   listEl.innerHTML = finalItems.map(m => {
     const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
-    const qtyInCart = cartMap[key];
+    const qtyInCart = activeListMap[key];
     const isSC = m.code === "SIN CÓDIGO";
 
     return `
@@ -2721,7 +3097,8 @@ function openCatalogModal(id) {
   modalMode = "CATALOG";
   currentItem = MATERIALS[id];
   const key = currentItem.code !== "SIN CÓDIGO" ? `${currentItem.code}_${currentItem.tIdx}` : `SC_${currentItem.name}_${currentItem.tIdx}`;
-  const existing = cart.find(c => c.key === key);
+  const targetList = pickingForTranslator ? transItems : cart;
+  const existing = targetList.find(c => c.key === key);
 
   document.getElementById("mCode").textContent = `${currentItem.code} · (${currentItem.tableName})`;
   document.getElementById("mTitle").textContent = currentItem.name;
@@ -2779,6 +3156,53 @@ function confirmModalItem() {
   const qty = Math.max(1, parseInt(document.getElementById("mQtyInput").value || "1", 10));
   const note = document.getElementById("mNoteInput").value.trim();
 
+  // Si estamos añadiendo material para la lista del Lector de códigos
+  if (pickingForTranslator) {
+    if (modalMode === "PUNTUAL") {
+      const name = document.getElementById("pNameInput").value.trim();
+      if (!name) return;
+      let prov = document.getElementById("pProvSelect").value;
+      if (prov === "OTRO") {
+        prov = document.getElementById("pCustomProvInput").value.trim() || "Se desconoce proveedor";
+      }
+      transItems.push({
+        type: "TEXT",
+        key: `PUNTUAL_${Date.now()}`,
+        code: "PUNTUAL",
+        name,
+        tables: ["MATERIAL PUNTUAL"],
+        prov,
+        qty,
+        extra: note,
+        rawLine: `${name} – ${qty} unidades (Proveedor: ${prov})${note ? ' [' + note + ']' : ''}`,
+        checked: false
+      });
+    } else if (currentItem) {
+      const key = currentItem.code !== "SIN CÓDIGO" ? `${currentItem.code}_${currentItem.tIdx}` : `SC_${currentItem.name}_${currentItem.tIdx}`;
+      const existingIdx = transItems.findIndex(t => t.key === key || (t.code !== "SIN CÓDIGO" && t.code === currentItem.code));
+      const newObj = {
+        type: currentItem.code !== "SIN CÓDIGO" ? "FOUND" : "TEXT",
+        key,
+        code: currentItem.code,
+        name: currentItem.name,
+        tables: [currentItem.tableName],
+        prov: currentItem.prov,
+        qty,
+        extra: note,
+        rawLine: `${currentItem.name} (${currentItem.tableName}) – ${qty} unidades (Proveedor: ${currentItem.prov})`,
+        checked: false
+      };
+      if (existingIdx >= 0) transItems[existingIdx] = newObj;
+      else transItems.push(newObj);
+    }
+    syncTransItemsToTextarea();
+    closeActiveModal();
+    renderMaterials();
+    showToast("Añadido a la lista del Lector");
+    return;
+  }
+
+  // Flujo normal hacia Pedido / Kit
   if (modalMode === "PUNTUAL") {
     const name = document.getElementById("pNameInput").value.trim();
     if (!name) return;
@@ -2828,6 +3252,16 @@ function changeCartQty(idx, delta) {
   saveCart();
 }
 
+function setCartDirectQty(idx, valStr) {
+  const n = parseInt(valStr, 10);
+  if (isNaN(n) || n <= 0) {
+    cart.splice(idx, 1);
+  } else {
+    cart[idx].qty = n;
+  }
+  saveCart();
+}
+
 function removeCartIdx(idx) {
   cart.splice(idx, 1);
   saveCart();
@@ -2868,6 +3302,12 @@ function renderCart() {
   const saveKitBtn = document.getElementById("saveKitHeaderBtn");
   const kitEditActions = document.getElementById("kitEditHeaderActions");
   const footerActions = document.getElementById("pedidoFooterActions");
+
+  if (pickingForTranslator) {
+    sectionEl.style.display = "none";
+    updateBottomBar();
+    return;
+  }
 
   document.getElementById("cartCount").textContent = cart.length;
   updateBottomBar();
@@ -2923,7 +3363,7 @@ function renderCart() {
         <div class="alb-right">
           <div class="qty-capsule">
             <button type="button" class="cap-btn" onclick="changeCartQty(${i}, -1)">−</button>
-            <span class="cap-val">${item.qty} u.</span>
+            <input type="number" class="cap-input" value="${item.qty}" min="1" inputmode="numeric" onfocus="this.select()" onchange="setCartDirectQty(${i}, this.value)">
             <button type="button" class="cap-btn" onclick="changeCartQty(${i}, 1)">+</button>
           </div>
           <button type="button" class="del-icon-btn" onclick="removeCartIdx(${i})">✕</button>
@@ -2935,7 +3375,7 @@ function renderCart() {
 
 function updateBottomBar() {
   const bar = document.getElementById("bottomBar");
-  if ((cart.length > 0 || editingKitIndex !== null) && currentView === "order") {
+  if ((cart.length > 0 || editingKitIndex !== null) && currentView === "order" && !pickingForTranslator) {
     bar.style.display = "flex";
     document.getElementById("bottomBarText").textContent =
       editingKitIndex !== null ? `Kit (${cart.length})` : `Pedido (${cart.length})`;
@@ -3127,94 +3567,359 @@ function deleteUserKit(idx) {
   backToKitsList();
 }
 
+// =========================================================================
+// LECTOR DE CÓDIGOS: PARSEO, CONFIRMACIÓN MODIFICAR, WHATSAPP, CORREO E IMPRESIÓN
+// =========================================================================
 function pasteFromClipboard() {
   navigator.clipboard.readText().then(t => {
     document.getElementById("transInput").value = t;
-    runTranslator();
+    runTranslatorFromTextarea();
   }).catch(() => {});
 }
 
 function clearTranslator() {
   document.getElementById("transInput").value = "";
-  runTranslator();
+  transItems = [];
+  transEditMode = false;
+  renderTranslatorList();
 }
 
-function runTranslator() {
+function runTranslatorFromTextarea() {
   const raw = document.getElementById("transInput").value;
-  const out = document.getElementById("transOutput");
   const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 
   if (!lines.length) {
-    out.style.display = "none";
-    out.innerHTML = "";
+    transItems = [];
+    transEditMode = false;
+    renderTranslatorList();
     return;
   }
 
   const parsed = [];
   lines.forEach(line => {
-    const m = line.match(/^(\d{3,5})\s*[-–—:]?\s*(\d+)?\s*(?:unidades|uds|u|m|metros)?\s*(.*)$/i);
+    const m = line.match(/^(\d{3,5})\s*[-–—:]?\s*(\d+)?\s*(?:unidades|uds|u\.?|m|metros)?\s*(.*)$/i);
     if (m) {
       const code = m[1];
-      const qty = m[2] ? m[2] : "1";
-      const extra = m[3] ? m[3].trim() : "";
+      const qty = Math.max(1, parseInt(m[2] || "1", 10));
+      let extra = m[3] ? m[3].trim() : "";
+      extra = extra.replace(/^\((.*)\)$/, "$1");
       const found = CODE_MAP[code];
       parsed.push({
         type: found ? "FOUND" : "UNKNOWN",
+        key: code,
         code,
+        name: found ? found.name : "Código no registrado",
+        tables: found ? found.tables : [],
+        prov: found ? found.prov : "",
         qty,
         extra,
-        mat: found,
-        rawLine: line
+        rawLine: line,
+        checked: false
       });
     } else if (!/^material puntual|^correo:/i.test(line)) {
-      parsed.push({ type: "TEXT", rawLine: line });
+      const cleanLine = line.replace(/^[-•]\s*/, "");
+      const mText = cleanLine.match(/^(.*?)\s*[-–—]\s*(\d+)\s*(?:unidades|uds|u\.?)\s*(.*)$/i);
+      parsed.push({
+        type: "TEXT",
+        key: `TXT_${parsed.length}_${Date.now()}`,
+        code: "S/C",
+        name: mText ? mText[1].trim() : cleanLine,
+        tables: ["SIN CÓDIGO / PUNTUAL"],
+        prov: mText && mText[3] ? mText[3].trim() : "",
+        qty: mText ? Math.max(1, parseInt(mText[2], 10)) : 1,
+        extra: "",
+        rawLine: cleanLine,
+        checked: false
+      });
     }
   });
 
-  if (!parsed.length) {
-    out.style.display = "none";
+  transItems = parsed;
+  renderTranslatorList();
+}
+
+function syncTransItemsToTextarea() {
+  const lines = transItems.map(p => {
+    if (p.type === "FOUND" || p.type === "UNKNOWN") {
+      return `${p.code} – ${p.qty} unidades${p.extra ? ' (' + p.extra + ')' : ''}`;
+    } else {
+      return `${p.name} – ${p.qty} unidades${p.prov ? ' (' + p.prov + ')' : ''}${p.extra ? ' [' + p.extra + ']' : ''}`;
+    }
+  });
+  document.getElementById("transInput").value = lines.join("\n");
+}
+
+function handleTransModifyClick() {
+  if (transEditMode) {
+    transEditMode = false;
+    renderTranslatorList();
+  } else {
+    openModalById("confirmTransEditModal");
+  }
+}
+
+function confirmEnableTransEdit() {
+  transEditMode = true;
+  closeActiveModal();
+  renderTranslatorList();
+}
+
+function toggleTransCheck(idx) {
+  if (transEditMode) return;
+  transItems[idx].checked = !transItems[idx].checked;
+  renderTranslatorList();
+}
+
+function changeTransQty(idx, delta) {
+  transItems[idx].qty += delta;
+  if (transItems[idx].qty <= 0) {
+    transItems.splice(idx, 1);
+  }
+  syncTransItemsToTextarea();
+  renderTranslatorList();
+}
+
+function setTransDirectQty(idx, valStr) {
+  const n = parseInt(valStr, 10);
+  if (isNaN(n) || n <= 0) {
+    transItems.splice(idx, 1);
+  } else {
+    transItems[idx].qty = n;
+  }
+  syncTransItemsToTextarea();
+  renderTranslatorList();
+}
+
+function removeTransIdx(idx) {
+  transItems.splice(idx, 1);
+  syncTransItemsToTextarea();
+  renderTranslatorList();
+}
+
+function startPickingForTranslator() {
+  pickingForTranslator = true;
+  applyViewDOM("order");
+  renderMaterials();
+  history.pushState({ view: "order", modal: null }, "");
+}
+
+function finishPickingForTranslator() {
+  pickingForTranslator = false;
+  applyViewDOM("translator");
+  renderTranslatorList();
+}
+
+function renderTranslatorList() {
+  const wrap = document.getElementById("transResultsWrap");
+  const out = document.getElementById("transOutput");
+  const modBtn = document.getElementById("transModifyBtn");
+  const addBar = document.getElementById("transAddBar");
+  const headTitle = document.getElementById("transHeadTitle");
+
+  if (!transItems.length && !transEditMode) {
+    wrap.style.display = "none";
+    out.innerHTML = "";
     return;
   }
 
-  out.style.display = "flex";
-  out.innerHTML = parsed.map(p => {
-    if (p.type === "FOUND") {
-      const tableTags = p.mat.tables.map(t => `(${t})`).join(" · ");
+  wrap.style.display = "block";
+  headTitle.textContent = `Listado de materiales (${transItems.length})`;
+
+  if (transEditMode) {
+    modBtn.textContent = "Listo";
+    modBtn.classList.add("done");
+    addBar.style.display = "block";
+  } else {
+    modBtn.textContent = "Modificar";
+    modBtn.classList.remove("done");
+    addBar.style.display = "none";
+  }
+
+  if (!transItems.length) {
+    out.innerHTML = `<div style="padding:22px;text-align:center;color:var(--muted);font-size:0.86rem;">La lista está vacía. Pulsa "+ Añadir material a esta lista".</div>`;
+    return;
+  }
+
+  out.innerHTML = transItems.map((p, i) => {
+    const tableTags = p.tables && p.tables.length ? p.tables.map(t => `(${t})`).join(" · ") : "";
+    const isUnknown = p.type === "UNKNOWN";
+    const isText = p.type === "TEXT";
+
+    if (transEditMode) {
       return `
-        <div class="trans-row" onclick="this.classList.toggle('checked')">
-          <div class="trans-check">✓</div>
-          <span class="code-badge">${p.code}</span>
+        <div class="trans-row edit-mode">
+          <span class="code-badge ${isUnknown || isText ? 'sc' : ''}">${p.code}</span>
           <div class="mat-content">
-            <div class="mat-line1">${p.mat.name}</div>
-            <span class="mat-line2">${tableTags} · ${p.mat.prov} ${p.extra ? '· ' + p.extra : ''}</span>
+            <div class="mat-line1" style="${isUnknown ? 'color:var(--danger);' : ''}">${p.name}</div>
+            ${tableTags ? `<span class="mat-line2">${tableTags}</span>` : ''}
           </div>
-          <span class="cart-pill">${p.qty} u.</span>
-        </div>
-      `;
-    } else if (p.type === "UNKNOWN") {
-      return `
-        <div class="trans-row" onclick="this.classList.toggle('checked')">
-          <div class="trans-check">✓</div>
-          <span class="code-badge sc">${p.code}</span>
-          <div class="mat-content">
-            <div class="mat-line1" style="color:var(--danger);">Código no registrado</div>
-            <span class="mat-line2">${p.rawLine}</span>
+          <div class="alb-right">
+            <div class="qty-capsule">
+              <button type="button" class="cap-btn" onclick="changeTransQty(${i}, -1)">−</button>
+              <input type="number" class="cap-input" value="${p.qty}" min="1" inputmode="numeric" onfocus="this.select()" onchange="setTransDirectQty(${i}, this.value)">
+              <button type="button" class="cap-btn" onclick="changeTransQty(${i}, 1)">+</button>
+            </div>
+            <button type="button" class="del-icon-btn" onclick="removeTransIdx(${i})">✕</button>
           </div>
-          <span class="cart-pill" style="background:var(--danger);">${p.qty} u.</span>
         </div>
       `;
     } else {
       return `
-        <div class="trans-row" style="grid-template-columns: 26px 1fr;" onclick="this.classList.toggle('checked')">
+        <div class="trans-row ${p.checked ? 'checked' : ''}" onclick="toggleTransCheck(${i})">
           <div class="trans-check">✓</div>
+          <span class="code-badge ${isUnknown || isText ? 'sc' : ''}">${p.code}</span>
           <div class="mat-content">
-            <div class="mat-line1">${p.rawLine}</div>
-            <span class="mat-line2">(MATERIAL PUNTUAL / NOTA)</span>
+            <div class="mat-line1" style="${isUnknown ? 'color:var(--danger);' : ''}">${p.name}</div>
+            <span class="mat-line2">${tableTags}${p.prov ? ' · ' + p.prov : ''}${p.extra ? ' · ' + p.extra : ''}</span>
           </div>
+          <span class="cart-pill" style="${isUnknown ? 'background:var(--danger);' : ''}">${p.qty} u.</span>
         </div>
       `;
     }
   }).join("");
+}
+
+// Mensaje detallado para WhatsApp (SIN la categoría, tal como se solicitó)
+function buildTranslatorWhatsAppText() {
+  if (!transItems.length) return "";
+  return transItems.map(p => {
+    if (p.type === "FOUND") {
+      return `• ${p.code} – ${p.name} – ${p.qty} u.${p.extra ? ' (' + p.extra + ')' : ''}`;
+    } else if (p.type === "UNKNOWN") {
+      return `• ${p.code} – Código no registrado – ${p.qty} u.`;
+    } else {
+      return `• ${p.name} – ${p.qty} u.${p.prov ? ' (' + p.prov + ')' : ''}`;
+    }
+  }).join("\n");
+}
+
+// Mensaje detallado para Correo
+function buildTranslatorEmailText() {
+  if (!transItems.length) return "";
+  return transItems.map(p => {
+    const tStr = p.tables && p.tables.length ? ` (${p.tables.join("/")})` : "";
+    if (p.type === "FOUND") {
+      return `${p.code} – ${p.name}${tStr} – ${p.qty} unidades (Proveedor: ${p.prov})${p.extra ? ' [' + p.extra + ']' : ''}`;
+    } else if (p.type === "UNKNOWN") {
+      return `${p.code} – Código no registrado – ${p.qty} unidades`;
+    } else {
+      return `${p.name} – ${p.qty} unidades${p.prov ? ' (' + p.prov + ')' : ''}`;
+    }
+  }).join("\n");
+}
+
+function sendTranslatorWhatsApp() {
+  const txt = buildTranslatorWhatsAppText();
+  if (!txt) return;
+  window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
+}
+
+function sendTranslatorEmail() {
+  const txt = buildTranslatorEmailText();
+  if (!txt) return;
+  const dateStr = new Date().toLocaleDateString("es-ES");
+  window.location.href = `mailto:?subject=${encodeURIComponent('Listado detallado de material - ' + dateStr)}&body=${encodeURIComponent(txt)}`;
+}
+
+// Modal de Impresión de Checklist con Nombre de Técnico y Memoria
+function openPrintChecklistModal() {
+  if (!transItems.length) return;
+  renderSavedTechs();
+  openModalById("printTechModal");
+  setTimeout(() => {
+    document.getElementById("techNameInput").focus();
+  }, 60);
+}
+
+function renderSavedTechs() {
+  const box = document.getElementById("savedTechsContainer");
+  if (!savedTechs.length) {
+    box.innerHTML = "";
+    return;
+  }
+  box.innerHTML = savedTechs.map((tName, idx) => {
+    const safe = tName.replace(/'/g, "\\'");
+    return `
+      <div class="tech-chip" onclick="selectSavedTech('${safe}')">
+        <span>${tName}</span>
+        <span class="tech-chip-del" onclick="event.stopPropagation();deleteSavedTech(${idx})">✕</span>
+      </div>
+    `;
+  }).join("");
+}
+
+function selectSavedTech(name) {
+  document.getElementById("techNameInput").value = name;
+}
+
+function deleteSavedTech(idx) {
+  savedTechs.splice(idx, 1);
+  localStorage.setItem("acacio_v5_techs", JSON.stringify(savedTechs));
+  renderSavedTechs();
+}
+
+function executePrintChecklist() {
+  const techInput = document.getElementById("techNameInput");
+  const techName = techInput.value.trim() || "Sin especificar";
+
+  if (techName !== "Sin especificar" && !savedTechs.includes(techName)) {
+    savedTechs.unshift(techName);
+    if (savedTechs.length > 8) savedTechs.pop();
+    localStorage.setItem("acacio_v5_techs", JSON.stringify(savedTechs));
+  }
+
+  const nowStr = new Date().toLocaleString("es-ES", {
+    day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"
+  });
+
+  // Todas las casillas se imprimen SIEMPRE desmarcadas (☐) sin importar el estado en pantalla
+  const rowsHTML = transItems.map(p => {
+    const tStr = p.tables && p.tables.length ? `(${p.tables.join(" / ")})` : "";
+    return `
+      <tr>
+        <td style="width:36px;text-align:center;"><span class="print-checkbox-box"></span></td>
+        <td style="width:70px;font-weight:bold;font-family:monospace;font-size:11pt;">${p.qty} u.</td>
+        <td style="width:80px;font-weight:bold;font-family:monospace;font-size:11pt;">${p.code}</td>
+        <td>
+          <div style="font-weight:bold;">${p.name}</div>
+          <div style="font-size:9pt;color:#475569;margin-top:2px;">
+            ${tStr} ${p.prov ? '· Proveedor: ' + p.prov : ''} ${p.extra ? '· Nota: ' + p.extra : ''}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  document.getElementById("printArea").innerHTML = `
+    <div class="print-head">
+      <img src="${LOGO_DATA_URI}" class="print-logo" alt="Acaciophone">
+      <div class="print-meta">
+        <div><strong>CHECKLIST DE ALMACÉN</strong></div>
+        <div>Fecha: ${nowStr}</div>
+      </div>
+    </div>
+    <div class="print-tech-box">
+      Técnico asignado: ${techName} &nbsp;·&nbsp; Total líneas: ${transItems.length}
+    </div>
+    <table class="print-table">
+      <thead>
+        <tr>
+          <th style="text-align:center;">OK</th>
+          <th>Cant.</th>
+          <th>Código</th>
+          <th>Material / Categoría / Proveedor</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rowsHTML}
+      </tbody>
+    </table>
+  `;
+
+  closeActiveModal();
+  setTimeout(() => {
+    window.print();
+  }, 120);
 }
 
 function scrollToOrder() {
