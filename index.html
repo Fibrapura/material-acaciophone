@@ -4077,9 +4077,201 @@ document.getElementById("pwa-manifest").setAttribute(
   "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest))
 );
 
+  function getFilterTagGroup(tag) {
+  if (/^\d+\s*(m|fo|puertos|fusiones)$/i.test(tag) || /^1:\d+$/.test(tag)) return "MEASURE";
+  if (/^(2mm|3mm|Dúplex)$/i.test(tag)) return "THICKNESS";
+  if (/^(Negro|Blanco)$/i.test(tag)) return "COLOR";
+  if (/^(WiFi 6 \/ WiFi 7|NEBA \/ VULA|Repetidor \/ Mesh|4G \/ Satélite \/ DSL)$/i.test(tag)) return "TECH";
+  return "TYPE";
+}
+
+function matchesSelectedFilterTags(mat) {
+  if (!selectedFilterTags.length) return true;
+  const groups = {};
+  selectedFilterTags.forEach(tag => {
+    const g = getFilterTagGroup(tag);
+    if (!groups[g]) groups[g] = [];
+    groups[g].push(tag);
+  });
+  return Object.values(groups).every(gTags => gTags.some(t => mat.filterTags.includes(t)));
+}
+
+function highlightMatch(text, tokens) {
+  if (!tokens || !tokens.length || !text) return text;
+  const normText = norm(text);
+  const mask = new Array(text.length).fill(false);
+
+  tokens.forEach(token => {
+    if (!token) return;
+    let matchedExact = false;
+    getSingularVariants(token).forEach(v => {
+      let pos = 0;
+      while (pos < normText.length) {
+        const idx = normText.indexOf(v, pos);
+        if (idx === -1) break;
+        matchedExact = true;
+        for (let i = idx; i < idx + v.length && i < mask.length; i++) mask[i] = true;
+        pos = idx + 1;
+      }
+    });
+
+    if (!matchedExact && token.length >= 3 && !/\d/.test(token)) {
+      const phToken = toPhonetic(token);
+      const reg = /[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ]+/g;
+      let m;
+      while ((m = reg.exec(text)) !== null) {
+        const wNorm = norm(m[0]);
+        if (wNorm.length < 3) continue;
+        const maxD = token.length >= 7 ? 2.0 : 1.1;
+        const isFuzzy = (phToken.length >= 3 && toPhonetic(wNorm).includes(phToken)) ||
+          (token.length >= 4 && Math.abs(wNorm.length - token.length) <= 2 && typoDistance(token, wNorm, maxD) <= maxD) ||
+          (token.length >= 5 && wNorm.length > token.length && typoDistance(token, wNorm.slice(0, token.length), 1.0) <= 1.0);
+        if (isFuzzy) {
+          for (let i = 0; i < wNorm.length; i++) {
+            if (token.includes(wNorm[i]) || phToken.includes(toPhonetic(wNorm[i]))) mask[m.index + i] = true;
+          }
+        }
+      }
+    }
+  });
+
+  let out = "", open = false;
+  for (let i = 0; i < text.length; i++) {
+    if (mask[i] && !open) { out += '<span class="hl-match">'; open = true; }
+    else if (!mask[i] && open) { out += '</span>'; open = false; }
+    out += text[i];
+  }
+  return open ? out + "</span>" : out;
+}
+
+function renderMaterials() {
+  const rawVal = searchInput.value;
+  const endsWithSpace = /\s$/.test(rawVal);
+  const q = norm(rawVal.trim());
+  const tokens = q ? q.split(/\s+/) : [];
+  const scopeBar = document.getElementById("activeScopeBar");
+  const listEl = document.getElementById("materialsList");
+  const blocksEl = document.getElementById("blocksDashboard");
+  const subBarEl = document.getElementById("subFiltersBar");
+
+  if (!q && selectedTable === "ALL" && resolvedConflictTable === null) {
+    scopeBar.style.display = "none";
+    subBarEl.style.display = "none";
+    listEl.style.display = "none";
+    blocksEl.style.display = "block";
+    return;
+  }
+  blocksEl.style.display = "none";
+
+  const textMatches = MATERIALS.filter(m => tokens.every(t => itemMatchesToken(m, t)));
+
+  if (tokens.length > 0) {
+    const fam = detectConflictFamily(tokens, endsWithSpace);
+    if (fam) {
+      if (activeConflictFamilyId !== fam.id) {
+        activeConflictFamilyId = fam.id;
+        resolvedConflictTable = null;
+        conflictDismissed = false;
+        selectedFilterTags = [];
+      }
+      const matchingTables = [];
+      fam.tables.forEach(tIdx => {
+        const count = textMatches.filter(m => m.tIdx === tIdx).length;
+        if (count > 0) matchingTables.push({ tIdx, tableName: TABLES[tIdx][1], count });
+      });
+      if (matchingTables.length > 1) {
+        if (resolvedConflictTable === null && !conflictDismissed) {
+          searchInput.blur();
+          scopeBar.style.display = "none";
+          subBarEl.style.display = "none";
+          listEl.style.display = "none";
+          document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
+            <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
+              <span>(${mt.tableName})</span>
+              <span class="conflict-badge">${mt.count}</span>
+            </button>
+          `).join("");
+          openModalById("conflictModal");
+          return;
+        } else if (resolvedConflictTable !== null) {
+          scopeBar.style.display = "flex";
+          document.getElementById("activeScopeName").textContent = `(${TABLES[resolvedConflictTable][1]})`;
+        } else scopeBar.style.display = "none";
+      } else scopeBar.style.display = "none";
+    } else {
+      activeConflictFamilyId = null;
+      resolvedConflictTable = null;
+      conflictDismissed = false;
+      scopeBar.style.display = "none";
+    }
+  } else scopeBar.style.display = "none";
+
+  const activeTIdx = resolvedConflictTable !== null ? resolvedConflictTable : (selectedTable !== "ALL" ? selectedTable : null);
+  let baseItems = activeTIdx !== null ? textMatches.filter(m => m.tIdx === activeTIdx) : textMatches;
+
+  renderUnifiedFilterPanel(activeTIdx, MATERIALS.filter(m => m.tIdx === activeTIdx));
+
+  let finalItems = (activeTIdx !== null && selectedFilterTags.length > 0)
+    ? baseItems.filter(m => matchesSelectedFilterTags(m))
+    : baseItems;
+
+  finalItems.sort((a, b) => (q && a.code.toLowerCase() === q) ? -1 : (q && b.code.toLowerCase() === q) ? 1 : 0);
+
+  if (finalItems.length === 0) {
+    listEl.style.display = "flex";
+    const otherCounts = {};
+    textMatches.forEach(m => { if (m.tIdx !== activeTIdx) otherCounts[m.tIdx] = (otherCounts[m.tIdx] || 0) + 1; });
+    const otherCatEntries = Object.keys(otherCounts).map(k => ({ tIdx: +k, tableName: TABLES[+k][1], count: otherCounts[k] }));
+
+    let emptyHTML = `<div class="empty-suggestions-card">`;
+    if (baseItems.length > 0 && selectedFilterTags.length > 0) {
+      emptyHTML += `<div class="empty-msg-title">No hay materiales con ese filtro en esta categoría.</div>
+        <button type="button" class="alt-cat-btn" onclick="resetFilterTags()">
+          <span>Quitar filtros activos en (${TABLES[activeTIdx][1]})</span><span>${baseItems.length} art. ›</span>
+        </button>`;
+    } else if (otherCatEntries.length > 0) {
+      emptyHTML += `<div class="empty-msg-title">Sin coincidencias aquí, pero sí hay resultados en:</div>
+        <div class="alt-cat-list">${otherCatEntries.map(oc => `
+          <button type="button" class="alt-cat-btn" onclick="switchToSuggestedCategory(${oc.tIdx})">
+            <span>(${oc.tableName})</span><span>${oc.count} ›</span>
+          </button>`).join("")}</div>`;
+    } else {
+      emptyHTML += `<div class="empty-msg-title" style="margin-bottom:0;">No hay materiales que coincidan con la búsqueda.</div>`;
+    }
+    listEl.innerHTML = emptyHTML + `</div>`;
+    return;
+  }
+
+  const activeListMap = {};
+  (pickingForTranslator ? transItems : cart).forEach(it => { if (it.key) activeListMap[it.key] = it.qty; });
+
+  listEl.style.display = "flex";
+  listEl.innerHTML = finalItems.map(m => {
+    const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
+    const qtyInCart = activeListMap[key];
+    const isSC = m.code === "SIN CÓDIGO";
+    return `
+      <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
+        <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : highlightMatch(m.code, tokens)}</span>
+        <div class="mat-content">
+          <div class="mat-line1">${highlightMatch(m.name, tokens)}</div>
+          <span class="mat-line2">(${m.tableName})</span>
+        </div>
+        <div class="mat-right-ind">
+          ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
+        </div>
+      </div>`;
+  }).join("");
+}
+
 updateKitsBadge();
 renderMaterials();
 renderCart();
 </script>
+<style>
+  .hl-match { color: #dc2626; font-weight: 800; }
+  body.dark-mode .hl-match { color: #ff5252; }
+  .code-badge .hl-match { color: #ff9999; text-decoration: underline; }
+</style>
 </body>
 </html>
