@@ -3907,6 +3907,7 @@ function sendWhatsApp() {
   if (!txt) return;
   window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
 }
+
 // =========================================================================
 // GESTIÓN DE MIS KITS
 // =========================================================================
@@ -4493,6 +4494,30 @@ function executePrintChecklist() {
   }, 120);
 }
 
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(() => { t.style.display = "none"; }, 1800);
+}
+
+const manifest = {
+  name: "Material Acaciophone",
+  short_name: "Acaciophone",
+  start_url: ".",
+  display: "standalone",
+  background_color: "#e6ecf5",
+  theme_color: "#041b3a",
+  icons: [{
+    src: ICON_DATA_URI,
+    sizes: "192x192",
+    type: "image/png"
+  }]
+};
+document.getElementById("pwa-manifest").setAttribute(
+  "href",
+  "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest))
+);
 function showToast(msg) {
   const t = document.getElementById("toast");
   if (!t) return;
