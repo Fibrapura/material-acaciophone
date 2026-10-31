@@ -4519,14 +4519,89 @@ document.getElementById("pwa-manifest").setAttribute(
 );
 
 updateKitsBadge();
-  // =========================================================================
-// PARCHE LIGERO DE CORRECCIÓN INTEGRAL
+// =========================================================================
+// PARCHE LIGERO V2: LOGO REPARADO, OPCIONES PLEGADAS Y DISEÑO UNIFICADO
 // =========================================================================
 
-// 1. Quitar la "x" pequeña nativa del navegador pasando el input a texto con teclado de búsqueda
+// 1. Limpiar fondo fantasma del PNG del logo y reconstruir borde inferior sin corte
+(function fixLogoClipping() {
+  const img = new Image();
+  img.onload = function() {
+    const w = img.width, h = img.height;
+    const padY = 12;
+    const cLight = document.createElement("canvas");
+    cLight.width = w; cLight.height = h + padY * 2;
+    const ctx = cLight.getContext("2d");
+    ctx.drawImage(img, 0, padY);
+
+    const imgData = ctx.getImageData(0, 0, cLight.width, cLight.height);
+    const d = imgData.data;
+    // Eliminar píxeles semitransparentes del recuadro que creaban la franja inferior
+    for (let i = 0; i < d.length; i += 4) {
+      if (d[i + 3] < 45) {
+        d[i + 3] = 0;
+      } else {
+        d[i] = 4; d[i + 1] = 27; d[i + 2] = 58;
+        d[i + 3] = Math.min(255, Math.round(d[i + 3] * 1.25));
+      }
+    }
+    ctx.putImageData(imgData, 0, 0);
+
+    // Extender y redondear los trazos inferiores (letra "p") que venían cortados a ras en el PNG original
+    const lastRowY = padY + h - 1;
+    for (let extra = 1; extra <= 5; extra++) {
+      const shrink = extra;
+      for (let x = shrink; x < w - shrink; x++) {
+        const idxSrc = (lastRowY * w + x) * 4;
+        const idxLeft = (lastRowY * w + (x - shrink)) * 4;
+        const idxRight = (lastRowY * w + (x + shrink)) * 4;
+        if (d[idxSrc + 3] > 110 && d[idxLeft + 3] > 80 && d[idxRight + 3] > 80) {
+          ctx.fillStyle = `rgba(4, 27, 58, ${(1 - extra * 0.16).toFixed(2)})`;
+          ctx.fillRect(x, lastRowY + extra, 1, 1);
+        }
+      }
+    }
+
+    const cleanDarkURI = cLight.toDataURL("image/png");
+
+    // Crear versión blanca limpia para fondos oscuros sin usar filter:invert()
+    const cWhite = document.createElement("canvas");
+    cWhite.width = cLight.width; cWhite.height = cLight.height;
+    const ctxW = cWhite.getContext("2d");
+    ctxW.drawImage(cLight, 0, 0);
+    const wData = ctxW.getImageData(0, 0, cWhite.width, cWhite.height);
+    const wd = wData.data;
+    for (let i = 0; i < wd.length; i += 4) {
+      if (wd[i + 3] > 0) { wd[i] = 255; wd[i + 1] = 255; wd[i + 2] = 255; }
+    }
+    ctxW.putImageData(wData, 0, 0);
+    const cleanWhiteURI = cWhite.toDataURL("image/png");
+
+    window.__CLEAN_LOGO_DARK = cleanDarkURI;
+    window.__CLEAN_LOGO_WHITE = cleanWhiteURI;
+    applyCleanLogos();
+  };
+  img.src = LOGO_DATA_URI;
+})();
+
+function applyCleanLogos() {
+  if (!window.__CLEAN_LOGO_WHITE) return;
+  const isDark = document.body.classList.contains("dark-mode");
+  document.getElementById("headerLogo").src = window.__CLEAN_LOGO_WHITE;
+  document.getElementById("pedidoLogo").src = window.__CLEAN_LOGO_WHITE;
+  document.getElementById("homeLogoImg").src = isDark ? window.__CLEAN_LOGO_WHITE : window.__CLEAN_LOGO_DARK;
+}
+
+const _origToggleTheme = toggleTheme;
+toggleTheme = function() {
+  _origToggleTheme();
+  applyCleanLogos();
+};
+
+// 2. Quitar la "x" pequeña nativa del buscador
 searchInput.setAttribute("type", "text");
 
-// 2. Inyectar la ventana flotante de Selección de Categoría
+// 3. Ventana flotante de Selección de Categoría
 (function injectConflictModal() {
   if (!document.getElementById("conflictModal")) {
     const m = document.createElement("div");
@@ -4554,6 +4629,7 @@ let activeConflictFamilyId = null;
 let resolvedConflictTable = null;
 let conflictDismissed = false;
 let filterPanelExpanded = false;
+let otherCatsPanelExpanded = false;
 
 const CONFLICT_FAMILIES = [
   { id: "acometida", words: ["acometida", "acometidas"], tables: [1, 2] },
@@ -4586,14 +4662,10 @@ function tokenMatchesConflictWord(token, targetWord, endsWithSpace) {
 function detectConflictFamily(tokens, endsWithSpace) {
   if (!tokens.length) return null;
   for (const t of tokens) {
-    if (CONFLICT_FAMILIES[0].words.some(w => tokenMatchesConflictWord(t, w, endsWithSpace))) {
-      return CONFLICT_FAMILIES[0];
-    }
+    if (CONFLICT_FAMILIES[0].words.some(w => tokenMatchesConflictWord(t, w, endsWithSpace))) return CONFLICT_FAMILIES[0];
   }
   for (const fam of CONFLICT_FAMILIES) {
-    if (tokens.some(t => fam.words.some(w => tokenMatchesConflictWord(t, w, endsWithSpace)))) {
-      return fam;
-    }
+    if (tokens.some(t => fam.words.some(w => tokenMatchesConflictWord(t, w, endsWithSpace)))) return fam;
   }
   return null;
 }
@@ -4604,6 +4676,7 @@ function chooseConflictTableFromModal(tIdx) {
   conflictDismissed = false;
   selectedFilterTags = [];
   filterPanelExpanded = false;
+  otherCatsPanelExpanded = false;
   closeActiveModal();
   forceScrollTop();
   renderMaterials();
@@ -4612,13 +4685,14 @@ function chooseConflictTableFromModal(tIdx) {
 searchInput.addEventListener("input", () => {
   const val = searchInput.value.trim();
   clearSearchBtn.style.display = val ? "flex" : "none";
+  otherCatsPanelExpanded = false;
+  filterPanelExpanded = false;
   if (!val) {
     selectedTable = "ALL";
     activeConflictFamilyId = null;
     resolvedConflictTable = null;
     conflictDismissed = false;
     selectedFilterTags = [];
-    filterPanelExpanded = false;
     document.getElementById("conflictModal").classList.remove("open");
   }
   renderMaterials();
@@ -4633,20 +4707,19 @@ function clearSearch() {
   conflictDismissed = false;
   selectedFilterTags = [];
   filterPanelExpanded = false;
+  otherCatsPanelExpanded = false;
   document.getElementById("conflictModal").classList.remove("open");
   renderMaterials();
 }
 
-// 3. Bloquear el scroll de la página de atrás cuando se abre el Pedido y ocultar la barra verde inferior
+// 4. Bloquear scroll trasero al abrir Pedido
 function openOrderDrawer() {
   closeAllModalDOM();
   document.getElementById("orderDrawerBackdrop").classList.add("open");
   document.documentElement.classList.add("drawer-lock");
   document.body.classList.add("drawer-lock");
   updateBottomBar();
-  if (!handlingPopState) {
-    history.pushState({ view: currentView, modal: "orderDrawerBackdrop" }, "");
-  }
+  if (!handlingPopState) history.pushState({ view: currentView, modal: "orderDrawerBackdrop" }, "");
 }
 
 function closeOrderDrawer() {
@@ -4688,20 +4761,23 @@ function updateBottomBar() {
   }
 }
 
-// 4. Panel "Filtrar por características" plegado por defecto y con cierre automático al seleccionar un filtro
+// 5. Desplegables sutiles: "También hay coincidencias en" y "Filtrar por características" (plegados por defecto y con autocierre)
+function toggleOtherCatsPanel() {
+  otherCatsPanelExpanded = !otherCatsPanelExpanded;
+  if (otherCatsPanelExpanded) filterPanelExpanded = false;
+  renderMaterials();
+}
+
 function toggleFilterPanelOpen() {
   filterPanelExpanded = !filterPanelExpanded;
-  const bodyEl = document.getElementById("sfCollapsibleBody");
-  const arrowEl = document.getElementById("sfToggleArrow");
-  if (bodyEl) bodyEl.style.display = filterPanelExpanded ? "block" : "none";
-  if (arrowEl) arrowEl.textContent = filterPanelExpanded ? "▴" : "▾";
+  if (filterPanelExpanded) otherCatsPanelExpanded = false;
+  renderMaterials();
 }
 
 function toggleFilterTag(tag) {
   const idx = selectedFilterTags.indexOf(tag);
   if (idx >= 0) selectedFilterTags.splice(idx, 1);
   else selectedFilterTags.push(tag);
-  // Cerrar automáticamente el cuadro de filtros al seleccionar uno para dejar ver los resultados
   filterPanelExpanded = false;
   renderMaterials();
 }
@@ -4710,6 +4786,16 @@ function resetFilterTags() {
   selectedFilterTags = [];
   filterPanelExpanded = false;
   renderMaterials();
+}
+
+function switchToSuggestedCategory(tIdx) {
+  selectedTable = tIdx;
+  resolvedConflictTable = tIdx;
+  selectedFilterTags = [];
+  filterPanelExpanded = false;
+  otherCatsPanelExpanded = false; // Se vuelve a esconder automáticamente al elegir categoría
+  renderMaterials();
+  forceScrollTop();
 }
 
 function renderUnifiedFilterPanel(poolItems) {
@@ -4748,14 +4834,14 @@ function renderUnifiedFilterPanel(poolItems) {
     : "";
 
   let html = `
-    <div class="sf-header-compact" onclick="toggleFilterPanelOpen()">
+    <div class="subtle-bar-trigger" onclick="toggleFilterPanelOpen()">
       <div class="sf-header-left">
-        <span class="sf-title">Filtrar por características <span id="sfToggleArrow">${filterPanelExpanded ? '▴' : '▾'}</span></span>
+        <span>Filtrar por características ${filterPanelExpanded ? '▴' : '▾'}</span>
         ${activeSummary}
       </div>
       ${selectedFilterTags.length > 0 ? `<button type="button" class="sf-reset" onclick="event.stopPropagation();resetFilterTags()">Quitar (${selectedFilterTags.length}) ✕</button>` : ''}
     </div>
-    <div id="sfCollapsibleBody" style="display:${filterPanelExpanded ? 'block' : 'none'};margin-top:10px;padding-top:10px;border-top:1px solid var(--border-soft);">
+    <div id="sfCollapsibleBody" style="display:${filterPanelExpanded ? 'block' : 'none'};margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);">
   `;
 
   activeRows.forEach(rm => {
@@ -4772,16 +4858,7 @@ function renderUnifiedFilterPanel(poolItems) {
   barEl.style.display = "block";
 }
 
-function switchToSuggestedCategory(tIdx) {
-  selectedTable = tIdx;
-  resolvedConflictTable = tIdx;
-  selectedFilterTags = [];
-  filterPanelExpanded = false;
-  renderMaterials();
-  forceScrollTop();
-}
-
-// 5. Renderizado con ventana de conflicto, categorías coincidentes plegadas sutilmente arriba y categoría activa desplegada debajo
+// 6. Renderizado principal dando prioridad total a Búsqueda + Resultados
 function renderMaterials() {
   const rawVal = searchInput.value;
   const trimmedRaw = rawVal.trim();
@@ -4801,7 +4878,6 @@ function renderMaterials() {
     return;
   }
 
-  // Detectar si lo que se escribe pertenece a varias categorías y lanzar la ventana de Selección de Categoría
   if (tokens.length > 0) {
     const fam = detectConflictFamily(tokens, endsWithSpace);
     if (fam) {
@@ -4812,6 +4888,7 @@ function renderMaterials() {
         conflictDismissed = false;
         selectedFilterTags = [];
         filterPanelExpanded = false;
+        otherCatsPanelExpanded = false;
       }
       const matchingTables = [];
       fam.tables.forEach(tIdx => {
@@ -4841,7 +4918,6 @@ function renderMaterials() {
     }
   }
 
-  // Calcular todas las categorías que tienen coincidencias con lo buscado
   const strictMatches = MATERIALS.filter(m => tokens.every(t => materialMatchesTokenStrict(m, t)));
   const catCountsMap = new Map();
 
@@ -4862,7 +4938,6 @@ function renderMaterials() {
     if (!arr.includes(m)) arr.push(m);
   });
 
-  // Determinar cuál es la categoría activa que se muestra desplegada abajo
   let activeTIdx = resolvedConflictTable !== null ? resolvedConflictTable : (selectedTable !== "ALL" ? selectedTable : null);
   if (activeTIdx === null && catCountsMap.size > 0) {
     activeTIdx = catCountsMap.keys().next().value;
@@ -4872,6 +4947,33 @@ function renderMaterials() {
     ? catCountsMap.get(activeTIdx)
     : (activeTIdx !== null ? MATERIALS.filter(m => m.tIdx === activeTIdx && tokens.every(t => materialMatchesTokenStrict(m, t))) : strictMatches);
 
+  // Construir desplegable sutil de "También hay coincidencias en" (Plegado por defecto)
+  const otherCats = [];
+  catCountsMap.forEach((items, tIdx) => {
+    if (tIdx !== activeTIdx && items.length > 0) {
+      otherCats.push({ tIdx, title: TABLES[tIdx][1], count: items.length });
+    }
+  });
+
+  if (otherCats.length > 0) {
+    scopeBar.style.display = "block";
+    scopeBar.innerHTML = `
+      <div class="subtle-bar-trigger" onclick="toggleOtherCatsPanel()">
+        <span>También hay coincidencias en (${otherCats.length} ${otherCats.length === 1 ? 'categoría' : 'categorías'}) ${otherCatsPanelExpanded ? '▴' : '▾'}</span>
+      </div>
+      <div style="display:${otherCatsPanelExpanded ? 'flex' : 'none'};flex-direction:column;gap:5px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);">
+        ${otherCats.map(oc => `
+          <button type="button" class="subtle-cat-row" onclick="switchToSuggestedCategory(${oc.tIdx})">
+            <span>▸ ${oc.title}</span>
+            <span class="subtle-cat-count">${oc.count}</span>
+          </button>
+        `).join("")}
+      </div>
+    `;
+  } else {
+    scopeBar.style.display = "none";
+  }
+
   renderUnifiedFilterPanel(baseItems);
 
   let finalItems = selectedFilterTags.length > 0
@@ -4880,36 +4982,10 @@ function renderMaterials() {
 
   finalItems.sort((a, b) => (q && a.code.toLowerCase() === q) ? -1 : (q && b.code.toLowerCase() === q) ? 1 : 0);
 
-  // Construir barra sutil superior con las demás categorías que tienen coincidencias (plegadas arriba)
-  const otherCats = [];
-  catCountsMap.forEach((items, tIdx) => {
-    if (tIdx !== activeTIdx && items.length > 0) {
-      otherCats.push({ tIdx, title: TABLES[tIdx][1], count: items.length });
-    }
-  });
-
-  let subtleTopCatsHTML = "";
-  if (otherCats.length > 0) {
-    subtleTopCatsHTML = `
-      <div class="subtle-collapsed-cats">
-        <div class="subtle-cats-label">También hay coincidencias en (toca para abrir):</div>
-        <div class="subtle-cats-list">
-          ${otherCats.map(oc => `
-            <button type="button" class="subtle-cat-row" onclick="switchToSuggestedCategory(${oc.tIdx})">
-              <span class="subtle-cat-name">▸ ${oc.title}</span>
-              <span class="subtle-cat-count">${oc.count}</span>
-            </button>
-          `).join("")}
-        </div>
-      </div>
-    `;
-  }
-
   groupsWrap.style.display = "flex";
 
-  // Si no hay resultados: mostrar botón de "Añadir material puntual"
   if (finalItems.length === 0) {
-    let emptyHTML = subtleTopCatsHTML + `<div class="empty-suggestions-card">`;
+    let emptyHTML = `<div class="empty-suggestions-card">`;
     if (baseItems.length > 0 && selectedFilterTags.length > 0) {
       emptyHTML += `
         <div class="empty-msg-title">Ningún material de esta categoría coincide con ese filtro.</div>
@@ -4954,8 +5030,7 @@ function renderMaterials() {
   const activeCatTitle = activeTIdx !== null ? TABLES[activeTIdx][1] : "RESULTADOS";
 
   groupsWrap.innerHTML = `
-    ${subtleTopCatsHTML}
-    <div class="cat-group-block">
+    <div class="cat-group-block search-twin-box">
       <div class="cat-block-header" style="cursor:default;">
         <span class="cat-block-title">${activeCatTitle}</span>
         <div class="cat-block-right">
@@ -4974,118 +5049,114 @@ renderMaterials();
 renderCart();
 </script>
 <style>
-  /* 1. Logo entero sin cortes en ninguna pestaña */
-  .brand-logo, .home-main-logo, .pedido-logo, .print-logo {
+  /* 1. Logos reparados sin filtro CSS que cree franja y con aire suficiente */
+  .brand-logo, .home-main-logo, .pedido-logo {
+    filter: none !important;
     width: auto !important;
     height: auto !important;
     object-fit: contain !important;
-    overflow: visible !important;
-    padding: 2px 0 !important;
+    display: block !important;
   }
-  .brand-logo { max-height: 22px !important; max-width: 140px !important; }
-  .home-main-logo { max-height: 36px !important; max-width: 220px !important; }
-  .pedido-logo { max-height: 18px !important; max-width: 110px !important; }
-  .brand-center-wrap, .brand-bar-inner, .home-brand-area, .pedido-header-left {
-    overflow: visible !important;
+  .brand-logo { max-height: 24px !important; max-width: 145px !important; }
+  .home-main-logo { max-height: 40px !important; max-width: 225px !important; }
+  .pedido-logo { max-height: 20px !important; max-width: 115px !important; }
+
+  /* 2. Eliminar "x" nativa, Asistente y +Puntual de cabecera */
+  input[type="search"]::-webkit-search-cancel-button { display: none !important; }
+  .aki-pill-btn, #akinatorModal, .puntual-pill-btn { display: none !important; }
+  .secondary-tools-bar { grid-template-columns: 1fr !important; }
+
+  /* 3. Identidad gemela entre Barra de Búsqueda y Bloque de Resultados (Protagonistas) */
+  .search-wrap input {
+    height: 54px !important;
+    border: 2.5px solid var(--corp-blue) !important;
+    border-radius: 13px !important;
+    background: var(--panel) !important;
+    box-shadow: 0 8px 22px rgba(0, 85, 184, 0.18) !important;
+  }
+  .search-twin-box {
+    border: 2.5px solid var(--corp-blue) !important;
+    border-radius: 13px !important;
+    background: var(--panel) !important;
+    box-shadow: 0 8px 22px rgba(0, 85, 184, 0.18) !important;
+  }
+  .search-twin-box .cat-block-header {
+    background: var(--corp-blue) !important;
+    color: #ffffff !important;
+    padding: 9px 14px !important;
+  }
+  body.dark-mode .search-twin-box .cat-block-header {
+    background: #0284c7 !important;
   }
 
-  /* 2. Eliminar la "x" pequeña nativa del buscador */
-  input[type="search"]::-webkit-search-decoration,
-  input[type="search"]::-webkit-search-cancel-button,
-  input[type="search"]::-webkit-search-results-button,
-  input[type="search"]::-webkit-search-results-decoration {
-    -webkit-appearance: none !important;
-    appearance: none !important;
-    display: none !important;
+  /* 4. Opciones secundarias (Mis Kits, Otras categorías, Filtrar) muy sutiles y diferenciadas */
+  .kits-pill {
+    background: transparent !important;
+    border: 1px dashed var(--border) !important;
+    color: var(--text-secondary) !important;
+    padding: 5px 10px !important;
+    font-size: 0.73rem !important;
+    border-radius: 7px !important;
   }
-
-  /* 3. Eliminar Asistente y botón +Puntual de la cabecera */
-  .aki-pill-btn, #akinatorModal, .puntual-pill-btn {
-    display: none !important;
+  .scope-banner, .subfilters-panel {
+    background: rgba(148, 163, 184, 0.1) !important;
+    border: 1px dashed var(--border) !important;
+    border-left: 1px dashed var(--border) !important;
+    box-shadow: none !important;
+    padding: 6px 11px !important;
+    margin-bottom: 8px !important;
+    border-radius: 8px !important;
   }
-  .secondary-tools-bar {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* 4. Barra "Filtrar por características" compacta y plegada por defecto */
-  .subfilters-panel {
-    padding: 9px 12px !important;
-    margin-bottom: 12px !important;
-  }
-  .sf-header-compact {
+  .subtle-bar-trigger {
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
     user-select: none;
-    gap: 8px;
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: var(--text-secondary);
   }
   .sf-header-left {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
-    min-width: 0;
   }
   .sf-active-Readout {
     background: var(--cat-bg);
     color: var(--corp-blue);
-    border: 1px solid var(--cat-border);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 800;
-    padding: 2px 8px;
-    border-radius: 10px;
-  }
-
-  /* 5. Categorías con coincidencias plegadas de forma muy sutil arriba */
-  .subtle-collapsed-cats {
-    background: var(--panel-alt);
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    padding: 6px 10px;
-    margin-bottom: -10px;
-  }
-  .subtle-cats-label {
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-bottom: 4px;
-  }
-  .subtle-cats-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
+    padding: 1px 7px;
+    border-radius: 8px;
   }
   .subtle-cat-row {
-    display: inline-flex;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 6px;
+    width: 100%;
     background: var(--panel);
     border: 1px solid var(--border);
-    color: var(--text-secondary);
-    padding: 4px 9px;
-    border-radius: 6px;
-    font-size: 0.72rem;
+    color: var(--text);
+    padding: 7px 10px;
+    border-radius: 7px;
+    font-size: 0.76rem;
     font-weight: 700;
     cursor: pointer;
-  }
-  .subtle-cat-row:active {
-    border-color: var(--corp-blue);
-    color: var(--corp-blue);
+    text-align: left;
   }
   .subtle-cat-count {
     background: var(--cat-bg);
     color: var(--cat-text);
     font-family: ui-monospace, SFMono-Regular, monospace;
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     font-weight: 800;
-    padding: 1px 5px;
+    padding: 1px 6px;
     border-radius: 6px;
   }
 
-  /* 6. Botón Añadir material puntual cuando hay 0 resultados */
+  /* 5. Botón puntual cuando hay 0 resultados y bloqueo de fondo del pedido */
   .puntual-empty-btn {
     margin-top: 4px;
     width: 100%;
@@ -5098,20 +5169,11 @@ renderCart();
     font-weight: 800;
     cursor: pointer;
   }
-
-  /* 7. Bloqueo total de movimiento de la pantalla trasera al abrir el Pedido */
   html.drawer-lock, body.drawer-lock {
     overflow: hidden !important;
     height: 100% !important;
     overscroll-behavior: none !important;
   }
-  .order-drawer-backdrop {
-    overscroll-behavior: contain !important;
-  }
-  .pedido-body {
-    overscroll-behavior: contain !important;
-    -webkit-overflow-scrolling: touch;
-  }
 </style>
 </body>
-</html>
+</html>  
