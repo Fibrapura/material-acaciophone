@@ -4519,8 +4519,599 @@ document.getElementById("pwa-manifest").setAttribute(
 );
 
 updateKitsBadge();
+  // =========================================================================
+// PARCHE LIGERO DE CORRECCIÓN INTEGRAL
+// =========================================================================
+
+// 1. Quitar la "x" pequeña nativa del navegador pasando el input a texto con teclado de búsqueda
+searchInput.setAttribute("type", "text");
+
+// 2. Inyectar la ventana flotante de Selección de Categoría
+(function injectConflictModal() {
+  if (!document.getElementById("conflictModal")) {
+    const m = document.createElement("div");
+    m.className = "modal-backdrop";
+    m.id = "conflictModal";
+    m.onclick = function(e) {
+      if (e.target === this) {
+        conflictDismissed = true;
+        closeActiveModal();
+        renderMaterials();
+      }
+    };
+    m.innerHTML = `
+      <div class="modal-dialog">
+        <div class="m-meta">SELECCIÓN DE CATEGORÍA</div>
+        <div class="m-title">¿En qué categoría quieres ver la búsqueda?</div>
+        <div class="conflict-list" id="conflictModalOptions"></div>
+      </div>
+    `;
+    document.body.appendChild(m);
+  }
+})();
+
+let activeConflictFamilyId = null;
+let resolvedConflictTable = null;
+let conflictDismissed = false;
+let filterPanelExpanded = false;
+
+const CONFLICT_FAMILIES = [
+  { id: "acometida", words: ["acometida", "acometidas"], tables: [1, 2] },
+  { id: "pigtail", words: ["pigtail", "pigtails", "pigtel", "pigtels"], tables: [27, 1, 3] },
+  { id: "router", words: ["router", "routers", "ruter", "ruters", "ont", "onts"], tables: [0, 19, 32] },
+  { id: "antena", words: ["antena", "antenas"], tables: [6, 7, 8, 11, 5] },
+  { id: "cable", words: ["cable", "cables"], tables: [25, 12, 1, 2] },
+  { id: "caja", words: ["caja", "cajas", "cto", "ctos"], tables: [24, 23, 5] },
+  { id: "fijacion", words: ["fijacion", "fijaciones", "grapa", "grapas", "retenedor", "retenedores", "mastil", "mastiles", "garra", "garras"], tables: [31, 10, 30, 2] },
+  { id: "adaptador", words: ["adaptador", "adaptadores", "enfrentador", "enfrentadores", "roseta", "rosetas"], tables: [3, 28, 4] },
+  { id: "latiguillo", words: ["latiguillo", "latiguillos", "patchcord", "patchcords"], tables: [26, 1, 3] },
+  { id: "switch", words: ["switch", "switches", "suich"], tables: [20, 16, 32] }
+];
+
+function tokenMatchesConflictWord(token, targetWord, endsWithSpace) {
+  if (token === targetWord) return true;
+  if (toPhonetic(token) === toPhonetic(targetWord) && token.length >= 4) return true;
+  if (targetWord.length >= 5) {
+    if (targetWord.startsWith(token) && token.length < targetWord.length) {
+      return endsWithSpace && token.length >= targetWord.length - 1;
+    }
+    if (token.length >= targetWord.length - 1) {
+      const maxD = targetWord.length >= 8 ? 1.8 : 1.0;
+      if (typoDistance(token, targetWord, maxD) <= maxD) return true;
+    }
+  }
+  return false;
+}
+
+function detectConflictFamily(tokens, endsWithSpace) {
+  if (!tokens.length) return null;
+  for (const t of tokens) {
+    if (CONFLICT_FAMILIES[0].words.some(w => tokenMatchesConflictWord(t, w, endsWithSpace))) {
+      return CONFLICT_FAMILIES[0];
+    }
+  }
+  for (const fam of CONFLICT_FAMILIES) {
+    if (tokens.some(t => fam.words.some(w => tokenMatchesConflictWord(t, w, endsWithSpace)))) {
+      return fam;
+    }
+  }
+  return null;
+}
+
+function chooseConflictTableFromModal(tIdx) {
+  selectedTable = tIdx;
+  resolvedConflictTable = tIdx;
+  conflictDismissed = false;
+  selectedFilterTags = [];
+  filterPanelExpanded = false;
+  closeActiveModal();
+  forceScrollTop();
+  renderMaterials();
+}
+
+searchInput.addEventListener("input", () => {
+  const val = searchInput.value.trim();
+  clearSearchBtn.style.display = val ? "flex" : "none";
+  if (!val) {
+    selectedTable = "ALL";
+    activeConflictFamilyId = null;
+    resolvedConflictTable = null;
+    conflictDismissed = false;
+    selectedFilterTags = [];
+    filterPanelExpanded = false;
+    document.getElementById("conflictModal").classList.remove("open");
+  }
+  renderMaterials();
+});
+
+function clearSearch() {
+  searchInput.value = "";
+  clearSearchBtn.style.display = "none";
+  selectedTable = "ALL";
+  activeConflictFamilyId = null;
+  resolvedConflictTable = null;
+  conflictDismissed = false;
+  selectedFilterTags = [];
+  filterPanelExpanded = false;
+  document.getElementById("conflictModal").classList.remove("open");
+  renderMaterials();
+}
+
+// 3. Bloquear el scroll de la página de atrás cuando se abre el Pedido y ocultar la barra verde inferior
+function openOrderDrawer() {
+  closeAllModalDOM();
+  document.getElementById("orderDrawerBackdrop").classList.add("open");
+  document.documentElement.classList.add("drawer-lock");
+  document.body.classList.add("drawer-lock");
+  updateBottomBar();
+  if (!handlingPopState) {
+    history.pushState({ view: currentView, modal: "orderDrawerBackdrop" }, "");
+  }
+}
+
+function closeOrderDrawer() {
+  document.getElementById("orderDrawerBackdrop").classList.remove("open");
+  document.documentElement.classList.remove("drawer-lock");
+  document.body.classList.remove("drawer-lock");
+  updateBottomBar();
+  if (!handlingPopState && history.state && history.state.modal === "orderDrawerBackdrop") {
+    history.replaceState({ view: currentView, modal: null }, "");
+  }
+}
+
+function closeAllModalDOM() {
+  document.querySelectorAll(".modal-backdrop").forEach(m => m.classList.remove("open"));
+  document.getElementById("orderDrawerBackdrop").classList.remove("open");
+  document.documentElement.classList.remove("drawer-lock");
+  document.body.classList.remove("drawer-lock");
+  updateBottomBar();
+}
+
+function updateBottomBar() {
+  const bar = document.getElementById("orderBottomBar");
+  const txt = document.getElementById("orderBottomBarText");
+  if (isOrderDrawerOpen()) {
+    bar.style.display = "none";
+    return;
+  }
+  if ((cart.length > 0 || editingKitIndex !== null) && currentView === "order" && !pickingForTranslator) {
+    bar.style.display = "block";
+    if (editingKitIndex !== null && userKits[editingKitIndex]) {
+      bar.classList.add("editing-kit");
+      txt.textContent = `Editando Kit: ${userKits[editingKitIndex].name} (${cart.length})`;
+    } else {
+      bar.classList.remove("editing-kit");
+      txt.textContent = `Pedido actual (${cart.length} ${cart.length === 1 ? 'material' : 'materiales'})`;
+    }
+  } else {
+    bar.style.display = "none";
+  }
+}
+
+// 4. Panel "Filtrar por características" plegado por defecto y con cierre automático al seleccionar un filtro
+function toggleFilterPanelOpen() {
+  filterPanelExpanded = !filterPanelExpanded;
+  const bodyEl = document.getElementById("sfCollapsibleBody");
+  const arrowEl = document.getElementById("sfToggleArrow");
+  if (bodyEl) bodyEl.style.display = filterPanelExpanded ? "block" : "none";
+  if (arrowEl) arrowEl.textContent = filterPanelExpanded ? "▴" : "▾";
+}
+
+function toggleFilterTag(tag) {
+  const idx = selectedFilterTags.indexOf(tag);
+  if (idx >= 0) selectedFilterTags.splice(idx, 1);
+  else selectedFilterTags.push(tag);
+  // Cerrar automáticamente el cuadro de filtros al seleccionar uno para dejar ver los resultados
+  filterPanelExpanded = false;
+  renderMaterials();
+}
+
+function resetFilterTags() {
+  selectedFilterTags = [];
+  filterPanelExpanded = false;
+  renderMaterials();
+}
+
+function renderUnifiedFilterPanel(poolItems) {
+  const barEl = document.getElementById("subFiltersBar");
+  if (!poolItems || poolItems.length < 2) {
+    barEl.style.display = "none";
+    barEl.innerHTML = "";
+    return;
+  }
+
+  const rowMap = { CONECTOR_TIPO: [], COLOR_GROSOR: [], CAPACIDAD: [], MARCA_TEC: [], METROS: [] };
+  poolItems.forEach(m => {
+    m.filterTags.forEach(tag => {
+      const grp = getFilterTagGroup(tag);
+      if (rowMap[grp] && !rowMap[grp].includes(tag)) rowMap[grp].push(tag);
+    });
+  });
+  selectedFilterTags.forEach(tag => {
+    const grp = getFilterTagGroup(tag);
+    if (rowMap[grp] && !rowMap[grp].includes(tag)) rowMap[grp].push(tag);
+  });
+
+  const sortNum = (arr) => arr.sort((a, b) => (parseFloat(a.replace(/^1:/, "").replace(/[^\d.]/g, "")) || 9999) - (parseFloat(b.replace(/^1:/, "").replace(/[^\d.]/g, "")) || 9999));
+  sortNum(rowMap.METROS);
+  sortNum(rowMap.CAPACIDAD);
+
+  const activeRows = FILTER_ROW_META.filter(rm => rowMap[rm.key].length > 1 || (rowMap[rm.key].length === 1 && selectedFilterTags.includes(rowMap[rm.key][0])));
+  if (activeRows.length === 0) {
+    barEl.style.display = "none";
+    barEl.innerHTML = "";
+    return;
+  }
+
+  const activeSummary = selectedFilterTags.length > 0
+    ? `<span class="sf-active-Readout">${selectedFilterTags.join(" · ")}</span>`
+    : "";
+
+  let html = `
+    <div class="sf-header-compact" onclick="toggleFilterPanelOpen()">
+      <div class="sf-header-left">
+        <span class="sf-title">Filtrar por características <span id="sfToggleArrow">${filterPanelExpanded ? '▴' : '▾'}</span></span>
+        ${activeSummary}
+      </div>
+      ${selectedFilterTags.length > 0 ? `<button type="button" class="sf-reset" onclick="event.stopPropagation();resetFilterTags()">Quitar (${selectedFilterTags.length}) ✕</button>` : ''}
+    </div>
+    <div id="sfCollapsibleBody" style="display:${filterPanelExpanded ? 'block' : 'none'};margin-top:10px;padding-top:10px;border-top:1px solid var(--border-soft);">
+  `;
+
+  activeRows.forEach(rm => {
+    const chipsHTML = rowMap[rm.key].map(tag => {
+      const isAct = selectedFilterTags.includes(tag);
+      const safe = tag.replace(/'/g, "\\'");
+      return `<button type="button" class="sf-chip ${isAct ? 'active' : ''}" onclick="toggleFilterTag('${safe}')">${tag}</button>`;
+    }).join("");
+    html += `<div class="sf-row-group"><div class="sf-row-label">${rm.label}</div><div class="sf-row-chips">${chipsHTML}</div></div>`;
+  });
+
+  html += `</div>`;
+  barEl.innerHTML = html;
+  barEl.style.display = "block";
+}
+
+function switchToSuggestedCategory(tIdx) {
+  selectedTable = tIdx;
+  resolvedConflictTable = tIdx;
+  selectedFilterTags = [];
+  filterPanelExpanded = false;
+  renderMaterials();
+  forceScrollTop();
+}
+
+// 5. Renderizado con ventana de conflicto, categorías coincidentes plegadas sutilmente arriba y categoría activa desplegada debajo
+function renderMaterials() {
+  const rawVal = searchInput.value;
+  const trimmedRaw = rawVal.trim();
+  const endsWithSpace = /\s$/.test(rawVal);
+  const q = norm(trimmedRaw);
+  const tokens = q ? q.split(/\s+/) : [];
+  const scopeBar = document.getElementById("activeScopeBar");
+  const groupsWrap = document.getElementById("materialsGroupsWrap");
+  const subBarEl = document.getElementById("subFiltersBar");
+
+  scopeBar.style.display = "none";
+
+  if (!q && selectedTable === "ALL" && resolvedConflictTable === null) {
+    subBarEl.style.display = "none";
+    groupsWrap.style.display = "none";
+    groupsWrap.innerHTML = "";
+    return;
+  }
+
+  // Detectar si lo que se escribe pertenece a varias categorías y lanzar la ventana de Selección de Categoría
+  if (tokens.length > 0) {
+    const fam = detectConflictFamily(tokens, endsWithSpace);
+    if (fam) {
+      if (activeConflictFamilyId !== fam.id) {
+        activeConflictFamilyId = fam.id;
+        resolvedConflictTable = null;
+        selectedTable = "ALL";
+        conflictDismissed = false;
+        selectedFilterTags = [];
+        filterPanelExpanded = false;
+      }
+      const matchingTables = [];
+      fam.tables.forEach(tIdx => {
+        const catNameNorm = norm(TABLES[tIdx][1]);
+        const nonCatTokens = tokens.filter(t => !catNameNorm.includes(t) && !toPhonetic(catNameNorm).includes(toPhonetic(t)));
+        const count = MATERIALS.filter(m => m.tIdx === tIdx && nonCatTokens.every(t => materialMatchesTokenStrict(m, t))).length;
+        if (count > 0) matchingTables.push({ tIdx, tableName: TABLES[tIdx][1], count });
+      });
+
+      if (matchingTables.length > 1 && resolvedConflictTable === null && selectedTable === "ALL" && !conflictDismissed) {
+        searchInput.blur();
+        subBarEl.style.display = "none";
+        groupsWrap.style.display = "none";
+        document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
+          <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
+            <span>(${mt.tableName})</span>
+            <span class="conflict-badge">${mt.count}</span>
+          </button>
+        `).join("");
+        openModalById("conflictModal");
+        return;
+      }
+    } else {
+      activeConflictFamilyId = null;
+      resolvedConflictTable = null;
+      conflictDismissed = false;
+    }
+  }
+
+  // Calcular todas las categorías que tienen coincidencias con lo buscado
+  const strictMatches = MATERIALS.filter(m => tokens.every(t => materialMatchesTokenStrict(m, t)));
+  const catCountsMap = new Map();
+
+  if (activeConflictFamilyId) {
+    const fam = CONFLICT_FAMILIES.find(f => f.id === activeConflictFamilyId);
+    if (fam) {
+      fam.tables.forEach(tIdx => {
+        const catNameNorm = norm(TABLES[tIdx][1]);
+        const nonCatTokens = tokens.filter(t => !catNameNorm.includes(t) && !toPhonetic(catNameNorm).includes(toPhonetic(t)));
+        const items = MATERIALS.filter(m => m.tIdx === tIdx && nonCatTokens.every(t => materialMatchesTokenStrict(m, t)));
+        if (items.length > 0) catCountsMap.set(tIdx, items);
+      });
+    }
+  }
+  strictMatches.forEach(m => {
+    if (!catCountsMap.has(m.tIdx)) catCountsMap.set(m.tIdx, []);
+    const arr = catCountsMap.get(m.tIdx);
+    if (!arr.includes(m)) arr.push(m);
+  });
+
+  // Determinar cuál es la categoría activa que se muestra desplegada abajo
+  let activeTIdx = resolvedConflictTable !== null ? resolvedConflictTable : (selectedTable !== "ALL" ? selectedTable : null);
+  if (activeTIdx === null && catCountsMap.size > 0) {
+    activeTIdx = catCountsMap.keys().next().value;
+  }
+
+  const baseItems = (activeTIdx !== null && catCountsMap.has(activeTIdx))
+    ? catCountsMap.get(activeTIdx)
+    : (activeTIdx !== null ? MATERIALS.filter(m => m.tIdx === activeTIdx && tokens.every(t => materialMatchesTokenStrict(m, t))) : strictMatches);
+
+  renderUnifiedFilterPanel(baseItems);
+
+  let finalItems = selectedFilterTags.length > 0
+    ? baseItems.filter(m => matchesSelectedFilterTags(m))
+    : baseItems;
+
+  finalItems.sort((a, b) => (q && a.code.toLowerCase() === q) ? -1 : (q && b.code.toLowerCase() === q) ? 1 : 0);
+
+  // Construir barra sutil superior con las demás categorías que tienen coincidencias (plegadas arriba)
+  const otherCats = [];
+  catCountsMap.forEach((items, tIdx) => {
+    if (tIdx !== activeTIdx && items.length > 0) {
+      otherCats.push({ tIdx, title: TABLES[tIdx][1], count: items.length });
+    }
+  });
+
+  let subtleTopCatsHTML = "";
+  if (otherCats.length > 0) {
+    subtleTopCatsHTML = `
+      <div class="subtle-collapsed-cats">
+        <div class="subtle-cats-label">También hay coincidencias en (toca para abrir):</div>
+        <div class="subtle-cats-list">
+          ${otherCats.map(oc => `
+            <button type="button" class="subtle-cat-row" onclick="switchToSuggestedCategory(${oc.tIdx})">
+              <span class="subtle-cat-name">▸ ${oc.title}</span>
+              <span class="subtle-cat-count">${oc.count}</span>
+            </button>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  groupsWrap.style.display = "flex";
+
+  // Si no hay resultados: mostrar botón de "Añadir material puntual"
+  if (finalItems.length === 0) {
+    let emptyHTML = subtleTopCatsHTML + `<div class="empty-suggestions-card">`;
+    if (baseItems.length > 0 && selectedFilterTags.length > 0) {
+      emptyHTML += `
+        <div class="empty-msg-title">Ningún material de esta categoría coincide con ese filtro.</div>
+        <button type="button" class="alt-cat-btn" onclick="resetFilterTags()">
+          <span>Quitar filtros activos</span>
+          <span>Ver ${baseItems.length} materiales ›</span>
+        </button>
+      `;
+    } else {
+      emptyHTML += `
+        <div class="empty-msg-title">No se han encontrado materiales en el catálogo para "${trimmedRaw}".</div>
+        <button type="button" class="puntual-empty-btn" onclick="openPuntualModal()">+ Añadir material puntual sin código</button>
+      `;
+    }
+    groupsWrap.innerHTML = emptyHTML + `</div>`;
+    return;
+  }
+
+  const activeListMap = {};
+  (pickingForTranslator ? transItems : cart).forEach(it => { if (it.key) activeListMap[it.key] = it.qty; });
+
+  const rowsHTML = finalItems.map(m => {
+    const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
+    const qtyInCart = activeListMap[key];
+    const isSC = m.code === "SIN CÓDIGO";
+    const synHint = getMatchedSynonymHint(m, tokens);
+    const synHTML = synHint ? ` <span class="syn-hint">· (${highlightTextDual(synHint, tokens, [])})</span>` : "";
+
+    return `
+      <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
+        <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : highlightTextDual(m.code, tokens, [])}</span>
+        <div class="mat-content">
+          <div class="mat-line1">${highlightTextDual(m.name, tokens, selectedFilterTags)}${synHTML}</div>
+        </div>
+        <div class="mat-right-ind">
+          ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const activeCatTitle = activeTIdx !== null ? TABLES[activeTIdx][1] : "RESULTADOS";
+
+  groupsWrap.innerHTML = `
+    ${subtleTopCatsHTML}
+    <div class="cat-group-block">
+      <div class="cat-block-header" style="cursor:default;">
+        <span class="cat-block-title">${activeCatTitle}</span>
+        <div class="cat-block-right">
+          <span class="cat-block-badge">${finalItems.length}</span>
+        </div>
+      </div>
+      <div class="cat-block-body">
+        ${rowsHTML}
+      </div>
+    </div>
+  `;
+}
+
+updateKitsBadge();
 renderMaterials();
 renderCart();
 </script>
+<style>
+  /* 1. Logo entero sin cortes en ninguna pestaña */
+  .brand-logo, .home-main-logo, .pedido-logo, .print-logo {
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    overflow: visible !important;
+    padding: 2px 0 !important;
+  }
+  .brand-logo { max-height: 22px !important; max-width: 140px !important; }
+  .home-main-logo { max-height: 36px !important; max-width: 220px !important; }
+  .pedido-logo { max-height: 18px !important; max-width: 110px !important; }
+  .brand-center-wrap, .brand-bar-inner, .home-brand-area, .pedido-header-left {
+    overflow: visible !important;
+  }
+
+  /* 2. Eliminar la "x" pequeña nativa del buscador */
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    display: none !important;
+  }
+
+  /* 3. Eliminar Asistente y botón +Puntual de la cabecera */
+  .aki-pill-btn, #akinatorModal, .puntual-pill-btn {
+    display: none !important;
+  }
+  .secondary-tools-bar {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 4. Barra "Filtrar por características" compacta y plegada por defecto */
+  .subfilters-panel {
+    padding: 9px 12px !important;
+    margin-bottom: 12px !important;
+  }
+  .sf-header-compact {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    gap: 8px;
+  }
+  .sf-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+  .sf-active-Readout {
+    background: var(--cat-bg);
+    color: var(--corp-blue);
+    border: 1px solid var(--cat-border);
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  /* 5. Categorías con coincidencias plegadas de forma muy sutil arriba */
+  .subtle-collapsed-cats {
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 6px 10px;
+    margin-bottom: -10px;
+  }
+  .subtle-cats-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+  }
+  .subtle-cats-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .subtle-cat-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 4px 9px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .subtle-cat-row:active {
+    border-color: var(--corp-blue);
+    color: var(--corp-blue);
+  }
+  .subtle-cat-count {
+    background: var(--cat-bg);
+    color: var(--cat-text);
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: 6px;
+  }
+
+  /* 6. Botón Añadir material puntual cuando hay 0 resultados */
+  .puntual-empty-btn {
+    margin-top: 4px;
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 9px;
+    border: 1.5px dashed var(--corp-blue);
+    background: var(--panel-alt);
+    color: var(--corp-blue);
+    font-size: 0.82rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  /* 7. Bloqueo total de movimiento de la pantalla trasera al abrir el Pedido */
+  html.drawer-lock, body.drawer-lock {
+    overflow: hidden !important;
+    height: 100% !important;
+    overscroll-behavior: none !important;
+  }
+  .order-drawer-backdrop {
+    overscroll-behavior: contain !important;
+  }
+  .pedido-body {
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch;
+  }
+</style>
 </body>
 </html>
