@@ -3907,7 +3907,6 @@ function sendWhatsApp() {
   if (!txt) return;
   window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
 }
-
 // =========================================================================
 // GESTIÓN DE MIS KITS
 // =========================================================================
@@ -4518,6 +4517,7 @@ document.getElementById("pwa-manifest").setAttribute(
   "href",
   "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest))
 );
+
 function showToast(msg) {
   const t = document.getElementById("toast");
   if (!t) return;
