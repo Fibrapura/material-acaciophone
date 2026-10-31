@@ -4493,94 +4493,120 @@ function executePrintChecklist() {
   }, 120);
 }
 
-// =========================================================================
-// PARCHE LIGERO V2: LOGO REPARADO, OPCIONES PLEGADAS Y DISEÑO UNIFICADO
-// =========================================================================
-
-// =========================================================================
-// PARCHE LIGERO V2: LOGO REPARADO, OPCIONES PLEGADAS Y DISEÑO UNIFICADO
-// =========================================================================
-
-// 1. Limpiar fondo fantasma del PNG del logo y reconstruir borde inferior sin corte
-(function fixLogoClipping() {
-  const img = new Image();
-  img.onload = function() {
-    const w = img.width, h = img.height;
-    const padY = 12;
-    const cLight = document.createElement("canvas");
-    cLight.width = w; cLight.height = h + padY * 2;
-    const ctx = cLight.getContext("2d");
-    ctx.drawImage(img, 0, padY);
-
-    const imgData = ctx.getImageData(0, 0, cLight.width, cLight.height);
-    const d = imgData.data;
-    // Eliminar píxeles semitransparentes del recuadro que creaban la franja inferior
-    for (let i = 0; i < d.length; i += 4) {
-      if (d[i + 3] < 45) {
-        d[i + 3] = 0;
-      } else {
-        d[i] = 4; d[i + 1] = 27; d[i + 2] = 58;
-        d[i + 3] = Math.min(255, Math.round(d[i + 3] * 1.25));
-      }
-    }
-    ctx.putImageData(imgData, 0, 0);
-
-    // Extender y redondear los trazos inferiores (letra "p") que venían cortados a ras en el PNG original
-    const lastRowY = padY + h - 1;
-    for (let extra = 1; extra <= 5; extra++) {
-      const shrink = extra;
-      for (let x = shrink; x < w - shrink; x++) {
-        const idxSrc = (lastRowY * w + x) * 4;
-        const idxLeft = (lastRowY * w + (x - shrink)) * 4;
-        const idxRight = (lastRowY * w + (x + shrink)) * 4;
-        if (d[idxSrc + 3] > 110 && d[idxLeft + 3] > 80 && d[idxRight + 3] > 80) {
-          ctx.fillStyle = `rgba(4, 27, 58, ${(1 - extra * 0.16).toFixed(2)})`;
-          ctx.fillRect(x, lastRowY + extra, 1, 1);
-        }
-      }
-    }
-
-    const cleanDarkURI = cLight.toDataURL("image/png");
-
-    // Crear versión blanca limpia para fondos oscuros sin usar filter:invert()
-    const cWhite = document.createElement("canvas");
-    cWhite.width = cLight.width; cWhite.height = cLight.height;
-    const ctxW = cWhite.getContext("2d");
-    ctxW.drawImage(cLight, 0, 0);
-    const wData = ctxW.getImageData(0, 0, cWhite.width, cWhite.height);
-    const wd = wData.data;
-    for (let i = 0; i < wd.length; i += 4) {
-      if (wd[i + 3] > 0) { wd[i] = 255; wd[i + 1] = 255; wd[i + 2] = 255; }
-    }
-    ctxW.putImageData(wData, 0, 0);
-    const cleanWhiteURI = cWhite.toDataURL("image/png");
-
-    window.__CLEAN_LOGO_DARK = cleanDarkURI;
-    window.__CLEAN_LOGO_WHITE = cleanWhiteURI;
-    applyCleanLogos();
-  };
-  img.src = LOGO_DATA_URI;
-})();
-
-function applyCleanLogos() {
-  if (!window.__CLEAN_LOGO_WHITE) return;
-  const isDark = document.body.classList.contains("dark-mode");
-  document.getElementById("headerLogo").src = window.__CLEAN_LOGO_WHITE;
-  document.getElementById("pedidoLogo").src = window.__CLEAN_LOGO_WHITE;
-  document.getElementById("homeLogoImg").src = isDark ? window.__CLEAN_LOGO_WHITE : window.__CLEAN_LOGO_DARK;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(() => { t.style.display = "none"; }, 1800);
 }
 
-const _origToggleTheme = toggleTheme;
+const manifest = {
+  name: "Material Acaciophone",
+  short_name: "Acaciophone",
+  start_url: ".",
+  display: "standalone",
+  background_color: "#e6ecf5",
+  theme_color: "#041b3a",
+  icons: [{ src: ICON_DATA_URI, sizes: "192x192", type: "image/png" }]
+};
+document.getElementById("pwa-manifest").setAttribute(
+  "href",
+  "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest))
+);
+
+// =========================================================================
+// PARCHE V3: LOGO VECTORIAL SIN CORTES, UNIDADES, PESTAÑAS Y "VER TODO"
+// =========================================================================
+
+// 1. Logo vectorial idéntico al adjunto con margen completo (imposible que se corte la "p" o la base)
+const LOGO_SVG_NAVY = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 250" width="1180" height="250">
+    <text x="590" y="162" text-anchor="middle" fill="#001b42" font-family="'Arial Black', 'Inter', 'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="162" letter-spacing="-1.5">acaciophone</text>
+  </svg>`
+);
+
+const LOGO_SVG_WHITE = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 250" width="1180" height="250">
+    <text x="590" y="162" text-anchor="middle" fill="#ffffff" font-family="'Arial Black', 'Inter', 'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="162" letter-spacing="-1.5">acaciophone</text>
+  </svg>`
+);
+
+function applyCrispLogos() {
+  const isDark = document.body.classList.contains("dark-mode");
+  const hLogo = document.getElementById("headerLogo");
+  const pLogo = document.getElementById("pedidoLogo");
+  const homeLogo = document.getElementById("homeLogoImg");
+  if (hLogo) hLogo.src = LOGO_SVG_WHITE;
+  if (pLogo) pLogo.src = LOGO_SVG_WHITE;
+  if (homeLogo) homeLogo.src = isDark ? LOGO_SVG_WHITE : LOGO_SVG_NAVY;
+}
+applyCrispLogos();
+
+const _baseToggleTheme = toggleTheme;
 toggleTheme = function() {
-  _origToggleTheme();
-  applyCleanLogos();
+  _baseToggleTheme();
+  applyCrispLogos();
+};
+
+// Usar también el logo sin cortes al imprimir el Checklist A4
+const _origExecPrint = executePrintChecklist;
+executePrintChecklist = function() {
+  _origExecPrint();
+  const printImg = document.querySelector("#printArea .print-logo");
+  if (printImg) printImg.src = LOGO_SVG_NAVY;
 };
 
 // 2. Quitar la "x" pequeña nativa del buscador
 searchInput.setAttribute("type", "text");
 
-// 3. Ventana flotante de Selección de Categoría
-(function injectConflictModal() {
+// 3. Reestructurar cabecera: selector sutil <Pedidos | Lector de códigos> y botón "Ver todo"
+let allCategoriesMode = false;
+let expandedAllCatIndices = new Set();
+
+(function setupHeaderAndModalUI() {
+  // Insertar selector sutil Pedidos | Lector de códigos arriba en el área de herramientas
+  const toolsWrap = document.querySelector(".header-tools-wrap");
+  if (toolsWrap && !document.getElementById("subtleTopTabs")) {
+    const seg = document.createElement("div");
+    seg.id = "subtleTopTabs";
+    seg.className = "subtle-top-tabs";
+    seg.innerHTML = `
+      <button type="button" id="subtleTabOrder" class="subtle-tab-btn active" onclick="switchMode('order')">Pedidos</button>
+      <button type="button" id="subtleTabTrans" class="subtle-tab-btn" onclick="switchMode('translator')">Lector de códigos</button>
+    `;
+    toolsWrap.insertBefore(seg, toolsWrap.firstChild);
+  }
+
+  // Añadir botón "Ver todo" al lado de "Mis Kits" debajo de la barra de búsqueda
+  const secBar = document.querySelector(".secondary-tools-bar");
+  if (secBar && !document.getElementById("viewAllCatsBtn")) {
+    const btnAll = document.createElement("button");
+    btnAll.type = "button";
+    btnAll.id = "viewAllCatsBtn";
+    btnAll.className = "kits-pill";
+    btnAll.onclick = toggleAllCategoriesView;
+    btnAll.textContent = "Ver todo";
+    secBar.appendChild(btnAll);
+  }
+
+  // Actualizar botones de unidades del modal: eliminar +1 y 1 naranja, dejar 5, 10, 50, 100 sin "+"
+  const qPills = document.querySelector("#itemModal .quick-pills");
+  if (qPills) {
+    qPills.innerHTML = `
+      <button type="button" class="q-pill" onclick="tapQuickQty(5)">5</button>
+      <button type="button" class="q-pill" onclick="tapQuickQty(10)">10</button>
+      <button type="button" class="q-pill" onclick="tapQuickQty(50)">50</button>
+      <button type="button" class="q-pill" onclick="tapQuickQty(100)">100</button>
+    `;
+  }
+
+  const qtyInputEl = document.getElementById("mQtyInput");
+  if (qtyInputEl) {
+    qtyInputEl.addEventListener("input", () => { lastQuickQtyTapped = null; });
+  }
+
+  // Ventana flotante de Selección de Categoría cuando hay coincidencias múltiples
   if (!document.getElementById("conflictModal")) {
     const m = document.createElement("div");
     m.className = "modal-backdrop";
@@ -4603,6 +4629,153 @@ searchInput.setAttribute("type", "text");
   }
 })();
 
+// 4. Lógica de botones de cantidad (5, 10, 50, 100): 1ª pulsación sustituye, siguientes suman
+let lastQuickQtyTapped = null;
+
+function tapQuickQty(n) {
+  const el = document.getElementById("mQtyInput");
+  if (lastQuickQtyTapped !== n) {
+    el.value = n;
+    lastQuickQtyTapped = n;
+  } else {
+    el.value = Math.max(1, (parseInt(el.value || "0", 10) + n));
+  }
+}
+
+const _origStepQty = stepQty;
+stepQty = function(d) {
+  lastQuickQtyTapped = null;
+  _origStepQty(d);
+};
+
+const _origOpenCatalogModal = openCatalogModal;
+openCatalogModal = function(id) {
+  lastQuickQtyTapped = null;
+  _origOpenCatalogModal(id);
+};
+
+const _origOpenPuntualModal = openPuntualModal;
+openPuntualModal = function() {
+  lastQuickQtyTapped = null;
+  _origOpenPuntualModal();
+};
+
+// 5. En Inicio: clicar en "Pedido en curso" lleva directo a Pedido Actual abierto
+function goDirectToCurrentOrder(e) {
+  if (e) e.stopPropagation();
+  switchMode("order");
+  openOrderDrawer();
+}
+
+function updateHomeBadge() {
+  const badge = document.getElementById("homeOrderBadge");
+  if (!badge) return;
+  if (cart.length > 0 && editingKitIndex === null) {
+    badge.style.display = "inline-flex";
+    badge.innerHTML = `<span>🛒 Pedido en curso: ${cart.length} ${cart.length === 1 ? 'material' : 'materiales'} · Ver pedido ›</span>`;
+    badge.onclick = goDirectToCurrentOrder;
+  } else {
+    badge.style.display = "none";
+  }
+}
+
+// 6. Sincronizar pestañas sutiles al cambiar entre Pedidos y Lector de códigos
+const _origApplyViewDOM = applyViewDOM;
+applyViewDOM = function(mode) {
+  _origApplyViewDOM(mode);
+  const topTabs = document.getElementById("subtleTopTabs");
+  if (topTabs) {
+    topTabs.style.display = (mode === "home" || pickingForTranslator) ? "none" : "grid";
+    const bOrder = document.getElementById("subtleTabOrder");
+    const bTrans = document.getElementById("subtleTabTrans");
+    if (bOrder) bOrder.classList.toggle("active", mode === "order");
+    if (bTrans) bTrans.classList.toggle("active", mode === "translator");
+  }
+  const viewAllBtn = document.getElementById("viewAllCatsBtn");
+  if (viewAllBtn) {
+    viewAllBtn.textContent = allCategoriesMode ? "‹ Volver al buscador" : "Ver todo";
+    viewAllBtn.classList.toggle("active-all-btn", allCategoriesMode);
+  }
+};
+
+// 7. Vista "Ver todo" (todas las categorías plegadas y desplegables al clicar)
+function toggleAllCategoriesView() {
+  allCategoriesMode = !allCategoriesMode;
+  if (allCategoriesMode) {
+    searchInput.value = "";
+    clearSearchBtn.style.display = "none";
+    selectedTable = "ALL";
+    resolvedConflictTable = null;
+    selectedFilterTags = [];
+  }
+  const viewAllBtn = document.getElementById("viewAllCatsBtn");
+  if (viewAllBtn) {
+    viewAllBtn.textContent = allCategoriesMode ? "‹ Volver al buscador" : "Ver todo";
+    viewAllBtn.classList.toggle("active-all-btn", allCategoriesMode);
+  }
+  renderMaterials();
+  forceScrollTop();
+}
+
+function toggleAllCatAccordion(tIdx) {
+  if (expandedAllCatIndices.has(tIdx)) {
+    expandedAllCatIndices.delete(tIdx);
+  } else {
+    expandedAllCatIndices.add(tIdx);
+  }
+  renderMaterials();
+}
+
+// 8. Bloqueo de fondo al abrir la bandeja de Pedido Actual
+function openOrderDrawer() {
+  closeAllModalDOM();
+  document.getElementById("orderDrawerBackdrop").classList.add("open");
+  document.documentElement.classList.add("drawer-lock");
+  document.body.classList.add("drawer-lock");
+  updateBottomBar();
+  if (!handlingPopState) history.pushState({ view: currentView, modal: "orderDrawerBackdrop" }, "");
+}
+
+function closeOrderDrawer() {
+  document.getElementById("orderDrawerBackdrop").classList.remove("open");
+  document.documentElement.classList.remove("drawer-lock");
+  document.body.classList.remove("drawer-lock");
+  updateBottomBar();
+  if (!handlingPopState && history.state && history.state.modal === "orderDrawerBackdrop") {
+    history.replaceState({ view: currentView, modal: null }, "");
+  }
+}
+
+function closeAllModalDOM() {
+  document.querySelectorAll(".modal-backdrop").forEach(m => m.classList.remove("open"));
+  document.getElementById("orderDrawerBackdrop").classList.remove("open");
+  document.documentElement.classList.remove("drawer-lock");
+  document.body.classList.remove("drawer-lock");
+  updateBottomBar();
+}
+
+function updateBottomBar() {
+  const bar = document.getElementById("orderBottomBar");
+  const txt = document.getElementById("orderBottomBarText");
+  if (isOrderDrawerOpen()) {
+    bar.style.display = "none";
+    return;
+  }
+  if ((cart.length > 0 || editingKitIndex !== null) && currentView === "order" && !pickingForTranslator) {
+    bar.style.display = "block";
+    if (editingKitIndex !== null && userKits[editingKitIndex]) {
+      bar.classList.add("editing-kit");
+      txt.textContent = `Editando Kit: ${userKits[editingKitIndex].name} (${cart.length})`;
+    } else {
+      bar.classList.remove("editing-kit");
+      txt.textContent = `Pedido actual (${cart.length} ${cart.length === 1 ? 'material' : 'materiales'})`;
+    }
+  } else {
+    bar.style.display = "none";
+  }
+}
+
+// 9. Búsqueda, ventana de selección de categoría y desplegables sutiles
 let activeConflictFamilyId = null;
 let resolvedConflictTable = null;
 let conflictDismissed = false;
@@ -4663,6 +4836,14 @@ function chooseConflictTableFromModal(tIdx) {
 searchInput.addEventListener("input", () => {
   const val = searchInput.value.trim();
   clearSearchBtn.style.display = val ? "flex" : "none";
+  if (val && allCategoriesMode) {
+    allCategoriesMode = false;
+    const viewAllBtn = document.getElementById("viewAllCatsBtn");
+    if (viewAllBtn) {
+      viewAllBtn.textContent = "Ver todo";
+      viewAllBtn.classList.remove("active-all-btn");
+    }
+  }
   otherCatsPanelExpanded = false;
   filterPanelExpanded = false;
   if (!val) {
@@ -4690,56 +4871,6 @@ function clearSearch() {
   renderMaterials();
 }
 
-// 4. Bloquear scroll trasero al abrir Pedido
-function openOrderDrawer() {
-  closeAllModalDOM();
-  document.getElementById("orderDrawerBackdrop").classList.add("open");
-  document.documentElement.classList.add("drawer-lock");
-  document.body.classList.add("drawer-lock");
-  updateBottomBar();
-  if (!handlingPopState) history.pushState({ view: currentView, modal: "orderDrawerBackdrop" }, "");
-}
-
-function closeOrderDrawer() {
-  document.getElementById("orderDrawerBackdrop").classList.remove("open");
-  document.documentElement.classList.remove("drawer-lock");
-  document.body.classList.remove("drawer-lock");
-  updateBottomBar();
-  if (!handlingPopState && history.state && history.state.modal === "orderDrawerBackdrop") {
-    history.replaceState({ view: currentView, modal: null }, "");
-  }
-}
-
-function closeAllModalDOM() {
-  document.querySelectorAll(".modal-backdrop").forEach(m => m.classList.remove("open"));
-  document.getElementById("orderDrawerBackdrop").classList.remove("open");
-  document.documentElement.classList.remove("drawer-lock");
-  document.body.classList.remove("drawer-lock");
-  updateBottomBar();
-}
-
-function updateBottomBar() {
-  const bar = document.getElementById("orderBottomBar");
-  const txt = document.getElementById("orderBottomBarText");
-  if (isOrderDrawerOpen()) {
-    bar.style.display = "none";
-    return;
-  }
-  if ((cart.length > 0 || editingKitIndex !== null) && currentView === "order" && !pickingForTranslator) {
-    bar.style.display = "block";
-    if (editingKitIndex !== null && userKits[editingKitIndex]) {
-      bar.classList.add("editing-kit");
-      txt.textContent = `Editando Kit: ${userKits[editingKitIndex].name} (${cart.length})`;
-    } else {
-      bar.classList.remove("editing-kit");
-      txt.textContent = `Pedido actual (${cart.length} ${cart.length === 1 ? 'material' : 'materiales'})`;
-    }
-  } else {
-    bar.style.display = "none";
-  }
-}
-
-// 5. Desplegables sutiles: "También hay coincidencias en" y "Filtrar por características" (plegados por defecto y con autocierre)
 function toggleOtherCatsPanel() {
   otherCatsPanelExpanded = !otherCatsPanelExpanded;
   if (otherCatsPanelExpanded) filterPanelExpanded = false;
@@ -4771,7 +4902,7 @@ function switchToSuggestedCategory(tIdx) {
   resolvedConflictTable = tIdx;
   selectedFilterTags = [];
   filterPanelExpanded = false;
-  otherCatsPanelExpanded = false; // Se vuelve a esconder automáticamente al elegir categoría
+  otherCatsPanelExpanded = false;
   renderMaterials();
   forceScrollTop();
 }
@@ -4836,7 +4967,6 @@ function renderUnifiedFilterPanel(poolItems) {
   barEl.style.display = "block";
 }
 
-// 6. Renderizado principal dando prioridad total a Búsqueda + Resultados
 function renderMaterials() {
   const rawVal = searchInput.value;
   const trimmedRaw = rawVal.trim();
@@ -4846,6 +4976,56 @@ function renderMaterials() {
   const scopeBar = document.getElementById("activeScopeBar");
   const groupsWrap = document.getElementById("materialsGroupsWrap");
   const subBarEl = document.getElementById("subFiltersBar");
+
+  const activeListMap = {};
+  (pickingForTranslator ? transItems : cart).forEach(it => { if (it.key) activeListMap[it.key] = it.qty; });
+
+  // MODO "VER TODO": Mostrar todas las categorías plegadas para desplegarlas al clicar
+  if (allCategoriesMode && !q) {
+    scopeBar.style.display = "none";
+    subBarEl.style.display = "none";
+    groupsWrap.style.display = "flex";
+
+    let allHTML = "";
+    TABLES.forEach((t, tIdx) => {
+      const catItems = MATERIALS.filter(m => m.tIdx === tIdx);
+      if (!catItems.length) return;
+      const isExp = expandedAllCatIndices.has(tIdx);
+
+      const rowsHTML = isExp ? catItems.map(m => {
+        const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
+        const qtyInCart = activeListMap[key];
+        const isSC = m.code === "SIN CÓDIGO";
+        return `
+          <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
+            <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : m.code}</span>
+            <div class="mat-content">
+              <div class="mat-line1">${m.name}</div>
+            </div>
+            <div class="mat-right-ind">
+              ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
+            </div>
+          </div>
+        `;
+      }).join("") : "";
+
+      allHTML += `
+        <div class="cat-group-block ${isExp ? 'search-twin-box' : 'all-cat-collapsed'}">
+          <div class="cat-block-header" onclick="toggleAllCatAccordion(${tIdx})">
+            <span class="cat-block-title">${t[1]}</span>
+            <div class="cat-block-right">
+              <span class="cat-block-badge">${catItems.length}</span>
+              <span class="cat-block-chevron" style="transform:${isExp ? 'rotate(0deg)' : 'rotate(-90deg)'}">▾</span>
+            </div>
+          </div>
+          ${isExp ? `<div class="cat-block-body">${rowsHTML}</div>` : ''}
+        </div>
+      `;
+    });
+
+    groupsWrap.innerHTML = allHTML;
+    return;
+  }
 
   scopeBar.style.display = "none";
 
@@ -4925,7 +5105,6 @@ function renderMaterials() {
     ? catCountsMap.get(activeTIdx)
     : (activeTIdx !== null ? MATERIALS.filter(m => m.tIdx === activeTIdx && tokens.every(t => materialMatchesTokenStrict(m, t))) : strictMatches);
 
-  // Construir desplegable sutil de "También hay coincidencias en" (Plegado por defecto)
   const otherCats = [];
   catCountsMap.forEach((items, tIdx) => {
     if (tIdx !== activeTIdx && items.length > 0) {
@@ -4982,9 +5161,6 @@ function renderMaterials() {
     return;
   }
 
-  const activeListMap = {};
-  (pickingForTranslator ? transItems : cart).forEach(it => { if (it.key) activeListMap[it.key] = it.qty; });
-
   const rowsHTML = finalItems.map(m => {
     const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
     const qtyInCart = activeListMap[key];
@@ -5027,24 +5203,86 @@ renderMaterials();
 renderCart();
 </script>
 <style>
-  /* 1. Logos reparados sin filtro CSS que cree franja y con aire suficiente */
-  .brand-logo, .home-main-logo, .pedido-logo {
+  /* 1. Logo vectorial limpio, sin filtros ni recortes, y ocultar el texto debajo del logo */
+  #pageHeaderTitle { display: none !important; }
+  .brand-logo, .home-main-logo, .pedido-logo, .print-logo {
     filter: none !important;
     width: auto !important;
-    height: auto !important;
     object-fit: contain !important;
     display: block !important;
+    overflow: visible !important;
   }
-  .brand-logo { max-height: 24px !important; max-width: 145px !important; }
-  .home-main-logo { max-height: 40px !important; max-width: 225px !important; }
-  .pedido-logo { max-height: 20px !important; max-width: 115px !important; }
+  .brand-logo { height: 28px !important; max-width: 175px !important; }
+  .home-main-logo { height: 46px !important; max-width: 255px !important; }
+  .pedido-logo { height: 22px !important; max-width: 130px !important; }
 
-  /* 2. Eliminar "x" nativa, Asistente y +Puntual de cabecera */
+  /* 2. Selector sutil y elegante <Pedidos | Lector de códigos> */
+  .subtle-top-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    padding: 3px;
+    border-radius: 9px;
+    margin-bottom: 12px;
+  }
+  .subtle-tab-btn {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .subtle-tab-btn.active {
+    background: var(--panel);
+    color: var(--corp-blue);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  /* 3. Botonera inferior del buscador: Mis Kits | Ver todo (sutiles) */
   input[type="search"]::-webkit-search-cancel-button { display: none !important; }
   .aki-pill-btn, #akinatorModal, .puntual-pill-btn { display: none !important; }
-  .secondary-tools-bar { grid-template-columns: 1fr !important; }
+  .secondary-tools-bar {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  .kits-pill {
+    background: transparent !important;
+    border: 1px dashed var(--border) !important;
+    color: var(--text-secondary) !important;
+    padding: 6px 10px !important;
+    font-size: 0.74rem !important;
+    border-radius: 8px !important;
+  }
+  .kits-pill.active-all-btn {
+    background: var(--cat-bg) !important;
+    border: 1px solid var(--corp-blue) !important;
+    color: var(--corp-blue) !important;
+  }
 
-  /* 3. Identidad gemela entre Barra de Búsqueda y Bloque de Resultados (Protagonistas) */
+  /* 4. Cuadro de unidades con 4 botones rápidos (5, 10, 50, 100) */
+  .quick-pills {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  /* 5. Cartel de "Pedido en curso" en Inicio clicable */
+  #homeOrderBadge {
+    cursor: pointer !important;
+    padding: 6px 11px !important;
+    border-radius: 8px !important;
+    transition: transform 0.12s;
+  }
+  #homeOrderBadge:active {
+    transform: scale(0.96);
+  }
+
+  /* 6. Diseño gemelo entre Buscador y Resultados + Categorías plegadas en "Ver todo" */
   .search-wrap input {
     height: 54px !important;
     border: 2.5px solid var(--corp-blue) !important;
@@ -5066,16 +5304,27 @@ renderCart();
   body.dark-mode .search-twin-box .cat-block-header {
     background: #0284c7 !important;
   }
-
-  /* 4. Opciones secundarias (Mis Kits, Otras categorías, Filtrar) muy sutiles y diferenciadas */
-  .kits-pill {
-    background: transparent !important;
-    border: 1px dashed var(--border) !important;
-    color: var(--text-secondary) !important;
-    padding: 5px 10px !important;
-    font-size: 0.73rem !important;
-    border-radius: 7px !important;
+  .all-cat-collapsed {
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
   }
+  .all-cat-collapsed .cat-block-header {
+    background: var(--panel) !important;
+    color: var(--text) !important;
+    padding: 10px 14px !important;
+  }
+  .all-cat-collapsed .cat-block-title {
+    color: var(--text) !important;
+  }
+  .all-cat-collapsed .cat-block-badge {
+    background: var(--panel-alt) !important;
+    color: var(--corp-blue) !important;
+  }
+  #materialsGroupsWrap {
+    gap: 10px !important;
+  }
+
+  /* 7. Desplegables sutiles (Otras categorías y Filtrar por características) */
   .scope-banner, .subfilters-panel {
     background: rgba(148, 163, 184, 0.1) !important;
     border: 1px dashed var(--border) !important;
@@ -5133,8 +5382,6 @@ renderCart();
     padding: 1px 6px;
     border-radius: 6px;
   }
-
-  /* 5. Botón puntual cuando hay 0 resultados y bloqueo de fondo del pedido */
   .puntual-empty-btn {
     margin-top: 4px;
     width: 100%;
