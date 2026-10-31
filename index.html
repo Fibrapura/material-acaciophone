@@ -4077,7 +4077,78 @@ document.getElementById("pwa-manifest").setAttribute(
   "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest))
 );
 
-  function getFilterTagGroup(tag) {
+  // =========================================================================
+// ACTUALIZACIÓN UNIFICADA: DISEÑO LIMPIO, BÚSQUEDA SEPARADA Y NUEVAS FUNCIONES
+// =========================================================================
+
+let filterBarExpanded = false;
+let orderHistory = JSON.parse(localStorage.getItem("acacio_v5_history") || "[]");
+let lastMergedDuplicatesCount = 0;
+
+// 1. Preparar índice de búsqueda estricto por material (separado del nombre de la categoría)
+MATERIALS.forEach(m => {
+  const syns = getSynonymsForItem(m.code, m.name, m.tIdx);
+  m.itemDirectSearch = norm(`${m.code} ${m.name} ${m.prov}`);
+  m.itemDirectWords = m.itemDirectSearch.split(/[^a-z0-9]+/).filter(w => w.length >= 3);
+  m.itemDirectPhonetic = toPhonetic(m.itemDirectSearch);
+  m.synsRaw = syns;
+  m.synsSearch = norm(syns);
+  m.synsWords = m.synsSearch.split(/[^a-z0-9]+/).filter(w => w.length >= 3);
+  m.synsPhonetic = toPhonetic(m.synsSearch);
+});
+
+function wordMatchesTokenFuzzy(wordsArr, fullStr, phFull, token) {
+  if (/\d/.test(token)) return fullStr.includes(token);
+  const variants = getSingularVariants(token);
+  if (variants.some(v => fullStr.includes(v))) return true;
+  if (token.length >= 3) {
+    const phToken = toPhonetic(token);
+    if (phToken.length >= 3 && phFull.includes(phToken)) return true;
+  }
+  if (token.length >= 4) {
+    const maxDist = token.length >= 7 ? 2.0 : 1.1;
+    for (const v of variants) {
+      if (v.length < 4) continue;
+      for (const w of wordsArr) {
+        if (Math.abs(w.length - v.length) <= 2 && typoDistance(v, w, maxDist) <= maxDist) return true;
+        if (v.length >= 5 && w.length > v.length && typoDistance(v, w.slice(0, v.length), 1.0) <= 1.0) return true;
+      }
+    }
+  }
+  return false;
+}
+
+// Comprueba si el material coincide por sí mismo (Código, Nombre, Proveedor o Sinónimo), ignorando el título de la categoría
+function materialMatchesTokenStrict(mat, token) {
+  if (wordMatchesTokenFuzzy(mat.itemDirectWords, mat.itemDirectSearch, mat.itemDirectPhonetic, token)) return true;
+  if (wordMatchesTokenFuzzy(mat.synsWords, mat.synsSearch, mat.synsPhonetic, token)) return true;
+  return false;
+}
+
+// Comprueba si el título de una categoría coincide con lo escrito
+function categoryMatchesTokens(tIdx, tokens) {
+  if (!tokens || !tokens.length) return false;
+  const catText = norm(TABLES[tIdx][1]);
+  const catWords = catText.split(/[^a-z0-9]+/).filter(w => w.length >= 3);
+  const catPh = toPhonetic(catText);
+  return tokens.every(t => wordMatchesTokenFuzzy(catWords, catText, catPh, t));
+}
+
+// Si un material coincidió gracias a un sinónimo (ej. "canula" -> MANGUITOS), devuelve el sinónimo para mostrarlo en rojo
+function getMatchedSynonymHint(mat, tokens) {
+  if (!tokens || !tokens.length) return "";
+  for (const token of tokens) {
+    const inDirect = wordMatchesTokenFuzzy(mat.itemDirectWords, mat.itemDirectSearch, mat.itemDirectPhonetic, token);
+    if (!inDirect && wordMatchesTokenFuzzy(mat.synsWords, mat.synsSearch, mat.synsPhonetic, token)) {
+      const matchedSyn = mat.synsWords.find(sw => wordMatchesTokenFuzzy([sw], sw, toPhonetic(sw), token));
+      if (matchedSyn) return matchedSyn;
+    }
+  }
+  return "";
+}
+
+// 2. Filtros agrupados (OR dentro de la misma familia, AND entre familias distintas)
+function getFilterTagGroup(tag) {
   if (/^\d+\s*(m|fo|puertos|fusiones)$/i.test(tag) || /^1:\d+$/.test(tag)) return "MEASURE";
   if (/^(2mm|3mm|Dúplex)$/i.test(tag)) return "THICKNESS";
   if (/^(Negro|Blanco)$/i.test(tag)) return "COLOR";
@@ -4096,75 +4167,231 @@ function matchesSelectedFilterTags(mat) {
   return Object.values(groups).every(gTags => gTags.some(t => mat.filterTags.includes(t)));
 }
 
-function highlightMatch(text, tokens) {
-  if (!tokens || !tokens.length || !text) return text;
-  const normText = norm(text);
-  const mask = new Array(text.length).fill(false);
+// 3. Doble resaltado: Rojo para búsqueda (.hl-match) y Azul para filtros activos (.hl-filter)
+function getFilterRegexes(activeTags) {
+  const regexes = [];
+  if (!activeTags || !activeTags.length) return regexes;
+  activeTags.forEach(tag => {
+    const mMetros = tag.match(/^(\d+)m$/i);
+    if (mMetros) {
+      regexes.push(new RegExp(`\\b${mMetros[1]}\\s*(?:m|mt|mts|metros)\\b`, "gi"));
+      return;
+    }
+    const mNumUnit = tag.match(/^(\d+)\s*(FO|Puertos|Fusiones)$/i);
+    if (mNumUnit) {
+      regexes.push(new RegExp(`(?:\\b${mNumUnit[1]}\\s*${mNumUnit[2]}\\b|-${mNumUnit[1]}-)`, "gi"));
+      return;
+    }
+    const mMm = tag.match(/(\d+(?:[.,]\d+)?)\s*mm/i);
+    if (mMm) {
+      const numPat = mMm[1].replace(/[.,]/, "[.,]");
+      regexes.push(new RegExp(`\\b${numPat}\\s*mm\\b`, "gi"));
+    }
+    const cleanWords = tag.replace(/[()\/]/g, " ").split(/\s+/).filter(w => w.length >= 3 || /^1:\d+$/.test(w) || /^4G$/i.test(w));
+    cleanWords.forEach(w => {
+      if (/^\d+m$/i.test(w) || /^\d+mm$/i.test(w)) return;
+      const esc = norm(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      regexes.push(new RegExp(esc, "gi"));
+    });
+  });
+  return regexes;
+}
 
-  tokens.forEach(token => {
-    if (!token) return;
-    let matchedExact = false;
-    getSingularVariants(token).forEach(v => {
-      let pos = 0;
-      while (pos < normText.length) {
-        const idx = normText.indexOf(v, pos);
-        if (idx === -1) break;
-        matchedExact = true;
-        for (let i = idx; i < idx + v.length && i < mask.length; i++) mask[i] = true;
-        pos = idx + 1;
+function highlightTextDual(text, tokens, activeTags) {
+  if (!text) return "";
+  const normText = norm(text);
+  const searchMask = new Array(text.length).fill(false);
+  const filterMask = new Array(text.length).fill(false);
+
+  // Máscara Azul: Filtros activos
+  if (activeTags && activeTags.length > 0) {
+    const fRegexes = getFilterRegexes(activeTags);
+    fRegexes.forEach(rgx => {
+      let m;
+      while ((m = rgx.exec(normText)) !== null) {
+        for (let i = m.index; i < m.index + m[0].length && i < filterMask.length; i++) {
+          filterMask[i] = true;
+        }
       }
     });
+  }
 
-    if (!matchedExact && token.length >= 3 && !/\d/.test(token)) {
-      const phToken = toPhonetic(token);
-      const reg = /[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ]+/g;
-      let m;
-      while ((m = reg.exec(text)) !== null) {
-        const wNorm = norm(m[0]);
-        if (wNorm.length < 3) continue;
-        const maxD = token.length >= 7 ? 2.0 : 1.1;
-        const isFuzzy = (phToken.length >= 3 && toPhonetic(wNorm).includes(phToken)) ||
-          (token.length >= 4 && Math.abs(wNorm.length - token.length) <= 2 && typoDistance(token, wNorm, maxD) <= maxD) ||
-          (token.length >= 5 && wNorm.length > token.length && typoDistance(token, wNorm.slice(0, token.length), 1.0) <= 1.0);
-        if (isFuzzy) {
-          for (let i = 0; i < wNorm.length; i++) {
-            if (token.includes(wNorm[i]) || phToken.includes(toPhonetic(wNorm[i]))) mask[m.index + i] = true;
+  // Máscara Roja: Búsqueda escrita
+  if (tokens && tokens.length > 0) {
+    tokens.forEach(token => {
+      if (!token) return;
+      let matchedExact = false;
+      getSingularVariants(token).forEach(v => {
+        if (!v) return;
+        let pos = 0;
+        while (pos < normText.length) {
+          const idx = normText.indexOf(v, pos);
+          if (idx === -1) break;
+          matchedExact = true;
+          for (let i = idx; i < idx + v.length && i < searchMask.length; i++) searchMask[i] = true;
+          pos = idx + 1;
+        }
+      });
+
+      if (!matchedExact && token.length >= 3 && !/\d/.test(token)) {
+        const phToken = toPhonetic(token);
+        const reg = /[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ]+/g;
+        let m;
+        while ((m = reg.exec(text)) !== null) {
+          const wNorm = norm(m[0]);
+          if (wNorm.length < 3) continue;
+          const maxD = token.length >= 7 ? 2.0 : 1.1;
+          const isFuzzy = (phToken.length >= 3 && toPhonetic(wNorm).includes(phToken)) ||
+            (token.length >= 4 && Math.abs(wNorm.length - token.length) <= 2 && typoDistance(token, wNorm, maxD) <= maxD) ||
+            (token.length >= 5 && wNorm.length > token.length && typoDistance(token, wNorm.slice(0, token.length), 1.0) <= 1.0);
+          if (isFuzzy) {
+            for (let i = 0; i < wNorm.length; i++) {
+              if (token.includes(wNorm[i]) || phToken.includes(toPhonetic(wNorm[i]))) searchMask[m.index + i] = true;
+            }
           }
         }
       }
-    }
-  });
+    });
+  }
 
-  let out = "", open = false;
+  let out = "", currentType = null;
   for (let i = 0; i < text.length; i++) {
-    if (mask[i] && !open) { out += '<span class="hl-match">'; open = true; }
-    else if (!mask[i] && open) { out += '</span>'; open = false; }
+    const nextType = searchMask[i] ? "S" : (filterMask[i] ? "F" : null);
+    if (nextType !== currentType) {
+      if (currentType) out += "</span>";
+      if (nextType === "S") out += '<span class="hl-match">';
+      else if (nextType === "F") out += '<span class="hl-filter">';
+      currentType = nextType;
+    }
     out += text[i];
   }
-  return open ? out + "</span>" : out;
+  if (currentType) out += "</span>";
+  return out;
 }
 
+// 4. Barra de filtros en 1 sola línea deslizable con botón para desplegar/plegar
+function toggleFilterBarExpand() {
+  filterBarExpanded = !filterBarExpanded;
+  const wrap = document.querySelector("#subFiltersBar .sf-chips-wrap");
+  const btn = document.getElementById("sfExpandBtn");
+  if (wrap) wrap.classList.toggle("expanded", filterBarExpanded);
+  if (btn) btn.textContent = filterBarExpanded ? "Plegar ▴" : "Ver todos ▾";
+}
+
+function renderUnifiedFilterPanel(activeTIdx, categoryItems) {
+  const barEl = document.getElementById("subFiltersBar");
+  if (activeTIdx === null || categoryItems.length < 4) {
+    barEl.style.display = "none";
+    barEl.innerHTML = "";
+    return;
+  }
+
+  const allTags = [];
+  categoryItems.forEach(m => {
+    m.filterTags.forEach(t => { if (!allTags.includes(t)) allTags.push(t); });
+  });
+
+  if (allTags.length <= 1) {
+    barEl.style.display = "none";
+    barEl.innerHTML = "";
+    return;
+  }
+
+  const descTags = allTags.filter(t => !/^\d/.test(t));
+  const numTags = allTags.filter(t => /^\d/.test(t)).sort((a, b) => {
+    return (parseFloat(a.replace(/[^\d.]/g, "")) || 0) - (parseFloat(b.replace(/[^\d.]/g, "")) || 0);
+  });
+  const sortedTags = [...descTags, ...numTags];
+
+  let html = `
+    <div class="sf-header">
+      <span class="sf-title">Filtrar (${sortedTags.length})</span>
+      <div style="display:flex;gap:10px;align-items:center;">
+        ${selectedFilterTags.length > 0 ? `<button type="button" class="sf-reset" onclick="resetFilterTags()">Quitar filtros (${selectedFilterTags.length})</button>` : ''}
+        <button type="button" class="sf-expand-btn" id="sfExpandBtn" onclick="toggleFilterBarExpand()">${filterBarExpanded ? 'Plegar ▴' : 'Ver todos ▾'}</button>
+      </div>
+    </div>
+    <div class="sf-chips-wrap ${filterBarExpanded ? 'expanded' : ''}">
+  `;
+
+  sortedTags.forEach(tag => {
+    const isAct = selectedFilterTags.includes(tag);
+    const safe = tag.replace(/'/g, "\\'");
+    html += `<button type="button" class="sf-chip ${isAct ? 'active' : ''}" onclick="toggleFilterTag('${safe}')">${tag}</button>`;
+  });
+
+  html += `</div>`;
+  barEl.innerHTML = html;
+  barEl.style.display = "block";
+}
+
+function selectTableFilter(val) {
+  selectedTable = val;
+  resolvedConflictTable = null;
+  conflictDismissed = false;
+  selectedFilterTags = [];
+  const labelEl = document.getElementById("selectedCatLabel");
+  if (val === "ALL") {
+    labelEl.textContent = "Categorías";
+  } else {
+    labelEl.textContent = TABLES[val][1];
+  }
+  closeActiveModal();
+  renderMaterials();
+  forceScrollTop();
+}
+
+function chooseConflictTableFromModal(tIdx) {
+  selectedTable = "ALL";
+  document.getElementById("selectedCatLabel").textContent = TABLES[tIdx][1];
+  resolvedConflictTable = tIdx;
+  conflictDismissed = false;
+  selectedFilterTags = [];
+  closeActiveModal();
+  forceScrollTop();
+
+  const currVal = searchInput.value;
+  if (currVal && !currVal.endsWith(" ")) searchInput.value = currVal + " ";
+  searchInput.focus();
+  const len = searchInput.value.length;
+  searchInput.setSelectionRange(len, len);
+  renderMaterials();
+}
+
+function switchToSuggestedCategory(tIdx) {
+  selectedTable = tIdx;
+  resolvedConflictTable = null;
+  conflictDismissed = true;
+  selectedFilterTags = [];
+  document.getElementById("selectedCatLabel").textContent = TABLES[tIdx][1];
+  renderMaterials();
+  forceScrollTop();
+}
+
+// 5. Renderizado principal con separación Categorías vs Materiales y texto interactivo de categorías
 function renderMaterials() {
   const rawVal = searchInput.value;
+  const trimmedRaw = rawVal.trim();
   const endsWithSpace = /\s$/.test(rawVal);
-  const q = norm(rawVal.trim());
+  const q = norm(trimmedRaw);
   const tokens = q ? q.split(/\s+/) : [];
   const scopeBar = document.getElementById("activeScopeBar");
   const listEl = document.getElementById("materialsList");
-  const blocksEl = document.getElementById("blocksDashboard");
   const subBarEl = document.getElementById("subFiltersBar");
+  const catMatchesEl = document.getElementById("matchedCategoriesBox");
 
   if (!q && selectedTable === "ALL" && resolvedConflictTable === null) {
     scopeBar.style.display = "none";
     subBarEl.style.display = "none";
     listEl.style.display = "none";
-    blocksEl.style.display = "block";
+    if (catMatchesEl) catMatchesEl.style.display = "none";
     return;
   }
-  blocksEl.style.display = "none";
 
-  const textMatches = MATERIALS.filter(m => tokens.every(t => itemMatchesToken(m, t)));
+  // Coincidencias estrictas en materiales (sin mezclar por nombre de categoría)
+  const strictMaterialMatches = MATERIALS.filter(m => tokens.every(t => materialMatchesTokenStrict(m, t)));
 
+  // Detectar familias de conflicto al escribir
   if (tokens.length > 0) {
     const fam = detectConflictFamily(tokens, endsWithSpace);
     if (fam) {
@@ -4176,38 +4403,116 @@ function renderMaterials() {
       }
       const matchingTables = [];
       fam.tables.forEach(tIdx => {
-        const count = textMatches.filter(m => m.tIdx === tIdx).length;
+        const count = MATERIALS.filter(m => m.tIdx === tIdx && (tokens.length === 1 ? true : tokens.every(t => itemMatchesToken(m, t)))).length;
         if (count > 0) matchingTables.push({ tIdx, tableName: TABLES[tIdx][1], count });
       });
-      if (matchingTables.length > 1) {
-        if (resolvedConflictTable === null && !conflictDismissed) {
-          searchInput.blur();
-          scopeBar.style.display = "none";
-          subBarEl.style.display = "none";
-          listEl.style.display = "none";
-          document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
-            <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
-              <span>(${mt.tableName})</span>
-              <span class="conflict-badge">${mt.count}</span>
-            </button>
-          `).join("");
-          openModalById("conflictModal");
-          return;
-        } else if (resolvedConflictTable !== null) {
-          scopeBar.style.display = "flex";
-          document.getElementById("activeScopeName").textContent = `(${TABLES[resolvedConflictTable][1]})`;
-        } else scopeBar.style.display = "none";
-      } else scopeBar.style.display = "none";
+      if (matchingTables.length > 1 && resolvedConflictTable === null && !conflictDismissed) {
+        searchInput.blur();
+        scopeBar.style.display = "none";
+        subBarEl.style.display = "none";
+        listEl.style.display = "none";
+        if (catMatchesEl) catMatchesEl.style.display = "none";
+        document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
+          <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
+            <span>(${mt.tableName})</span>
+            <span class="conflict-badge">${mt.count}</span>
+          </button>
+        `).join("");
+        openModalById("conflictModal");
+        return;
+      }
     } else {
       activeConflictFamilyId = null;
       resolvedConflictTable = null;
       conflictDismissed = false;
-      scopeBar.style.display = "none";
     }
-  } else scopeBar.style.display = "none";
+  }
 
   const activeTIdx = resolvedConflictTable !== null ? resolvedConflictTable : (selectedTable !== "ALL" ? selectedTable : null);
-  let baseItems = activeTIdx !== null ? textMatches.filter(m => m.tIdx === activeTIdx) : textMatches;
+
+  // Calcular resultados en otras categorías para mostrar el texto interactivo clicable
+  const otherCounts = {};
+  if (tokens.length > 0) {
+    strictMaterialMatches.forEach(m => {
+      if (m.tIdx !== activeTIdx) otherCounts[m.tIdx] = (otherCounts[m.tIdx] || 0) + 1;
+    });
+    if (activeConflictFamilyId) {
+      const fam = CONFLICT_FAMILIES.find(f => f.id === activeConflictFamilyId);
+      if (fam) {
+        fam.tables.forEach(tIdx => {
+          if (tIdx !== activeTIdx && !otherCounts[tIdx]) {
+            const c = MATERIALS.filter(m => m.tIdx === tIdx && tokens.every(t => itemMatchesToken(m, t))).length;
+            if (c > 0) otherCounts[tIdx] = c;
+          }
+        });
+      }
+    }
+  }
+  const otherCatEntries = Object.keys(otherCounts).map(k => ({
+    tIdx: +k,
+    tableName: TABLES[+k][1],
+    count: otherCounts[k]
+  }));
+
+  // Mostrar frase interactiva de categoría actual + otras categorías disponibles
+  if (activeTIdx !== null) {
+    scopeBar.style.display = "block";
+    let scopeHTML = `Estás en <strong>(${TABLES[activeTIdx][1]})</strong>.`;
+    if (otherCatEntries.length > 0 && trimmedRaw) {
+      const links = otherCatEntries.map(oc =>
+        `<button type="button" class="inline-cat-chip" onclick="switchToSuggestedCategory(${oc.tIdx})">(${oc.tableName}) · ${oc.count}</button>`
+      ).join(" ");
+      scopeHTML += ` También tienes <em>"${trimmedRaw}"</em> en: <div class="inline-cats-wrap">${links}</div>`;
+    } else {
+      scopeHTML += ` <button type="button" class="inline-cat-chip" style="margin-left:6px;" onclick="selectTableFilter('ALL')">Ver todas las categorías</button>`;
+    }
+    scopeBar.innerHTML = scopeHTML;
+  } else {
+    scopeBar.style.display = "none";
+  }
+
+  // Bloque de "Categorías encontradas" (cuando estás en Todas las categorías y lo que escribes coincide con el nombre de alguna categoría)
+  if (catMatchesEl) {
+    if (activeTIdx === null && tokens.length > 0) {
+      const matchedCats = [];
+      TABLES.forEach((t, idx) => {
+        if (categoryMatchesTokens(idx, tokens)) {
+          const totalInCat = MATERIALS.filter(m => m.tIdx === idx).length;
+          matchedCats.push({ idx, name: t[1], count: totalInCat });
+        }
+      });
+      if (matchedCats.length > 0) {
+        catMatchesEl.style.display = "block";
+        catMatchesEl.innerHTML = `
+          <div class="matched-cats-header">Categorías encontradas (${matchedCats.length})</div>
+          <div class="matched-cats-list">
+            ${matchedCats.map(mc => `
+              <button type="button" class="matched-cat-btn" onclick="selectTableFilter(${mc.idx})">
+                <span>(${highlightTextDual(mc.name, tokens, [])})</span>
+                <span class="matched-cat-count">${mc.count} art. ›</span>
+              </button>
+            `).join("")}
+          </div>
+        `;
+      } else {
+        catMatchesEl.style.display = "none";
+      }
+    } else {
+      catMatchesEl.style.display = "none";
+    }
+  }
+
+  // Materiales a mostrar:
+  // - Si está en "Todas las categorías": solo materiales cuyo propio nombre/código/sinónimo coincida (nunca por nombre de categoría).
+  // - Si ya entró en una categoría concreta: si la palabra buscada es parte del propio título de esa categoría (ej. "acometida"), la ignora para listar los artículos de esa tabla.
+  let baseItems = [];
+  if (activeTIdx !== null) {
+    const catNameNorm = norm(TABLES[activeTIdx][1]);
+    const nonCatTokens = tokens.filter(t => !catNameNorm.includes(t) && !toPhonetic(catNameNorm).includes(toPhonetic(t)));
+    baseItems = MATERIALS.filter(m => m.tIdx === activeTIdx && nonCatTokens.every(t => materialMatchesTokenStrict(m, t)));
+  } else {
+    baseItems = strictMaterialMatches;
+  }
 
   renderUnifiedFilterPanel(activeTIdx, MATERIALS.filter(m => m.tIdx === activeTIdx));
 
@@ -4219,10 +4524,6 @@ function renderMaterials() {
 
   if (finalItems.length === 0) {
     listEl.style.display = "flex";
-    const otherCounts = {};
-    textMatches.forEach(m => { if (m.tIdx !== activeTIdx) otherCounts[m.tIdx] = (otherCounts[m.tIdx] || 0) + 1; });
-    const otherCatEntries = Object.keys(otherCounts).map(k => ({ tIdx: +k, tableName: TABLES[+k][1], count: otherCounts[k] }));
-
     let emptyHTML = `<div class="empty-suggestions-card">`;
     if (baseItems.length > 0 && selectedFilterTags.length > 0) {
       emptyHTML += `<div class="empty-msg-title">No hay materiales con ese filtro en esta categoría.</div>
@@ -4230,13 +4531,13 @@ function renderMaterials() {
           <span>Quitar filtros activos en (${TABLES[activeTIdx][1]})</span><span>${baseItems.length} art. ›</span>
         </button>`;
     } else if (otherCatEntries.length > 0) {
-      emptyHTML += `<div class="empty-msg-title">Sin coincidencias aquí, pero sí hay resultados en:</div>
+      emptyHTML += `<div class="empty-msg-title">No hay materiales aquí, pero sí tienes <strong>"${trimmedRaw}"</strong> en:</div>
         <div class="alt-cat-list">${otherCatEntries.map(oc => `
           <button type="button" class="alt-cat-btn" onclick="switchToSuggestedCategory(${oc.tIdx})">
-            <span>(${oc.tableName})</span><span>${oc.count} ›</span>
+            <span>(${oc.tableName})</span><span>${oc.count} ${oc.count === 1 ? 'resultado' : 'resultados'} ›</span>
           </button>`).join("")}</div>`;
     } else {
-      emptyHTML += `<div class="empty-msg-title" style="margin-bottom:0;">No hay materiales que coincidan con la búsqueda.</div>`;
+      emptyHTML += `<div class="empty-msg-title" style="margin-bottom:0;">No hay materiales individuales con ese nombre.</div>`;
     }
     listEl.innerHTML = emptyHTML + `</div>`;
     return;
@@ -4250,12 +4551,17 @@ function renderMaterials() {
     const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
     const qtyInCart = activeListMap[key];
     const isSC = m.code === "SIN CÓDIGO";
+    const synHint = getMatchedSynonymHint(m, tokens);
+    const synHTML = synHint ? ` <span class="syn-hint">· (${highlightTextDual(synHint, tokens, [])})</span>` : "";
+    // Solo mostrar la categoría debajo del artículo cuando NO estamos ya dentro de una categoría
+    const catLineHTML = activeTIdx === null ? `<span class="mat-line2">(${m.tableName})</span>` : "";
+
     return `
       <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
-        <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : highlightMatch(m.code, tokens)}</span>
+        <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : highlightTextDual(m.code, tokens, [])}</span>
         <div class="mat-content">
-          <div class="mat-line1">${highlightMatch(m.name, tokens)}</div>
-          <span class="mat-line2">(${m.tableName})</span>
+          <div class="mat-line1">${highlightTextDual(m.name, tokens, selectedFilterTags)}${synHTML}</div>
+          ${catLineHTML}
         </div>
         <div class="mat-right-ind">
           ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
@@ -4264,14 +4570,516 @@ function renderMaterials() {
   }).join("");
 }
 
+// 6. Función Nueva 1: Historial automático de pedidos enviados/copiados
+function recordOrderInHistory() {
+  if (!cart.length) return;
+  const nowStr = new Date().toLocaleString("es-ES", {
+    day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"
+  });
+  const snap = JSON.parse(JSON.stringify(cart));
+  const sig = snap.map(c => `${c.key}:${c.qty}`).join("|");
+  if (orderHistory.length > 0) {
+    const lastSig = orderHistory[0].items.map(c => `${c.key}:${c.qty}`).join("|");
+    if (sig === lastSig) return;
+  }
+  orderHistory.unshift({ date: nowStr, items: snap });
+  if (orderHistory.length > 8) orderHistory.pop();
+  localStorage.setItem("acacio_v5_history", JSON.stringify(orderHistory));
+  updateHistoryBadge();
+}
+
+function updateHistoryBadge() {
+  const btn = document.getElementById("historyBtn");
+  if (btn) btn.textContent = `Historial (${orderHistory.length})`;
+}
+
+function openHistoryModal() {
+  const box = document.getElementById("historyContainer");
+  if (!orderHistory.length) {
+    box.innerHTML = `<div style="padding:18px 0;color:var(--muted);font-size:0.82rem;text-align:center;">Aún no hay pedidos en el historial. Se guardan solos al copiar o enviar un pedido.</div>`;
+  } else {
+    box.innerHTML = orderHistory.map((h, idx) => {
+      const preview = h.items.slice(0, 3).map(it => `${it.code === 'SIN CÓDIGO' ? 'S/C' : it.code} (${it.qty}u)`).join(", ") + (h.items.length > 3 ? "..." : "");
+      return `
+        <div class="hist-card">
+          <div class="hist-head">
+            <span>${h.date}</span>
+            <span class="hist-badge">${h.items.length} mat.</span>
+          </div>
+          <div class="hist-preview">${preview}</div>
+          <div class="hist-actions">
+            <button type="button" class="kp-btn primary" onclick="loadHistoryOrder(${idx})">Cargar en pedido</button>
+            <button type="button" class="kp-btn" onclick="copyHistoryOrder(${idx})">Copiar</button>
+            <button type="button" class="kp-btn danger" onclick="deleteHistoryOrder(${idx})">✕</button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+  openModalById("historyModal");
+}
+
+function loadHistoryOrder(idx) {
+  const h = orderHistory[idx];
+  if (!h) return;
+  h.items.forEach(hItem => {
+    const ex = cart.find(c => c.key === hItem.key);
+    if (ex) ex.qty += hItem.qty;
+    else cart.push(JSON.parse(JSON.stringify(hItem)));
+  });
+  saveCart();
+  closeActiveModal();
+  showToast("Pedido del historial cargado");
+}
+
+function copyHistoryOrder(idx) {
+  const h = orderHistory[idx];
+  if (!h) return;
+  const prevCart = cart;
+  cart = h.items;
+  const txt = buildOfficialText();
+  cart = prevCart;
+  navigator.clipboard.writeText(txt).then(() => showToast("Historial copiado"));
+}
+
+function deleteHistoryOrder(idx) {
+  orderHistory.splice(idx, 1);
+  localStorage.setItem("acacio_v5_history", JSON.stringify(orderHistory));
+  updateHistoryBadge();
+  openHistoryModal();
+}
+
+function copyOrder() {
+  const txt = buildOfficialText();
+  if (!txt) return;
+  recordOrderInHistory();
+  navigator.clipboard.writeText(txt).then(() => showToast("Pedido copiado"));
+}
+
+function sendEmail() {
+  const txt = buildOfficialText();
+  if (!txt) return;
+  recordOrderInHistory();
+  const dateStr = new Date().toLocaleDateString("es-ES");
+  window.location.href = `mailto:?subject=${encodeURIComponent('Pedido de material - ' + dateStr)}&body=${encodeURIComponent(txt)}`;
+}
+
+function sendWhatsApp() {
+  const txt = buildOfficialText();
+  if (!txt) return;
+  recordOrderInHistory();
+  window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
+}
+
+// 7. Función Nueva 2 y 3: Suma automática de códigos duplicados en Lector y botón "Copiar códigos"
+function runTranslatorFromTextarea() {
+  if (transEditMode) return;
+  const raw = document.getElementById("transInput").value;
+  const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+
+  if (!lines.length) {
+    transItems = [];
+    lastMergedDuplicatesCount = 0;
+    transEditMode = false;
+    renderTranslatorList();
+    return;
+  }
+
+  const parsed = [];
+  let mergedCount = 0;
+
+  lines.forEach(line => {
+    const m = line.match(/^(\d{3,5})\s*[-–—:]?\s*(\d+)?\s*(?:unidades|uds|u\.?|m|metros)?\s*(.*)$/i);
+    if (m) {
+      const code = m[1];
+      const qty = Math.max(1, parseInt(m[2] || "1", 10));
+      let extra = m[3] ? m[3].trim() : "";
+      extra = extra.replace(/^\((.*)\)$/, "$1");
+
+      // Si el código ya estaba en la lista pegada, sumar cantidades automáticamente
+      const existing = parsed.find(p => (p.type === "FOUND" || p.type === "UNKNOWN") && p.code === code);
+      if (existing) {
+        existing.qty += qty;
+        if (extra && !existing.extra.includes(extra)) {
+          existing.extra = existing.extra ? `${existing.extra}, ${extra}` : extra;
+        }
+        mergedCount++;
+      } else {
+        const found = CODE_MAP[code];
+        parsed.push({
+          type: found ? "FOUND" : "UNKNOWN",
+          key: code,
+          code,
+          name: found ? found.name : "Código no registrado",
+          tables: found ? found.tables : [],
+          prov: found ? found.prov : "",
+          qty,
+          extra,
+          rawLine: line,
+          checked: false,
+          isNew: false
+        });
+      }
+    } else if (!/^material puntual|^correo:/i.test(line)) {
+      const cleanLine = line.replace(/^[-•]\s*/, "");
+      const mText = cleanLine.match(/^(.*?)\s*[-–—]\s*(\d+)\s*(?:unidades|uds|u\.?)\s*(.*)$/i);
+      parsed.push({
+        type: "TEXT",
+        key: `TXT_${parsed.length}_${Date.now()}`,
+        code: "S/C",
+        name: mText ? mText[1].trim() : cleanLine,
+        tables: ["SIN CÓDIGO / PUNTUAL"],
+        prov: mText && mText[3] ? mText[3].trim() : "",
+        qty: mText ? Math.max(1, parseInt(mText[2], 10)) : 1,
+        extra: "",
+        rawLine: cleanLine,
+        checked: false,
+        isNew: false
+      });
+    }
+  });
+
+  transItems = parsed;
+  lastMergedDuplicatesCount = mergedCount;
+  renderTranslatorList();
+  const dupNotice = document.getElementById("transMergedNotice");
+  if (dupNotice) {
+    dupNotice.style.display = mergedCount > 0 ? "block" : "none";
+    dupNotice.textContent = `Se han sumado automáticamente ${mergedCount} ${mergedCount === 1 ? 'código repetido' : 'códigos repetidos'} en la lista.`;
+  }
+}
+
+function copyTranslatorCodesOnly() {
+  if (transEditMode || !transItems.length) return;
+  const lines = transItems.map(p => {
+    if (p.type === "FOUND" || p.type === "UNKNOWN") {
+      return `${p.code} – ${p.qty} unidades${p.extra ? ' (' + p.extra + ')' : ''}`;
+    } else {
+      return `${p.name} – ${p.qty} unidades${p.prov ? ' (' + p.prov + ')' : ''}`;
+    }
+  });
+  navigator.clipboard.writeText(lines.join("\n")).then(() => showToast("Códigos copiados"));
+}
+
+// 8. Reestructuración automática de la interfaz al iniciar
+(function upgradeLayoutDOM() {
+  // Integrar desplegable de Categorías a la derecha de la barra de búsqueda
+  const searchWrap = document.querySelector("#orderHeaderTools .search-wrap");
+  const catBtn = document.getElementById("catTriggerBtn");
+  const filterBar = document.querySelector("#orderHeaderTools .filter-bar");
+  const selectedCatLabel = document.getElementById("selectedCatLabel");
+  if (selectedCatLabel && selectedCatLabel.textContent === "Todas las categorías") {
+    selectedCatLabel.textContent = "Categorías";
+  }
+
+  if (searchWrap && catBtn && filterBar) {
+    const unifiedRow = document.createElement("div");
+    unifiedRow.className = "unified-search-row";
+    searchWrap.parentNode.insertBefore(unifiedRow, searchWrap);
+    unifiedRow.appendChild(searchWrap);
+    unifiedRow.appendChild(catBtn);
+
+    // En la barra inferior dejamos: Mis Kits | Historial | + Material puntual
+    filterBar.className = "quick-tools-bar";
+    const histBtn = document.createElement("button");
+    histBtn.type = "button";
+    histBtn.id = "historyBtn";
+    histBtn.className = "tool-pill-btn";
+    histBtn.onclick = openHistoryModal;
+    histBtn.textContent = `Historial (${orderHistory.length})`;
+
+    const puntBtn = document.createElement("button");
+    puntBtn.type = "button";
+    puntBtn.id = "topPuntualBtn";
+    puntBtn.className = "tool-pill-btn";
+    puntBtn.onclick = openPuntualModal;
+    puntBtn.textContent = "+ Material puntual";
+
+    filterBar.appendChild(histBtn);
+    filterBar.appendChild(puntBtn);
+  }
+
+  // Crear caja para Categorías encontradas justo encima de la lista de materiales
+  const matList = document.getElementById("materialsList");
+  if (matList) {
+    const catBox = document.createElement("div");
+    catBox.id = "matchedCategoriesBox";
+    catBox.className = "matched-cats-box";
+    catBox.style.display = "none";
+    matList.parentNode.insertBefore(catBox, matList);
+  }
+
+  // Añadir aviso de códigos duplicados sumados y botón "Copiar códigos" en el Lector
+  const transOut = document.getElementById("transOutput");
+  if (transOut) {
+    const notice = document.createElement("div");
+    notice.id = "transMergedNotice";
+    notice.className = "trans-merged-notice";
+    notice.style.display = "none";
+    transOut.parentNode.insertBefore(notice, transOut);
+  }
+
+  const transSubactions = document.querySelector("#transFooterActions .pedido-subactions");
+  if (transSubactions) {
+    transSubactions.style.gridTemplateColumns = "1fr 1fr 1fr";
+    const copyCodesBtn = document.createElement("button");
+    copyCodesBtn.type = "button";
+    copyCodesBtn.className = "sub-action-btn";
+    copyCodesBtn.onclick = copyTranslatorCodesOnly;
+    copyCodesBtn.textContent = "Copiar códigos";
+    transSubactions.insertBefore(copyCodesBtn, transSubactions.firstChild);
+  }
+
+  // Inyectar modal de Historial de Pedidos
+  const histModal = document.createElement("div");
+  histModal.className = "modal-backdrop";
+  histModal.id = "historyModal";
+  histModal.onclick = function(e) { if (e.target === this) closeActiveModal(); };
+  histModal.innerHTML = `
+    <div class="modal-dialog">
+      <div class="m-meta">ÚLTIMOS PEDIDOS</div>
+      <div class="m-title" style="margin-top:2px;">Historial de pedidos</div>
+      <div id="historyContainer"></div>
+      <div class="m-footer">
+        <button type="button" class="btn-cancel" onclick="closeActiveModal()">Cerrar</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(histModal);
+})();
+
 updateKitsBadge();
+updateHistoryBadge();
 renderMaterials();
 renderCart();
 </script>
 <style>
-  .hl-match { color: #dc2626; font-weight: 800; }
-  body.dark-mode .hl-match { color: #ff5252; }
-  .code-badge .hl-match { color: #ff9999; text-decoration: underline; }
+  /* Más aire debajo del selector <Pedidos> | <Lector de códigos> */
+  #mainSegmentedControl {
+    margin-bottom: 14px !important;
+  }
+
+  /* Barra de búsqueda + Categorías integradas en la misma línea */
+  .unified-search-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: stretch;
+    margin-bottom: 10px;
+  }
+  .unified-search-row .search-wrap {
+    margin-bottom: 0 !important;
+  }
+  .unified-search-row #catTriggerBtn {
+    max-width: 155px;
+    background: var(--corp-navy);
+    color: #ffffff;
+    border: 1px solid var(--corp-navy);
+    padding: 0 11px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+  body.dark-mode .unified-search-row #catTriggerBtn {
+    background: var(--panel-alt);
+    border-color: var(--corp-blue);
+    color: var(--corp-blue);
+  }
+
+  /* Barra descongestionada: Mis Kits | Historial | + Material puntual */
+  .quick-tools-bar {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+  .tool-pill-btn {
+    border: 1px solid var(--border);
+    background: var(--panel-alt);
+    color: var(--text-secondary);
+    padding: 7px 11px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  /* Ocultar los 4 cuadros de Grupos de material y el botón puntual antiguo */
+  #blocksDashboard, .puntual-wrap {
+    display: none !important;
+  }
+
+  /* Resaltado Rojo (búsqueda) y Azul (filtros marcados) */
+  .hl-match {
+    color: #dc2626;
+    font-weight: 800;
+  }
+  body.dark-mode .hl-match {
+    color: #ff5252;
+  }
+  .code-badge .hl-match {
+    color: #ff9999;
+    text-decoration: underline;
+  }
+  .hl-filter {
+    color: var(--corp-blue);
+    background: rgba(0, 85, 184, 0.11);
+    padding: 0 3px;
+    border-radius: 3px;
+    font-weight: 800;
+  }
+  body.dark-mode .hl-filter {
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.18);
+  }
+  .syn-hint {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  /* Filtros en 1 sola fila horizontal deslizable por defecto */
+  #subFiltersBar .sf-chips-wrap {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  #subFiltersBar .sf-chips-wrap::-webkit-scrollbar {
+    display: none;
+  }
+  #subFiltersBar .sf-chips-wrap.expanded {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+  #subFiltersBar .sf-chip {
+    flex-shrink: 0;
+  }
+  .sf-expand-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* Frase interactiva de categoría actual y otras categorías con resultados */
+  #activeScopeBar {
+    line-height: 1.45;
+    font-weight: 500;
+    font-size: 0.78rem;
+    padding: 9px 12px;
+  }
+  .inline-cats-wrap {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 4px;
+    vertical-align: middle;
+  }
+  .inline-cat-chip {
+    background: var(--cat-bg) !important;
+    color: var(--corp-blue) !important;
+    border: 1px solid var(--border) !important;
+    padding: 3px 9px !important;
+    border-radius: 12px !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    cursor: pointer;
+  }
+
+  /* Bloque de Categorías encontradas al buscar */
+  .matched-cats-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 11px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-card);
+  }
+  .matched-cats-header {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .matched-cats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .matched-cat-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: 7px;
+    border: 1px solid var(--border-soft);
+    background: var(--panel-alt);
+    color: var(--text);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: left;
+  }
+  .matched-cat-count {
+    font-size: 0.72rem;
+    color: var(--corp-blue);
+    font-weight: 800;
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+
+  /* Aviso de códigos repetidos sumados en el Lector */
+  .trans-merged-notice {
+    background: var(--kits-bg);
+    color: var(--kits-text);
+    border-bottom: 1px solid var(--kits-border);
+    padding: 7px 12px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  /* Tarjetas del Historial de Pedidos */
+  .hist-card {
+    border: 1px solid var(--border);
+    background: var(--panel-alt);
+    border-radius: 9px;
+    padding: 10px;
+    margin-bottom: 8px;
+  }
+  .hist-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .hist-badge {
+    color: var(--success);
+  }
+  .hist-preview {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .hist-actions {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr auto;
+    gap: 6px;
+  }
 </style>
 </body>
 </html>
