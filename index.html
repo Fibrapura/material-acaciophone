@@ -5403,5 +5403,258 @@ renderCart();
     overscroll-behavior: none !important;
   }
 </style>
+<script>
+// =========================================================================
+// PARCHE V4: SUMA DE MÚLTIPLOS, BOTONES RESALTADOS Y ACORDEÓN EN "VER TODO"
+// =========================================================================
+
+// 1. Poner "Ver todo" a la izquierda y "Mis Kits" a la derecha
+(function reorderToolsButtons() {
+  const secBar = document.querySelector(".secondary-tools-bar");
+  const viewAllBtn = document.getElementById("viewAllCatsBtn");
+  const kitsBtn = document.getElementById("kitsBtn");
+  if (secBar && viewAllBtn && kitsBtn) {
+    secBar.insertBefore(viewAllBtn, kitsBtn);
+  }
+})();
+
+// 2. Botones (5, 10, 50, 100): sustituyen solo el 1 inicial y después siempre suman entre sí
+let firstQuickTapDone = false;
+
+const _v4OpenCatalogModal = openCatalogModal;
+openCatalogModal = function(id) {
+  firstQuickTapDone = false;
+  _v4OpenCatalogModal(id);
+};
+
+const _v4OpenPuntualModal = openPuntualModal;
+openPuntualModal = function() {
+  firstQuickTapDone = false;
+  _v4OpenPuntualModal();
+};
+
+const _v4StepQty = stepQty;
+stepQty = function(d) {
+  firstQuickTapDone = true;
+  _v4StepQty(d);
+};
+
+function tapQuickQty(n) {
+  const el = document.getElementById("mQtyInput");
+  const curr = parseInt(el.value || "1", 10);
+  if (!firstQuickTapDone && curr === 1) {
+    el.value = n;
+  } else {
+    el.value = Math.max(1, curr + n);
+  }
+  firstQuickTapDone = true;
+}
+
+// 3. "Ver todo" con Categorías -> Subcategorías -> Materiales (auto-cierre al abrir otra)
+let openMainCatName = null;
+let openSubCatIdx = null;
+
+toggleAllCategoriesView = function() {
+  allCategoriesMode = !allCategoriesMode;
+  openMainCatName = null;
+  openSubCatIdx = null;
+  if (allCategoriesMode) {
+    searchInput.value = "";
+    clearSearchBtn.style.display = "none";
+    selectedTable = "ALL";
+    resolvedConflictTable = null;
+    selectedFilterTags = [];
+  }
+  const viewAllBtn = document.getElementById("viewAllCatsBtn");
+  if (viewAllBtn) {
+    viewAllBtn.textContent = allCategoriesMode ? "‹ Volver al buscador" : "Ver todo";
+    viewAllBtn.classList.toggle("active-all-btn", allCategoriesMode);
+  }
+  renderMaterials();
+  forceScrollTop();
+};
+
+function toggleMainCatGroup(sheetName) {
+  if (openMainCatName === sheetName) {
+    openMainCatName = null;
+    openSubCatIdx = null;
+  } else {
+    openMainCatName = sheetName;
+    openSubCatIdx = null;
+  }
+  renderMaterials();
+}
+
+function toggleSubCatGroup(tIdx) {
+  openSubCatIdx = (openSubCatIdx === tIdx) ? null : tIdx;
+  renderMaterials();
+}
+
+const _v4RenderMaterials = renderMaterials;
+renderMaterials = function() {
+  const q = norm(searchInput.value.trim());
+  if (allCategoriesMode && !q) {
+    const scopeBar = document.getElementById("activeScopeBar");
+    const subBarEl = document.getElementById("subFiltersBar");
+    const groupsWrap = document.getElementById("materialsGroupsWrap");
+    scopeBar.style.display = "none";
+    subBarEl.style.display = "none";
+    groupsWrap.style.display = "flex";
+
+    const activeListMap = {};
+    (pickingForTranslator ? transItems : cart).forEach(it => { if (it.key) activeListMap[it.key] = it.qty; });
+
+    // Agrupar por Categoría Principal -> Subcategorías
+    const mainGroups = new Map();
+    TABLES.forEach((t, tIdx) => {
+      const sheetName = t[0];
+      const subName = t[1];
+      const items = MATERIALS.filter(m => m.tIdx === tIdx);
+      if (!items.length) return;
+      if (!mainGroups.has(sheetName)) mainGroups.set(sheetName, []);
+      mainGroups.get(sheetName).push({ tIdx, subName, items });
+    });
+
+    let html = "";
+    mainGroups.forEach((subCats, sheetName) => {
+      const isMainOpen = (openMainCatName === sheetName);
+      const totalItems = subCats.reduce((acc, sc) => acc + sc.items.length, 0);
+      const safeSheet = sheetName.replace(/'/g, "\\'");
+
+      let subCatsHTML = "";
+      if (isMainOpen) {
+        subCatsHTML = `<div class="main-cat-body">` + subCats.map(sc => {
+          const isSubOpen = (openSubCatIdx === sc.tIdx);
+          const rowsHTML = isSubOpen ? sc.items.map(m => {
+            const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
+            const qtyInCart = activeListMap[key];
+            const isSC = m.code === "SIN CÓDIGO";
+            return `
+              <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
+                <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : m.code}</span>
+                <div class="mat-content"><div class="mat-line1">${m.name}</div></div>
+                <div class="mat-right-ind">
+                  ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
+                </div>
+              </div>
+            `;
+          }).join("") : "";
+
+          return `
+            <div class="sub-cat-block ${isSubOpen ? 'open' : ''}">
+              <div class="sub-cat-header" onclick="toggleSubCatGroup(${sc.tIdx})">
+                <span class="sub-cat-title">${sc.subName}</span>
+                <div class="cat-block-right">
+                  <span class="sub-cat-badge">${sc.items.length}</span>
+                  <span class="sub-cat-arrow">${isSubOpen ? '▾' : '›'}</span>
+                </div>
+              </div>
+              ${isSubOpen ? `<div class="sub-cat-items">${rowsHTML}</div>` : ''}
+            </div>
+          `;
+        }).join("") + `</div>`;
+      }
+
+      html += `
+        <div class="cat-group-block main-cat-card ${isMainOpen ? 'open' : ''}">
+          <div class="cat-block-header main-cat-header" onclick="toggleMainCatGroup('${safeSheet}')">
+            <span class="cat-block-title">${sheetName}</span>
+            <div class="cat-block-right">
+              <span class="cat-block-badge">${subCats.length} subcat. · ${totalItems}</span>
+              <span class="cat-block-chevron" style="transform:${isMainOpen ? 'rotate(0deg)' : 'rotate(-90deg)'}">▾</span>
+            </div>
+          </div>
+          ${subCatsHTML}
+        </div>
+      `;
+    });
+
+    groupsWrap.innerHTML = html;
+    return;
+  }
+  _v4RenderMaterials();
+};
+</script>
+<style>
+  /* Casillas "Ver todo" y "Mis Kits" con relieve medio (visibles sin competir con el buscador) */
+  .kits-pill {
+    background: var(--panel) !important;
+    border: 1.5px solid var(--border) !important;
+    color: var(--text) !important;
+    padding: 8px 12px !important;
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    border-radius: 9px !important;
+    box-shadow: 0 2px 7px rgba(4, 27, 58, 0.08) !important;
+  }
+  body.dark-mode .kits-pill {
+    background: var(--panel-alt) !important;
+    border-color: #475569 !important;
+  }
+
+  /* Estilos de Categorías y Subcategorías en "Ver todo" */
+  .main-cat-card {
+    border: 1.5px solid var(--border) !important;
+    border-radius: 11px !important;
+  }
+  .main-cat-card.open {
+    border-color: var(--corp-blue) !important;
+  }
+  .main-cat-header {
+    background: var(--corp-navy) !important;
+    padding: 11px 14px !important;
+  }
+  .main-cat-body {
+    padding: 8px;
+    background: var(--panel-alt);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sub-cat-block {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .sub-cat-block.open {
+    border: 1.5px solid var(--corp-blue);
+  }
+  .sub-cat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .sub-cat-block.open .sub-cat-header {
+    background: var(--cat-bg);
+    border-bottom: 1px solid var(--cat-border);
+  }
+  .sub-cat-title {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .sub-cat-block.open .sub-cat-title {
+    color: var(--corp-blue);
+  }
+  .sub-cat-badge {
+    background: var(--panel-alt);
+    color: var(--muted);
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 8px;
+  }
+  .sub-cat-arrow {
+    font-size: 0.85rem;
+    font-weight: 900;
+    color: var(--corp-blue);
+    margin-left: 4px;
+  }
+</style>
 </body>
 </html>
