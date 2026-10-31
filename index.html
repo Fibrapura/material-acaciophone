@@ -14,9 +14,9 @@
     :root {
       --corp-navy: #041b3a;
       --corp-blue: #0055b8;
-      --bg: #eef2f6;
+      --bg: #e6ecf5;
       --panel: #ffffff;
-      --panel-alt: #f8fafc;
+      --panel-alt: #f1f5f9;
       --border: #cbd5e1;
       --border-soft: #e2e8f0;
       --text: #0f172a;
@@ -24,26 +24,30 @@
       --muted: #64748b;
       --code-bg: #041b3a;
       --code-text: #ffffff;
-      --cat-bg: #f1f5f9;
-      --cat-text: #475569;
-      --cat-border: #cbd5e1;
+      --cat-bg: #e0f2fe;
+      --cat-text: #0369a1;
+      --cat-border: #7dd3fc;
       --kits-bg: #fef3c7;
       --kits-text: #b45309;
       --kits-border: #fcd34d;
+      --aki-bg: #ede9fe;
+      --aki-text: #6d28d9;
+      --aki-border: #c4b5fd;
       --success: #047857;
-      --success-soft: #ecfdf5;
+      --success-soft: #d1fae5;
       --success-border: #6ee7b7;
       --warning: #d97706;
       --danger: #dc2626;
-      --shadow-card: 0 2px 10px rgba(4, 27, 58, 0.06);
-      --shadow-modal: 0 14px 34px rgba(4, 27, 58, 0.24);
+      --shadow-card: 0 4px 14px rgba(4, 27, 58, 0.08);
+      --shadow-search: 0 6px 20px rgba(0, 85, 184, 0.16);
+      --shadow-modal: 0 18px 44px rgba(4, 27, 58, 0.32);
     }
 
     html.dark-mode, body.dark-mode {
       --corp-navy: #0f172a;
       --corp-blue: #38bdf8;
       --bg: #090d16;
-      --panel: #111827;
+      --panel: #131c2e;
       --panel-alt: #1e293b;
       --border: #334155;
       --border-soft: #1f2937;
@@ -52,19 +56,23 @@
       --muted: #94a3b8;
       --code-bg: #0284c7;
       --code-text: #ffffff;
-      --cat-bg: rgba(56, 189, 248, 0.1);
-      --cat-text: #93c5fd;
-      --cat-border: rgba(56, 189, 248, 0.3);
-      --kits-bg: rgba(245, 158, 11, 0.14);
+      --cat-bg: rgba(56, 189, 248, 0.14);
+      --cat-text: #7dd3fc;
+      --cat-border: rgba(56, 189, 248, 0.35);
+      --kits-bg: rgba(245, 158, 11, 0.15);
       --kits-text: #fcd34d;
       --kits-border: rgba(245, 158, 11, 0.4);
+      --aki-bg: rgba(139, 92, 246, 0.18);
+      --aki-text: #c4b5fd;
+      --aki-border: rgba(139, 92, 246, 0.45);
       --success: #059669;
-      --success-soft: rgba(16, 185, 129, 0.14);
+      --success-soft: rgba(16, 185, 129, 0.16);
       --success-border: rgba(16, 185, 129, 0.4);
       --warning: #f59e0b;
       --danger: #ef4444;
-      --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.35);
-      --shadow-modal: 0 16px 40px rgba(0, 0, 0, 0.65);
+      --shadow-card: 0 6px 18px rgba(0, 0, 0, 0.42);
+      --shadow-search: 0 6px 22px rgba(56, 189, 248, 0.18);
+      --shadow-modal: 0 20px 50px rgba(0, 0, 0, 0.75);
       background-color: #090d16 !important;
     }
 
@@ -83,272 +91,277 @@
       font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      line-height: 1.35;
+      line-height: 1.4;
       -webkit-font-smoothing: antialiased;
       -webkit-text-size-adjust: 100%;
     }
 
     body {
-      padding-bottom: 92px;
+      padding-bottom: 100px;
     }
 
     /* =====================================================
-       CABECERA COMPACTA Y PROFESIONAL
+       CABECERA CON TÍTULO FIJO Y BUSCADOR PROTAGONISTA
        ===================================================== */
     header {
       position: sticky;
       top: 0;
       z-index: 50;
       background: var(--panel);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px solid var(--border);
       box-shadow: var(--shadow-card);
       width: 100%;
     }
 
     .brand-bar {
       background: #041b3a;
-      padding: 8px 12px;
+      padding: 10px 14px;
       width: 100%;
     }
     .brand-bar-inner {
-      max-width: 560px;
+      max-width: 580px;
       margin: 0 auto;
-      display: flex;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+      gap: 10px;
     }
 
     .home-logo-btn {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: #ffffff;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 0.76rem;
-      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-size: 0.78rem;
+      font-weight: 800;
       cursor: pointer;
-      flex-shrink: 0;
     }
     .home-logo-btn:active {
-      background: rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.28);
     }
 
+    .brand-center-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+    /* Logo NO clicable */
     .brand-logo {
       height: 15px;
-      max-width: 110px;
+      max-width: 115px;
       object-fit: contain;
       filter: brightness(0) invert(1);
-      cursor: pointer;
       display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+    .page-Header-title {
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #7dd3fc;
     }
 
     .theme-btn {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: #ffffff;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-size: 0.76rem;
+      font-weight: 800;
       cursor: pointer;
-      flex-shrink: 0;
       white-space: nowrap;
     }
 
     .header-tools-wrap {
-      max-width: 560px;
+      max-width: 580px;
       margin: 0 auto;
-      padding: 8px 12px 10px;
-    }
-
-    .segmented-control {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: var(--panel-alt);
-      padding: 3px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      margin-bottom: 8px;
-    }
-    .seg-btn {
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 6px 4px;
-      border-radius: 6px;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.15s;
-    }
-    .seg-btn.active {
-      background: var(--corp-blue);
-      color: #ffffff;
-    }
-    body.dark-mode .seg-btn.active {
-      color: #090d16;
+      padding: 14px 14px 14px;
     }
 
     .lector-picker-banner {
       display: none;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 10px;
       background: var(--kits-bg);
-      border: 1px solid var(--kits-border);
+      border: 1.5px solid var(--kits-border);
       color: var(--kits-text);
-      padding: 7px 11px;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      font-size: 0.78rem;
-      font-weight: 700;
+      padding: 9px 12px;
+      border-radius: 9px;
+      margin-bottom: 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
     }
     .lector-picker-banner button {
       background: #041b3a;
       color: #ffffff;
       border: none;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 0.74rem;
-      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-size: 0.75rem;
+      font-weight: 800;
       cursor: pointer;
       flex-shrink: 0;
     }
 
+    /* Barra de búsqueda principal muy destacada */
     .search-wrap {
       position: relative;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .search-icon-svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      color: var(--corp-blue);
+      pointer-events: none;
     }
     .search-wrap input {
       width: 100%;
-      padding: 8px 34px 8px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--panel-alt);
+      height: 52px;
+      padding: 10px 44px 10px 44px;
+      border-radius: 12px;
+      border: 2.5px solid var(--corp-blue);
+      background: var(--panel);
       color: var(--text);
       font-size: 16px !important;
-      font-weight: 500;
+      font-weight: 700;
       outline: none;
+      box-shadow: var(--shadow-search);
+      transition: all 0.15s;
     }
     .search-wrap input:focus {
-      border-color: var(--corp-blue);
-      background: var(--panel);
+      border-color: #0284c7;
+      box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.2);
     }
     .search-wrap input::placeholder {
       color: var(--muted);
-      font-weight: 400;
-      font-size: 0.84rem;
+      font-weight: 500;
+      font-size: 0.92rem;
     }
     .clear-btn {
       position: absolute;
-      right: 8px;
+      right: 12px;
       top: 50%;
       transform: translateY(-50%);
-      background: var(--border);
+      background: var(--danger);
       border: none;
-      color: var(--text);
-      width: 22px;
-      height: 22px;
+      color: #ffffff;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
-      font-size: 0.72rem;
-      font-weight: 800;
+      font-size: 0.78rem;
+      font-weight: 900;
       cursor: pointer;
       display: none;
       align-items: center;
       justify-content: center;
     }
 
-    .filter-bar {
+    /* Botonera secundaria espaciada: Asistente | Mis Kits | + Material puntual */
+    .secondary-tools-bar {
       display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
+      grid-template-columns: 1.15fr 0.9fr 1.15fr;
+      gap: 9px;
       align-items: center;
     }
-    .filter-pill {
-      border: 1px solid var(--border);
-      background: var(--panel-alt);
-      color: var(--text);
-      padding: 7px 11px;
-      border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      min-width: 0;
-    }
-    .filter-pill span.truncate {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .kits-pill {
-      border: 1px solid var(--kits-border);
-      background: var(--kits-bg);
-      color: var(--kits-text);
-      padding: 7px 12px;
-      border-radius: 8px;
+    .aki-pill-btn {
+      border: 1.5px solid var(--aki-border);
+      background: var(--aki-bg);
+      color: var(--aki-text);
+      padding: 9px 8px;
+      border-radius: 9px;
       font-size: 0.78rem;
       font-weight: 800;
       cursor: pointer;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .kits-pill {
+      border: 1.5px solid var(--kits-border);
+      background: var(--kits-bg);
+      color: var(--kits-text);
+      padding: 9px 8px;
+      border-radius: 9px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .puntual-pill-btn {
+      border: 1.5px solid var(--border);
+      background: var(--panel-alt);
+      color: var(--text-secondary);
+      padding: 9px 8px;
+      border-radius: 9px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
       white-space: nowrap;
     }
 
     main {
-      max-width: 560px;
+      max-width: 580px;
       margin: 0 auto;
-      padding: 12px;
+      padding: 16px 14px;
     }
 
     /* =====================================================
        PORTADA DE INICIO
        ===================================================== */
     #homeView {
-      padding: 6px 0 24px;
+      padding: 8px 0 28px;
     }
     .home-top-actions {
       display: flex;
       justify-content: flex-end;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .home-theme-btn {
       background: var(--panel);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       color: var(--text);
-      padding: 6px 12px;
-      border-radius: 7px;
-      font-size: 0.76rem;
-      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
       cursor: pointer;
       box-shadow: var(--shadow-card);
     }
 
     .home-brand-area {
       text-align: center;
-      padding: 14px 12px 26px;
+      padding: 16px 12px 30px;
     }
     .home-shield {
-      width: 68px;
-      height: 68px;
+      width: 76px;
+      height: 76px;
       object-fit: contain;
       display: block;
-      margin: 0 auto 14px;
+      margin: 0 auto 16px;
       background: #f8fafc;
-      padding: 5px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      padding: 6px;
+      border-radius: 18px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.14);
     }
     .home-main-logo {
-      height: 25px;
-      max-width: 190px;
+      height: 28px;
+      max-width: 210px;
       object-fit: contain;
       display: block;
       margin: 0 auto;
@@ -360,18 +373,18 @@
     .home-cards-grid {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
     }
     .home-nav-card {
       background: var(--panel);
-      border: 1px solid var(--border);
-      border-left: 5px solid var(--corp-blue);
-      border-radius: 11px;
-      padding: 16px 16px;
+      border: 1.5px solid var(--border);
+      border-left: 6px solid var(--corp-blue);
+      border-radius: 13px;
+      padding: 20px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 14px;
       cursor: pointer;
       text-align: left;
       box-shadow: var(--shadow-card);
@@ -385,157 +398,165 @@
       min-width: 0;
     }
     .home-card-title {
-      font-size: 0.98rem;
+      font-size: 1.08rem;
       font-weight: 800;
       color: var(--text);
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
     .home-card-desc {
-      font-size: 0.8rem;
+      font-size: 0.86rem;
       color: var(--text-secondary);
-      line-height: 1.38;
+      line-height: 1.42;
     }
     .home-card-badge {
       display: inline-block;
-      margin-top: 8px;
+      margin-top: 10px;
       background: var(--success-soft);
       color: var(--success);
       border: 1px solid var(--success-border);
-      font-size: 0.73rem;
+      font-size: 0.76rem;
       font-weight: 800;
-      padding: 3px 9px;
-      border-radius: 6px;
+      padding: 4px 10px;
+      border-radius: 7px;
     }
     .home-card-arrow {
-      font-size: 1.25rem;
+      font-size: 1.4rem;
       font-weight: 800;
       color: var(--corp-blue);
       flex-shrink: 0;
     }
 
     /* =====================================================
-       GRUPOS DE MATERIAL Y FILTROS COMPACTOS
+       CUADRO DE CATEGORÍA ACTUAL + DESPLEGABLE DE OTRAS COINCIDENTES
        ===================================================== */
-    .blocks-dashboard {
-      margin-bottom: 16px;
-    }
-    .blocks-section-label {
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--muted);
-      margin-bottom: 8px;
-      text-align: center;
-    }
-    .blocks-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .block-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-top: 4px solid var(--corp-blue);
-      border-radius: 10px;
-      padding: 13px 10px;
-      cursor: pointer;
-      text-align: center;
-      box-shadow: var(--shadow-card);
-    }
-    .block-card:active {
-      transform: scale(0.98);
-    }
-    .block-card.grp-1 { border-top-color: #0284c7; }
-    .block-card.grp-2 { border-top-color: #059669; }
-    .block-card.grp-3 { border-top-color: #d97706; }
-    .block-card.grp-4 { border-top-color: #7c3aed; }
-
-    .block-title {
-      font-size: 0.84rem;
-      font-weight: 800;
-      color: var(--text);
-      line-height: 1.25;
-      margin-bottom: 4px;
-    }
-    .block-meta {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--muted);
-    }
-
     .scope-banner {
       display: none;
+      background: var(--panel);
+      border: 1.5px solid var(--cat-border);
+      border-left: 5px solid var(--corp-blue);
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 11px;
+      margin-bottom: 16px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      box-shadow: var(--shadow-card);
+    }
+    .scope-top-row {
+      display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--corp-blue);
-      color: var(--text);
-      padding: 8px 12px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .other-cats-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      background: var(--cat-bg);
+      border: 1.5px solid var(--cat-border);
+      color: var(--cat-text);
+      padding: 7px 12px;
       border-radius: 8px;
-      margin-bottom: 10px;
       font-size: 0.78rem;
       font-weight: 800;
-      gap: 8px;
+      cursor: pointer;
     }
-    .scope-banner button {
+    .other-cats-dropdown {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+    }
+    .other-cats-dropdown.open {
+      display: flex;
+    }
+    .other-cat-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background: var(--panel-alt);
       border: 1px solid var(--border);
-      color: var(--corp-blue);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.72rem;
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
-      flex-shrink: 0;
+      text-align: left;
     }
 
+    /* =====================================================
+       FILTROS ORDENADOS POR RENGLONES TÉCNICOS
+       ===================================================== */
     .subfilters-panel {
       display: none;
       background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-bottom: 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 18px;
       box-shadow: var(--shadow-card);
     }
     .sf-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 7px;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border-soft);
     }
     .sf-title {
-      font-size: 0.7rem;
-      font-weight: 800;
+      font-size: 0.74rem;
+      font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--muted);
+      letter-spacing: 0.6px;
+      color: var(--corp-blue);
     }
     .sf-reset {
-      background: none;
+      background: var(--danger);
       border: none;
-      color: var(--corp-blue);
-      font-size: 0.72rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .sf-chips-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-    .sf-chip {
-      border: 1px solid var(--border);
-      background: var(--panel-alt);
-      color: var(--text-secondary);
+      color: #ffffff;
       padding: 4px 10px;
       border-radius: 6px;
-      font-size: 0.74rem;
-      font-weight: 600;
+      font-size: 0.72rem;
+      font-weight: 800;
       cursor: pointer;
+    }
+    .sf-row-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .sf-row-group:last-child {
+      margin-bottom: 0;
+    }
+    .sf-row-label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+    }
+    .sf-row-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .sf-chip {
+      border: 1.5px solid var(--border);
+      background: var(--panel-alt);
+      color: var(--text);
+      padding: 5px 11px;
+      border-radius: 7px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.12s;
     }
     .sf-chip.active {
       background: var(--corp-blue);
@@ -547,59 +568,81 @@
     }
 
     /* =====================================================
-       LISTA DE MATERIALES COMPACTA Y LIMPIA (PROTAGONISMO EN NOMBRE Y CÓDIGO)
+       RESULTADOS AGRUPADOS POR BLOQUES DE CATEGORÍA (SIN PARÉNTESIS EN FILAS)
        ===================================================== */
-    .catalog-panel {
-      display: flex;
+    .catalog-groups-wrap {
+      display: none;
       flex-direction: column;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: var(--shadow-card);
+      gap: 20px;
       width: 100%;
-      margin: 0 auto 14px;
+      margin: 0 auto 24px;
     }
 
-    .empty-suggestions-card {
-      padding: 16px 14px;
-      text-align: center;
+    .cat-group-block {
+      background: var(--panel);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
     }
-    .empty-msg-title {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 10px;
-    }
-    .alt-cat-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .alt-cat-btn {
+    .cat-block-header {
+      background: #041b3a;
+      color: #ffffff;
+      padding: 10px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 100%;
-      padding: 9px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--panel-alt);
-      color: var(--corp-blue);
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-align: left;
+      gap: 10px;
       cursor: pointer;
+      user-select: none;
+    }
+    body.dark-mode .cat-block-header {
+      background: #1e293b;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-block-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+    .cat-block-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .cat-block-badge {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .cat-block-chevron {
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: #7dd3fc;
+      transition: transform 0.15s;
+    }
+    .cat-group-block.collapsed .cat-block-body {
+      display: none;
+    }
+    .cat-group-block.collapsed .cat-block-chevron {
+      transform: rotate(-90deg);
     }
 
     .mat-row {
       display: grid;
-      grid-template-columns: 50px 1fr auto;
+      grid-template-columns: 54px 1fr auto;
       align-items: center;
-      padding: 8px 11px;
+      padding: 10px 12px;
       border-bottom: 1px solid var(--border-soft);
       cursor: pointer;
-      gap: 10px;
+      gap: 11px;
     }
     .mat-row:last-child {
       border-bottom: none;
@@ -613,22 +656,21 @@
 
     .code-badge {
       font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 800;
       color: var(--code-text);
       background: var(--code-bg);
-      padding: 4px 3px;
-      border-radius: 5px;
-      width: 50px;
+      padding: 5px 4px;
+      border-radius: 6px;
+      width: 54px;
       text-align: center;
       flex-shrink: 0;
-      letter-spacing: -0.2px;
     }
     .code-badge.sc {
       background: var(--kits-bg);
       color: var(--kits-text);
       border: 1px solid var(--kits-border);
-      font-size: 0.68rem;
+      font-size: 0.7rem;
     }
 
     .mat-content {
@@ -636,24 +678,41 @@
       text-align: left;
     }
     .mat-line1 {
-      font-size: 0.83rem;
+      font-size: 0.86rem;
       font-weight: 600;
       color: var(--text);
-      line-height: 1.26;
+      line-height: 1.3;
       word-break: normal;
       overflow-wrap: break-word;
     }
-    /* Categoría muy discreta y pequeña para no competir con el nombre */
-    .mat-line2 {
-      display: block;
-      font-size: 0.66rem;
-      font-weight: 500;
+    .syn-hint {
+      font-size: 0.75rem;
+      font-weight: 600;
       color: var(--muted);
-      margin-top: 2px;
-      line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    }
+
+    /* Doble resaltado: Rojo (búsqueda) y Azul (filtros activos) */
+    .hl-match {
+      color: #dc2626;
+      font-weight: 800;
+    }
+    body.dark-mode .hl-match {
+      color: #ff5252;
+    }
+    .code-badge .hl-match {
+      color: #ff9999;
+      text-decoration: underline;
+    }
+    .hl-filter {
+      color: var(--corp-blue);
+      background: rgba(0, 85, 184, 0.12);
+      padding: 0 4px;
+      border-radius: 4px;
+      font-weight: 800;
+    }
+    body.dark-mode .hl-filter {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.2);
     }
 
     .mat-right-ind {
@@ -663,67 +722,141 @@
     }
     .row-chevron {
       color: var(--muted);
-      font-size: 1rem;
-      font-weight: 700;
+      font-size: 1.05rem;
+      font-weight: 800;
     }
     .cart-pill {
       background: var(--success);
       color: #ffffff;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 800;
-      padding: 2px 7px;
+      padding: 3px 8px;
       border-radius: 10px;
       white-space: nowrap;
     }
 
-    .puntual-wrap {
-      text-align: center;
-      padding: 6px 0 16px;
-    }
-    .puntual-btn {
+    .empty-suggestions-card {
       background: var(--panel);
-      border: 1px dashed var(--border);
-      color: var(--text-secondary);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 0.76rem;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 14px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+    .empty-msg-title {
+      font-size: 0.85rem;
       font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .alt-cat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .alt-cat-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 9px;
+      border: 1.5px solid var(--cat-border);
+      background: var(--cat-bg);
+      color: var(--cat-text);
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-align: left;
       cursor: pointer;
     }
 
     /* =====================================================
-       PEDIDO Y LECTOR DE CÓDIGOS (FILAS COMPACTAS Y EDICIÓN SIN CORTE DE SÍLABAS)
+       OPCIÓN B: BARRA INFERIOR FIJA + BANDEJA DESPLEGABLE DEL PEDIDO
        ===================================================== */
-    .pedido-doc, .trans-results-wrap {
-      background: var(--panel);
-      border: 1.5px solid var(--border);
-      border-radius: 11px;
-      overflow: hidden;
-      display: none;
-      margin-top: 6px;
-      box-shadow: var(--shadow-card);
-    }
-    .pedido-doc {
-      border-color: var(--success);
-    }
-    .pedido-doc.editing-mode {
-      border-color: var(--warning);
-    }
-
-    .pedido-header, .trans-results-head {
+    .order-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 45;
       background: var(--success);
       color: #ffffff;
-      padding: 9px 12px;
+      border-top: 2px solid #ffffff;
+      padding: 12px 16px;
+      display: none;
+      box-shadow: 0 -6px 24px rgba(4, 120, 87, 0.38);
+      cursor: pointer;
+    }
+    .order-bottom-bar.editing-kit {
+      background: var(--warning);
+    }
+    .order-bottom-inner {
+      max-width: 580px;
+      margin: 0 auto;
       display: flex;
+      align-items: center;
       justify-content: space-between;
+      gap: 10px;
+    }
+    .order-bottom-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      display: flex;
       align-items: center;
       gap: 8px;
     }
-    .trans-results-head {
-      background: #041b3a;
+    .order-bottom-cta {
+      background: rgba(255, 255, 255, 0.22);
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      white-space: nowrap;
     }
-    .pedido-doc.editing-mode .pedido-header {
+
+    /* Bandeja desplegable que contiene el Pedido / Editor de Kit */
+    .order-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 27, 58, 0.68);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      z-index: 95;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .order-drawer-backdrop.open {
+      display: flex;
+    }
+    .order-drawer-sheet {
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      background: var(--panel);
+      border-top: 4px solid var(--success);
+      border-radius: 18px 18px 0 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.45);
+    }
+    .order-drawer-sheet.editing-mode {
+      border-top-color: var(--warning);
+    }
+
+    .pedido-header {
+      background: var(--success);
+      color: #ffffff;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .order-drawer-sheet.editing-mode .pedido-header {
       background: var(--warning);
     }
 
@@ -735,13 +868,13 @@
       min-width: 0;
     }
     .pedido-logo {
-      height: 13px;
+      height: 14px;
       object-fit: contain;
       filter: brightness(0) invert(1);
       flex-shrink: 0;
     }
-    .pedido-doc-title, .trans-head-title {
-      font-size: 0.78rem;
+    .pedido-doc-title {
+      font-size: 0.84rem;
       font-weight: 800;
       letter-spacing: 0.3px;
       text-transform: uppercase;
@@ -753,41 +886,62 @@
       background: rgba(255, 255, 255, 0.25);
       color: #ffffff;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.72rem;
+      font-size: 0.76rem;
       font-weight: 800;
-      padding: 1px 7px;
+      padding: 2px 8px;
       border-radius: 10px;
       flex-shrink: 0;
     }
-    .pedido-kit-btn, .trans-mod-btn {
+    .pedido-header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .pedido-kit-btn {
       background: #ffffff;
       border: none;
       color: #041b3a;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 0.74rem;
+      padding: 6px 11px;
+      border-radius: 7px;
+      font-size: 0.76rem;
       font-weight: 800;
       cursor: pointer;
-      flex-shrink: 0;
+    }
+    .drawer-close-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+      padding: 6px 11px;
+      border-radius: 7px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
     }
 
     .kit-edit-bar {
       display: none;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 8px;
-      padding: 9px 12px;
+      padding: 10px 14px;
       background: var(--kits-bg);
-      border-bottom: 1px solid var(--kits-border);
+      border-bottom: 1.5px solid var(--kits-border);
       width: 100%;
+      flex-shrink: 0;
     }
     .kit-action-btn {
       width: 100%;
-      padding: 8px;
-      border-radius: 7px;
-      font-size: 0.8rem;
+      padding: 9px 6px;
+      border-radius: 8px;
+      font-size: 0.78rem;
       font-weight: 800;
       cursor: pointer;
       text-align: center;
+    }
+    .kit-action-btn.add-more {
+      background: var(--corp-blue);
+      color: #ffffff;
+      border: 1px solid var(--corp-blue);
     }
     .kit-action-btn.save {
       background: var(--success);
@@ -800,16 +954,17 @@
       border: 1px solid var(--danger);
     }
 
-    .pedido-body, .trans-list-body {
+    .pedido-body {
       display: flex;
       flex-direction: column;
+      overflow-y: auto;
+      flex: 1;
     }
 
-    /* Filas de Pedido y Modo Edición en Lector: Diseño anti-aplastamiento */
     .alb-row {
       display: flex;
       flex-direction: column;
-      padding: 8px 11px;
+      padding: 9px 14px;
       border-bottom: 1px solid var(--border-soft);
       gap: 5px;
     }
@@ -826,7 +981,7 @@
     }
     .alb-index {
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 700;
       color: var(--muted);
       margin-top: 2px;
@@ -848,10 +1003,10 @@
       border: 1px solid var(--kits-border);
     }
     .alb-name-full {
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 600;
       color: var(--text);
-      line-height: 1.26;
+      line-height: 1.28;
       flex: 1;
       min-width: 0;
       word-break: normal;
@@ -866,7 +1021,7 @@
       padding-left: 22px;
     }
     .alb-meta-sub {
-      font-size: 0.66rem;
+      font-size: 0.68rem;
       color: var(--muted);
       white-space: nowrap;
       overflow: hidden;
@@ -876,7 +1031,7 @@
     }
     .alb-prov-line {
       display: none;
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       color: var(--text-secondary);
       padding-left: 22px;
       font-weight: 600;
@@ -900,12 +1055,12 @@
       overflow: hidden;
     }
     .cap-btn {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border: none;
       background: transparent;
       color: var(--text);
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       font-weight: 800;
       cursor: pointer;
       display: flex;
@@ -913,8 +1068,8 @@
       justify-content: center;
     }
     .cap-input {
-      width: 38px;
-      height: 26px;
+      width: 40px;
+      height: 28px;
       border: none;
       border-left: 1px solid var(--border);
       border-right: 1px solid var(--border);
@@ -934,13 +1089,13 @@
     }
 
     .del-icon-btn {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 6px;
-      border: 1px solid rgba(220, 38, 38, 0.3);
-      background: rgba(220, 38, 38, 0.06);
+      border: 1px solid rgba(220, 38, 38, 0.35);
+      background: rgba(220, 38, 38, 0.08);
       color: var(--danger);
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 800;
       cursor: pointer;
       display: flex;
@@ -950,33 +1105,34 @@
 
     .pedido-footer {
       background: var(--panel-alt);
-      border-top: 1px solid var(--border-soft);
-      padding: 10px 12px;
+      border-top: 1.5px solid var(--border);
+      padding: 12px 14px;
+      flex-shrink: 0;
     }
     .btn-copy-primary {
       width: 100%;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 9px;
       border: none;
       background: var(--success);
       color: #ffffff;
-      font-size: 0.86rem;
+      font-size: 0.9rem;
       font-weight: 800;
       cursor: pointer;
-      margin-bottom: 7px;
+      margin-bottom: 8px;
     }
     .pedido-subactions {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 6px;
+      gap: 7px;
     }
     .sub-action-btn {
-      padding: 8px 4px;
+      padding: 9px 4px;
       border-radius: 7px;
       border: 1px solid var(--border);
       background: var(--panel);
       color: var(--text);
-      font-size: 0.75rem;
+      font-size: 0.76rem;
       font-weight: 700;
       cursor: pointer;
       text-align: center;
@@ -986,49 +1142,28 @@
       border-color: rgba(220, 38, 38, 0.35);
     }
 
-    .floating-pill {
-      position: fixed;
-      bottom: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--success);
-      border: 1.5px solid #ffffff;
-      color: #ffffff;
-      padding: 10px 24px;
-      border-radius: 26px;
-      display: none;
-      align-items: center;
-      gap: 8px;
-      font-weight: 800;
-      font-size: 0.86rem;
-      z-index: 40;
-      box-shadow: 0 6px 20px rgba(4, 120, 87, 0.4);
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
     /* =====================================================
-       VISTA LECTOR DE CÓDIGOS (COMPACTA Y ORDENADA)
+       VISTA LECTOR DE CÓDIGOS
        ===================================================== */
     #translatorView {
       display: none;
     }
     .trans-box {
       background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-bottom: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
       box-shadow: var(--shadow-card);
     }
     .trans-toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .trans-title {
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.4px;
@@ -1036,12 +1171,12 @@
     }
     .trans-textarea {
       width: 100%;
-      min-height: 90px;
+      min-height: 95px;
       background: var(--panel-alt);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
       color: var(--text);
-      padding: 8px 10px;
+      padding: 10px 12px;
       font-family: ui-monospace, SFMono-Regular, monospace;
       font-size: 16px !important;
       outline: none;
@@ -1052,6 +1187,39 @@
       background: var(--panel);
     }
 
+    .trans-results-wrap {
+      background: var(--panel);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: none;
+      box-shadow: var(--shadow-card);
+    }
+    .trans-results-head {
+      background: #041b3a;
+      color: #ffffff;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .trans-head-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+    .trans-mod-btn {
+      background: #ffffff;
+      border: none;
+      color: #041b3a;
+      padding: 5px 11px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
     .trans-edit-actions {
       display: none;
       gap: 6px;
@@ -1063,7 +1231,7 @@
       border: none;
       padding: 5px 11px;
       border-radius: 6px;
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       font-weight: 800;
       cursor: pointer;
     }
@@ -1073,38 +1241,49 @@
       border: none;
       padding: 5px 11px;
       border-radius: 6px;
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       font-weight: 800;
       cursor: pointer;
     }
-
     .trans-add-bar {
       display: none;
-      padding: 8px 12px;
+      padding: 9px 12px;
       background: var(--panel-alt);
       border-bottom: 1px solid var(--border);
     }
     .trans-add-btn {
       width: 100%;
-      padding: 8px 12px;
-      border-radius: 7px;
+      padding: 9px 12px;
+      border-radius: 8px;
       border: 1.5px dashed var(--corp-blue);
       background: var(--panel);
       color: var(--corp-blue);
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 800;
       cursor: pointer;
     }
-
-    /* Fila de lectura en Lector: compacta, limpia y centrada en código y nombre */
+    .trans-merged-notice {
+      background: var(--kits-bg);
+      color: var(--kits-text);
+      border-bottom: 1px solid var(--kits-border);
+      padding: 7px 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-align: center;
+      display: none;
+    }
+    .trans-list-body {
+      display: flex;
+      flex-direction: column;
+    }
     .trans-row {
       display: grid;
-      grid-template-columns: 20px 50px 1fr auto;
+      grid-template-columns: 20px 54px 1fr auto;
       align-items: center;
       background: var(--panel);
       border-bottom: 1px solid var(--border-soft);
-      gap: 9px;
-      padding: 8px 11px;
+      gap: 10px;
+      padding: 9px 12px;
       cursor: pointer;
     }
     .trans-row:last-child {
@@ -1114,13 +1293,12 @@
       opacity: 0.42;
       background: var(--panel-alt);
     }
-    /* En modo edición del Lector usa doble línea para no cortar nunca las palabras */
     .trans-row.edit-mode {
       display: flex;
       flex-direction: column;
       align-items: stretch;
       gap: 5px;
-      padding: 8px 11px;
+      padding: 9px 12px;
       cursor: default;
     }
     .trans-row.is-new-item {
@@ -1131,9 +1309,9 @@
       display: inline-block;
       background: var(--warning);
       color: #ffffff;
-      font-size: 0.62rem;
+      font-size: 0.64rem;
       font-weight: 800;
-      padding: 1px 5px;
+      padding: 1px 6px;
       border-radius: 4px;
       margin-left: 5px;
       text-transform: uppercase;
@@ -1148,7 +1326,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       font-weight: 900;
       color: transparent;
     }
@@ -1157,14 +1335,20 @@
       border-color: var(--success);
       color: #fff;
     }
+    .trans-sub-note {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
 
     /* =====================================================
-       MODALES COMPACTOS
+       MODALES Y ASISTENTE ESTILO AKINATOR
        ===================================================== */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(4, 27, 58, 0.6);
+      background: rgba(4, 27, 58, 0.65);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       display: none;
@@ -1179,59 +1363,74 @@
 
     .modal-dialog {
       background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
       width: 100%;
-      max-width: 350px;
-      padding: 15px;
+      max-width: 370px;
+      padding: 16px;
       max-height: 86vh;
       overflow-y: auto;
       box-shadow: var(--shadow-modal);
     }
 
-    .modal-sheet {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      width: 100%;
-      max-width: 420px;
-      padding: 15px;
-      max-height: 82vh;
-      overflow-y: auto;
-      box-shadow: var(--shadow-modal);
-    }
-
     .m-meta {
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       font-weight: 800;
       color: var(--corp-blue);
       text-transform: uppercase;
       letter-spacing: 0.4px;
     }
     .m-title {
-      font-size: 0.9rem;
+      font-size: 0.94rem;
       font-weight: 800;
       color: var(--text);
-      margin: 3px 0 11px;
-      line-height: 1.3;
+      margin: 4px 0 12px;
+      line-height: 1.32;
+    }
+
+    /* Botones del Asistente Akinator */
+    .aki-options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .aki-opt-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--panel-alt);
+      color: var(--text);
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      gap: 10px;
+    }
+    .aki-opt-btn:active {
+      border-color: var(--aki-text);
+      background: var(--aki-bg);
     }
 
     .conflict-list {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
     }
     .conflict-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
+      padding: 11px 12px;
+      border-radius: 9px;
       border: 1px solid var(--border);
       background: var(--panel-alt);
       color: var(--text);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 700;
       text-align: left;
       cursor: pointer;
@@ -1240,7 +1439,7 @@
       background: var(--code-bg);
       color: #ffffff;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 800;
       padding: 2px 8px;
       border-radius: 10px;
@@ -1249,13 +1448,13 @@
     }
 
     .field {
-      margin-bottom: 8px;
+      margin-bottom: 9px;
     }
     .field input, .field select {
       width: 100%;
-      padding: 8px 10px;
-      border-radius: 7px;
-      border: 1px solid var(--border);
+      padding: 9px 11px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
       background: var(--panel-alt);
       color: var(--text);
       font-size: 16px !important;
@@ -1267,30 +1466,30 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
     }
     .qty-stepper input {
       flex: 1;
       text-align: center;
       font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 1.15rem !important;
+      font-size: 1.2rem !important;
       font-weight: 800;
-      height: 36px;
+      height: 38px;
       padding: 2px;
-      border-radius: 7px;
+      border-radius: 8px;
       border: 1.5px solid var(--corp-blue);
       background: var(--panel);
       color: var(--text);
       width: 100%;
     }
     .step-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 7px;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
       border: 1px solid var(--border);
       background: var(--panel-alt);
       color: var(--text);
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 800;
       cursor: pointer;
     }
@@ -1298,7 +1497,7 @@
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 5px;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
     }
     .q-pill {
       padding: 6px 2px;
@@ -1307,7 +1506,7 @@
       background: var(--panel-alt);
       color: var(--text);
       font-weight: 700;
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       cursor: pointer;
       text-align: center;
     }
@@ -1315,30 +1514,30 @@
       display: none;
       gap: 5px;
       flex-wrap: wrap;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
     }
     .cable-pill {
-      padding: 5px 9px;
+      padding: 6px 10px;
       border-radius: 6px;
       border: 1px solid var(--kits-border);
       background: var(--kits-bg);
       color: var(--kits-text);
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 800;
       cursor: pointer;
     }
     .m-footer {
       display: flex;
       gap: 8px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
     .m-footer button {
       flex: 1;
-      padding: 9px;
-      border-radius: 7px;
+      padding: 10px;
+      border-radius: 8px;
       border: none;
       font-weight: 800;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       cursor: pointer;
     }
     .btn-cancel {
@@ -1351,65 +1550,27 @@
       color: #ffffff;
     }
 
-    .cat-group-title {
-      font-size: 0.7rem;
-      font-weight: 800;
-      color: var(--corp-blue);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin: 12px 0 4px;
-      padding-bottom: 3px;
-      border-bottom: 1px solid var(--border);
-    }
-    .cat-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      padding: 9px 8px;
-      border: none;
-      border-bottom: 1px solid var(--border-soft);
-      background: none;
-      color: var(--text);
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-align: left;
-      cursor: pointer;
-    }
-    .cat-item.active {
-      color: var(--corp-blue);
-      font-weight: 800;
-      background: var(--panel-alt);
-      border-radius: 6px;
-    }
-    .cat-count {
-      font-family: ui-monospace, SFMono-Regular, monospace;
-      font-size: 0.74rem;
-      font-weight: 700;
-      color: var(--muted);
-    }
-
     .kit-name-only-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      padding: 10px 12px;
+      padding: 11px 12px;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 9px;
       background: var(--panel-alt);
       color: var(--text);
-      font-size: 0.84rem;
+      font-size: 0.86rem;
       font-weight: 700;
       text-align: left;
       cursor: pointer;
-      margin-bottom: 6px;
+      margin-bottom: 7px;
     }
     .kit-preview-list {
       max-height: 44vh;
       overflow-y: auto;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 9px;
       background: var(--panel-alt);
       margin-bottom: 10px;
     }
@@ -1417,10 +1578,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 10px;
+      padding: 9px 11px;
       border-bottom: 1px solid var(--border-soft);
       gap: 8px;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
     }
     .kit-preview-item:last-child {
       border-bottom: none;
@@ -1464,9 +1625,9 @@
       background: var(--panel-alt);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 4px 10px;
+      padding: 5px 10px;
       border-radius: 14px;
-      font-size: 0.75rem;
+      font-size: 0.76rem;
       font-weight: 700;
       cursor: pointer;
     }
@@ -1481,22 +1642,22 @@
       background: none;
       border: none;
       color: var(--corp-blue);
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       font-weight: 800;
       cursor: pointer;
     }
 
     .toast {
       position: fixed;
-      bottom: 68px;
+      bottom: 72px;
       left: 50%;
       transform: translateX(-50%);
       background: #041b3a;
       color: #ffffff;
-      padding: 8px 18px;
+      padding: 9px 18px;
       border-radius: 20px;
       font-weight: 700;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       display: none;
       z-index: 200;
       box-shadow: var(--shadow-modal);
@@ -1514,7 +1675,7 @@
         color: #000000 !important;
         padding: 0 !important;
       }
-      header, main, .floating-pill, .modal-backdrop, .toast {
+      header, main, .order-bottom-bar, .order-drawer-backdrop, .modal-backdrop, .toast {
         display: none !important;
       }
       #printArea {
@@ -1585,18 +1746,16 @@
         <span>‹ Inicio</span>
       </button>
 
-      <img id="headerLogo" alt="Acaciophone" class="brand-logo" onclick="switchMode('home')">
+      <div class="brand-center-wrap">
+        <img id="headerLogo" alt="Acaciophone" class="brand-logo">
+        <span class="page-Header-title" id="pageHeaderTitle">Pedidos</span>
+      </div>
 
       <button type="button" class="theme-btn" id="themeBtn" onclick="toggleTheme()">Noche</button>
     </div>
   </div>
 
   <div class="header-tools-wrap">
-    <div class="segmented-control" id="mainSegmentedControl">
-      <button type="button" class="seg-btn active" id="tabOrderBtn" onclick="switchMode('order')">Pedidos</button>
-      <button type="button" class="seg-btn" id="tabTransBtn" onclick="switchMode('translator')">Lector de códigos</button>
-    </div>
-
     <!-- Aviso superior cuando se está buscando en el catálogo para añadir material a la lista del Lector -->
     <div class="lector-picker-banner" id="lectorPickerBanner">
       <span>Añadiendo material a la lista del Lector</span>
@@ -1604,18 +1763,23 @@
     </div>
 
     <div id="orderHeaderTools">
+      <!-- Barra de búsqueda protagonista con lupa -->
       <div class="search-wrap">
+        <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
         <form onsubmit="handleSearchSubmit(event)" style="margin:0;">
-          <input type="search" id="searchInput" enterkeyhint="search" placeholder="Buscar material por nombre, código o metros..." autocomplete="off">
+          <input type="search" id="searchInput" enterkeyhint="search" placeholder="Buscar material o escribir código..." autocomplete="off">
         </form>
         <button type="button" class="clear-btn" id="clearSearchBtn" onclick="clearSearch()">✕</button>
       </div>
-      <div class="filter-bar">
-        <button type="button" class="filter-pill" id="catTriggerBtn" onclick="openCategoriesModal()">
-          <span class="truncate" id="selectedCatLabel">Todas las categorías</span>
-          <span>▾</span>
-        </button>
+
+      <!-- Botonera secundaria espaciada -->
+      <div class="secondary-tools-bar">
+        <button type="button" class="aki-pill-btn" onclick="openAkinatorModal()">Asistente 💡</button>
         <button type="button" class="kits-pill" id="kitsBtn" onclick="openKitsModal()">Mis Kits (0)</button>
+        <button type="button" class="puntual-pill-btn" onclick="openPuntualModal()">+ Puntual</button>
       </div>
     </div>
   </div>
@@ -1637,7 +1801,7 @@
       <button type="button" class="home-nav-card" onclick="switchMode('order')">
         <div class="home-card-body">
           <div class="home-card-title">Pedidos</div>
-          <div class="home-card-desc">Busca material por nombre o categoría, crea kits de tus habituales y genera los códigos para pedir el material.</div>
+          <div class="home-card-desc">Busca material con el buscador o el asistente, crea kits de tus habituales y genera el albarán.</div>
           <div id="homeOrderBadge" class="home-card-badge" style="display:none;"></div>
         </div>
         <span class="home-card-arrow">›</span>
@@ -1646,80 +1810,23 @@
       <button type="button" class="home-nav-card" onclick="switchMode('translator')">
         <div class="home-card-body">
           <div class="home-card-title">Lector de códigos</div>
-          <div class="home-card-desc">Pega un código o una lista códigos para obtener el listado detallado de materiales.</div>
+          <div class="home-card-desc">Pega una lista de códigos para obtener el listado detallado e imprimir el checklist de almacén.</div>
         </div>
         <span class="home-card-arrow">›</span>
       </button>
     </div>
   </div>
 
-  <!-- VISTA 1: PEDIDOS -->
+  <!-- VISTA 1: PEDIDOS / BÚSQUEDA -->
   <div id="orderView" style="display:none;">
-    <div class="scope-banner" id="activeScopeBar">
-      <span id="activeScopeName"></span>
-      <button type="button" onclick="reopenConflictModal()">Cambiar categoría</button>
-    </div>
+    <!-- Recuadro superior con categoría actual y desplegable de otras coincidentes -->
+    <div class="scope-banner" id="activeScopeBar"></div>
 
-    <!-- Panel único "Filtrar" -->
+    <!-- Panel de filtros ordenados por renglones técnicos -->
     <div class="subfilters-panel" id="subFiltersBar"></div>
 
-    <!-- Grupos de materiales diferenciados -->
-    <div class="blocks-dashboard" id="blocksDashboard">
-      <div class="blocks-section-label">Grupos de material</div>
-      <div class="blocks-grid">
-        <button type="button" class="block-card grp-1" onclick="openCategoriesModal('Instalación Clientes')">
-          <div class="block-title">Instalación Clientes</div>
-          <div class="block-meta">7 categorías</div>
-        </button>
-        <button type="button" class="block-card grp-2" onclick="openCategoriesModal('Fibra Despliegue')">
-          <div class="block-title">Fibra Despliegue</div>
-          <div class="block-meta">15 categorías</div>
-        </button>
-        <button type="button" class="block-card grp-3" onclick="openCategoriesModal('Antenas Despliegue')">
-          <div class="block-title">Antenas Despliegue</div>
-          <div class="block-meta">10 categorías</div>
-        </button>
-        <button type="button" class="block-card grp-4" onclick="selectTableFilter(32)">
-          <div class="block-title">Equipos Sin Código</div>
-          <div class="block-meta">Instant Byte</div>
-        </button>
-      </div>
-    </div>
-
-    <div class="catalog-panel" id="materialsList" style="display:none;"></div>
-
-    <div class="puntual-wrap">
-      <button type="button" class="puntual-btn" onclick="openPuntualModal()">Añadir material puntual sin código</button>
-    </div>
-
-    <!-- APARTADO DE PEDIDO / EDICIÓN DE KIT -->
-    <section class="pedido-doc" id="orderSection">
-      <div class="pedido-header">
-        <div class="pedido-header-left">
-          <img id="pedidoLogo" alt="Acaciophone" class="pedido-logo">
-          <span class="pedido-doc-title" id="pedidoHeaderTitle">Pedido</span>
-          <span class="pedido-badge-count" id="cartCount">0</span>
-        </div>
-        <button type="button" class="pedido-kit-btn" id="saveKitHeaderBtn" onclick="promptSaveCurrentAsKit()">Guardar Kit</button>
-      </div>
-
-      <!-- Barra de 2 botones al 50% (Guardar y Salir) siempre visible al editar un Kit -->
-      <div class="kit-edit-bar" id="kitEditHeaderActions">
-        <button type="button" class="kit-action-btn save" onclick="saveEditedKit()">Guardar</button>
-        <button type="button" class="kit-action-btn exit" onclick="cancelEditKit()">Salir</button>
-      </div>
-
-      <div class="pedido-body" id="cartTableBody"></div>
-
-      <div class="pedido-footer" id="pedidoFooterActions">
-        <button type="button" class="btn-copy-primary" onclick="copyOrder()">Copiar Pedido</button>
-        <div class="pedido-subactions">
-          <button type="button" class="sub-action-btn" onclick="sendEmail()">Correo</button>
-          <button type="button" class="sub-action-btn" onclick="sendWhatsApp()">WhatsApp</button>
-          <button type="button" class="sub-action-btn danger" onclick="clearCart()">Vaciar</button>
-        </div>
-      </div>
-    </section>
+    <!-- Resultados agrupados por bloques de categoría -->
+    <div class="catalog-groups-wrap" id="materialsGroupsWrap"></div>
   </div>
 
   <!-- VISTA 2: LECTOR DE CÓDIGOS -->
@@ -1735,7 +1842,7 @@
       <textarea class="trans-textarea" id="transInput" placeholder="Pegar códigos..." oninput="runTranslatorFromTextarea()"></textarea>
     </div>
 
-    <!-- Contenedor del listado traducido con opción Modificar (Guardar / Cancelar) -->
+    <!-- Contenedor del listado traducido -->
     <section class="trans-results-wrap" id="transResultsWrap">
       <div class="trans-results-head">
         <span class="trans-head-title" id="transHeadTitle">Listado de materiales</span>
@@ -1750,13 +1857,15 @@
         <button type="button" class="trans-add-btn" onclick="startPickingForTranslator()">+ Añadir material a esta lista</button>
       </div>
 
+      <div class="trans-merged-notice" id="transMergedNotice"></div>
       <div class="trans-list-body" id="transOutput"></div>
 
       <div class="pedido-footer" id="transFooterActions">
         <button type="button" class="btn-copy-primary" onclick="openPrintChecklistModal()">Imprimir Checklist</button>
-        <div class="pedido-subactions" style="grid-template-columns: 1fr 1fr;">
-          <button type="button" class="sub-action-btn" onclick="sendTranslatorWhatsApp()">Enviar por WhatsApp</button>
-          <button type="button" class="sub-action-btn" onclick="sendTranslatorEmail()">Enviar por Correo</button>
+        <div class="pedido-subactions" style="grid-template-columns: 1fr 1fr 1fr;">
+          <button type="button" class="sub-action-btn" onclick="copyTranslatorCodesOnly()">Copiar códigos</button>
+          <button type="button" class="sub-action-btn" onclick="sendTranslatorWhatsApp()">WhatsApp</button>
+          <button type="button" class="sub-action-btn" onclick="sendTranslatorEmail()">Correo</button>
         </div>
       </div>
     </section>
@@ -1766,18 +1875,62 @@
 <!-- Área exclusiva para impresión física en formato Checklist A4 -->
 <div id="printArea"></div>
 
-<!-- Botón flotante inferior "Pedido" -->
-<div class="floating-pill" id="bottomBar" onclick="scrollToOrder()">
-  <span id="bottomBarText">Pedido (0)</span>
-  <span>↓</span>
+<!-- OPCIÓN B: BARRA INFERIOR FIJA DE PEDIDO -->
+<div class="order-bottom-bar" id="orderBottomBar" onclick="openOrderDrawer()">
+  <div class="order-bottom-inner">
+    <div class="order-bottom-title">
+      <span>🛒</span>
+      <span id="orderBottomBarText">Pedido actual (0 materiales)</span>
+    </div>
+    <span class="order-bottom-cta">Ver / Editar Pedido ▴</span>
+  </div>
 </div>
 
-<!-- VENTANA FLOTANTE: SELECCIÓN DE CATEGORÍA -->
-<div class="modal-backdrop" id="conflictModal" onclick="if(event.target===this)closeActiveModal()">
+<!-- BANDEJA DESPLEGABLE INFERIOR DEL PEDIDO -->
+<div class="order-drawer-backdrop" id="orderDrawerBackdrop" onclick="if(event.target===this)closeOrderDrawer()">
+  <div class="order-drawer-sheet" id="orderDrawerSheet">
+    <div class="pedido-header">
+      <div class="pedido-header-left">
+        <img id="pedidoLogo" alt="Acaciophone" class="pedido-logo">
+        <span class="pedido-doc-title" id="pedidoHeaderTitle">Pedido</span>
+        <span class="pedido-badge-count" id="cartCount">0</span>
+      </div>
+      <div class="pedido-header-right">
+        <button type="button" class="pedido-kit-btn" id="saveKitHeaderBtn" onclick="promptSaveCurrentAsKit()">Guardar Kit</button>
+        <button type="button" class="drawer-close-btn" onclick="closeOrderDrawer()">Cerrar ▾</button>
+      </div>
+    </div>
+
+    <!-- Barra de edición de Kit -->
+    <div class="kit-edit-bar" id="kitEditHeaderActions">
+      <button type="button" class="kit-action-btn add-more" onclick="closeOrderDrawer(); searchInput.focus();">Añadir más</button>
+      <button type="button" class="kit-action-btn save" onclick="saveEditedKit()">Guardar</button>
+      <button type="button" class="kit-action-btn exit" onclick="cancelEditKit()">Salir</button>
+    </div>
+
+    <div class="pedido-body" id="cartTableBody"></div>
+
+    <div class="pedido-footer">
+      <button type="button" class="btn-copy-primary" onclick="copyOrder()">Copiar Pedido</button>
+      <div class="pedido-subactions">
+        <button type="button" class="sub-action-btn" onclick="sendEmail()">Correo</button>
+        <button type="button" class="sub-action-btn" onclick="sendWhatsApp()">WhatsApp</button>
+        <button type="button" class="sub-action-btn danger" onclick="clearCart()">Vaciar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VENTANA FLOTANTE: ASISTENTE AKINATOR -->
+<div class="modal-backdrop" id="akinatorModal" onclick="if(event.target===this)closeActiveModal()">
   <div class="modal-dialog">
-    <div class="m-meta">SELECCIÓN DE CATEGORÍA</div>
-    <div class="m-title">¿Para qué fin buscas este material?</div>
-    <div class="conflict-list" id="conflictModalOptions"></div>
+    <div class="m-meta">ASISTENTE INTELIGENTE</div>
+    <div class="m-title" id="akiQuestionTitle">¿Para qué tipo de trabajo necesitas el material?</div>
+    <div class="aki-options-list" id="akiOptionsContainer"></div>
+    <div class="m-footer" style="margin-top:14px;">
+      <button type="button" class="btn-cancel" id="akiBackBtn" style="display:none;" onclick="akiGoBack()">‹ Volver</button>
+      <button type="button" class="btn-cancel" onclick="closeActiveModal()">Cerrar</button>
+    </div>
   </div>
 </div>
 
@@ -1881,14 +2034,7 @@
   </div>
 </div>
 
-<!-- MODAL: CATEGORÍAS -->
-<div class="modal-backdrop" id="categoriesModal" onclick="if(event.target===this)closeActiveModal()">
-  <div class="modal-sheet" id="categoriesSheet">
-    <div id="categoriesContainer"></div>
-  </div>
-</div>
-
-<!-- MODAL: MIS KITS (Solo listado de nombres) -->
+<!-- MODAL: MIS KITS -->
 <div class="modal-backdrop" id="kitsModal" onclick="if(event.target===this)closeActiveModal()">
   <div class="modal-dialog">
     <div class="m-title" style="margin-top:0;">Mis Kits</div>
@@ -1917,7 +2063,6 @@
 </div>
 
 <div class="toast" id="toast">Listo</div>
-
 <script>
 if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
@@ -1939,7 +2084,7 @@ function forceScrollTop() {
   }, 30);
 }
 
-const LOGO_DATA_URI = "data:image/png;base64,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";
+const LOGO_DATA_URI = "data:image/png;base64,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";
 
 const ICON_DATA_URI = "data:image/png;base64,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";
 
@@ -1985,6 +2130,7 @@ const TABLES = [
   ["Fibra Despliegue","MATERIAL FIJACIÓN - FIBRA"],
   ["Sin Código (Proveedores)","EQUIPOS SIN CÓDIGO"]
 ];
+
 const RAW_DATA = [
 ["3946","ROUTER ASUS ax3000 PARA DUAL O BALANCEO DE CARGA",0,"VARIOS"],
 ["3912","HUAWEI X6 ONT ADAMO",0,"VARIOS"],
@@ -2407,114 +2553,94 @@ function getSynonymsForItem(code, name, tableIdx) {
   return extra.join(" ");
 }
 
+// Criba de etiquetas técnicas relevantes (Metros, Color, Grosor, Conector, Fibras/Capacidad, Marca/Tecnología)
 function extractFilterTags(code, name, tIdx) {
   const up = name.toUpperCase();
   const tags = [];
 
-  if (tIdx === 1) {
-    if (up.includes("ALARGADOR")) tags.push("Alargador 2m");
-    else if (up.includes("SERIE FORCE")) tags.push("Armado Force 3mm");
-    else if (up.includes("SM9/125")) tags.push("Exterior SM9/125");
-    else if (up.includes("5 MM")) tags.push("Opticom 5mm");
-    else if (up.includes("3 MM")) tags.push("Opticom 3mm");
+  // 1. Metros
+  const mDec = up.match(/\b(\d+[.,]\d+)\s*(?:M|MT|MTS|METROS)\b/);
+  const mInt = up.match(/\b(\d+)\s*(?:M|MT|MTS|METROS)\b/);
+  if (mDec) tags.push(mDec[1].replace(",", ".") + "m");
+  else if (mInt) tags.push(mInt[1] + "m");
 
-    if (up.includes("NEGRO")) tags.push("Negro");
-    else if (up.includes("BLANCO")) tags.push("Blanco");
+  // 2. Color
+  if (up.includes("NEGRO")) tags.push("Negro");
+  if (up.includes("BLANCO")) tags.push("Blanco");
 
-    const m = up.match(/\b(\d+)\s*(?:M|MT|MTS|METROS)\b/);
-    if (m) tags.push(m[1] + "m");
-  } else if (tIdx === 2) {
-    if (up.includes("OPTITAP") || up.includes("CORNING")) tags.push("Corning Optitap");
-    else if (up.includes("FASTCONNECT") || up.includes("HUAWEI")) tags.push("Huawei FastConnect");
-    else if (up.includes("G657A2")) tags.push("Ext. G657A2 SC/APC");
-    else if (up.includes("CIRCO") || up.includes("MMV")) tags.push("Circo MMV");
-    else if (up.includes("4,2MM")) tags.push("Interior 4.2mm");
-    else if (up.includes("INTERIOR")) tags.push("Interior 3mm");
-    else tags.push("Fijación / Genérica");
+  // 3. Grosor y armadura
+  if (up.includes("0,9 MM") || up.includes("0.9 MM")) tags.push("0.9mm");
+  if (up.includes("2 MM") || up.includes("2MM")) tags.push("2mm");
+  if (up.includes("3 MM") || up.includes("3MM") || up.includes("(3MM)")) tags.push("3mm");
+  if (up.includes("4,2MM") || up.includes("4.2MM")) tags.push("4.2mm");
+  if (up.includes("5 MM") || up.includes("5MM")) tags.push("5mm");
+  if (up.includes("ARMADO") || up.includes("ARMADURA") || up.includes("ROEDORES")) tags.push("Armado");
 
-    const m = up.match(/\b(\d+)\s*(?:M|MT|MTS|METROS)\b/);
-    if (m) tags.push(m[1] + "m");
-  } else if (tIdx === 0) {
+  // 4. Conectores y Tipo de acometida / caja
+  if (up.includes("SC/APC")) tags.push("SC/APC");
+  if (up.includes("SC/UPC")) tags.push("SC/UPC");
+  if (up.includes("LC/APC")) tags.push("LC/APC");
+  if (up.includes("LC/UPC")) tags.push("LC/UPC");
+  if (up.includes("DUPLEX")) tags.push("Dúplex");
+  if (up.includes("OPTITAP") || up.includes("CORNING")) tags.push("Optitap (Corning)");
+  if (up.includes("FASTCONNECT") || (tIdx === 2 && up.includes("HUAWEI"))) tags.push("FastConnect (Huawei)");
+  if (up.includes("CIRCO") || up.includes("MMV")) tags.push("Circo MMV");
+  if (tIdx === 1 || tIdx === 2 || tIdx === 24) {
+    if (up.includes("INTERIOR")) tags.push("Interior");
+    if (up.includes("EXTERIOR")) tags.push("Exterior");
+  }
+  if (tIdx === 24) {
+    if (up.includes("FACHADA") || up.includes("POSTE")) tags.push("Fachada / Poste");
+    if (up.includes("ARQUETA")) tags.push("Arqueta");
+  }
+
+  // 5. Capacidad: Fibras (FO), Splitters, Puertos, Fusiones
+  const fo = up.match(/\b(\d+)\s*FO\b/);
+  if (fo) tags.push(fo[1] + " FO");
+
+  const sp = up.match(/\b(1:\d+)\b/);
+  if (sp) tags.push(sp[1]);
+
+  const pt = up.match(/\b(\d+)\s*PUERTOS\b/);
+  if (pt) tags.push(pt[1] + " Puertos");
+  else if (tIdx === 24 && up.includes("-8-")) tags.push("8 Puertos");
+  else if (tIdx === 24 && up.includes("-16-")) tags.push("16 Puertos");
+
+  const fu = up.match(/\b(\d+)\s*FUSIONES\b/);
+  if (fu) tags.push(fu[1] + " Fusiones");
+
+  // 6. Marca y Tecnología (Routers, Antenas, OLT, Switches)
+  if (tIdx === 0 || tIdx === 6 || tIdx === 7 || tIdx === 8 || tIdx === 11 || tIdx === 17 || tIdx === 19 || tIdx === 20 || tIdx === 32) {
     if (up.includes("HUAWEI")) tags.push("Huawei");
-    else if (up.includes("TP-LINK") || up.includes("TP- LINK") || up.includes("TPLINK")) tags.push("TP-Link");
-    else if (up.includes("SAGECOM") || up.includes("ZTE") || up.includes("SERCOMM")) tags.push("Sagemcom / ZTE / Sercomm");
-    else if (up.includes("MIKROTIK") || up.includes("ASUS")) tags.push("Mikrotik / Asus");
-
+    if (up.includes("MIKROTIK") || up.includes("MIKEOTIK") || up.includes("RBLHG") || up.includes("RBSXT") || up.includes("CCR") || up.includes("CRS")) tags.push("Mikrotik");
+    if (up.includes("TP-LINK") || up.includes("TP- LINK") || up.includes("TPLINK") || up.includes("TP LINK")) tags.push("TP-Link");
+    if (up.includes("SAGECOM") || up.includes("ZTE") || up.includes("SERCOMM")) tags.push("Sagemcom / ZTE");
+    if (up.includes("CAMBIUM") || up.includes("EPMP")) tags.push("Cambium");
     if (up.includes("WIFI 6") || up.includes("WIFI 7") || up.includes("AX")) tags.push("WiFi 6 / WiFi 7");
     if (up.includes("NEBA") || up.includes("VULA")) tags.push("NEBA / VULA");
     if (up.includes("REPETIDOR") || up.includes("MESH")) tags.push("Repetidor / Mesh");
     if (up.includes("4G") || up.includes("SATELITE") || up.includes("DSL")) tags.push("4G / Satélite / DSL");
-  } else if (tIdx === 26) {
-    if (up.includes("SC/APC - SC/APC")) tags.push("SC/APC - SC/APC");
-    else if (up.includes("SC/APC - SC/UPC")) tags.push("SC/APC - SC/UPC");
-    else if (up.includes("LC") && up.includes("SC")) tags.push("SC - LC");
-    else if (up.includes("LC/")) tags.push("LC - LC");
-    else tags.push("SC/UPC - SC/UPC");
-
-    if (up.includes("DUPLEX")) tags.push("Dúplex");
-    if (up.includes("2 MM")) tags.push("2mm");
-    else if (up.includes("3 MM")) tags.push("3mm");
-
-    const m = up.match(/\b(\d+)\s*MT\b/);
-    if (m) tags.push(m[1] + "m");
-  } else if (tIdx === 25) {
-    const fo = up.match(/\b(\d+)\s*FO\b/);
-    if (fo) tags.push(fo[1] + " FO");
-    if (up.includes("ARMADURA")) tags.push("Armadura metálica");
-    else if (up.includes("ROEDORES")) tags.push("Anti-roedores");
-  } else if (tIdx === 6) {
-    if (up.includes("MIKROTIK") || up.includes("SXT") || up.includes("LHG") || up.includes("LDF") || up.includes("DISC")) tags.push("Mikrotik");
-    else if (up.includes("PUNTO DE ACCESO") || up.includes("UNIFI")) tags.push("Punto Acceso / WiFi");
-    else if (up.includes("PARABOLICA") || up.includes("OFFSET")) tags.push("Parabólica");
-    else tags.push("Cambium / NanoBeam");
-  } else if (tIdx === 17) {
-    if (up.includes("TARJETA")) tags.push("Tarjetas MA5600/5800");
-    else if (up.includes("HUAWEI")) tags.push("Chasis OLT Huawei");
-    else tags.push("BDCOM / Cabecera");
-  } else if (tIdx === 21) {
-    if (up.includes("DUPLEX")) tags.push("Dúplex");
-    const p = up.match(/\b(\d+)\s*PUERTOS\b/);
-    if (p) tags.push(p[1] + " Puertos");
-  } else if (tIdx === 24) {
-    if (up.includes("INTERIOR")) tags.push("Interior");
-    else if (up.includes("POSTE")) tags.push("Fachada / Poste");
-    else if (up.includes("ARQUETA") || up.includes("COMPACT")) tags.push("Arqueta / Compact");
-    else tags.push("Multi / Con Splitter");
-
-    if (up.includes("8 PUERTOS") || up.includes("-8-")) tags.push("8 Puertos");
-    else if (up.includes("16")) tags.push("16 Puertos");
-    else if (up.includes("48")) tags.push("48 Puertos");
-  } else if (tIdx === 23) {
-    if (up.includes("TORPEDO")) tags.push("Torpedo");
-    else tags.push("Estanca / Mini CAU");
-    const f = up.match(/\b(\d+)\s*FUSIONES\b/);
-    if (f) tags.push(f[1] + " Fusiones");
-  } else if (tIdx === 29) {
-    const s = up.match(/(1:\d+)/);
-    if (s) tags.push(s[1]);
-    if (up.includes("PRECONECTORIZADO") || up.includes("PERCONECTORIZADO")) tags.push("Conectorizado SC/APC");
-    else tags.push("Sin conectorizar");
-  } else if (tIdx === 5) {
-    if (up.includes("ANDROID") || up.includes("ADROID") || up.includes("DECO")) tags.push("Decos Android TV");
-    else if (up.includes("ANTENA") || up.includes("PARABOLICA")) tags.push("Antenas / TDT");
-    else tags.push("LNB / Receptor Sat");
-  } else if (tIdx === 10) {
-    if (up.includes("MASTIL")) tags.push("Mástiles");
-    else if (up.includes("GARRA") || up.includes("SOPORTE")) tags.push("Garras / Soportes");
-    else tags.push("Grapas");
-  } else if (tIdx === 31) {
-    if (up.includes("RETENEDOR") || up.includes("RETENDOR") || up.includes("ANCLAJE")) tags.push("Retenedores / Anclajes");
-    else if (up.includes("GRAPA")) tags.push("Grapas pared");
-    else tags.push("Tacos / Tirafondos / Bridas");
-  } else if (tIdx === 32) {
-    if (up.includes("RBLHG") || up.includes("SXSQ") || up.includes("RBSXT") || up.includes("CAPGI")) tags.push("Antenas / AP Mikrotik");
-    else if (up.includes("CRS") || up.includes("CSS")) tags.push("Switches Mikrotik");
-    else if (up.includes("HPOW") || up.includes("POE")) tags.push("Fuentes / PoE");
-    else tags.push("Routers / Telefonía");
   }
 
   return tags;
 }
+
+// Clasifica cada etiqueta en su renglón técnico correspondiente
+function getFilterTagGroup(tag) {
+  if (/^\d+(?:\.\d+)?m$/i.test(tag)) return "METROS";
+  if (/^(Negro|Blanco|\d+(?:\.\d+)?mm|Armado)$/i.test(tag)) return "COLOR_GROSOR";
+  if (/^(SC\/APC|SC\/UPC|LC\/APC|LC\/UPC|Dúplex|Optitap \(Corning\)|FastConnect \(Huawei\)|Circo MMV|Interior|Exterior|Fachada \/ Poste|Arqueta)$/i.test(tag)) return "CONECTOR_TIPO";
+  if (/^(\d+\s*FO|1:\d+|\d+\s*Puertos|\d+\s*Fusiones)$/i.test(tag)) return "CAPACIDAD";
+  return "MARCA_TEC";
+}
+
+const FILTER_ROW_META = [
+  { key: "CONECTOR_TIPO", label: "Conector / Tipo" },
+  { key: "COLOR_GROSOR", label: "Color / Grosor" },
+  { key: "CAPACIDAD", label: "Fibras / Capacidad" },
+  { key: "MARCA_TEC", label: "Marca / Tecnología" },
+  { key: "METROS", label: "Metros" }
+];
 
 const MATERIALS = RAW_DATA.map((r, i) => {
   const code = r[0];
@@ -2529,6 +2655,14 @@ const MATERIALS = RAW_DATA.map((r, i) => {
   const phoneticFull = toPhonetic(fullText);
   const filterTags = extractFilterTags(code, name, tIdx);
 
+  // Índices estrictos del material (sin el título de la categoría) para no contaminar búsquedas
+  const itemDirectSearch = norm(`${code} ${name} ${prov}`);
+  const itemDirectWords = itemDirectSearch.split(/[^a-z0-9]+/).filter(w => w.length >= 3);
+  const itemDirectPhonetic = toPhonetic(itemDirectSearch);
+  const synsSearch = norm(syns);
+  const synsWords = synsSearch.split(/[^a-z0-9]+/).filter(w => w.length >= 3);
+  const synsPhonetic = toPhonetic(synsSearch);
+
   return {
     id: i,
     code,
@@ -2540,38 +2674,53 @@ const MATERIALS = RAW_DATA.map((r, i) => {
     search: fullText,
     words,
     phoneticFull,
-    filterTags
+    filterTags,
+    itemDirectSearch,
+    itemDirectWords,
+    itemDirectPhonetic,
+    synsSearch,
+    synsWords,
+    synsPhonetic
   };
 });
 
-function itemMatchesToken(mat, token) {
-  if (/\d/.test(token)) {
-    return mat.search.includes(token);
-  }
+function wordMatchesTokenFuzzy(wordsArr, fullStr, phFull, token) {
+  if (/\d/.test(token)) return fullStr.includes(token);
   const variants = getSingularVariants(token);
-  if (variants.some(v => mat.search.includes(v))) return true;
-
+  if (variants.some(v => fullStr.includes(v))) return true;
   if (token.length >= 3) {
     const phToken = toPhonetic(token);
-    if (phToken.length >= 3 && mat.phoneticFull.includes(phToken)) return true;
+    if (phToken.length >= 3 && phFull.includes(phToken)) return true;
   }
-
   if (token.length >= 4) {
     const maxDist = token.length >= 7 ? 2.0 : 1.1;
     for (const v of variants) {
       if (v.length < 4) continue;
-      for (const w of mat.words) {
-        if (Math.abs(w.length - v.length) <= 2) {
-          if (typoDistance(v, w, maxDist) <= maxDist) return true;
-        }
-        if (v.length >= 5 && w.length > v.length) {
-          const wPrefix = w.slice(0, v.length);
-          if (typoDistance(v, wPrefix, 1.0) <= 1.0) return true;
-        }
+      for (const w of wordsArr) {
+        if (Math.abs(w.length - v.length) <= 2 && typoDistance(v, w, maxDist) <= maxDist) return true;
+        if (v.length >= 5 && w.length > v.length && typoDistance(v, w.slice(0, v.length), 1.0) <= 1.0) return true;
       }
     }
   }
   return false;
+}
+
+function materialMatchesTokenStrict(mat, token) {
+  if (wordMatchesTokenFuzzy(mat.itemDirectWords, mat.itemDirectSearch, mat.itemDirectPhonetic, token)) return true;
+  if (wordMatchesTokenFuzzy(mat.synsWords, mat.synsSearch, mat.synsPhonetic, token)) return true;
+  return false;
+}
+
+function getMatchedSynonymHint(mat, tokens) {
+  if (!tokens || !tokens.length) return "";
+  for (const token of tokens) {
+    const inDirect = wordMatchesTokenFuzzy(mat.itemDirectWords, mat.itemDirectSearch, mat.itemDirectPhonetic, token);
+    if (!inDirect && wordMatchesTokenFuzzy(mat.synsWords, mat.synsSearch, mat.synsPhonetic, token)) {
+      const matchedSyn = mat.synsWords.find(sw => wordMatchesTokenFuzzy([sw], sw, toPhonetic(sw), token));
+      if (matchedSyn) return matchedSyn;
+    }
+  }
+  return "";
 }
 
 const CODE_MAP = {};
@@ -2585,42 +2734,14 @@ MATERIALS.forEach(m => {
   }
 });
 
-const CONFLICT_FAMILIES = [
-  { id: "acometida", words: ["acometida", "acometidas"], tables: [1, 2] },
-  { id: "pigtail", words: ["pigtail", "pigtails", "pigtel", "pigtels"], tables: [27, 1, 3] },
-  { id: "router", words: ["router", "routers", "ruter", "ruters", "ont", "onts"], tables: [0, 19, 32] },
-  { id: "antena", words: ["antena", "antenas"], tables: [6, 7, 8, 11, 5] },
-  { id: "cable", words: ["cable", "cables"], tables: [25, 12, 1, 2] },
-  { id: "caja", words: ["caja", "cajas"], tables: [24, 23, 5] },
-  { id: "fijacion", words: ["fijacion", "fijaciones", "grapa", "grapas", "retenedor", "retenedores", "mastil", "mastiles", "garra", "garras"], tables: [31, 10, 30, 2] },
-  { id: "adaptador", words: ["adaptador", "adaptadores", "enfrentador", "enfrentadores"], tables: [3, 28, 4] },
-  { id: "latiguillo", words: ["latiguillo", "latiguillos", "patchcord", "patchcords"], tables: [26, 1, 3] }
-];
-
-function tokenMatchesConflictWord(token, targetWord, endsWithSpace) {
-  if (token === targetWord) return true;
-  if (toPhonetic(token) === toPhonetic(targetWord) && token.length >= 4) return true;
-  if (targetWord.length >= 5) {
-    if (targetWord.startsWith(token) && token.length < targetWord.length) {
-      return endsWithSpace && token.length >= targetWord.length - 1;
-    }
-    if (token.length >= targetWord.length - 1) {
-      const maxD = targetWord.length >= 8 ? 1.8 : 1.0;
-      if (typoDistance(token, targetWord, maxD) <= maxD) return true;
-    }
-  }
-  return false;
-}
-
 let cart = JSON.parse(localStorage.getItem("acacio_v4_cart") || "[]");
 let userKits = JSON.parse(localStorage.getItem("acacio_v4_kits") || "[]");
 let savedTechs = JSON.parse(localStorage.getItem("acacio_v5_techs") || "[]");
 let currentView = "home";
 let selectedTable = "ALL";
-let activeConflictFamilyId = null;
-let resolvedConflictTable = null;
-let conflictDismissed = false;
 let selectedFilterTags = [];
+let collapsedCatBlocks = new Set();
+let otherCatsDropdownOpen = false;
 let expandedCartKeys = new Set();
 let modalMode = "CATALOG";
 let currentItem = null;
@@ -2671,12 +2792,11 @@ window.addEventListener("touchmove", (e) => {
 searchInput.addEventListener("input", () => {
   const val = searchInput.value.trim();
   clearSearchBtn.style.display = val ? "flex" : "none";
+  otherCatsDropdownOpen = false;
+  collapsedCatBlocks.clear();
   if (!val) {
-    activeConflictFamilyId = null;
-    resolvedConflictTable = null;
-    conflictDismissed = false;
+    selectedTable = "ALL";
     selectedFilterTags = [];
-    document.getElementById("conflictModal").classList.remove("open");
   }
   renderMaterials();
 });
@@ -2684,15 +2804,35 @@ searchInput.addEventListener("input", () => {
 function clearSearch() {
   searchInput.value = "";
   clearSearchBtn.style.display = "none";
-  activeConflictFamilyId = null;
-  resolvedConflictTable = null;
-  conflictDismissed = false;
+  selectedTable = "ALL";
   selectedFilterTags = [];
-  document.getElementById("conflictModal").classList.remove("open");
+  otherCatsDropdownOpen = false;
+  collapsedCatBlocks.clear();
   renderMaterials();
 }
 
+function isOrderDrawerOpen() {
+  return document.getElementById("orderDrawerBackdrop").classList.contains("open");
+}
+
+function openOrderDrawer() {
+  closeAllModalDOM();
+  document.getElementById("orderDrawerBackdrop").classList.add("open");
+  if (!handlingPopState) {
+    history.pushState({ view: currentView, modal: "orderDrawerBackdrop" }, "");
+  }
+}
+
+function closeOrderDrawer() {
+  if (!isOrderDrawerOpen()) return;
+  document.getElementById("orderDrawerBackdrop").classList.remove("open");
+  if (!handlingPopState && history.state && history.state.modal === "orderDrawerBackdrop") {
+    history.replaceState({ view: currentView, modal: null }, "");
+  }
+}
+
 function isAnyModalOpen() {
+  if (isOrderDrawerOpen()) return true;
   return Array.from(document.querySelectorAll(".modal-backdrop")).some(m => m.classList.contains("open"));
 }
 
@@ -2713,13 +2853,11 @@ function openModalById(modalId) {
 
 function closeAllModalDOM() {
   document.querySelectorAll(".modal-backdrop").forEach(m => m.classList.remove("open"));
+  document.getElementById("orderDrawerBackdrop").classList.remove("open");
 }
 
 function closeActiveModal() {
   if (!isAnyModalOpen()) return;
-  if (document.getElementById("conflictModal").classList.contains("open") && resolvedConflictTable === null) {
-    conflictDismissed = true;
-  }
   closeAllModalDOM();
   if (!handlingPopState && history.state && history.state.modal) {
     history.replaceState({ view: currentView, modal: null }, "");
@@ -2742,11 +2880,14 @@ function applyViewDOM(mode) {
   document.getElementById("translatorView").style.display = isTrans ? "block" : "none";
 
   if (!isHome) {
-    document.getElementById("mainSegmentedControl").style.display = pickingForTranslator ? "none" : "grid";
+    const titleEl = document.getElementById("pageHeaderTitle");
+    if (pickingForTranslator) {
+      titleEl.textContent = "AÑADIR AL LECTOR";
+    } else {
+      titleEl.textContent = isOrder ? "PEDIDOS" : "LECTOR DE CÓDIGOS";
+    }
     document.getElementById("lectorPickerBanner").style.display = pickingForTranslator ? "flex" : "none";
     document.getElementById("kitsBtn").style.display = pickingForTranslator ? "none" : "block";
-    document.getElementById("tabOrderBtn").classList.toggle("active", isOrder);
-    document.getElementById("tabTransBtn").classList.toggle("active", isTrans);
     document.getElementById("orderHeaderTools").style.display = isOrder ? "block" : "none";
   }
 
@@ -2768,6 +2909,7 @@ function switchMode(mode) {
     return;
   }
   pickingForTranslator = false;
+  closeAllModalDOM();
   applyViewDOM(mode);
   if (!handlingPopState) {
     history.pushState({ view: mode, modal: null }, "");
@@ -2796,9 +2938,6 @@ window.addEventListener("popstate", (e) => {
   }
 
   if (isAnyModalOpen()) {
-    if (document.getElementById("conflictModal").classList.contains("open") && resolvedConflictTable === null) {
-      conflictDismissed = true;
-    }
     closeAllModalDOM();
     renderMaterials();
     handlingPopState = false;
@@ -2818,247 +2957,555 @@ window.addEventListener("popstate", (e) => {
   renderMaterials();
   handlingPopState = false;
 });
-function detectConflictFamily(tokens, endsWithSpace) {
-  if (!tokens.length) return null;
-  for (const t of tokens) {
-    if (CONFLICT_FAMILIES[0].words.some(w => tokenMatchesConflictWord(t, w, endsWithSpace))) {
-      return CONFLICT_FAMILIES[0];
-    }
+// =========================================================================
+// ASISTENTE INTELIGENTE ESTILO AKINATOR (ÁRBOL DE DECISIÓN DEL CATÁLOGO)
+// =========================================================================
+const AKI_TREE = {
+  root: {
+    q: "¿Para qué tipo de trabajo necesitas el material?",
+    opts: [
+      { label: "Instalación o avería en casa de cliente (Fibra, WiFi, TV, Fijo)", next: "cli_main" },
+      { label: "Planta Externa y Despliegue de Fibra (Calle, Postes, Arquetas, Nodo)", next: "fo_main" },
+      { label: "Radioenlaces, Antenas, Cuadro Eléctrico y Alimentación (PoE / SAI)", next: "ant_main" },
+      { label: "Equipos Sin Código (Proveedor Instant Byte)", tIdx: 32 }
+    ]
+  },
+  cli_main: {
+    q: "¿Qué vas a instalar o conectar en el domicilio del cliente?",
+    opts: [
+      { label: "Router, ONT o Repetidor WiFi", next: "cli_router" },
+      { label: "Cable de Acometida de Fibra (desde la CTO hasta la casa)", next: "cli_acom" },
+      { label: "Roseta óptica, Adaptador o Latiguillo alargador", next: "cli_roseta" },
+      { label: "Televisión (Decodificador Android TV, Parabólica o TDT)", next: "cli_tv" },
+      { label: "Teléfono Fijo IP o Adaptador ATA", tIdx: 4 },
+      { label: "Antena receptora en tejado/fachada de cliente", tIdx: 6 }
+    ]
+  },
+  cli_router: {
+    q: "¿Qué tipo de Router o equipo WiFi necesitas?",
+    opts: [
+      { label: "Router / ONT Fibra Huawei (WiFi 6, WiFi 7, V5)", tIdx: 0, tags: ["Huawei"] },
+      { label: "Router o Repetidor TP-Link / Asus", tIdx: 0, tags: ["TP-Link"] },
+      { label: "Router NEBA / VULA (Sagemcom, Sercomm, Comtrend, ZTE)", tIdx: 0, tags: ["NEBA / VULA"] },
+      { label: "Repetidor WiFi / Sistema Mesh", tIdx: 0, tags: ["Repetidor / Mesh"] },
+      { label: "Router 4G (SIM), Satélite o Equipo DSL", tIdx: 0, tags: ["4G / Satélite / DSL"] },
+      { label: "Ver todos los Routers domésticos", tIdx: 0 }
+    ]
+  },
+  cli_acom: {
+    q: "¿Qué tipo de conector o cable de acometida necesitas?",
+    opts: [
+      { label: "Fibra Propia SC/APC (Opticom 3mm/5mm, Force Armado o SM9/125)", tIdx: 1 },
+      { label: "Exterior con conector CORNING (Optitap)", tIdx: 2, tags: ["Optitap (Corning)"] },
+      { label: "Exterior con conector HUAWEI (FastConnect)", tIdx: 2, tags: ["FastConnect (Huawei)"] },
+      { label: "Exterior con conector SC/APC reforzado o CIRCO MMV", tIdx: 2, tags: ["Exterior"] },
+      { label: "Interior Marca Blanca (3mm o 4.2mm SC/APC)", tIdx: 2, tags: ["Interior"] }
+    ]
+  },
+  cli_roseta: {
+    q: "¿Qué pequeño material óptico de interior buscas?",
+    opts: [
+      { label: "Roseta óptica o Adaptador (Universal, Mini-SC Huawei, Corning)", tIdx: 3 },
+      { label: "Latiguillo alargador hembra 2 metros (Huawei o Corning)", tIdx: 1, q: "alargador" },
+      { label: "Latiguillo normal SC/APC (Patch Cord 1m, 2m, 3m, 5m, 10m)", tIdx: 26 }
+    ]
+  },
+  cli_tv: {
+    q: "¿Qué equipamiento de Televisión necesitas?",
+    opts: [
+      { label: "Decodificador Android TV (Tanix, Mecool, Android Box)", tIdx: 5, q: "android" },
+      { label: "Antena Parabólica, LNB, Receptor Satélite o Kit TDT", tIdx: 5 }
+    ]
+  },
+  fo_main: {
+    q: "¿Qué trabajo de Planta Externa o Cabecera vas a realizar?",
+    opts: [
+      { label: "Montar una Caja en fachada, poste o arqueta (CTO o Torpedo)", next: "fo_cajas" },
+      { label: "Tirar Bobina de Cable de Fibra Óptica (2 FO hasta 512 FO)", tIdx: 25 },
+      { label: "Fusionar, conectorizar o repartir señal (Smouv, Pigtails, Splitters, Latiguillos)", next: "fo_empalme" },
+      { label: "Sujetar o tensar cables en poste o fachada (Herrajes y Fijación)", next: "fo_fijacion" },
+      { label: "Equipamiento de Cabecera / Nodo Central (OLT, SFP, CCR, Switch, ODF)", next: "fo_cabecera" }
+    ]
+  },
+  fo_cajas: {
+    q: "¿Qué tipo de caja de fibra necesitas montar?",
+    opts: [
+      { label: "Caja terminal de clientes CTO de 8 puertos", tIdx: 24, tags: ["8 Puertos"] },
+      { label: "Caja terminal de clientes CTO de 16 puertos", tIdx: 24, tags: ["16 Puertos"] },
+      { label: "Caja terminal CTO Multi de 48 puertos", tIdx: 24, tags: ["48 Puertos"] },
+      { label: "Ver todas las CTOs (Interior, Fachada/Poste, Arqueta)", tIdx: 24 },
+      { label: "Caja de empalme / sangrado (Torpedo, Mini CAU o Estanca)", tIdx: 23 }
+    ]
+  },
+  fo_empalme: {
+    q: "¿Qué elemento de fusión o interconexión óptica buscas?",
+    opts: [
+      { label: "Manguitos de fusión (cánulas smouv) o Enfrentadores SC/APC", tIdx: 28 },
+      { label: "Pigtails sueltos 0.9mm (1.5m) para fusionar", tIdx: 27 },
+      { label: "Splitters ópticos (1:4, 1:8 o 1:16)", tIdx: 29 },
+      { label: "Latiguillos / Patch Cord (SC/APC, SC/UPC, LC/APC, LC/UPC)", tIdx: 26 }
+    ]
+  },
+  fo_fijacion: {
+    q: "¿Dónde vas a fijar o amarrar el tendido?",
+    opts: [
+      { label: "En Poste (Preformados, Guardacabos, Pinzas PA500/PA614, Kit CTO Poste)", tIdx: 30 },
+      { label: "En Fachada o Pared (Grapas, Retenedores, Gancho, Anilla, Taco, Tirafondo, Brida)", tIdx: 31 }
+    ]
+  },
+  fo_cabecera: {
+    q: "¿Qué equipo de Cabecera o Nodo necesitas?",
+    opts: [
+      { label: "Chasis OLT (Huawei / BDCOM) o Tarjetas GPON MA5600/MA5800", tIdx: 17 },
+      { label: "Módulos ópticos Transceiver SFP / SFP+ (10km, 20km, 40km)", tIdx: 18 },
+      { label: "Bandejas repartidoras ODF (24 a 588 puertos)", tIdx: 21 },
+      { label: "Routers de cabecera Mikrotik CCR", tIdx: 19 },
+      { label: "Switches (Mikrotik CRS, Edge, HP)", tIdx: 20 },
+      { label: "Patch Panel Ethernet (16, 24 o 48 puertos)", tIdx: 22 }
+    ]
+  },
+  ant_main: {
+    q: "¿Qué material de Antenas, Red o Electricidad buscas?",
+    opts: [
+      { label: "Antenas Wimax / 5GHz, Radioenlaces o Mochilas", next: "ant_tipo" },
+      { label: "Alimentación eléctrica (Inyectores PoE, SAI, Batería, Conversor)", next: "ant_energia" },
+      { label: "Protección de Cuadro Eléctrico (Diferencial, Magnetotérmico, Sobretensiones)", tIdx: 9 },
+      { label: "Fijación de Antenas (Mástiles, Garras, Soporte en L, Grapa 6mm)", tIdx: 10 },
+      { label: "Bobinas de Cable Ethernet (UTP / FTP Cat5e y Cat6)", tIdx: 12 }
+    ]
+  },
+  ant_tipo: {
+    q: "¿Qué función cumple la antena que buscas?",
+    opts: [
+      { label: "Antena para cliente o Punto de Acceso WiFi 360º / Unifi", tIdx: 6 },
+      { label: "Antena de Despliegue / Sectorial / Omni / Suscriptor Cambium ePMP", tIdx: 7 },
+      { label: "Radioenlace Punto a Punto (LHG, QRT5, SXT, NanoBeam, Parabólica 30dBi)", tIdx: 8 },
+      { label: "Mochilas y Estaciones Base (mANTBox, NetBox, NetMetal, AirMax)", tIdx: 11 }
+    ]
+  },
+  ant_energia: {
+    q: "¿Qué equipo de alimentación o respaldo necesitas?",
+    opts: [
+      { label: "Inyector PoE (1 puerto 100/1000 o regleta de 8 puertos)", tIdx: 14 },
+      { label: "SAI (Salicru / Delta de 700VA a 2000VA)", tIdx: 15 },
+      { label: "Batería 12V (Alarmas / Respaldo)", tIdx: 13 },
+      { label: "Switch PoE 5 puertos o Conversor de medios fibra-ethernet", tIdx: 16 }
+    ]
   }
-  for (const fam of CONFLICT_FAMILIES) {
-    if (tokens.some(t => fam.words.some(w => tokenMatchesConflictWord(t, w, endsWithSpace)))) {
-      return fam;
-    }
-  }
-  return null;
+};
+
+let akiHistoryStack = [];
+
+function openAkinatorModal() {
+  searchInput.blur();
+  akiHistoryStack = [];
+  renderAkinatorStep("root");
+  openModalById("akinatorModal");
 }
 
-function chooseConflictTableFromModal(tIdx) {
-  selectedTable = "ALL";
-  document.getElementById("selectedCatLabel").textContent = "Todas las categorías";
-  resolvedConflictTable = tIdx;
-  conflictDismissed = false;
-  selectedFilterTags = [];
+function renderAkinatorStep(stepKey) {
+  const step = AKI_TREE[stepKey];
+  if (!step) return;
+
+  document.getElementById("akiQuestionTitle").textContent = step.q;
+  document.getElementById("akiBackBtn").style.display = akiHistoryStack.length > 0 ? "block" : "none";
+
+  const box = document.getElementById("akiOptionsContainer");
+  box.innerHTML = step.opts.map((opt, idx) => `
+    <button type="button" class="aki-opt-btn" onclick="handleAkinatorChoice('${stepKey}', ${idx})">
+      <span>${opt.label}</span>
+      <span class="row-chevron">›</span>
+    </button>
+  `).join("");
+}
+
+function handleAkinatorChoice(stepKey, optIdx) {
+  const step = AKI_TREE[stepKey];
+  if (!step || !step.opts[optIdx]) return;
+  const choice = step.opts[optIdx];
+
+  if (choice.next) {
+    akiHistoryStack.push(stepKey);
+    renderAkinatorStep(choice.next);
+    return;
+  }
+
+  // Ha llegado al resultado final: aplicar categoría, búsqueda opcional y filtros opcionales
+  selectedTable = typeof choice.tIdx === "number" ? choice.tIdx : "ALL";
+  selectedFilterTags = Array.isArray(choice.tags) ? [...choice.tags] : [];
+  otherCatsDropdownOpen = false;
+  collapsedCatBlocks.clear();
+
+  if (choice.q) {
+    searchInput.value = choice.q;
+    clearSearchBtn.style.display = "flex";
+  } else {
+    searchInput.value = "";
+    clearSearchBtn.style.display = "none";
+  }
+
   closeActiveModal();
-  forceScrollTop();
-
-  const currVal = searchInput.value;
-  if (currVal && !currVal.endsWith(" ")) {
-    searchInput.value = currVal + " ";
-  }
-  searchInput.focus();
-  const len = searchInput.value.length;
-  searchInput.setSelectionRange(len, len);
-
   renderMaterials();
+  forceScrollTop();
 }
 
-function reopenConflictModal() {
-  resolvedConflictTable = null;
-  conflictDismissed = false;
-  selectedFilterTags = [];
-  renderMaterials();
+function akiGoBack() {
+  if (!akiHistoryStack.length) return;
+  const prevKey = akiHistoryStack.pop();
+  renderAkinatorStep(prevKey);
+}
+
+// =========================================================================
+// MOTOR DE FILTROS POR RENGLONES Y DOBLE RESALTADO (ROJO BÚSQUEDA / AZUL FILTRO)
+// =========================================================================
+function matchesSelectedFilterTags(mat) {
+  if (!selectedFilterTags.length) return true;
+  const groups = {};
+  selectedFilterTags.forEach(tag => {
+    const g = getFilterTagGroup(tag);
+    if (!groups[g]) groups[g] = [];
+    groups[g].push(tag);
+  });
+  return Object.values(groups).every(gTags => gTags.some(t => mat.filterTags.includes(t)));
 }
 
 function toggleFilterTag(tag) {
   const idx = selectedFilterTags.indexOf(tag);
-  if (idx >= 0) {
-    selectedFilterTags.splice(idx, 1);
-  } else {
-    selectedFilterTags.push(tag);
-  }
+  if (idx >= 0) selectedFilterTags.splice(idx, 1);
+  else selectedFilterTags.push(tag);
   renderMaterials();
-  forceScrollTop();
 }
 
 function resetFilterTags() {
   selectedFilterTags = [];
   renderMaterials();
-  forceScrollTop();
 }
 
-function switchToSuggestedCategory(tIdx) {
-  selectedTable = tIdx;
-  resolvedConflictTable = null;
-  conflictDismissed = true;
-  selectedFilterTags = [];
-  document.getElementById("selectedCatLabel").textContent = `(${TABLES[tIdx][1]})`;
-  renderMaterials();
-  forceScrollTop();
+function getFilterRegexes(activeTags) {
+  const regexes = [];
+  if (!activeTags || !activeTags.length) return regexes;
+  activeTags.forEach(tag => {
+    const mMetros = tag.match(/^(\d+(?:\.\d+)?)m$/i);
+    if (mMetros) {
+      const numPat = mMetros[1].replace(".", "[.,]");
+      regexes.push(new RegExp(`\\b${numPat}\\s*(?:m|mt|mts|metros)\\b`, "gi"));
+      return;
+    }
+    const mNumUnit = tag.match(/^(\d+)\s*(FO|Puertos|Fusiones)$/i);
+    if (mNumUnit) {
+      regexes.push(new RegExp(`(?:\\b${mNumUnit[1]}\\s*${mNumUnit[2]}\\b|-${mNumUnit[1]}-)`, "gi"));
+      return;
+    }
+    const mMm = tag.match(/^(\d+(?:\.\d+)?)mm$/i);
+    if (mMm) {
+      const numPat = mMm[1].replace(".", "[.,]");
+      regexes.push(new RegExp(`\\b${numPat}\\s*mm\\b`, "gi"));
+      return;
+    }
+    if (tag === "Armado") {
+      regexes.push(/\b(?:armado|armadura|roedores)\b/gi);
+      return;
+    }
+    const cleanWords = tag.replace(/[()\/]/g, " ").split(/\s+/).filter(w => w.length >= 3 || /^1:\d+$/.test(w) || /^4G$/i.test(w));
+    cleanWords.forEach(w => {
+      const esc = norm(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      regexes.push(new RegExp(esc, "gi"));
+    });
+  });
+  return regexes;
 }
 
-function renderUnifiedFilterPanel(activeTIdx, categoryItems) {
+function highlightTextDual(text, tokens, activeTags) {
+  if (!text) return "";
+  const normText = norm(text);
+  const searchMask = new Array(text.length).fill(false);
+  const filterMask = new Array(text.length).fill(false);
+
+  if (activeTags && activeTags.length > 0) {
+    const fRegexes = getFilterRegexes(activeTags);
+    fRegexes.forEach(rgx => {
+      let m;
+      while ((m = rgx.exec(normText)) !== null) {
+        for (let i = m.index; i < m.index + m[0].length && i < filterMask.length; i++) {
+          filterMask[i] = true;
+        }
+      }
+    });
+  }
+
+  if (tokens && tokens.length > 0) {
+    tokens.forEach(token => {
+      if (!token) return;
+      let matchedExact = false;
+      getSingularVariants(token).forEach(v => {
+        if (!v) return;
+        let pos = 0;
+        while (pos < normText.length) {
+          const idx = normText.indexOf(v, pos);
+          if (idx === -1) break;
+          matchedExact = true;
+          for (let i = idx; i < idx + v.length && i < searchMask.length; i++) searchMask[i] = true;
+          pos = idx + 1;
+        }
+      });
+
+      if (!matchedExact && token.length >= 3 && !/\d/.test(token)) {
+        const phToken = toPhonetic(token);
+        const reg = /[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ]+/g;
+        let m;
+        while ((m = reg.exec(text)) !== null) {
+          const wNorm = norm(m[0]);
+          if (wNorm.length < 3) continue;
+          const maxD = token.length >= 7 ? 2.0 : 1.1;
+          const isFuzzy = (phToken.length >= 3 && toPhonetic(wNorm).includes(phToken)) ||
+            (token.length >= 4 && Math.abs(wNorm.length - token.length) <= 2 && typoDistance(token, wNorm, maxD) <= maxD) ||
+            (token.length >= 5 && wNorm.length > token.length && typoDistance(token, wNorm.slice(0, token.length), 1.0) <= 1.0);
+          if (isFuzzy) {
+            for (let i = 0; i < wNorm.length; i++) {
+              if (token.includes(wNorm[i]) || phToken.includes(toPhonetic(wNorm[i]))) searchMask[m.index + i] = true;
+            }
+          }
+        }
+      }
+    });
+  }
+
+  let out = "", currentType = null;
+  for (let i = 0; i < text.length; i++) {
+    const nextType = searchMask[i] ? "S" : (filterMask[i] ? "F" : null);
+    if (nextType !== currentType) {
+      if (currentType) out += "</span>";
+      if (nextType === "S") out += '<span class="hl-match">';
+      else if (nextType === "F") out += '<span class="hl-filter">';
+      currentType = nextType;
+    }
+    out += text[i];
+  }
+  if (currentType) out += "</span>";
+  return out;
+}
+
+// Renderiza el panel de filtros ordenado por renglones técnicos (Conector/Tipo, Color/Grosor, Capacidad, Marca, Metros)
+function renderUnifiedFilterPanel(poolItems) {
   const barEl = document.getElementById("subFiltersBar");
-  if (activeTIdx === null || categoryItems.length < 4) {
+  if (!poolItems || poolItems.length < 2) {
     barEl.style.display = "none";
     barEl.innerHTML = "";
     return;
   }
 
-  const allTags = [];
-  categoryItems.forEach(m => {
-    m.filterTags.forEach(t => {
-      if (!allTags.includes(t)) allTags.push(t);
+  const rowMap = {
+    CONECTOR_TIPO: [],
+    COLOR_GROSOR: [],
+    CAPACIDAD: [],
+    MARCA_TEC: [],
+    METROS: []
+  };
+
+  poolItems.forEach(m => {
+    m.filterTags.forEach(tag => {
+      const grp = getFilterTagGroup(tag);
+      if (rowMap[grp] && !rowMap[grp].includes(tag)) {
+        rowMap[grp].push(tag);
+      }
     });
   });
 
-  if (allTags.length <= 1) {
+  // Asegurar que cualquier filtro activo siga visible para poder desmarcarlo
+  selectedFilterTags.forEach(tag => {
+    const grp = getFilterTagGroup(tag);
+    if (rowMap[grp] && !rowMap[grp].includes(tag)) {
+      rowMap[grp].push(tag);
+    }
+  });
+
+  // Ordenar numéricamente Metros, Capacidad y Grosores
+  const sortNumericTags = (arr) => arr.sort((a, b) => {
+    const na = parseFloat(a.replace(/^1:/, "").replace(/[^\d.]/g, "")) || 9999;
+    const nb = parseFloat(b.replace(/^1:/, "").replace(/[^\d.]/g, "")) || 9999;
+    return na - nb;
+  });
+
+  sortNumericTags(rowMap.METROS);
+  sortNumericTags(rowMap.CAPACIDAD);
+
+  const activeRows = FILTER_ROW_META.filter(rm => rowMap[rm.key].length > 1 || (rowMap[rm.key].length === 1 && selectedFilterTags.includes(rowMap[rm.key][0])));
+
+  if (activeRows.length === 0) {
     barEl.style.display = "none";
     barEl.innerHTML = "";
     return;
   }
 
-  const descTags = allTags.filter(t => !/^\d/.test(t));
-  const numTags = allTags.filter(t => /^\d/.test(t)).sort((a, b) => {
-    const na = parseFloat(a.replace(/[^\d.]/g, "")) || 0;
-    const nb = parseFloat(b.replace(/[^\d.]/g, "")) || 0;
-    return na - nb;
-  });
-  const sortedTags = [...descTags, ...numTags];
-
   let html = `
     <div class="sf-header">
-      <span class="sf-title">Filtrar</span>
-      ${selectedFilterTags.length > 0 ? `<button type="button" class="sf-reset" onclick="resetFilterTags()">Quitar filtros</button>` : ''}
+      <span class="sf-title">Filtrar características</span>
+      ${selectedFilterTags.length > 0 ? `<button type="button" class="sf-reset" onclick="resetFilterTags()">Quitar filtros (${selectedFilterTags.length})</button>` : ''}
     </div>
-    <div class="sf-chips-wrap">
   `;
 
-  sortedTags.forEach(tag => {
-    const isAct = selectedFilterTags.includes(tag);
-    const safe = tag.replace(/'/g, "\\'");
-    html += `<button type="button" class="sf-chip ${isAct ? 'active' : ''}" onclick="toggleFilterTag('${safe}')">${tag}</button>`;
+  activeRows.forEach(rm => {
+    const chipsHTML = rowMap[rm.key].map(tag => {
+      const isAct = selectedFilterTags.includes(tag);
+      const safe = tag.replace(/'/g, "\\'");
+      return `<button type="button" class="sf-chip ${isAct ? 'active' : ''}" onclick="toggleFilterTag('${safe}')">${tag}</button>`;
+    }).join("");
+
+    html += `
+      <div class="sf-row-group">
+        <div class="sf-row-label">${rm.label}</div>
+        <div class="sf-row-chips">${chipsHTML}</div>
+      </div>
+    `;
   });
 
-  html += `</div>`;
   barEl.innerHTML = html;
   barEl.style.display = "block";
 }
 
+function toggleOtherCatsDropdown() {
+  otherCatsDropdownOpen = !otherCatsDropdownOpen;
+  const dropEl = document.getElementById("otherCatsDropdownList");
+  const btnEl = document.getElementById("otherCatsToggleBtn");
+  if (dropEl) dropEl.classList.toggle("open", otherCatsDropdownOpen);
+  if (btnEl) {
+    const count = dropEl ? dropEl.children.length : 0;
+    btnEl.innerHTML = `Ver otras categorías coincidentes (${count}) ${otherCatsDropdownOpen ? '▴' : '▾'}`;
+  }
+}
+
+function switchToSuggestedCategory(tIdx) {
+  selectedTable = tIdx;
+  selectedFilterTags = [];
+  otherCatsDropdownOpen = false;
+  collapsedCatBlocks.clear();
+  renderMaterials();
+  forceScrollTop();
+}
+
+function exitCurrentCategory() {
+  selectedTable = "ALL";
+  selectedFilterTags = [];
+  otherCatsDropdownOpen = false;
+  collapsedCatBlocks.clear();
+  renderMaterials();
+  forceScrollTop();
+}
+
+function toggleCatBlockCollapse(tIdx) {
+  if (collapsedCatBlocks.has(tIdx)) collapsedCatBlocks.delete(tIdx);
+  else collapsedCatBlocks.add(tIdx);
+  const blockEl = document.getElementById(`catBlock_${tIdx}`);
+  if (blockEl) blockEl.classList.toggle("collapsed", collapsedCatBlocks.has(tIdx));
+}
+
+// =========================================================================
+// RENDERIZADO PRINCIPAL AGRUPADO POR CATEGORÍAS (SIN PARÉNTESIS EN CADA FILA)
+// =========================================================================
 function renderMaterials() {
   const rawVal = searchInput.value;
-  const endsWithSpace = /\s$/.test(rawVal);
-  const q = norm(rawVal.trim());
+  const trimmedRaw = rawVal.trim();
+  const q = norm(trimmedRaw);
   const tokens = q ? q.split(/\s+/) : [];
   const scopeBar = document.getElementById("activeScopeBar");
-  const listEl = document.getElementById("materialsList");
-  const blocksEl = document.getElementById("blocksDashboard");
+  const groupsWrap = document.getElementById("materialsGroupsWrap");
   const subBarEl = document.getElementById("subFiltersBar");
 
-  if (!q && selectedTable === "ALL" && resolvedConflictTable === null) {
+  if (!q && selectedTable === "ALL") {
     scopeBar.style.display = "none";
     subBarEl.style.display = "none";
-    listEl.style.display = "none";
-    blocksEl.style.display = "block";
+    groupsWrap.style.display = "none";
+    groupsWrap.innerHTML = "";
     return;
   }
 
-  blocksEl.style.display = "none";
+  // Coincidencias estrictas en materiales (Código, Nombre o Sinónimo real)
+  const strictMaterialMatches = MATERIALS.filter(m => tokens.every(t => materialMatchesTokenStrict(m, t)));
 
-  const textMatches = MATERIALS.filter(m => {
-    for (const t of tokens) {
-      if (!itemMatchesToken(m, t)) return false;
-    }
-    return true;
-  });
+  // Si estamos dentro de una categoría concreta (seleccionada en resultados o por el Asistente)
+  const activeTIdx = selectedTable !== "ALL" ? selectedTable : null;
 
+  // Calcular cuántas coincidencias hay en otras categorías para la palabra buscada
+  const otherCounts = {};
   if (tokens.length > 0) {
-    const fam = detectConflictFamily(tokens, endsWithSpace);
-    if (fam) {
-      if (activeConflictFamilyId !== fam.id) {
-        activeConflictFamilyId = fam.id;
-        resolvedConflictTable = null;
-        conflictDismissed = false;
-        selectedFilterTags = [];
-      }
-
-      const matchingTables = [];
-      fam.tables.forEach(tIdx => {
-        const count = textMatches.filter(m => m.tIdx === tIdx).length;
-        if (count > 0) {
-          matchingTables.push({ tIdx, tableName: TABLES[tIdx][1], count });
-        }
-      });
-
-      if (matchingTables.length > 1) {
-        if (resolvedConflictTable === null && !conflictDismissed) {
-          searchInput.blur();
-          scopeBar.style.display = "none";
-          subBarEl.style.display = "none";
-          listEl.style.display = "none";
-          document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
-            <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
-              <span>(${mt.tableName})</span>
-              <span class="conflict-badge">${mt.count}</span>
-            </button>
-          `).join("");
-          openModalById("conflictModal");
-          return;
-        } else if (resolvedConflictTable !== null) {
-          scopeBar.style.display = "flex";
-          document.getElementById("activeScopeName").textContent = `(${TABLES[resolvedConflictTable][1]})`;
-        } else {
-          scopeBar.style.display = "none";
-        }
-      } else {
-        scopeBar.style.display = "none";
-      }
-    } else {
-      activeConflictFamilyId = null;
-      resolvedConflictTable = null;
-      conflictDismissed = false;
-      scopeBar.style.display = "none";
-    }
-  } else {
-    scopeBar.style.display = "none";
-  }
-
-  const activeTIdx = resolvedConflictTable !== null ? resolvedConflictTable : (selectedTable !== "ALL" ? selectedTable : null);
-
-  let baseItems = textMatches;
-  if (activeTIdx !== null) {
-    baseItems = textMatches.filter(m => m.tIdx === activeTIdx);
-  }
-
-  renderUnifiedFilterPanel(activeTIdx, MATERIALS.filter(m => m.tIdx === activeTIdx));
-
-  let finalItems = baseItems;
-  if (activeTIdx !== null && selectedFilterTags.length > 0) {
-    finalItems = finalItems.filter(m => selectedFilterTags.every(tag => m.filterTags.includes(tag)));
-  }
-
-  finalItems.sort((a, b) => {
-    if (q && a.code.toLowerCase() === q) return -1;
-    if (q && b.code.toLowerCase() === q) return 1;
-    return 0;
-  });
-
-  if (finalItems.length === 0) {
-    listEl.style.display = "flex";
-    const otherCounts = {};
-    textMatches.forEach(m => {
+    strictMaterialMatches.forEach(m => {
       if (m.tIdx !== activeTIdx) {
         otherCounts[m.tIdx] = (otherCounts[m.tIdx] || 0) + 1;
       }
     });
-    const otherCatEntries = Object.keys(otherCounts).map(k => ({
-      tIdx: parseInt(k, 10),
-      tableName: TABLES[parseInt(k, 10)][1],
-      count: otherCounts[k]
-    }));
+  }
+  const otherCatEntries = Object.keys(otherCounts).map(k => ({
+    tIdx: +k,
+    tableName: TABLES[+k][1],
+    count: otherCounts[k]
+  }));
 
+  // Mostrar recuadro de categoría activa con el texto exacto solicitado y su desplegable
+  if (activeTIdx !== null) {
+    scopeBar.style.display = "block";
+    let scopeHTML = `
+      <div class="scope-top-row">
+        <div>
+          Estás en la categoría <strong>(${TABLES[activeTIdx][1]})</strong>.${otherCatEntries.length > 0 && trimmedRaw ? ` También tienes <strong>"${trimmedRaw}"</strong> en:` : ''}
+        </div>
+        <button type="button" class="text-btn" style="font-size:0.75rem;" onclick="exitCurrentCategory()">Ver todas ✕</button>
+      </div>
+    `;
+
+    if (otherCatEntries.length > 0 && trimmedRaw) {
+      scopeHTML += `
+        <button type="button" class="other-cats-toggle-btn" id="otherCatsToggleBtn" onclick="toggleOtherCatsDropdown()">
+          Ver otras categorías coincidentes (${otherCatEntries.length}) ${otherCatsDropdownOpen ? '▴' : '▾'}
+        </button>
+        <div class="other-cats-dropdown ${otherCatsDropdownOpen ? 'open' : ''}" id="otherCatsDropdownList">
+          ${otherCatEntries.map(oc => `
+            <button type="button" class="other-cat-option" onclick="switchToSuggestedCategory(${oc.tIdx})">
+              <span>(${oc.tableName})</span>
+              <span class="conflict-badge">${oc.count}</span>
+            </button>
+          `).join("")}
+        </div>
+      `;
+    }
+    scopeBar.innerHTML = scopeHTML;
+  } else {
+    scopeBar.style.display = "none";
+  }
+
+  // Determinar artículos base antes de aplicar los botones de filtro
+  let baseItems = [];
+  if (activeTIdx !== null) {
+    const catNameNorm = norm(TABLES[activeTIdx][1]);
+    const nonCatTokens = tokens.filter(t => !catNameNorm.includes(t) && !toPhonetic(catNameNorm).includes(toPhonetic(t)));
+    baseItems = MATERIALS.filter(m => m.tIdx === activeTIdx && nonCatTokens.every(t => materialMatchesTokenStrict(m, t)));
+  } else {
+    baseItems = strictMaterialMatches;
+  }
+
+  // Renderizar filtros por renglones según los materiales disponibles
+  renderUnifiedFilterPanel(baseItems);
+
+  let finalItems = selectedFilterTags.length > 0
+    ? baseItems.filter(m => matchesSelectedFilterTags(m))
+    : baseItems;
+
+  finalItems.sort((a, b) => (q && a.code.toLowerCase() === q) ? -1 : (q && b.code.toLowerCase() === q) ? 1 : 0);
+
+  groupsWrap.style.display = "flex";
+
+  if (finalItems.length === 0) {
     let emptyHTML = `<div class="empty-suggestions-card">`;
     if (baseItems.length > 0 && selectedFilterTags.length > 0) {
       emptyHTML += `
-        <div class="empty-msg-title">No hay materiales que coincidan con el filtro seleccionado en esta categoría.</div>
+        <div class="empty-msg-title">Ningún material cumple con los filtros marcados a la vez.</div>
         <button type="button" class="alt-cat-btn" onclick="resetFilterTags()">
-          <span>Quitar filtros activos en (${TABLES[activeTIdx][1]})</span>
-          <span>${baseItems.length} art. ›</span>
+          <span>Quitar filtros activos</span>
+          <span>Ver ${baseItems.length} materiales ›</span>
         </button>
       `;
     } else if (otherCatEntries.length > 0) {
       emptyHTML += `
-        <div class="empty-msg-title">No hay materiales que coincidan con el filtro seleccionado, pero sí hay resultados en:</div>
+        <div class="empty-msg-title">No hay coincidencias en esta categoría, pero sí tienes <strong>"${trimmedRaw}"</strong> en:</div>
         <div class="alt-cat-list">
           ${otherCatEntries.map(oc => `
             <button type="button" class="alt-cat-btn" onclick="switchToSuggestedCategory(${oc.tIdx})">
@@ -3069,106 +3516,70 @@ function renderMaterials() {
         </div>
       `;
     } else {
-      emptyHTML += `<div class="empty-msg-title" style="margin-bottom:0;">No hay materiales que coincidan con la búsqueda.</div>`;
+      emptyHTML += `<div class="empty-msg-title" style="margin-bottom:0;">No se han encontrado materiales con esa búsqueda. Prueba con el botón <strong>Asistente 💡</strong>.</div>`;
     }
-    emptyHTML += `</div>`;
-    listEl.innerHTML = emptyHTML;
+    groupsWrap.innerHTML = emptyHTML + `</div>`;
     return;
   }
 
   const activeListMap = {};
-  if (pickingForTranslator) {
-    transItems.forEach(t => {
-      if (t.key) activeListMap[t.key] = t.qty;
-    });
-  } else {
-    cart.forEach(c => { activeListMap[c.key] = c.qty; });
-  }
+  (pickingForTranslator ? transItems : cart).forEach(it => { if (it.key) activeListMap[it.key] = it.qty; });
 
-  listEl.style.display = "flex";
-  listEl.innerHTML = finalItems.map(m => {
-    const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
-    const qtyInCart = activeListMap[key];
-    const isSC = m.code === "SIN CÓDIGO";
+  // Agrupar resultados por Categoría para mostrar Cabecera de Categoría + sus materiales debajo (sin paréntesis en cada fila)
+  const groupedByCat = new Map();
+  finalItems.forEach(m => {
+    if (!groupedByCat.has(m.tIdx)) groupedByCat.set(m.tIdx, []);
+    groupedByCat.get(m.tIdx).push(m);
+  });
 
-    return `
-      <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
-        <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : m.code}</span>
-        <div class="mat-content">
-          <div class="mat-line1">${m.name}</div>
-          <span class="mat-line2">(${m.tableName})</span>
+  let blocksHTML = "";
+  groupedByCat.forEach((itemsInCat, tIdx) => {
+    const isCollapsed = collapsedCatBlocks.has(tIdx);
+    const catTitle = TABLES[tIdx][1];
+
+    const rowsHTML = itemsInCat.map(m => {
+      const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
+      const qtyInCart = activeListMap[key];
+      const isSC = m.code === "SIN CÓDIGO";
+      const synHint = getMatchedSynonymHint(m, tokens);
+      const synHTML = synHint ? ` <span class="syn-hint">· (${highlightTextDual(synHint, tokens, [])})</span>` : "";
+
+      return `
+        <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
+          <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : highlightTextDual(m.code, tokens, [])}</span>
+          <div class="mat-content">
+            <div class="mat-line1">${highlightTextDual(m.name, tokens, selectedFilterTags)}${synHTML}</div>
+          </div>
+          <div class="mat-right-ind">
+            ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
+          </div>
         </div>
-        <div class="mat-right-ind">
-          ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
+      `;
+    }).join("");
+
+    blocksHTML += `
+      <div class="cat-group-block ${isCollapsed ? 'collapsed' : ''}" id="catBlock_${tIdx}">
+        <div class="cat-block-header" onclick="toggleCatBlockCollapse(${tIdx})">
+          <span class="cat-block-title">${catTitle}</span>
+          <div class="cat-block-right">
+            ${activeTIdx === null && groupedByCat.size > 1 ? `<button type="button" onclick="event.stopPropagation();switchToSuggestedCategory(${tIdx})" style="background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.35);color:#fff;padding:2px 8px;border-radius:6px;font-size:0.68rem;font-weight:800;cursor:pointer;">Solo esta</button>` : ''}
+            <span class="cat-block-badge">${itemsInCat.length}</span>
+            <span class="cat-block-chevron">▾</span>
+          </div>
+        </div>
+        <div class="cat-block-body">
+          ${rowsHTML}
         </div>
       </div>
     `;
-  }).join("");
-}
-
-function openCategoriesModal(onlySheet) {
-  const container = document.getElementById("categoriesContainer");
-  const counts = {};
-  MATERIALS.forEach(m => { counts[m.tIdx] = (counts[m.tIdx] || 0) + 1; });
-
-  const groups = {};
-  TABLES.forEach((t, idx) => {
-    if (onlySheet && t[0] !== onlySheet) return;
-    if (!groups[t[0]]) groups[t[0]] = [];
-    groups[t[0]].push({ idx, title: t[1], count: counts[idx] || 0 });
   });
 
-  let html = "";
-  if (!onlySheet) {
-    html += `
-      <button type="button" class="cat-item ${selectedTable === 'ALL' ? 'active' : ''}" onclick="selectTableFilter('ALL')">
-        <span>Todas las categorías</span>
-        <span class="cat-count">${MATERIALS.length}</span>
-      </button>
-    `;
-  } else {
-    html += `
-      <button type="button" class="cat-item" onclick="openCategoriesModal()">
-        <span style="color:var(--corp-blue);font-weight:800;">‹ Ver todas las categorías</span>
-        <span class="cat-count">${MATERIALS.length}</span>
-      </button>
-    `;
-  }
-
-  Object.keys(groups).forEach(sheetName => {
-    html += `<div class="cat-group-title">${sheetName}</div>`;
-    groups[sheetName].forEach(tb => {
-      html += `
-        <button type="button" class="cat-item ${selectedTable === tb.idx ? 'active' : ''}" onclick="selectTableFilter(${tb.idx})">
-          <span>(${tb.title})</span>
-          <span class="cat-count">${tb.count}</span>
-        </button>
-      `;
-    });
-  });
-
-  container.innerHTML = html;
-  openModalById("categoriesModal");
-  const sheetEl = document.getElementById("categoriesSheet");
-  if (sheetEl) sheetEl.scrollTop = 0;
+  groupsWrap.innerHTML = blocksHTML;
 }
 
-function selectTableFilter(val) {
-  selectedTable = val;
-  resolvedConflictTable = null;
-  conflictDismissed = false;
-  selectedFilterTags = [];
-  const labelEl = document.getElementById("selectedCatLabel");
-  if (val === "ALL") {
-    labelEl.textContent = "Todas las categorías";
-  } else {
-    labelEl.textContent = `(${TABLES[val][1]})`;
-  }
-  closeActiveModal();
-  renderMaterials();
-  forceScrollTop();
-}
-
+// =========================================================================
+// VENTANA DE UNIDADES, MATERIAL PUNTUAL Y BANDEJA DE PEDIDO (OPCIÓN B)
+// =========================================================================
 function openCatalogModal(id) {
   searchInput.blur();
   modalMode = "CATALOG";
@@ -3349,6 +3760,7 @@ function clearCart() {
   if (confirm("¿Vaciar pedido?")) {
     cart = [];
     saveCart();
+    closeOrderDrawer();
   }
 }
 
@@ -3373,46 +3785,33 @@ function saveCart() {
 }
 
 function renderCart() {
-  const sectionEl = document.getElementById("orderSection");
+  const sheetEl = document.getElementById("orderDrawerSheet");
   const tbodyEl = document.getElementById("cartTableBody");
   const titleEl = document.getElementById("pedidoHeaderTitle");
   const saveKitBtn = document.getElementById("saveKitHeaderBtn");
   const kitEditActions = document.getElementById("kitEditHeaderActions");
-  const footerActions = document.getElementById("pedidoFooterActions");
-
-  if (pickingForTranslator) {
-    sectionEl.style.display = "none";
-    updateBottomBar();
-    return;
-  }
 
   document.getElementById("cartCount").textContent = cart.length;
   updateBottomBar();
   updateHomeBadge();
 
   if (editingKitIndex !== null && userKits[editingKitIndex]) {
-    sectionEl.classList.add("editing-mode");
+    sheetEl.classList.add("editing-mode");
     titleEl.textContent = `Editando Kit: ${userKits[editingKitIndex].name}`;
     saveKitBtn.style.display = "none";
     kitEditActions.style.display = "grid";
-    footerActions.style.display = "none";
   } else {
-    sectionEl.classList.remove("editing-mode");
-    titleEl.textContent = "Pedido";
+    sheetEl.classList.remove("editing-mode");
+    titleEl.textContent = "Pedido actual";
     saveKitBtn.style.display = "inline-block";
     kitEditActions.style.display = "none";
-    footerActions.style.display = "block";
   }
 
-  if (!cart.length && editingKitIndex === null) {
-    sectionEl.style.display = "none";
-    tbodyEl.innerHTML = "";
-    return;
-  }
-
-  sectionEl.style.display = "block";
-  if (!cart.length && editingKitIndex !== null) {
-    tbodyEl.innerHTML = `<div style="padding:18px;text-align:center;color:var(--muted);font-size:0.82rem;">El kit está vacío. Busca materiales arriba para añadirlos.</div>`;
+  if (!cart.length) {
+    if (editingKitIndex === null && isOrderDrawerOpen()) {
+      closeOrderDrawer();
+    }
+    tbodyEl.innerHTML = `<div style="padding:22px;text-align:center;color:var(--muted);font-size:0.84rem;">No hay materiales todavía. Cierra esta bandeja y busca arriba para añadirlos.</div>`;
     return;
   }
 
@@ -3448,11 +3847,17 @@ function renderCart() {
 }
 
 function updateBottomBar() {
-  const bar = document.getElementById("bottomBar");
+  const bar = document.getElementById("orderBottomBar");
+  const txt = document.getElementById("orderBottomBarText");
   if ((cart.length > 0 || editingKitIndex !== null) && currentView === "order" && !pickingForTranslator) {
-    bar.style.display = "flex";
-    document.getElementById("bottomBarText").textContent =
-      editingKitIndex !== null ? `Kit (${cart.length})` : `Pedido (${cart.length})`;
+    bar.style.display = "block";
+    if (editingKitIndex !== null && userKits[editingKitIndex]) {
+      bar.classList.add("editing-kit");
+      txt.textContent = `Editando Kit: ${userKits[editingKitIndex].name} (${cart.length})`;
+    } else {
+      bar.classList.remove("editing-kit");
+      txt.textContent = `Pedido actual (${cart.length} ${cart.length === 1 ? 'material' : 'materiales'})`;
+    }
   } else {
     bar.style.display = "none";
   }
@@ -3502,6 +3907,9 @@ function sendWhatsApp() {
   if (!txt) return;
   window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
 }
+// =========================================================================
+// GESTIÓN DE MIS KITS
+// =========================================================================
 function updateKitsBadge() {
   document.getElementById("kitsBtn").textContent = `Mis Kits (${userKits.length})`;
 }
@@ -3603,7 +4011,7 @@ function startEditUserKit(idx) {
   closeActiveModal();
   renderCart();
   renderMaterials();
-  scrollToOrder();
+  openOrderDrawer();
 }
 
 function saveEditedKit() {
@@ -3618,6 +4026,7 @@ function saveEditedKit() {
     backupCartBeforeKitEdit = null;
   }
   saveCart();
+  closeOrderDrawer();
   showToast("Kit actualizado");
   openKitsModal();
 }
@@ -3629,6 +4038,7 @@ function cancelEditKit() {
     backupCartBeforeKitEdit = null;
   }
   saveCart();
+  closeOrderDrawer();
   openKitsModal();
 }
 
@@ -3641,7 +4051,7 @@ function deleteUserKit(idx) {
 }
 
 // =========================================================================
-// LECTOR DE CÓDIGOS: GUARDAR / CANCELAR EDICIÓN, MATERIAL NUEVO E IMPRESIÓN
+// LECTOR DE CÓDIGOS: SUMA DE DUPLICADOS, EDICIÓN, COPIAR CÓDIGOS E IMPRESIÓN
 // =========================================================================
 function pasteFromClipboard() {
   if (transEditMode) return;
@@ -3656,6 +4066,8 @@ function clearTranslator() {
   document.getElementById("transInput").value = "";
   transItems = [];
   transEditMode = false;
+  const dupNotice = document.getElementById("transMergedNotice");
+  if (dupNotice) dupNotice.style.display = "none";
   renderTranslatorList();
 }
 
@@ -3663,15 +4075,19 @@ function runTranslatorFromTextarea() {
   if (transEditMode) return;
   const raw = document.getElementById("transInput").value;
   const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const dupNotice = document.getElementById("transMergedNotice");
 
   if (!lines.length) {
     transItems = [];
     transEditMode = false;
+    if (dupNotice) dupNotice.style.display = "none";
     renderTranslatorList();
     return;
   }
 
   const parsed = [];
+  let mergedCount = 0;
+
   lines.forEach(line => {
     const m = line.match(/^(\d{3,5})\s*[-–—:]?\s*(\d+)?\s*(?:unidades|uds|u\.?|m|metros)?\s*(.*)$/i);
     if (m) {
@@ -3679,20 +4095,30 @@ function runTranslatorFromTextarea() {
       const qty = Math.max(1, parseInt(m[2] || "1", 10));
       let extra = m[3] ? m[3].trim() : "";
       extra = extra.replace(/^\((.*)\)$/, "$1");
-      const found = CODE_MAP[code];
-      parsed.push({
-        type: found ? "FOUND" : "UNKNOWN",
-        key: code,
-        code,
-        name: found ? found.name : "Código no registrado",
-        tables: found ? found.tables : [],
-        prov: found ? found.prov : "",
-        qty,
-        extra,
-        rawLine: line,
-        checked: false,
-        isNew: false
-      });
+
+      const existing = parsed.find(p => (p.type === "FOUND" || p.type === "UNKNOWN") && p.code === code);
+      if (existing) {
+        existing.qty += qty;
+        if (extra && !existing.extra.includes(extra)) {
+          existing.extra = existing.extra ? `${existing.extra}, ${extra}` : extra;
+        }
+        mergedCount++;
+      } else {
+        const found = CODE_MAP[code];
+        parsed.push({
+          type: found ? "FOUND" : "UNKNOWN",
+          key: code,
+          code,
+          name: found ? found.name : "Código no registrado",
+          tables: found ? found.tables : [],
+          prov: found ? found.prov : "",
+          qty,
+          extra,
+          rawLine: line,
+          checked: false,
+          isNew: false
+        });
+      }
     } else if (!/^material puntual|^correo:/i.test(line)) {
       const cleanLine = line.replace(/^[-•]\s*/, "");
       const mText = cleanLine.match(/^(.*?)\s*[-–—]\s*(\d+)\s*(?:unidades|uds|u\.?)\s*(.*)$/i);
@@ -3713,6 +4139,10 @@ function runTranslatorFromTextarea() {
   });
 
   transItems = parsed;
+  if (dupNotice) {
+    dupNotice.style.display = mergedCount > 0 ? "block" : "none";
+    dupNotice.textContent = `Se han sumado automáticamente ${mergedCount} ${mergedCount === 1 ? 'código repetido' : 'códigos repetidos'}.`;
+  }
   renderTranslatorList();
 }
 
@@ -3865,11 +4295,11 @@ function renderTranslatorList() {
   }
 
   out.innerHTML = transItems.map((p, i) => {
-    const tableTags = p.tables && p.tables.length ? p.tables.map(t => `(${t})`).join(" · ") : "";
     const isUnknown = p.type === "UNKNOWN";
     const isText = p.type === "TEXT";
     const newRowClass = p.isNew ? "is-new-item" : "";
     const newBadgeHTML = p.isNew ? `<span class="new-item-tag">Nuevo</span>` : "";
+    const subDetails = [p.prov, p.extra].filter(Boolean).join(" · ");
 
     if (transEditMode) {
       return `
@@ -3879,7 +4309,7 @@ function renderTranslatorList() {
             <div class="alb-name-full" style="${isUnknown ? 'color:var(--danger);' : ''}">${p.name} ${newBadgeHTML}</div>
           </div>
           <div class="alb-bottom-line" style="padding-left:0;">
-            <div class="alb-meta-sub">${tableTags}</div>
+            <div class="alb-meta-sub">${subDetails}</div>
             <div class="alb-right">
               <div class="qty-capsule">
                 <button type="button" class="cap-btn" onclick="changeTransQty(${i}, -1)">−</button>
@@ -3898,13 +4328,25 @@ function renderTranslatorList() {
           <span class="code-badge ${isUnknown || isText ? 'sc' : ''}">${p.code}</span>
           <div class="mat-content">
             <div class="mat-line1" style="${isUnknown ? 'color:var(--danger);' : ''}">${p.name}</div>
-            <span class="mat-line2">${tableTags}${p.prov ? ' · ' + p.prov : ''}${p.extra ? ' · ' + p.extra : ''}</span>
+            ${subDetails ? `<span class="trans-sub-note">${subDetails}</span>` : ''}
           </div>
           <span class="cart-pill" style="${isUnknown ? 'background:var(--danger);' : ''}">${p.qty} u.</span>
         </div>
       `;
     }
   }).join("");
+}
+
+function copyTranslatorCodesOnly() {
+  if (transEditMode || !transItems.length) return;
+  const lines = transItems.map(p => {
+    if (p.type === "FOUND" || p.type === "UNKNOWN") {
+      return `${p.code} – ${p.qty} unidades${p.extra ? ' (' + p.extra + ')' : ''}`;
+    } else {
+      return `${p.name} – ${p.qty} unidades${p.prov ? ' (' + p.prov + ')' : ''}`;
+    }
+  });
+  navigator.clipboard.writeText(lines.join("\n")).then(() => showToast("Códigos copiados"));
 }
 
 function buildTranslatorWhatsAppText() {
@@ -3949,6 +4391,9 @@ function sendTranslatorEmail() {
   window.location.href = `mailto:?subject=${encodeURIComponent('Listado detallado de material - ' + dateStr)}&body=${encodeURIComponent(txt)}`;
 }
 
+// =========================================================================
+// IMPRESIÓN DE CHECKLIST A4 CON MEMORIA DE TÉCNICOS
+// =========================================================================
 function openPrintChecklistModal() {
   if (transEditMode || !transItems.length) return;
   renderSavedTechs();
@@ -4048,10 +4493,6 @@ function executePrintChecklist() {
   }, 120);
 }
 
-function scrollToOrder() {
-  document.getElementById("orderSection").scrollIntoView({ behavior: "smooth" });
-}
-
 function showToast(msg) {
   const t = document.getElementById("toast");
   t.textContent = msg;
@@ -4064,7 +4505,7 @@ const manifest = {
   short_name: "Acaciophone",
   start_url: ".",
   display: "standalone",
-  background_color: "#eef2f6",
+  background_color: "#e6ecf5",
   theme_color: "#041b3a",
   icons: [{
     src: ICON_DATA_URI,
@@ -4077,1009 +4518,9 @@ document.getElementById("pwa-manifest").setAttribute(
   "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest))
 );
 
-  // =========================================================================
-// ACTUALIZACIÓN UNIFICADA: DISEÑO LIMPIO, BÚSQUEDA SEPARADA Y NUEVAS FUNCIONES
-// =========================================================================
-
-let filterBarExpanded = false;
-let orderHistory = JSON.parse(localStorage.getItem("acacio_v5_history") || "[]");
-let lastMergedDuplicatesCount = 0;
-
-// 1. Preparar índice de búsqueda estricto por material (separado del nombre de la categoría)
-MATERIALS.forEach(m => {
-  const syns = getSynonymsForItem(m.code, m.name, m.tIdx);
-  m.itemDirectSearch = norm(`${m.code} ${m.name} ${m.prov}`);
-  m.itemDirectWords = m.itemDirectSearch.split(/[^a-z0-9]+/).filter(w => w.length >= 3);
-  m.itemDirectPhonetic = toPhonetic(m.itemDirectSearch);
-  m.synsRaw = syns;
-  m.synsSearch = norm(syns);
-  m.synsWords = m.synsSearch.split(/[^a-z0-9]+/).filter(w => w.length >= 3);
-  m.synsPhonetic = toPhonetic(m.synsSearch);
-});
-
-function wordMatchesTokenFuzzy(wordsArr, fullStr, phFull, token) {
-  if (/\d/.test(token)) return fullStr.includes(token);
-  const variants = getSingularVariants(token);
-  if (variants.some(v => fullStr.includes(v))) return true;
-  if (token.length >= 3) {
-    const phToken = toPhonetic(token);
-    if (phToken.length >= 3 && phFull.includes(phToken)) return true;
-  }
-  if (token.length >= 4) {
-    const maxDist = token.length >= 7 ? 2.0 : 1.1;
-    for (const v of variants) {
-      if (v.length < 4) continue;
-      for (const w of wordsArr) {
-        if (Math.abs(w.length - v.length) <= 2 && typoDistance(v, w, maxDist) <= maxDist) return true;
-        if (v.length >= 5 && w.length > v.length && typoDistance(v, w.slice(0, v.length), 1.0) <= 1.0) return true;
-      }
-    }
-  }
-  return false;
-}
-
-// Comprueba si el material coincide por sí mismo (Código, Nombre, Proveedor o Sinónimo), ignorando el título de la categoría
-function materialMatchesTokenStrict(mat, token) {
-  if (wordMatchesTokenFuzzy(mat.itemDirectWords, mat.itemDirectSearch, mat.itemDirectPhonetic, token)) return true;
-  if (wordMatchesTokenFuzzy(mat.synsWords, mat.synsSearch, mat.synsPhonetic, token)) return true;
-  return false;
-}
-
-// Comprueba si el título de una categoría coincide con lo escrito
-function categoryMatchesTokens(tIdx, tokens) {
-  if (!tokens || !tokens.length) return false;
-  const catText = norm(TABLES[tIdx][1]);
-  const catWords = catText.split(/[^a-z0-9]+/).filter(w => w.length >= 3);
-  const catPh = toPhonetic(catText);
-  return tokens.every(t => wordMatchesTokenFuzzy(catWords, catText, catPh, t));
-}
-
-// Si un material coincidió gracias a un sinónimo (ej. "canula" -> MANGUITOS), devuelve el sinónimo para mostrarlo en rojo
-function getMatchedSynonymHint(mat, tokens) {
-  if (!tokens || !tokens.length) return "";
-  for (const token of tokens) {
-    const inDirect = wordMatchesTokenFuzzy(mat.itemDirectWords, mat.itemDirectSearch, mat.itemDirectPhonetic, token);
-    if (!inDirect && wordMatchesTokenFuzzy(mat.synsWords, mat.synsSearch, mat.synsPhonetic, token)) {
-      const matchedSyn = mat.synsWords.find(sw => wordMatchesTokenFuzzy([sw], sw, toPhonetic(sw), token));
-      if (matchedSyn) return matchedSyn;
-    }
-  }
-  return "";
-}
-
-// 2. Filtros agrupados (OR dentro de la misma familia, AND entre familias distintas)
-function getFilterTagGroup(tag) {
-  if (/^\d+\s*(m|fo|puertos|fusiones)$/i.test(tag) || /^1:\d+$/.test(tag)) return "MEASURE";
-  if (/^(2mm|3mm|Dúplex)$/i.test(tag)) return "THICKNESS";
-  if (/^(Negro|Blanco)$/i.test(tag)) return "COLOR";
-  if (/^(WiFi 6 \/ WiFi 7|NEBA \/ VULA|Repetidor \/ Mesh|4G \/ Satélite \/ DSL)$/i.test(tag)) return "TECH";
-  return "TYPE";
-}
-
-function matchesSelectedFilterTags(mat) {
-  if (!selectedFilterTags.length) return true;
-  const groups = {};
-  selectedFilterTags.forEach(tag => {
-    const g = getFilterTagGroup(tag);
-    if (!groups[g]) groups[g] = [];
-    groups[g].push(tag);
-  });
-  return Object.values(groups).every(gTags => gTags.some(t => mat.filterTags.includes(t)));
-}
-
-// 3. Doble resaltado: Rojo para búsqueda (.hl-match) y Azul para filtros activos (.hl-filter)
-function getFilterRegexes(activeTags) {
-  const regexes = [];
-  if (!activeTags || !activeTags.length) return regexes;
-  activeTags.forEach(tag => {
-    const mMetros = tag.match(/^(\d+)m$/i);
-    if (mMetros) {
-      regexes.push(new RegExp(`\\b${mMetros[1]}\\s*(?:m|mt|mts|metros)\\b`, "gi"));
-      return;
-    }
-    const mNumUnit = tag.match(/^(\d+)\s*(FO|Puertos|Fusiones)$/i);
-    if (mNumUnit) {
-      regexes.push(new RegExp(`(?:\\b${mNumUnit[1]}\\s*${mNumUnit[2]}\\b|-${mNumUnit[1]}-)`, "gi"));
-      return;
-    }
-    const mMm = tag.match(/(\d+(?:[.,]\d+)?)\s*mm/i);
-    if (mMm) {
-      const numPat = mMm[1].replace(/[.,]/, "[.,]");
-      regexes.push(new RegExp(`\\b${numPat}\\s*mm\\b`, "gi"));
-    }
-    const cleanWords = tag.replace(/[()\/]/g, " ").split(/\s+/).filter(w => w.length >= 3 || /^1:\d+$/.test(w) || /^4G$/i.test(w));
-    cleanWords.forEach(w => {
-      if (/^\d+m$/i.test(w) || /^\d+mm$/i.test(w)) return;
-      const esc = norm(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      regexes.push(new RegExp(esc, "gi"));
-    });
-  });
-  return regexes;
-}
-
-function highlightTextDual(text, tokens, activeTags) {
-  if (!text) return "";
-  const normText = norm(text);
-  const searchMask = new Array(text.length).fill(false);
-  const filterMask = new Array(text.length).fill(false);
-
-  // Máscara Azul: Filtros activos
-  if (activeTags && activeTags.length > 0) {
-    const fRegexes = getFilterRegexes(activeTags);
-    fRegexes.forEach(rgx => {
-      let m;
-      while ((m = rgx.exec(normText)) !== null) {
-        for (let i = m.index; i < m.index + m[0].length && i < filterMask.length; i++) {
-          filterMask[i] = true;
-        }
-      }
-    });
-  }
-
-  // Máscara Roja: Búsqueda escrita
-  if (tokens && tokens.length > 0) {
-    tokens.forEach(token => {
-      if (!token) return;
-      let matchedExact = false;
-      getSingularVariants(token).forEach(v => {
-        if (!v) return;
-        let pos = 0;
-        while (pos < normText.length) {
-          const idx = normText.indexOf(v, pos);
-          if (idx === -1) break;
-          matchedExact = true;
-          for (let i = idx; i < idx + v.length && i < searchMask.length; i++) searchMask[i] = true;
-          pos = idx + 1;
-        }
-      });
-
-      if (!matchedExact && token.length >= 3 && !/\d/.test(token)) {
-        const phToken = toPhonetic(token);
-        const reg = /[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ]+/g;
-        let m;
-        while ((m = reg.exec(text)) !== null) {
-          const wNorm = norm(m[0]);
-          if (wNorm.length < 3) continue;
-          const maxD = token.length >= 7 ? 2.0 : 1.1;
-          const isFuzzy = (phToken.length >= 3 && toPhonetic(wNorm).includes(phToken)) ||
-            (token.length >= 4 && Math.abs(wNorm.length - token.length) <= 2 && typoDistance(token, wNorm, maxD) <= maxD) ||
-            (token.length >= 5 && wNorm.length > token.length && typoDistance(token, wNorm.slice(0, token.length), 1.0) <= 1.0);
-          if (isFuzzy) {
-            for (let i = 0; i < wNorm.length; i++) {
-              if (token.includes(wNorm[i]) || phToken.includes(toPhonetic(wNorm[i]))) searchMask[m.index + i] = true;
-            }
-          }
-        }
-      }
-    });
-  }
-
-  let out = "", currentType = null;
-  for (let i = 0; i < text.length; i++) {
-    const nextType = searchMask[i] ? "S" : (filterMask[i] ? "F" : null);
-    if (nextType !== currentType) {
-      if (currentType) out += "</span>";
-      if (nextType === "S") out += '<span class="hl-match">';
-      else if (nextType === "F") out += '<span class="hl-filter">';
-      currentType = nextType;
-    }
-    out += text[i];
-  }
-  if (currentType) out += "</span>";
-  return out;
-}
-
-// 4. Barra de filtros en 1 sola línea deslizable con botón para desplegar/plegar
-function toggleFilterBarExpand() {
-  filterBarExpanded = !filterBarExpanded;
-  const wrap = document.querySelector("#subFiltersBar .sf-chips-wrap");
-  const btn = document.getElementById("sfExpandBtn");
-  if (wrap) wrap.classList.toggle("expanded", filterBarExpanded);
-  if (btn) btn.textContent = filterBarExpanded ? "Plegar ▴" : "Ver todos ▾";
-}
-
-function renderUnifiedFilterPanel(activeTIdx, categoryItems) {
-  const barEl = document.getElementById("subFiltersBar");
-  if (activeTIdx === null || categoryItems.length < 4) {
-    barEl.style.display = "none";
-    barEl.innerHTML = "";
-    return;
-  }
-
-  const allTags = [];
-  categoryItems.forEach(m => {
-    m.filterTags.forEach(t => { if (!allTags.includes(t)) allTags.push(t); });
-  });
-
-  if (allTags.length <= 1) {
-    barEl.style.display = "none";
-    barEl.innerHTML = "";
-    return;
-  }
-
-  const descTags = allTags.filter(t => !/^\d/.test(t));
-  const numTags = allTags.filter(t => /^\d/.test(t)).sort((a, b) => {
-    return (parseFloat(a.replace(/[^\d.]/g, "")) || 0) - (parseFloat(b.replace(/[^\d.]/g, "")) || 0);
-  });
-  const sortedTags = [...descTags, ...numTags];
-
-  let html = `
-    <div class="sf-header">
-      <span class="sf-title">Filtrar (${sortedTags.length})</span>
-      <div style="display:flex;gap:10px;align-items:center;">
-        ${selectedFilterTags.length > 0 ? `<button type="button" class="sf-reset" onclick="resetFilterTags()">Quitar filtros (${selectedFilterTags.length})</button>` : ''}
-        <button type="button" class="sf-expand-btn" id="sfExpandBtn" onclick="toggleFilterBarExpand()">${filterBarExpanded ? 'Plegar ▴' : 'Ver todos ▾'}</button>
-      </div>
-    </div>
-    <div class="sf-chips-wrap ${filterBarExpanded ? 'expanded' : ''}">
-  `;
-
-  sortedTags.forEach(tag => {
-    const isAct = selectedFilterTags.includes(tag);
-    const safe = tag.replace(/'/g, "\\'");
-    html += `<button type="button" class="sf-chip ${isAct ? 'active' : ''}" onclick="toggleFilterTag('${safe}')">${tag}</button>`;
-  });
-
-  html += `</div>`;
-  barEl.innerHTML = html;
-  barEl.style.display = "block";
-}
-
-function selectTableFilter(val) {
-  selectedTable = val;
-  resolvedConflictTable = null;
-  conflictDismissed = false;
-  selectedFilterTags = [];
-  const labelEl = document.getElementById("selectedCatLabel");
-  if (val === "ALL") {
-    labelEl.textContent = "Categorías";
-  } else {
-    labelEl.textContent = TABLES[val][1];
-  }
-  closeActiveModal();
-  renderMaterials();
-  forceScrollTop();
-}
-
-function chooseConflictTableFromModal(tIdx) {
-  selectedTable = "ALL";
-  document.getElementById("selectedCatLabel").textContent = TABLES[tIdx][1];
-  resolvedConflictTable = tIdx;
-  conflictDismissed = false;
-  selectedFilterTags = [];
-  closeActiveModal();
-  forceScrollTop();
-
-  const currVal = searchInput.value;
-  if (currVal && !currVal.endsWith(" ")) searchInput.value = currVal + " ";
-  searchInput.focus();
-  const len = searchInput.value.length;
-  searchInput.setSelectionRange(len, len);
-  renderMaterials();
-}
-
-function switchToSuggestedCategory(tIdx) {
-  selectedTable = tIdx;
-  resolvedConflictTable = null;
-  conflictDismissed = true;
-  selectedFilterTags = [];
-  document.getElementById("selectedCatLabel").textContent = TABLES[tIdx][1];
-  renderMaterials();
-  forceScrollTop();
-}
-
-// 5. Renderizado principal con separación Categorías vs Materiales y texto interactivo de categorías
-function renderMaterials() {
-  const rawVal = searchInput.value;
-  const trimmedRaw = rawVal.trim();
-  const endsWithSpace = /\s$/.test(rawVal);
-  const q = norm(trimmedRaw);
-  const tokens = q ? q.split(/\s+/) : [];
-  const scopeBar = document.getElementById("activeScopeBar");
-  const listEl = document.getElementById("materialsList");
-  const subBarEl = document.getElementById("subFiltersBar");
-  const catMatchesEl = document.getElementById("matchedCategoriesBox");
-
-  if (!q && selectedTable === "ALL" && resolvedConflictTable === null) {
-    scopeBar.style.display = "none";
-    subBarEl.style.display = "none";
-    listEl.style.display = "none";
-    if (catMatchesEl) catMatchesEl.style.display = "none";
-    return;
-  }
-
-  // Coincidencias estrictas en materiales (sin mezclar por nombre de categoría)
-  const strictMaterialMatches = MATERIALS.filter(m => tokens.every(t => materialMatchesTokenStrict(m, t)));
-
-  // Detectar familias de conflicto al escribir
-  if (tokens.length > 0) {
-    const fam = detectConflictFamily(tokens, endsWithSpace);
-    if (fam) {
-      if (activeConflictFamilyId !== fam.id) {
-        activeConflictFamilyId = fam.id;
-        resolvedConflictTable = null;
-        conflictDismissed = false;
-        selectedFilterTags = [];
-      }
-      const matchingTables = [];
-      fam.tables.forEach(tIdx => {
-        const count = MATERIALS.filter(m => m.tIdx === tIdx && (tokens.length === 1 ? true : tokens.every(t => itemMatchesToken(m, t)))).length;
-        if (count > 0) matchingTables.push({ tIdx, tableName: TABLES[tIdx][1], count });
-      });
-      if (matchingTables.length > 1 && resolvedConflictTable === null && !conflictDismissed) {
-        searchInput.blur();
-        scopeBar.style.display = "none";
-        subBarEl.style.display = "none";
-        listEl.style.display = "none";
-        if (catMatchesEl) catMatchesEl.style.display = "none";
-        document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
-          <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
-            <span>(${mt.tableName})</span>
-            <span class="conflict-badge">${mt.count}</span>
-          </button>
-        `).join("");
-        openModalById("conflictModal");
-        return;
-      }
-    } else {
-      activeConflictFamilyId = null;
-      resolvedConflictTable = null;
-      conflictDismissed = false;
-    }
-  }
-
-  const activeTIdx = resolvedConflictTable !== null ? resolvedConflictTable : (selectedTable !== "ALL" ? selectedTable : null);
-
-  // Calcular resultados en otras categorías para mostrar el texto interactivo clicable
-  const otherCounts = {};
-  if (tokens.length > 0) {
-    strictMaterialMatches.forEach(m => {
-      if (m.tIdx !== activeTIdx) otherCounts[m.tIdx] = (otherCounts[m.tIdx] || 0) + 1;
-    });
-    if (activeConflictFamilyId) {
-      const fam = CONFLICT_FAMILIES.find(f => f.id === activeConflictFamilyId);
-      if (fam) {
-        fam.tables.forEach(tIdx => {
-          if (tIdx !== activeTIdx && !otherCounts[tIdx]) {
-            const c = MATERIALS.filter(m => m.tIdx === tIdx && tokens.every(t => itemMatchesToken(m, t))).length;
-            if (c > 0) otherCounts[tIdx] = c;
-          }
-        });
-      }
-    }
-  }
-  const otherCatEntries = Object.keys(otherCounts).map(k => ({
-    tIdx: +k,
-    tableName: TABLES[+k][1],
-    count: otherCounts[k]
-  }));
-
-  // Mostrar frase interactiva de categoría actual + otras categorías disponibles
-  if (activeTIdx !== null) {
-    scopeBar.style.display = "block";
-    let scopeHTML = `Estás en <strong>(${TABLES[activeTIdx][1]})</strong>.`;
-    if (otherCatEntries.length > 0 && trimmedRaw) {
-      const links = otherCatEntries.map(oc =>
-        `<button type="button" class="inline-cat-chip" onclick="switchToSuggestedCategory(${oc.tIdx})">(${oc.tableName}) · ${oc.count}</button>`
-      ).join(" ");
-      scopeHTML += ` También tienes <em>"${trimmedRaw}"</em> en: <div class="inline-cats-wrap">${links}</div>`;
-    } else {
-      scopeHTML += ` <button type="button" class="inline-cat-chip" style="margin-left:6px;" onclick="selectTableFilter('ALL')">Ver todas las categorías</button>`;
-    }
-    scopeBar.innerHTML = scopeHTML;
-  } else {
-    scopeBar.style.display = "none";
-  }
-
-  // Bloque de "Categorías encontradas" (cuando estás en Todas las categorías y lo que escribes coincide con el nombre de alguna categoría)
-  if (catMatchesEl) {
-    if (activeTIdx === null && tokens.length > 0) {
-      const matchedCats = [];
-      TABLES.forEach((t, idx) => {
-        if (categoryMatchesTokens(idx, tokens)) {
-          const totalInCat = MATERIALS.filter(m => m.tIdx === idx).length;
-          matchedCats.push({ idx, name: t[1], count: totalInCat });
-        }
-      });
-      if (matchedCats.length > 0) {
-        catMatchesEl.style.display = "block";
-        catMatchesEl.innerHTML = `
-          <div class="matched-cats-header">Categorías encontradas (${matchedCats.length})</div>
-          <div class="matched-cats-list">
-            ${matchedCats.map(mc => `
-              <button type="button" class="matched-cat-btn" onclick="selectTableFilter(${mc.idx})">
-                <span>(${highlightTextDual(mc.name, tokens, [])})</span>
-                <span class="matched-cat-count">${mc.count} art. ›</span>
-              </button>
-            `).join("")}
-          </div>
-        `;
-      } else {
-        catMatchesEl.style.display = "none";
-      }
-    } else {
-      catMatchesEl.style.display = "none";
-    }
-  }
-
-  // Materiales a mostrar:
-  // - Si está en "Todas las categorías": solo materiales cuyo propio nombre/código/sinónimo coincida (nunca por nombre de categoría).
-  // - Si ya entró en una categoría concreta: si la palabra buscada es parte del propio título de esa categoría (ej. "acometida"), la ignora para listar los artículos de esa tabla.
-  let baseItems = [];
-  if (activeTIdx !== null) {
-    const catNameNorm = norm(TABLES[activeTIdx][1]);
-    const nonCatTokens = tokens.filter(t => !catNameNorm.includes(t) && !toPhonetic(catNameNorm).includes(toPhonetic(t)));
-    baseItems = MATERIALS.filter(m => m.tIdx === activeTIdx && nonCatTokens.every(t => materialMatchesTokenStrict(m, t)));
-  } else {
-    baseItems = strictMaterialMatches;
-  }
-
-  renderUnifiedFilterPanel(activeTIdx, MATERIALS.filter(m => m.tIdx === activeTIdx));
-
-  let finalItems = (activeTIdx !== null && selectedFilterTags.length > 0)
-    ? baseItems.filter(m => matchesSelectedFilterTags(m))
-    : baseItems;
-
-  finalItems.sort((a, b) => (q && a.code.toLowerCase() === q) ? -1 : (q && b.code.toLowerCase() === q) ? 1 : 0);
-
-  if (finalItems.length === 0) {
-    listEl.style.display = "flex";
-    let emptyHTML = `<div class="empty-suggestions-card">`;
-    if (baseItems.length > 0 && selectedFilterTags.length > 0) {
-      emptyHTML += `<div class="empty-msg-title">No hay materiales con ese filtro en esta categoría.</div>
-        <button type="button" class="alt-cat-btn" onclick="resetFilterTags()">
-          <span>Quitar filtros activos en (${TABLES[activeTIdx][1]})</span><span>${baseItems.length} art. ›</span>
-        </button>`;
-    } else if (otherCatEntries.length > 0) {
-      emptyHTML += `<div class="empty-msg-title">No hay materiales aquí, pero sí tienes <strong>"${trimmedRaw}"</strong> en:</div>
-        <div class="alt-cat-list">${otherCatEntries.map(oc => `
-          <button type="button" class="alt-cat-btn" onclick="switchToSuggestedCategory(${oc.tIdx})">
-            <span>(${oc.tableName})</span><span>${oc.count} ${oc.count === 1 ? 'resultado' : 'resultados'} ›</span>
-          </button>`).join("")}</div>`;
-    } else {
-      emptyHTML += `<div class="empty-msg-title" style="margin-bottom:0;">No hay materiales individuales con ese nombre.</div>`;
-    }
-    listEl.innerHTML = emptyHTML + `</div>`;
-    return;
-  }
-
-  const activeListMap = {};
-  (pickingForTranslator ? transItems : cart).forEach(it => { if (it.key) activeListMap[it.key] = it.qty; });
-
-  listEl.style.display = "flex";
-  listEl.innerHTML = finalItems.map(m => {
-    const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
-    const qtyInCart = activeListMap[key];
-    const isSC = m.code === "SIN CÓDIGO";
-    const synHint = getMatchedSynonymHint(m, tokens);
-    const synHTML = synHint ? ` <span class="syn-hint">· (${highlightTextDual(synHint, tokens, [])})</span>` : "";
-    // Solo mostrar la categoría debajo del artículo cuando NO estamos ya dentro de una categoría
-    const catLineHTML = activeTIdx === null ? `<span class="mat-line2">(${m.tableName})</span>` : "";
-
-    return `
-      <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
-        <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : highlightTextDual(m.code, tokens, [])}</span>
-        <div class="mat-content">
-          <div class="mat-line1">${highlightTextDual(m.name, tokens, selectedFilterTags)}${synHTML}</div>
-          ${catLineHTML}
-        </div>
-        <div class="mat-right-ind">
-          ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
-        </div>
-      </div>`;
-  }).join("");
-}
-
-// 6. Función Nueva 1: Historial automático de pedidos enviados/copiados
-function recordOrderInHistory() {
-  if (!cart.length) return;
-  const nowStr = new Date().toLocaleString("es-ES", {
-    day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"
-  });
-  const snap = JSON.parse(JSON.stringify(cart));
-  const sig = snap.map(c => `${c.key}:${c.qty}`).join("|");
-  if (orderHistory.length > 0) {
-    const lastSig = orderHistory[0].items.map(c => `${c.key}:${c.qty}`).join("|");
-    if (sig === lastSig) return;
-  }
-  orderHistory.unshift({ date: nowStr, items: snap });
-  if (orderHistory.length > 8) orderHistory.pop();
-  localStorage.setItem("acacio_v5_history", JSON.stringify(orderHistory));
-  updateHistoryBadge();
-}
-
-function updateHistoryBadge() {
-  const btn = document.getElementById("historyBtn");
-  if (btn) btn.textContent = `Historial (${orderHistory.length})`;
-}
-
-function openHistoryModal() {
-  const box = document.getElementById("historyContainer");
-  if (!orderHistory.length) {
-    box.innerHTML = `<div style="padding:18px 0;color:var(--muted);font-size:0.82rem;text-align:center;">Aún no hay pedidos en el historial. Se guardan solos al copiar o enviar un pedido.</div>`;
-  } else {
-    box.innerHTML = orderHistory.map((h, idx) => {
-      const preview = h.items.slice(0, 3).map(it => `${it.code === 'SIN CÓDIGO' ? 'S/C' : it.code} (${it.qty}u)`).join(", ") + (h.items.length > 3 ? "..." : "");
-      return `
-        <div class="hist-card">
-          <div class="hist-head">
-            <span>${h.date}</span>
-            <span class="hist-badge">${h.items.length} mat.</span>
-          </div>
-          <div class="hist-preview">${preview}</div>
-          <div class="hist-actions">
-            <button type="button" class="kp-btn primary" onclick="loadHistoryOrder(${idx})">Cargar en pedido</button>
-            <button type="button" class="kp-btn" onclick="copyHistoryOrder(${idx})">Copiar</button>
-            <button type="button" class="kp-btn danger" onclick="deleteHistoryOrder(${idx})">✕</button>
-          </div>
-        </div>
-      `;
-    }).join("");
-  }
-  openModalById("historyModal");
-}
-
-function loadHistoryOrder(idx) {
-  const h = orderHistory[idx];
-  if (!h) return;
-  h.items.forEach(hItem => {
-    const ex = cart.find(c => c.key === hItem.key);
-    if (ex) ex.qty += hItem.qty;
-    else cart.push(JSON.parse(JSON.stringify(hItem)));
-  });
-  saveCart();
-  closeActiveModal();
-  showToast("Pedido del historial cargado");
-}
-
-function copyHistoryOrder(idx) {
-  const h = orderHistory[idx];
-  if (!h) return;
-  const prevCart = cart;
-  cart = h.items;
-  const txt = buildOfficialText();
-  cart = prevCart;
-  navigator.clipboard.writeText(txt).then(() => showToast("Historial copiado"));
-}
-
-function deleteHistoryOrder(idx) {
-  orderHistory.splice(idx, 1);
-  localStorage.setItem("acacio_v5_history", JSON.stringify(orderHistory));
-  updateHistoryBadge();
-  openHistoryModal();
-}
-
-function copyOrder() {
-  const txt = buildOfficialText();
-  if (!txt) return;
-  recordOrderInHistory();
-  navigator.clipboard.writeText(txt).then(() => showToast("Pedido copiado"));
-}
-
-function sendEmail() {
-  const txt = buildOfficialText();
-  if (!txt) return;
-  recordOrderInHistory();
-  const dateStr = new Date().toLocaleDateString("es-ES");
-  window.location.href = `mailto:?subject=${encodeURIComponent('Pedido de material - ' + dateStr)}&body=${encodeURIComponent(txt)}`;
-}
-
-function sendWhatsApp() {
-  const txt = buildOfficialText();
-  if (!txt) return;
-  recordOrderInHistory();
-  window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
-}
-
-// 7. Función Nueva 2 y 3: Suma automática de códigos duplicados en Lector y botón "Copiar códigos"
-function runTranslatorFromTextarea() {
-  if (transEditMode) return;
-  const raw = document.getElementById("transInput").value;
-  const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-
-  if (!lines.length) {
-    transItems = [];
-    lastMergedDuplicatesCount = 0;
-    transEditMode = false;
-    renderTranslatorList();
-    return;
-  }
-
-  const parsed = [];
-  let mergedCount = 0;
-
-  lines.forEach(line => {
-    const m = line.match(/^(\d{3,5})\s*[-–—:]?\s*(\d+)?\s*(?:unidades|uds|u\.?|m|metros)?\s*(.*)$/i);
-    if (m) {
-      const code = m[1];
-      const qty = Math.max(1, parseInt(m[2] || "1", 10));
-      let extra = m[3] ? m[3].trim() : "";
-      extra = extra.replace(/^\((.*)\)$/, "$1");
-
-      // Si el código ya estaba en la lista pegada, sumar cantidades automáticamente
-      const existing = parsed.find(p => (p.type === "FOUND" || p.type === "UNKNOWN") && p.code === code);
-      if (existing) {
-        existing.qty += qty;
-        if (extra && !existing.extra.includes(extra)) {
-          existing.extra = existing.extra ? `${existing.extra}, ${extra}` : extra;
-        }
-        mergedCount++;
-      } else {
-        const found = CODE_MAP[code];
-        parsed.push({
-          type: found ? "FOUND" : "UNKNOWN",
-          key: code,
-          code,
-          name: found ? found.name : "Código no registrado",
-          tables: found ? found.tables : [],
-          prov: found ? found.prov : "",
-          qty,
-          extra,
-          rawLine: line,
-          checked: false,
-          isNew: false
-        });
-      }
-    } else if (!/^material puntual|^correo:/i.test(line)) {
-      const cleanLine = line.replace(/^[-•]\s*/, "");
-      const mText = cleanLine.match(/^(.*?)\s*[-–—]\s*(\d+)\s*(?:unidades|uds|u\.?)\s*(.*)$/i);
-      parsed.push({
-        type: "TEXT",
-        key: `TXT_${parsed.length}_${Date.now()}`,
-        code: "S/C",
-        name: mText ? mText[1].trim() : cleanLine,
-        tables: ["SIN CÓDIGO / PUNTUAL"],
-        prov: mText && mText[3] ? mText[3].trim() : "",
-        qty: mText ? Math.max(1, parseInt(mText[2], 10)) : 1,
-        extra: "",
-        rawLine: cleanLine,
-        checked: false,
-        isNew: false
-      });
-    }
-  });
-
-  transItems = parsed;
-  lastMergedDuplicatesCount = mergedCount;
-  renderTranslatorList();
-  const dupNotice = document.getElementById("transMergedNotice");
-  if (dupNotice) {
-    dupNotice.style.display = mergedCount > 0 ? "block" : "none";
-    dupNotice.textContent = `Se han sumado automáticamente ${mergedCount} ${mergedCount === 1 ? 'código repetido' : 'códigos repetidos'} en la lista.`;
-  }
-}
-
-function copyTranslatorCodesOnly() {
-  if (transEditMode || !transItems.length) return;
-  const lines = transItems.map(p => {
-    if (p.type === "FOUND" || p.type === "UNKNOWN") {
-      return `${p.code} – ${p.qty} unidades${p.extra ? ' (' + p.extra + ')' : ''}`;
-    } else {
-      return `${p.name} – ${p.qty} unidades${p.prov ? ' (' + p.prov + ')' : ''}`;
-    }
-  });
-  navigator.clipboard.writeText(lines.join("\n")).then(() => showToast("Códigos copiados"));
-}
-
-// 8. Reestructuración automática de la interfaz al iniciar
-(function upgradeLayoutDOM() {
-  // Integrar desplegable de Categorías a la derecha de la barra de búsqueda
-  const searchWrap = document.querySelector("#orderHeaderTools .search-wrap");
-  const catBtn = document.getElementById("catTriggerBtn");
-  const filterBar = document.querySelector("#orderHeaderTools .filter-bar");
-  const selectedCatLabel = document.getElementById("selectedCatLabel");
-  if (selectedCatLabel && selectedCatLabel.textContent === "Todas las categorías") {
-    selectedCatLabel.textContent = "Categorías";
-  }
-
-  if (searchWrap && catBtn && filterBar) {
-    const unifiedRow = document.createElement("div");
-    unifiedRow.className = "unified-search-row";
-    searchWrap.parentNode.insertBefore(unifiedRow, searchWrap);
-    unifiedRow.appendChild(searchWrap);
-    unifiedRow.appendChild(catBtn);
-
-    // En la barra inferior dejamos: Mis Kits | Historial | + Material puntual
-    filterBar.className = "quick-tools-bar";
-    const histBtn = document.createElement("button");
-    histBtn.type = "button";
-    histBtn.id = "historyBtn";
-    histBtn.className = "tool-pill-btn";
-    histBtn.onclick = openHistoryModal;
-    histBtn.textContent = `Historial (${orderHistory.length})`;
-
-    const puntBtn = document.createElement("button");
-    puntBtn.type = "button";
-    puntBtn.id = "topPuntualBtn";
-    puntBtn.className = "tool-pill-btn";
-    puntBtn.onclick = openPuntualModal;
-    puntBtn.textContent = "+ Material puntual";
-
-    filterBar.appendChild(histBtn);
-    filterBar.appendChild(puntBtn);
-  }
-
-  // Crear caja para Categorías encontradas justo encima de la lista de materiales
-  const matList = document.getElementById("materialsList");
-  if (matList) {
-    const catBox = document.createElement("div");
-    catBox.id = "matchedCategoriesBox";
-    catBox.className = "matched-cats-box";
-    catBox.style.display = "none";
-    matList.parentNode.insertBefore(catBox, matList);
-  }
-
-  // Añadir aviso de códigos duplicados sumados y botón "Copiar códigos" en el Lector
-  const transOut = document.getElementById("transOutput");
-  if (transOut) {
-    const notice = document.createElement("div");
-    notice.id = "transMergedNotice";
-    notice.className = "trans-merged-notice";
-    notice.style.display = "none";
-    transOut.parentNode.insertBefore(notice, transOut);
-  }
-
-  const transSubactions = document.querySelector("#transFooterActions .pedido-subactions");
-  if (transSubactions) {
-    transSubactions.style.gridTemplateColumns = "1fr 1fr 1fr";
-    const copyCodesBtn = document.createElement("button");
-    copyCodesBtn.type = "button";
-    copyCodesBtn.className = "sub-action-btn";
-    copyCodesBtn.onclick = copyTranslatorCodesOnly;
-    copyCodesBtn.textContent = "Copiar códigos";
-    transSubactions.insertBefore(copyCodesBtn, transSubactions.firstChild);
-  }
-
-  // Inyectar modal de Historial de Pedidos
-  const histModal = document.createElement("div");
-  histModal.className = "modal-backdrop";
-  histModal.id = "historyModal";
-  histModal.onclick = function(e) { if (e.target === this) closeActiveModal(); };
-  histModal.innerHTML = `
-    <div class="modal-dialog">
-      <div class="m-meta">ÚLTIMOS PEDIDOS</div>
-      <div class="m-title" style="margin-top:2px;">Historial de pedidos</div>
-      <div id="historyContainer"></div>
-      <div class="m-footer">
-        <button type="button" class="btn-cancel" onclick="closeActiveModal()">Cerrar</button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(histModal);
-})();
-
 updateKitsBadge();
-updateHistoryBadge();
 renderMaterials();
 renderCart();
 </script>
-<style>
-  /* Más aire debajo del selector <Pedidos> | <Lector de códigos> */
-  #mainSegmentedControl {
-    margin-bottom: 14px !important;
-  }
-
-  /* Barra de búsqueda + Categorías integradas en la misma línea */
-  .unified-search-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 8px;
-    align-items: stretch;
-    margin-bottom: 10px;
-  }
-  .unified-search-row .search-wrap {
-    margin-bottom: 0 !important;
-  }
-  .unified-search-row #catTriggerBtn {
-    max-width: 155px;
-    background: var(--corp-navy);
-    color: #ffffff;
-    border: 1px solid var(--corp-navy);
-    padding: 0 11px;
-    border-radius: 8px;
-    font-size: 0.76rem;
-    font-weight: 700;
-  }
-  body.dark-mode .unified-search-row #catTriggerBtn {
-    background: var(--panel-alt);
-    border-color: var(--corp-blue);
-    color: var(--corp-blue);
-  }
-
-  /* Barra descongestionada: Mis Kits | Historial | + Material puntual */
-  .quick-tools-bar {
-    display: grid;
-    grid-template-columns: auto auto 1fr;
-    gap: 8px;
-    align-items: center;
-  }
-  .tool-pill-btn {
-    border: 1px solid var(--border);
-    background: var(--panel-alt);
-    color: var(--text-secondary);
-    padding: 7px 11px;
-    border-radius: 8px;
-    font-size: 0.76rem;
-    font-weight: 700;
-    cursor: pointer;
-    white-space: nowrap;
-    text-align: center;
-  }
-
-  /* Ocultar los 4 cuadros de Grupos de material y el botón puntual antiguo */
-  #blocksDashboard, .puntual-wrap {
-    display: none !important;
-  }
-
-  /* Resaltado Rojo (búsqueda) y Azul (filtros marcados) */
-  .hl-match {
-    color: #dc2626;
-    font-weight: 800;
-  }
-  body.dark-mode .hl-match {
-    color: #ff5252;
-  }
-  .code-badge .hl-match {
-    color: #ff9999;
-    text-decoration: underline;
-  }
-  .hl-filter {
-    color: var(--corp-blue);
-    background: rgba(0, 85, 184, 0.11);
-    padding: 0 3px;
-    border-radius: 3px;
-    font-weight: 800;
-  }
-  body.dark-mode .hl-filter {
-    color: #38bdf8;
-    background: rgba(56, 189, 248, 0.18);
-  }
-  .syn-hint {
-    font-size: 0.74rem;
-    font-weight: 600;
-    color: var(--muted);
-  }
-
-  /* Filtros en 1 sola fila horizontal deslizable por defecto */
-  #subFiltersBar .sf-chips-wrap {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  #subFiltersBar .sf-chips-wrap::-webkit-scrollbar {
-    display: none;
-  }
-  #subFiltersBar .sf-chips-wrap.expanded {
-    flex-wrap: wrap;
-    overflow-x: visible;
-  }
-  #subFiltersBar .sf-chip {
-    flex-shrink: 0;
-  }
-  .sf-expand-btn {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 0.72rem;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  /* Frase interactiva de categoría actual y otras categorías con resultados */
-  #activeScopeBar {
-    line-height: 1.45;
-    font-weight: 500;
-    font-size: 0.78rem;
-    padding: 9px 12px;
-  }
-  .inline-cats-wrap {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 4px;
-    vertical-align: middle;
-  }
-  .inline-cat-chip {
-    background: var(--cat-bg) !important;
-    color: var(--corp-blue) !important;
-    border: 1px solid var(--border) !important;
-    padding: 3px 9px !important;
-    border-radius: 12px !important;
-    font-size: 0.72rem !important;
-    font-weight: 800 !important;
-    cursor: pointer;
-  }
-
-  /* Bloque de Categorías encontradas al buscar */
-  .matched-cats-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 9px 11px;
-    margin-bottom: 10px;
-    box-shadow: var(--shadow-card);
-  }
-  .matched-cats-header {
-    font-size: 0.68rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-  .matched-cats-list {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  .matched-cat-btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 7px 10px;
-    border-radius: 7px;
-    border: 1px solid var(--border-soft);
-    background: var(--panel-alt);
-    color: var(--text);
-    font-size: 0.78rem;
-    font-weight: 700;
-    cursor: pointer;
-    text-align: left;
-  }
-  .matched-cat-count {
-    font-size: 0.72rem;
-    color: var(--corp-blue);
-    font-weight: 800;
-    margin-left: 8px;
-    flex-shrink: 0;
-  }
-
-  /* Aviso de códigos repetidos sumados en el Lector */
-  .trans-merged-notice {
-    background: var(--kits-bg);
-    color: var(--kits-text);
-    border-bottom: 1px solid var(--kits-border);
-    padding: 7px 12px;
-    font-size: 0.74rem;
-    font-weight: 700;
-    text-align: center;
-  }
-
-  /* Tarjetas del Historial de Pedidos */
-  .hist-card {
-    border: 1px solid var(--border);
-    background: var(--panel-alt);
-    border-radius: 9px;
-    padding: 10px;
-    margin-bottom: 8px;
-  }
-  .hist-head {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-  .hist-badge {
-    color: var(--success);
-  }
-  .hist-preview {
-    font-size: 0.72rem;
-    color: var(--muted);
-    margin-bottom: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .hist-actions {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr auto;
-    gap: 6px;
-  }
-</style>
 </body>
 </html>
