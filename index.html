@@ -5405,10 +5405,16 @@ renderCart();
 </style>
 <script>
 // =========================================================================
-// PARCHE V4: SUMA DE MÚLTIPLOS, BOTONES RESALTADOS Y ACORDEÓN EN "VER TODO"
-// =========================================================================
+<!-- =========================================================================
+     REDISEÑO UI/UX (TAILWIND + APPLE/STRIPE STYLE) + PROVEEDOR + BOTÓN FILTRAR
+     ========================================================================= -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
 
-// 1. Poner "Ver todo" a la izquierda y "Mis Kits" a la derecha
+<script>
+// 1. Mantener el orden de botones: "Ver todo" (izquierda) y "Mis Kits" (derecha)
 (function reorderToolsButtons() {
   const secBar = document.querySelector(".secondary-tools-bar");
   const viewAllBtn = document.getElementById("viewAllCatsBtn");
@@ -5418,7 +5424,7 @@ renderCart();
   }
 })();
 
-// 2. Botones (5, 10, 50, 100): sustituyen solo el 1 inicial y después siempre suman entre sí
+// 2. Mantener lógica intacta de múltiplos en unidades (5, 10, 50, 100)
 let firstQuickTapDone = false;
 
 const _v4OpenCatalogModal = openCatalogModal;
@@ -5450,7 +5456,74 @@ function tapQuickQty(n) {
   firstQuickTapDone = true;
 }
 
-// 3. "Ver todo" con Categorías -> Subcategorías -> Materiales (auto-cierre al abrir otra)
+// 3. MODIFICACIÓN ESPECÍFICA 1: Renombrar "Filtrar por características" a "Filtrar" con diseño visible
+renderUnifiedFilterPanel = function(poolItems) {
+  const barEl = document.getElementById("subFiltersBar");
+  if (!poolItems || poolItems.length < 2) {
+    barEl.style.display = "none";
+    barEl.innerHTML = "";
+    return;
+  }
+
+  const rowMap = { CONECTOR_TIPO: [], COLOR_GROSOR: [], CAPACIDAD: [], MARCA_TEC: [], METROS: [] };
+  poolItems.forEach(m => {
+    m.filterTags.forEach(tag => {
+      const grp = getFilterTagGroup(tag);
+      if (rowMap[grp] && !rowMap[grp].includes(tag)) rowMap[grp].push(tag);
+    });
+  });
+  selectedFilterTags.forEach(tag => {
+    const grp = getFilterTagGroup(tag);
+    if (rowMap[grp] && !rowMap[grp].includes(tag)) rowMap[grp].push(tag);
+  });
+
+  const sortNum = (arr) => arr.sort((a, b) => (parseFloat(a.replace(/^1:/, "").replace(/[^\d.]/g, "")) || 9999) - (parseFloat(b.replace(/^1:/, "").replace(/[^\d.]/g, "")) || 9999));
+  sortNum(rowMap.METROS);
+  sortNum(rowMap.CAPACIDAD);
+
+  const activeRows = FILTER_ROW_META.filter(rm => rowMap[rm.key].length > 1 || (rowMap[rm.key].length === 1 && selectedFilterTags.includes(rowMap[rm.key][0])));
+  if (activeRows.length === 0) {
+    barEl.style.display = "none";
+    barEl.innerHTML = "";
+    return;
+  }
+
+  const activeSummary = selectedFilterTags.length > 0
+    ? `<span class="sf-active-Readout">${selectedFilterTags.join(" · ")}</span>`
+    : "";
+
+  let html = `
+    <div class="subtle-bar-trigger" onclick="toggleFilterPanelOpen()">
+      <div class="sf-header-left">
+        <span class="action-bar-pill-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+          Filtrar
+        </span>
+        ${activeSummary}
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        ${selectedFilterTags.length > 0 ? `<button type="button" class="sf-reset" onclick="event.stopPropagation();resetFilterTags()">Limpiar (${selectedFilterTags.length}) ✕</button>` : ''}
+        <span class="action-bar-chevron">${filterPanelExpanded ? 'Cerrar ▴' : 'Abrir ▾'}</span>
+      </div>
+    </div>
+    <div id="sfCollapsibleBody" style="display:${filterPanelExpanded ? 'block' : 'none'};margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+  `;
+
+  activeRows.forEach(rm => {
+    const chipsHTML = rowMap[rm.key].map(tag => {
+      const isAct = selectedFilterTags.includes(tag);
+      const safe = tag.replace(/'/g, "\\'");
+      return `<button type="button" class="sf-chip ${isAct ? 'active' : ''}" onclick="toggleFilterTag('${safe}')">${tag}</button>`;
+    }).join("");
+    html += `<div class="sf-row-group"><div class="sf-row-label">${rm.label}</div><div class="sf-row-chips">${chipsHTML}</div></div>`;
+  });
+
+  html += `</div>`;
+  barEl.innerHTML = html;
+  barEl.style.display = "block";
+};
+
+// 4. MODIFICACIÓN ESPECÍFICA 2: Añadir el Proveedor (.mat-prov-badge) en resultados y mejorar visibilidad de "También hay coincidencias en..."
 let openMainCatName = null;
 let openSubCatIdx = null;
 
@@ -5490,21 +5563,25 @@ function toggleSubCatGroup(tIdx) {
   renderMaterials();
 }
 
-const _v4RenderMaterials = renderMaterials;
 renderMaterials = function() {
-  const q = norm(searchInput.value.trim());
+  const rawVal = searchInput.value;
+  const trimmedRaw = rawVal.trim();
+  const endsWithSpace = /\s$/.test(rawVal);
+  const q = norm(trimmedRaw);
+  const tokens = q ? q.split(/\s+/) : [];
+  const scopeBar = document.getElementById("activeScopeBar");
+  const groupsWrap = document.getElementById("materialsGroupsWrap");
+  const subBarEl = document.getElementById("subFiltersBar");
+
+  const activeListMap = {};
+  (pickingForTranslator ? transItems : cart).forEach(it => { if (it.key) activeListMap[it.key] = it.qty; });
+
+  // Vista "Ver todo" con Categorías -> Subcategorías -> Materiales (con Proveedor incluido)
   if (allCategoriesMode && !q) {
-    const scopeBar = document.getElementById("activeScopeBar");
-    const subBarEl = document.getElementById("subFiltersBar");
-    const groupsWrap = document.getElementById("materialsGroupsWrap");
     scopeBar.style.display = "none";
     subBarEl.style.display = "none";
     groupsWrap.style.display = "flex";
 
-    const activeListMap = {};
-    (pickingForTranslator ? transItems : cart).forEach(it => { if (it.key) activeListMap[it.key] = it.qty; });
-
-    // Agrupar por Categoría Principal -> Subcategorías
     const mainGroups = new Map();
     TABLES.forEach((t, tIdx) => {
       const sheetName = t[0];
@@ -5532,7 +5609,10 @@ renderMaterials = function() {
             return `
               <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
                 <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : m.code}</span>
-                <div class="mat-content"><div class="mat-line1">${m.name}</div></div>
+                <div class="mat-content">
+                  <div class="mat-line1">${m.name}</div>
+                  <div class="mat-prov-row"><span class="mat-prov-badge">${m.prov}</span></div>
+                </div>
                 <div class="mat-right-ind">
                   ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
                 </div>
@@ -5572,88 +5652,523 @@ renderMaterials = function() {
     groupsWrap.innerHTML = html;
     return;
   }
-  _v4RenderMaterials();
-};
-</script>
-<style>
-  /* Casillas "Ver todo" y "Mis Kits" con relieve medio (visibles sin competir con el buscador) */
-  .kits-pill {
-    background: var(--panel) !important;
-    border: 1.5px solid var(--border) !important;
-    color: var(--text) !important;
-    padding: 8px 12px !important;
-    font-size: 0.78rem !important;
-    font-weight: 800 !important;
-    border-radius: 9px !important;
-    box-shadow: 0 2px 7px rgba(4, 27, 58, 0.08) !important;
-  }
-  body.dark-mode .kits-pill {
-    background: var(--panel-alt) !important;
-    border-color: #475569 !important;
+
+  scopeBar.style.display = "none";
+
+  if (!q && selectedTable === "ALL" && resolvedConflictTable === null) {
+    subBarEl.style.display = "none";
+    groupsWrap.style.display = "none";
+    groupsWrap.innerHTML = "";
+    return;
   }
 
-  /* Estilos de Categorías y Subcategorías en "Ver todo" */
-  .main-cat-card {
-    border: 1.5px solid var(--border) !important;
-    border-radius: 11px !important;
+  if (tokens.length > 0) {
+    const fam = detectConflictFamily(tokens, endsWithSpace);
+    if (fam) {
+      if (activeConflictFamilyId !== fam.id) {
+        activeConflictFamilyId = fam.id;
+        resolvedConflictTable = null;
+        selectedTable = "ALL";
+        conflictDismissed = false;
+        selectedFilterTags = [];
+        filterPanelExpanded = false;
+        otherCatsPanelExpanded = false;
+      }
+      const matchingTables = [];
+      fam.tables.forEach(tIdx => {
+        const catNameNorm = norm(TABLES[tIdx][1]);
+        const nonCatTokens = tokens.filter(t => !catNameNorm.includes(t) && !toPhonetic(catNameNorm).includes(toPhonetic(t)));
+        const count = MATERIALS.filter(m => m.tIdx === tIdx && nonCatTokens.every(t => materialMatchesTokenStrict(m, t))).length;
+        if (count > 0) matchingTables.push({ tIdx, tableName: TABLES[tIdx][1], count });
+      });
+
+      if (matchingTables.length > 1 && resolvedConflictTable === null && selectedTable === "ALL" && !conflictDismissed) {
+        searchInput.blur();
+        subBarEl.style.display = "none";
+        groupsWrap.style.display = "none";
+        document.getElementById("conflictModalOptions").innerHTML = matchingTables.map(mt => `
+          <button type="button" class="conflict-item" onclick="chooseConflictTableFromModal(${mt.tIdx})">
+            <span>(${mt.tableName})</span>
+            <span class="conflict-badge">${mt.count}</span>
+          </button>
+        `).join("");
+        openModalById("conflictModal");
+        return;
+      }
+    } else {
+      activeConflictFamilyId = null;
+      resolvedConflictTable = null;
+      conflictDismissed = false;
+    }
   }
-  .main-cat-card.open {
+
+  const strictMatches = MATERIALS.filter(m => tokens.every(t => materialMatchesTokenStrict(m, t)));
+  const catCountsMap = new Map();
+
+  if (activeConflictFamilyId) {
+    const fam = CONFLICT_FAMILIES.find(f => f.id === activeConflictFamilyId);
+    if (fam) {
+      fam.tables.forEach(tIdx => {
+        const catNameNorm = norm(TABLES[tIdx][1]);
+        const nonCatTokens = tokens.filter(t => !catNameNorm.includes(t) && !toPhonetic(catNameNorm).includes(toPhonetic(t)));
+        const items = MATERIALS.filter(m => m.tIdx === tIdx && nonCatTokens.every(t => materialMatchesTokenStrict(m, t)));
+        if (items.length > 0) catCountsMap.set(tIdx, items);
+      });
+    }
+  }
+  strictMatches.forEach(m => {
+    if (!catCountsMap.has(m.tIdx)) catCountsMap.set(m.tIdx, []);
+    const arr = catCountsMap.get(m.tIdx);
+    if (!arr.includes(m)) arr.push(m);
+  });
+
+  let activeTIdx = resolvedConflictTable !== null ? resolvedConflictTable : (selectedTable !== "ALL" ? selectedTable : null);
+  if (activeTIdx === null && catCountsMap.size > 0) {
+    activeTIdx = catCountsMap.keys().next().value;
+  }
+
+  const baseItems = (activeTIdx !== null && catCountsMap.has(activeTIdx))
+    ? catCountsMap.get(activeTIdx)
+    : (activeTIdx !== null ? MATERIALS.filter(m => m.tIdx === activeTIdx && tokens.every(t => materialMatchesTokenStrict(m, t))) : strictMatches);
+
+  const otherCats = [];
+  catCountsMap.forEach((items, tIdx) => {
+    if (tIdx !== activeTIdx && items.length > 0) {
+      otherCats.push({ tIdx, title: TABLES[tIdx][1], count: items.length });
+    }
+  });
+
+  // Barra de otras categorías con alta visibilidad
+  if (otherCats.length > 0) {
+    scopeBar.style.display = "block";
+    scopeBar.innerHTML = `
+      <div class="subtle-bar-trigger" onclick="toggleOtherCatsPanel()">
+        <span class="action-bar-pill-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+          También en otras categorías (${otherCats.length})
+        </span>
+        <span class="action-bar-chevron">${otherCatsPanelExpanded ? 'Ocultar ▴' : 'Ver ▾'}</span>
+      </div>
+      <div style="display:${otherCatsPanelExpanded ? 'flex' : 'none'};flex-direction:column;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+        ${otherCats.map(oc => `
+          <button type="button" class="subtle-cat-row" onclick="switchToSuggestedCategory(${oc.tIdx})">
+            <span>▸ ${oc.title}</span>
+            <span class="subtle-cat-count">${oc.count}</span>
+          </button>
+        `).join("")}
+      </div>
+    `;
+  } else {
+    scopeBar.style.display = "none";
+  }
+
+  renderUnifiedFilterPanel(baseItems);
+
+  let finalItems = selectedFilterTags.length > 0
+    ? baseItems.filter(m => matchesSelectedFilterTags(m))
+    : baseItems;
+
+  finalItems.sort((a, b) => (q && a.code.toLowerCase() === q) ? -1 : (q && b.code.toLowerCase() === q) ? 1 : 0);
+
+  groupsWrap.style.display = "flex";
+
+  if (finalItems.length === 0) {
+    let emptyHTML = `<div class="empty-suggestions-card">`;
+    if (baseItems.length > 0 && selectedFilterTags.length > 0) {
+      emptyHTML += `
+        <div class="empty-msg-title">Ningún material de esta categoría coincide con ese filtro.</div>
+        <button type="button" class="alt-cat-btn" onclick="resetFilterTags()">
+          <span>Quitar filtros activos</span>
+          <span>Ver ${baseItems.length} materiales ›</span>
+        </button>
+      `;
+    } else {
+      emptyHTML += `
+        <div class="empty-msg-title">No se han encontrado materiales en el catálogo para "${trimmedRaw}".</div>
+        <button type="button" class="puntual-empty-btn" onclick="openPuntualModal()">+ Añadir material puntual sin código</button>
+      `;
+    }
+    groupsWrap.innerHTML = emptyHTML + `</div>`;
+    return;
+  }
+
+  const rowsHTML = finalItems.map(m => {
+    const key = m.code !== "SIN CÓDIGO" ? `${m.code}_${m.tIdx}` : `SC_${m.name}_${m.tIdx}`;
+    const qtyInCart = activeListMap[key];
+    const isSC = m.code === "SIN CÓDIGO";
+    const synHint = getMatchedSynonymHint(m, tokens);
+    const synHTML = synHint ? ` <span class="syn-hint">· (${highlightTextDual(synHint, tokens, [])})</span>` : "";
+
+    return `
+      <div class="mat-row ${qtyInCart ? 'in-cart' : ''}" onclick="openCatalogModal(${m.id})">
+        <span class="code-badge ${isSC ? 'sc' : ''}">${isSC ? 'S/C' : highlightTextDual(m.code, tokens, [])}</span>
+        <div class="mat-content">
+          <div class="mat-line1">${highlightTextDual(m.name, tokens, selectedFilterTags)}${synHTML}</div>
+          <div class="mat-prov-row"><span class="mat-prov-badge">${m.prov}</span></div>
+        </div>
+        <div class="mat-right-ind">
+          ${qtyInCart ? `<span class="cart-pill">${qtyInCart} u.</span>` : `<span class="row-chevron">›</span>`}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const activeCatTitle = activeTIdx !== null ? TABLES[activeTIdx][1] : "RESULTADOS";
+
+  groupsWrap.innerHTML = `
+    <div class="cat-group-block search-twin-box">
+      <div class="cat-block-header" style="cursor:default;">
+        <span class="cat-block-title">${activeCatTitle}</span>
+        <div class="cat-block-right">
+          <span class="cat-block-badge">${finalItems.length}</span>
+        </div>
+      </div>
+      <div class="cat-block-body">
+        ${rowsHTML}
+      </div>
+    </div>
+  `;
+};
+
+renderMaterials();
+</script>
+
+<style>
+  /* =========================================================================
+     SISTEMA DE DISEÑO PREMIUM (STRIPE / APPLE UI)
+     ========================================================================= */
+  :root {
+    --corp-navy: #0a2540;
+    --corp-blue: #0066ff;
+    --bg: #f4f7fb;
+    --panel: #ffffff;
+    --panel-alt: #f8fafc;
+    --border: #e2e8f0;
+    --border-soft: #f1f5f9;
+    --text: #0f172a;
+    --text-secondary: #334155;
+    --muted: #64748b;
+    --code-bg: #0a2540;
+    --code-text: #ffffff;
+    --success: #059669;
+    --success-soft: #ecfdf5;
+    --success-border: #6ee7b7;
+    --shadow-card: 0 10px 30px -10px rgba(10, 37, 64, 0.08), 0 4px 10px -4px rgba(10, 37, 64, 0.04);
+    --shadow-search: 0 12px 32px -8px rgba(0, 102, 255, 0.18), 0 2px 6px rgba(0, 102, 255, 0.08);
+    --shadow-modal: 0 24px 60px -12px rgba(10, 37, 64, 0.35);
+  }
+
+  html.dark-mode, body.dark-mode {
+    --corp-navy: #0f172a;
+    --corp-blue: #38bdf8;
+    --bg: #070b14;
+    --panel: #111827;
+    --panel-alt: #1e293b;
+    --border: rgba(255, 255, 255, 0.1);
+    --border-soft: rgba(255, 255, 255, 0.05);
+    --text: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --muted: #94a3b8;
+    --code-bg: #0284c7;
+    --shadow-card: 0 14px 34px -10px rgba(0, 0, 0, 0.55);
+    --shadow-search: 0 12px 32px -8px rgba(56, 189, 248, 0.22);
+    background-color: #070b14 !important;
+  }
+
+  html, body {
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif !important;
+    background-image: radial-gradient(120% 90% at 50% 0%, rgba(0, 102, 255, 0.07) 0%, transparent 65%);
+    background-attachment: fixed;
+    letter-spacing: -0.01em;
+  }
+
+  .code-badge, .alb-code-inline, .cap-input, .qty-stepper input, .cart-pill, .cat-block-badge, .sub-cat-badge {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace !important;
+  }
+
+  /* Cabecera Glassmorphism estilo Apple */
+  header {
+    background: rgba(255, 255, 255, 0.86) !important;
+    backdrop-filter: blur(18px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.85) !important;
+    box-shadow: 0 4px 24px -6px rgba(10, 37, 64, 0.06) !important;
+  }
+  body.dark-mode header {
+    background: rgba(17, 24, 39, 0.84) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .brand-bar {
+    background: linear-gradient(135deg, #04152d 0%, #0a2540 100%) !important;
+    padding: 11px 16px !important;
+  }
+
+  .home-logo-btn, .theme-btn {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-radius: 999px !important;
+    padding: 6px 14px !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .home-logo-btn:active, .theme-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Selector superior <Pedidos | Lector de códigos> estilo iOS Segmented Control */
+  .subtle-top-tabs {
+    background: rgba(15, 23, 42, 0.05) !important;
+    border: 1px solid var(--border) !important;
+    padding: 4px !important;
+    border-radius: 12px !important;
+    margin-bottom: 14px !important;
+  }
+  body.dark-mode .subtle-top-tabs {
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+  .subtle-tab-btn {
+    border-radius: 9px !important;
+    padding: 7px 10px !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .subtle-tab-btn.active {
+    background: var(--panel) !important;
+    color: var(--corp-blue) !important;
+    box-shadow: 0 2px 8px rgba(10, 37, 64, 0.08), 0 1px 2px rgba(10, 37, 64, 0.04) !important;
+  }
+
+  /* Buscador protagonista estilo Spotlight / Stripe */
+  .search-wrap input {
+    height: 54px !important;
+    border: 2px solid rgba(0, 102, 255, 0.45) !important;
+    border-radius: 16px !important;
+    background: var(--panel) !important;
+    box-shadow: var(--shadow-search) !important;
+    font-size: 0.96rem !important;
+    font-weight: 600 !important;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .search-wrap input:focus {
     border-color: var(--corp-blue) !important;
+    box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.16), var(--shadow-search) !important;
+    transform: translateY(-1px);
   }
-  .main-cat-header {
-    background: var(--corp-navy) !important;
+
+  /* Botones "Ver todo" y "Mis Kits" con relieve limpio */
+  .kits-pill {
+    background: var(--panel) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    padding: 9px 14px !important;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 6px rgba(10, 37, 64, 0.05) !important;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .kits-pill:active {
+    transform: scale(0.97);
+  }
+  .kits-pill.active-all-btn {
+    background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%) !important;
+    border-color: transparent !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 16px rgba(0, 102, 255, 0.28) !important;
+  }
+
+  /* =========================================================================
+     ALTA VISIBILIDAD PARA "FILTRAR" Y "TAMBIÉN EN OTRAS CATEGORÍAS"
+     ========================================================================= */
+  .scope-banner {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important;
+    border: 1.5px solid #38bdf8 !important;
+    border-left: 5px solid #0284c7 !important;
+    border-radius: 14px !important;
     padding: 11px 14px !important;
+    margin-bottom: 12px !important;
+    box-shadow: 0 6px 16px -4px rgba(2, 132, 199, 0.14) !important;
   }
-  .main-cat-body {
-    padding: 8px;
-    background: var(--panel-alt);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  body.dark-mode .scope-banner {
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%) !important;
+    border-color: rgba(56, 189, 248, 0.5) !important;
+    border-left: 5px solid #38bdf8 !important;
   }
-  .sub-cat-block {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
+
+  .subfilters-panel {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+    border: 1.5px solid #60a5fa !important;
+    border-left: 5px solid #0066ff !important;
+    border-radius: 14px !important;
+    padding: 11px 14px !important;
+    margin-bottom: 16px !important;
+    box-shadow: 0 6px 16px -4px rgba(0, 102, 255, 0.14) !important;
   }
-  .sub-cat-block.open {
-    border: 1.5px solid var(--corp-blue);
+  body.dark-mode .subfilters-panel {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.24) 0%, rgba(15, 23, 42, 0.92) 100%) !important;
+    border-color: rgba(96, 165, 250, 0.5) !important;
+    border-left: 5px solid #38bdf8 !important;
   }
-  .sub-cat-header {
-    display: flex;
-    justify-content: space-between;
+
+  .subtle-bar-trigger {
+    font-size: 0.84rem !important;
+    font-weight: 800 !important;
+    color: var(--corp-navy) !important;
+  }
+  body.dark-mode .subtle-bar-trigger {
+    color: #f8fafc !important;
+  }
+
+  .action-bar-pill-title {
+    display: inline-flex;
     align-items: center;
-    padding: 9px 12px;
-    cursor: pointer;
-    user-select: none;
-  }
-  .sub-cat-block.open .sub-cat-header {
-    background: var(--cat-bg);
-    border-bottom: 1px solid var(--cat-border);
-  }
-  .sub-cat-title {
-    font-size: 0.78rem;
+    gap: 7px;
+    color: #0052cc;
     font-weight: 800;
-    color: var(--text);
+    letter-spacing: -0.01em;
   }
-  .sub-cat-block.open .sub-cat-title {
+  body.dark-mode .action-bar-pill-title {
+    color: #7dd3fc;
+  }
+
+  .action-bar-chevron {
+    background: var(--panel);
     color: var(--corp-blue);
-  }
-  .sub-cat-badge {
-    background: var(--panel-alt);
-    color: var(--muted);
-    font-family: ui-monospace, SFMono-Regular, monospace;
-    font-size: 0.7rem;
+    border: 1px solid rgba(0, 102, 255, 0.25);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
     font-weight: 800;
-    padding: 2px 7px;
-    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
-  .sub-cat-arrow {
-    font-size: 0.85rem;
-    font-weight: 900;
-    color: var(--corp-blue);
-    margin-left: 4px;
+  body.dark-mode .action-bar-chevron {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(56, 189, 248, 0.35);
+    color: #38bdf8;
+  }
+
+  .sf-chip {
+    border-radius: 9px !important;
+    padding: 6px 12px !important;
+    font-weight: 700 !important;
+    background: var(--panel) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 1px 2px rgba(10, 37, 64, 0.04) !important;
+    transition: all 0.15s ease !important;
+  }
+  .sf-chip.active {
+    background: var(--corp-blue) !important;
+    color: #ffffff !important;
+    border-color: var(--corp-blue) !important;
+    box-shadow: 0 4px 10px rgba(0, 102, 255, 0.28) !important;
+  }
+
+  /* =========================================================================
+     TARJETAS DE RESULTADOS Y ETIQUETA SUTIL DEL PROVEEDOR
+     ========================================================================= */
+  .search-twin-box, .cat-group-block {
+    border: 1px solid var(--border) !important;
+    border-radius: 16px !important;
+    background: var(--panel) !important;
+    box-shadow: var(--shadow-card) !important;
+    overflow: hidden !important;
+  }
+  .search-twin-box .cat-block-header {
+    background: linear-gradient(135deg, #0a2540 0%, #0052cc 100%) !important;
+    padding: 11px 16px !important;
+  }
+
+  .mat-row {
+    padding: 12px 14px !important;
+    gap: 12px !important;
+    transition: background-color 0.15s ease, transform 0.12s ease !important;
+  }
+  .mat-row:hover {
+    background-color: var(--panel-alt);
+  }
+  .mat-row:active {
+    transform: scale(0.992);
+  }
+
+  .code-badge {
+    border-radius: 8px !important;
+    padding: 6px 5px !important;
+    font-size: 0.78rem !important;
+    box-shadow: 0 2px 5px rgba(10, 37, 64, 0.12);
+  }
+
+  /* Etiqueta del proveedor en pequeñito y color diferenciado armónico */
+  .mat-prov-row {
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+  }
+  .mat-prov-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #475569;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 1px 7px;
+    border-radius: 6px;
+  }
+  .mat-prov-badge::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #64748b;
+  }
+  body.dark-mode .mat-prov-badge {
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  body.dark-mode .mat-prov-badge::before {
+    background: #38bdf8;
+  }
+
+  /* Portada de Inicio y Modales con estética Apple/Stripe */
+  .home-nav-card {
+    border-radius: 18px !important;
+    border: 1px solid var(--border) !important;
+    border-left: 5px solid var(--corp-blue) !important;
+    padding: 22px 20px !important;
+    box-shadow: var(--shadow-card) !important;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease !important;
+  }
+  .home-nav-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .modal-dialog {
+    border-radius: 20px !important;
+    border: 1px solid var(--border) !important;
+    padding: 20px !important;
+    box-shadow: var(--shadow-modal) !important;
+    animation: modalSpring 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes modalSpring {
+    from { opacity: 0; transform: translateY(10px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .order-bottom-bar {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.25) !important;
+    padding: 13px 18px !important;
+    box-shadow: 0 -8px 30px rgba(4, 120, 87, 0.32) !important;
+  }
+  .order-drawer-sheet {
+    border-radius: 22px 22px 0 0 !important;
   }
 </style>
 </body>
